@@ -70,10 +70,6 @@
   .scrollbar:hover {
     overflow: auto !important;
   }
-  /* sponsor */
-  .sponsor-icon {
-    opacity: 0;
-  }
   .dropdown-item:hover .sponsor-icon {
     opacity: 1;
   }
@@ -88,10 +84,6 @@
   .chat-box {
     border: 0 !important;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-  }
-  /* stories */
-  .story:hover {
-    opacity: 0.8;
   }
   .pointer {
     cursor: pointer;
@@ -119,3 +111,7 @@
     }
   }
   
+  .login-form{
+    width: 100%;
+    max-width: 28rem;
+  }
