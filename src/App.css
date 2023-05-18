@@ -24,6 +24,10 @@ body {
 .bg-gray {
     background-color: #f0f2f5;
   }
+  .d-flex align-items-center top-0 start-0 position-absolute{
+   height: 50px; 
+   z-index: 5;
+  }
 .dropdown-menu overflow-auto border-0 shadow p-3{
   width: 20em; 
   max-height: 600px;
