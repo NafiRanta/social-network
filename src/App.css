@@ -41,6 +41,16 @@ body {
  width: 23em; 
  max-height: 600px;
 }
+.d-none d-xxl-block h-100 fixed-top end-0 overflow-hidden scrollbar{
+ max-width: 360px;
+ width: 100%; 
+ z-index: 4; 
+ padding-top: 56px; 
+ left: initial !important;
+}
+.position-absolute bottom-0 translate-middle border border-light rounded-circle bg-success p-1{
+left: 75%;
+}
 .fab {
 font-size: 3rem;
 }
@@ -64,6 +74,12 @@ font-size: 3rem;
 .rounded-circle p-1 bg-gray d-flex align-items-center justify-content-center mx-2{
   width: 38px; 
   height: 38px;
+}
+.modal-dialog modal-sm position-absolute bottom-0 end-0 w-17{
+  transform: translateX(-80px);
+}
+.modal-body p-0 overflow-auto{
+ max-height: 300px;
 }
   .fs-0 {
     font-size: 4rem;
