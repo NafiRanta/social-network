@@ -17,15 +17,57 @@ body {
   max-width: 28rem;
 }
 
+.bg-white bg-white d-flex align-items-center fixed-top shadow{
+  min-height: 56px; 
+  z-index: 5;
+}
 .bg-gray {
     background-color: #f0f2f5;
   }
+.dropdown-menu overflow-auto border-0 shadow p-3{
+  width: 20em; 
+  max-height: 600px;
+}
+.dropdown-menu border-0 shadow p-3{
+  width: 23em; 
+  max-height: 600px;
+  overflow-y: auto;
+}
+.dropdown-menu border-0 shadow p-3 overflow-auto{
+ width: 23em; 
+ max-height: 600px;
+}
+.fab {
+font-size: 3rem;
+}
+.input-group-text bg-gray border-0 rounded-circle{
+  min-height: 40px;
+}
+.input-group-text bg-gray border-0 rounded-pill{
+ min-height: 40px;
+  min-width: 230px;
+}
+.rounded-circle{
+  width: 38px; 
+  height: 38px; 
+  object-fit: cover;
+}
+.rounded-circle me-2{
+  width: 35px; 
+  height: 35px; 
+  object-fit: cover;
+}
+.rounded-circle p-1 bg-gray d-flex align-items-center justify-content-center mx-2{
+  width: 38px; 
+  height: 38px;
+}
   .fs-0 {
     font-size: 4rem;
   }
   .fs-7 {
     font-size: 0.8rem;
   }
+
   /* nav button */
   .nav__btn button:hover {
     background: #f0f2f5 !important;
