@@ -38,7 +38,7 @@ function PostContainer(){
       
             <div class="post__comment mt-3 position-relative">
          
-              <div class="d-flex align-items-center top-0 start-0 position-absolute">
+              <div class="d-flex align-items-center top-0 start-0 position-absolute" id="d-flex-comments">
                 <div class="me-2">
                   <i class="text-primary fas fa-thumbs-up"></i>
                 </div>

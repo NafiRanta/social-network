@@ -17,61 +17,73 @@ body {
   max-width: 28rem;
 }
 
-.bg-white bg-white d-flex align-items-center fixed-top shadow{
+.bg-white {
   min-height: 56px; 
   z-index: 5;
 }
 .bg-gray {
     background-color: #f0f2f5;
   }
-  .d-flex align-items-center top-0 start-0 position-absolute{
+  #d-flex-comments{
    height: 50px; 
    z-index: 5;
   }
-.dropdown-menu overflow-auto border-0 shadow p-3{
+#d-flex-postcontainer-createpost{
+    padding-top: 56px; 
+    max-width: 680px;
+  }
+#dropdown-menu-searchmenu{
   width: 20em; 
   max-height: 600px;
 }
-.dropdown-menu border-0 shadow p-3{
+#dropdown-menu-notmenu{
   width: 23em; 
   max-height: 600px;
   overflow-y: auto;
 }
-.dropdown-menu border-0 shadow p-3 overflow-auto{
+#dropdown-menu-mainmenu{
  width: 23em; 
  max-height: 600px;
 }
-.d-none d-xxl-block h-100 fixed-top end-0 overflow-hidden scrollbar{
+#d-none-end0{
  max-width: 360px;
  width: 100%; 
  z-index: 4; 
  padding-top: 56px; 
  left: initial !important;
 }
-.position-absolute bottom-0 translate-middle border border-light rounded-circle bg-success p-1{
+
+.d-none{
+  max-width: 360px; 
+  width: 100%; 
+  z-index: 4;
+}
+.position-absolute {
 left: 75%;
 }
 .fab {
 font-size: 3rem;
 }
-.input-group-text bg-gray border-0 rounded-circle{
+#fas-fa-circle {
+  font-size: 0.5rem !important;
+}
+#input-group-text-circle{
   min-height: 40px;
 }
-.input-group-text bg-gray border-0 rounded-pill{
+#input-group-text-pill{
  min-height: 40px;
   min-width: 230px;
 }
-.rounded-circle{
+#mainMenu{
   width: 38px; 
   height: 38px; 
-  object-fit: cover;
 }
-.rounded-circle me-2{
+#avatar{
   width: 35px; 
   height: 35px; 
   object-fit: cover;
 }
-.rounded-circle p-1 bg-gray d-flex align-items-center justify-content-center mx-2{
+.rounded-circle{
   width: 38px; 
   height: 38px;
 }
@@ -80,6 +92,10 @@ font-size: 3rem;
 }
 .modal-body p-0 overflow-auto{
  max-height: 300px;
+}
+
+.navbar-nav {
+  padding-top: 56px;
 }
   .fs-0 {
     font-size: 4rem;

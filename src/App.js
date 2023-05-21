@@ -5,10 +5,13 @@ import CreatePost from './components/CreatePost'
 import PostContainer from './components/PostContainer' */
 import PostContainer from './components/PostContainer' 
 import ChatContainerSmall from './components/ChatContainerSmall'
+import HomeSidenav from './views/HomeSidenav'
+import Home from './views/Home'
+import Avatar from './components/Avatar'
 
 function App() {
   return (
-        <ChatContainerSmall />
+        <Home />
   );
 }
 
