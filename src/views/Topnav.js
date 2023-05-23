@@ -25,27 +25,20 @@ function Topnav(){
                   <input type="text" class="rounded-pill border-0 bg-gray dropdown-item" placeholder="Search ÅlandSocial..." autofocus/>
                 </li>
                 <li class="my-4">
-                  <div class="alert fade show dropdown-item p-1 m-0 d-flex align-items-center justify-content-between" role="alert">
-                    <div class="d-flex align-items-center">
-                      <img src="https://source.unsplash.com/random/1" alt="avatar" class="rounded-circle me-2" id="avatar"/>
-                      <p class="m-0">Nafi</p>
-                    </div>
-                    <button type="button" class="btn-close p-0 m-0" data-bs-dismiss="alert" aria-label="Close"></button>
-                  </div>
-                </li>
-                <li class="my-4">
                   <div class="alert fade show dropdown-item  p-1 m-0 d-flex align-items-center justify-content-between" role="alert">
                     <div class="d-flex align-items-center">
-                      <img src="https://source.unsplash.com/random/2" alt="avatar" class="rounded-circle me-2" id="avatar"/>
+                      <Avatar/>
                       <p class="m-0">Nafi</p>
                     </div>
                     <button type="button" class="btn-close p-0 m-0" data-bs-dismiss="alert" aria-label="Close"></button>
                   </div>
                 </li>
                 <li class="my-4">
-                  <div
-                    class="alert fade show dropdown-item p-1 m-0 d-flex align-items-center justify-content-between" role="alert">
-                    <Avatar/>
+                  <div class="alert fade show dropdown-item p-1 m-0 d-flex align-items-center justify-content-between" role="alert">
+                    <div class="d-flex align-items-center">
+                        <Avatar/>
+                        <p class="m-0">Nafi</p>
+                      </div>
                     <button type="button" class="btn-close p-0 m-0" data-bs-dismiss="alert" aria-label="Close"></button>
                   </div>
                 </li>
@@ -53,7 +46,6 @@ function Topnav(){
             </div>
           </div>
           <div class="col d-flex align-items-center justify-content-end">
-            <Avatar/>
             <div class="rounded-circle p-1 bg-gray d-flex align-items-center justify-content-center mx-2" type="button" id="mainMenu" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
               <i class="fas fa-ellipsis-h"></i>
             </div>
@@ -97,12 +89,10 @@ function Topnav(){
                 </li>
               </div>
             </ul>
-            <div
-              class="rounded-circle p-1 bg-gray d-flex align-items-center justify-content-center mx-2"   type="button" id="chatMenu" >
+            <div class="rounded-circle p-1 bg-gray d-flex align-items-center justify-content-center mx-2"   type="button" id="chatMenu" >
               <i class="fas fa-comment"></i>
             </div>
-            <div
-              class="rounded-circle p-1 bg-gray d-flex align-items-center justify-content-center mx-2"  type="button" id="notMenu" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+            <div class="rounded-circle p-1 bg-gray d-flex align-items-center justify-content-center mx-2"  type="button" id="notMenu" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
               <i class="fas fa-bell"></i>
             </div>
             <ul class="dropdown-menu border-0 shadow p-3" aria-labelledby="notMenu" id="dropdown-menu-notmenu">
@@ -115,9 +105,9 @@ function Topnav(){
                 <a href="#" class="d-flex align-items-center justify-content-evenly text-decoration-none text-dark">
                   <div class="d-flex align-items-center justify-content-evenly">
                     <div class="p-2">
-                      <img src="https://source.unsplash.com/random/1" alt="avatar" class="rounded-circle" id="avatar" />
+                      <Avatar />
                     </div>
-                    <div>
+                  <div>
                       <p class="fs-7 m-0">Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum unde amet at nulla quae porro.</p>
                       <span class="fs-7 text-primary">about an hour ago</span>
                     </div>
@@ -127,8 +117,32 @@ function Topnav(){
               </li>
             </ul>
             <div class="rounded-circle p-1 bg-gray d-flex align-items-center justify-content-center mx-2" type="button" id="secondMenu" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
-              <i class="fas fa-cog bg-gray p-2 rounded-circle"></i>
+                <Avatar />
             </div>
+            <ul class="dropdown-menu border-0 shadow p-3" aria-labelledby="notMenu" id="dropdown-menu-notmenu">
+              <li class="my-2 p-1">
+                  <div class="d-flex align-items-center">
+                      <Avatar />
+                      <p class="m-0">Zuratun Nafisah Rantasalmi</p>
+                  </div>
+                <a href="#" class="d-flex text-decoration-none text-dark">
+                    <div class="d-flex align-items-center">
+                      <div class="rounded-circle p-1 bg-gray d-flex align-items-center justify-content-center mx-2">
+                          <i class="fas fa-cog bg-gray p-2 rounded-circle"></i>
+                      </div>
+                      <p class="m-0">Settings</p>
+                    </div>
+                </a>
+                <a href="#" class="d-flex text-decoration-none text-dark">
+                <div class="d-flex align-items-center">
+                      <div class="rounded-circle p-1 bg-gray d-flex align-items-center justify-content-center mx-2">
+                          <i class="fas fa-power-off bg-gray p-2 rounded-circle"></i>
+                      </div>
+                      <p class="m-0">Log Out</p>
+                    </div>
+                </a>
+              </li>
+            </ul>
           </div>
         </div>
       </div>

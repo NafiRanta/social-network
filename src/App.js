@@ -8,6 +8,7 @@ import ChatContainerSmall from './components/ChatContainerSmall'
 import HomeSidenav from './views/HomeSidenav'
 import Home from './views/Home'
 import Avatar from './components/Avatar'
+import MyProfile from './views/MyProfile'
 
 function App() {
   return (

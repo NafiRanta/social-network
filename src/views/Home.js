@@ -4,6 +4,7 @@ import CreatePost from '../components/CreatePost'
 import ChatContainerSmall from '../components/ChatContainerSmall';
 import PostContainer from '../components/PostContainer';
 import HomeSidenav from './HomeSidenav';
+import Avatar from '../components/Avatar';
 
 function Home(){
     return (
@@ -14,6 +15,14 @@ function Home(){
                     <div class="col-12 col-lg-3">
                         <div class="d-none d-xxl-block h-100 fixed-top overflow-hidden scrollbar">
                             <ul class="navbar-nav mt-4 ms-3 d-flex flex-column pb-5 mb-5" >
+                                 <li class="dropdown-item p-1 rounded">
+                                    <div class="p-2">
+                                        <div class="d-flex align-items-center">
+                                            <Avatar/>
+                                            <p class="m-0">Zuratun Nafisah Rantasalmi</p>
+                                        </div>
+                                    </div>
+                                </li>
                                 <li class="dropdown-item p-1 rounded">
                                     <a href="#" class="d-flex align-items-center text-decoration-none text-dark">
                                         <div class="p-2">
