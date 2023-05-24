@@ -3,7 +3,6 @@ import Topnav from './Topnav'
 import CreatePost from '../components/CreatePost'
 import ChatContainerSmall from '../components/ChatContainerSmall';
 import PostContainer from '../components/PostCard';
-import HomeSidenav from './HomeSidenav';
 import Avatar from '../components/Avatar';
 
 function MyProfile(){
