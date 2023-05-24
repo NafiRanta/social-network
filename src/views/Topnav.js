@@ -120,7 +120,7 @@ function Topnav(){
                 </div>
               </li>
               <li class="my-2 p-1">
-                <a href="#" class="d-flex align-items-center justify-content-evenly text-decoration-none text-dark">
+                <a href="#" class="text-decoration-none text-dark d-flex align-items-center">
                   <div class="d-flex align-items-center justify-content-evenly">
                     <div class="p-2">
                       <Avatar />
@@ -139,26 +139,28 @@ function Topnav(){
             </div>
             <ul class="dropdown-menu border-0 shadow p-3" aria-labelledby="notMenu" id="dropdown-menu-notmenu">
               <li class="my-2 p-1">
-                  <div class="d-flex align-items-center">
-                      <Avatar />
-                      <p class="m-0">Zuratun Nafisah Rantasalmi</p>
-                  </div>
-                <a href="#" class="d-flex text-decoration-none text-dark">
+                  <li class="p-1 mx-2">
                     <div class="d-flex align-items-center">
+                        <Avatar />
+                        <p class="m-0">Zuratun Nafisah Rantasalmi</p>
+                    </div>
+                  </li>
+                  <li class="my-2 p-1">
+                    <a href="#" class="text-decoration-none text-dark d-flex align-items-center">
                       <div class="rounded-circle p-1 bg-gray d-flex align-items-center justify-content-center mx-2">
                           <i class="fas fa-cog bg-gray p-2 rounded-circle"></i>
                       </div>
                       <p class="m-0">Settings</p>
-                    </div>
-                </a>
-                <a href="#" class="d-flex text-decoration-none text-dark">
-                <div class="d-flex align-items-center">
+                    </a>
+                  </li>
+                  <li class="my-2 p-1">
+                    <a href="#" class="text-decoration-none text-dark d-flex align-items-center">
                       <div class="rounded-circle p-1 bg-gray d-flex align-items-center justify-content-center mx-2">
                           <i class="fas fa-power-off bg-gray p-2 rounded-circle"></i>
                       </div>
                       <p class="m-0">Log Out</p>
-                    </div>
-                </a>
+                    </a>
+                  </li>
               </li>
             </ul>
           </div>
