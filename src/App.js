@@ -13,7 +13,7 @@ import HomeGroup from './views/HomeGroup'
 
 function App() {
   return (
-        <Home />
+        <MyProfile />
   );
 }
 

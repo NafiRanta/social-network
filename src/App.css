@@ -29,7 +29,7 @@ body {
    z-index: 5;
   }
 #d-flex-postcontainer-createpost{
-    padding-top: 56px; 
+  padding-top: 20px;
     max-width: 680px;
   }
 #dropdown-menu-searchmenu{
