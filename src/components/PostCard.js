@@ -1,6 +1,6 @@
 import React from 'react';
 
-function PostContainer(){
+function PostCard(){
     return(
         <div class="bg-white p-4 rounded shadow mt-3">
     
@@ -102,4 +102,4 @@ function PostContainer(){
       )
 }
 
-export default PostContainer;
+export default PostCard;
