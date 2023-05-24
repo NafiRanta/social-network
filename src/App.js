@@ -11,7 +11,7 @@ import Group from './views/Group'
 
 function App() {
   return (
-        <Group />
+        <MyProfile />
   );
 }
 

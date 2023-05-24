@@ -60,7 +60,7 @@ function Topnav(){
                       <img src="https://static.xx.fbcdn.net/rsrc.php/v3/yj/r/tSXYIzZlfrS.png" alt="icon from fb" class="rounded-circle" />
                     </div>
                     <div>
-                      <p class="m-0">My Groups</p>
+                      <p class="m-0">Followers</p>
                       <span class="fs-7 text-muted">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Odio, commodi.</span>
                     </div>
                   </a>
@@ -71,21 +71,39 @@ function Topnav(){
                       <img src="https://static.xx.fbcdn.net/rsrc.php/v3/yj/r/Im_0d7HFH4n.png" alt="icon from fb" class="rounded-circle" />
                     </div>
                     <div>
-                      <p class="m-0">All Groups</p>
+                      <p class="m-0">Groups</p>
                       <span class="fs-7 text-muted">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Odio, commodi.</span>
                     </div>
                   </a>
                 </li>
                 <li class="my-2 p-1">
-                  <a href="#" class="text-decoration-none text-dark d-flex align-items-center justify-content-between">
-                    <div class="p-2">
-                      <img src="https://static.xx.fbcdn.net/rsrc.php/v3/yj/r/0gH3vbvr8Ee.png" alt="icon from fb" class="rounded-circle" />
+                <hr />
+                <div>
+                  <li class="p-1 mx-2">
+                    <h2>Create</h2>
+                  </li>
+                  <li class="my-2 p-1">
+                    <a href="#" class="text-decoration-none text-dark d-flex align-items-center">
+                      <div class="rounded-circle bg-gray p-1 d-flex align-items-center justify-content-center me-3">
+                        <i class="fas fa-edit"></i>
+                      </div>
+                      <div>
+                        <p class="m-0">Post</p>
+                      </div>
+                    </a>
+                  </li>
+                
+                <li class="my-2 p-1">
+                  <a href="#" class="text-decoration-none text-dark d-flex align-items-center">
+                    <div class="rounded-circle bg-gray p-1 d-flex align-items-center justify-content-center me-3">
+                      <i class="fas fa-users"></i>
                     </div>
                     <div>
-                      <p class="m-0">Create Groups</p>
-                      <span class="fs-7 text-muted">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Odio, commodi.</span>
+                      <p class="m-0">Group</p>
                     </div>
                   </a>
+                </li>
+              </div>
                 </li>
               </div>
             </ul>

@@ -3,7 +3,6 @@ import React from 'react';
 function GroupCard(){
     return (
         <div class="row">
-           
             <div class="col-12 col-sm-6 col-md-3">
                 <div class="card  p-3 mt-3 shadow d-flex justify-content-center align-items-center">
                     <img src="https://source.unsplash.com/collection/happy-people" class="card-img-top rounded-top" alt="Designer desk" />
