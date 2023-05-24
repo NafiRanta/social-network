@@ -4,7 +4,7 @@ import CreatePost from '../components/CreatePost'
 import ChatContainerSmall from '../components/ChatContainerSmall';
 import PostContainer from '../components/PostCard';
 import Avatar from '../components/Avatar';
-import Sidenav from './Sidenav'
+import Sidenav from './HomeSidenav'
 
 function Home(){
     return (
