@@ -7,11 +7,12 @@ import Home from './views/Home'
 import Avatar from './components/Avatar'
 import MyProfile from './views/MyProfile'
 import GroupCard from './components/GroupCard'
-import Group from './views/Group'
+import MyGroups from './views/MyGroups'
+import AllGroups from './views/AllGroups'
 
 function App() {
   return (
-        <Group />
+        <MyGroups />
   );
 }
 
