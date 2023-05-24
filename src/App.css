@@ -17,7 +17,7 @@ body {
   max-width: 28rem;
 }
 
-.bg-white {
+#bg-white {
   min-height: 56px; 
   z-index: 5;
 }

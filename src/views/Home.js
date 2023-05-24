@@ -2,7 +2,7 @@ import React from 'react';
 import Topnav from './Topnav'
 import CreatePost from '../components/CreatePost'
 import ChatContainerSmall from '../components/ChatContainerSmall';
-import PostContainer from '../components/PostCard';
+import PostCard from '../components/PostCard';
 import Avatar from '../components/Avatar';
 import Sidenav from './HomeSidenav'
 
@@ -18,7 +18,7 @@ function Home(){
                     <div class="col-12 col-lg-6 pb-5">
                         <div class="d-flex flex-column justify-content-center w-100 mx-auto" id="d-flex-postcontainer-createpost">
                             <CreatePost />
-                            <PostContainer />
+                            <PostCard />
                         </div>
                     </div>
                     <div class="col-12 col-lg-3">

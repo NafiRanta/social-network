@@ -1,13 +1,13 @@
 import React from 'react';
 
-function PostCard(){
+function GroupPostCard(){
     return(
         <div class="bg-white p-4 rounded shadow mt-3">
           <div class="d-flex justify-content-between">
             <div class="d-flex">
               <img src="https://source.unsplash.com/collection/happy-people" alt="avatar" class="rounded-circle me-2"/>
               <div>
-                <p class="m-0 fw-bold">John</p>
+                <p class="m-0 fw-bold">Ålands köp och sälj</p>
                 <span class="text-muted fs-7">July 17 at 1:23 pm</span>
               </div>
             </div>
@@ -23,11 +23,9 @@ function PostCard(){
           </div>
           <div class="mt-3">
             <div>
-              <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                Quae fuga incidunt consequatur tenetur doloremque officia
-                corrupti provident tempore vitae labore?
+              <p>Liten båt i behov av lite fix .. Bud från 80 €
               </p>
-              <img src="https://source.unsplash.com/random/12" alt="post image" class="img-fluid rounded"/>
+              <img src="https://scontent-hel3-1.xx.fbcdn.net/v/t39.30808-6/345593849_775596664103457_1986651885453575488_n.jpg?stp=cp6_dst-jpg&_nc_cat=101&ccb=1-7&_nc_sid=a83260&_nc_ohc=bkTG8Oh5zj4AX-TW7r-&_nc_ht=scontent-hel3-1.xx&oh=00_AfD4-tUmgn4aCwyS6i1O5FA9n15r4NNt6TWU1rJ84IM9Ow&oe=6473C090" alt="post image" class="img-fluid rounded"/>
             </div>
             <div class="post__comment mt-3 position-relative">
               <div class="d-flex align-items-center top-0 start-0 position-absolute" id="d-flex-comments">
@@ -81,4 +79,4 @@ function PostCard(){
       )
 }
 
-export default PostCard;
+export default GroupPostCard;

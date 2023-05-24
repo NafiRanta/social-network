@@ -2,7 +2,7 @@ import React from 'react';
 
 function CreateGroupPost(){
     return(
-      <div class="bg-white p-3 mt-3 rounded border shadow">
+      <div class="bg-white p-3 mt-3 rounded border shadow" id="bg-white">
           <div class="d-flex" type="button">
               <div class="p-1">
                 <img src="https://source.unsplash.com/collection/happy-people" alt="avatar" class="rounded-circle me-2"/>

@@ -1,11 +1,10 @@
 import React from 'react';
 import Topnav from './Topnav'
 import CreateGroupPost from '../components/CreateGroupPost'
-import GroupPostCard from '../components/GroupCard';
+import GroupPostCard from '../components/GroupPostCard';
 import GroupSidenav from './GroupSidenav'
 
-
-function MyGroups(){
+function HomeGroup(){
     return (
         <div>
             <Topnav />
@@ -14,17 +13,17 @@ function MyGroups(){
                     <div class="col-12 col-lg-3">
                         <GroupSidenav />
                     </div>
-                    <div class="col-12 col-lg-9 pb-5 p-3">
-                        <div class="d-flex flex-column justify-content-center w-100 " id="d-flex-postcontainer-createpost">
-                            <h5><strong>All groups you've joined</strong></h5>
+                    <div class="col-12 col-lg-6 pb-5">
+                        <div class="d-flex flex-column justify-content-center w-100 mx-auto" id="d-flex-postcontainer-createpost">
+                            <CreateGroupPost />
                             <GroupPostCard />
                         </div>
                     </div>
+                    <div class="col-12 col-lg-3"></div>
                 </div>
             </div>
         </div>
     )
 }
 
-export default MyGroups;
-
+export default HomeGroup;

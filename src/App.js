@@ -9,10 +9,11 @@ import MyProfile from './views/MyProfile'
 import GroupCard from './components/GroupCard'
 import MyGroups from './views/MyGroups'
 import AllGroups from './views/AllGroups'
+import HomeGroup from './views/HomeGroup'
 
 function App() {
   return (
-        <MyGroups />
+        <Home />
   );
 }
 
