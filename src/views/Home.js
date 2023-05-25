@@ -2,7 +2,6 @@ import React from 'react';
 import Topnav from './Topnav'
 import CreatePost from '../components/CreatePost'
 import PostCard from '../components/PostCard';
-import Avatar from '../components/Avatar';
 import Sidenav from './HomeSidenav'
 
 function Home(){
