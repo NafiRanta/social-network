@@ -28,9 +28,12 @@ body {
    height: 50px; 
    z-index: 5;
   }
-#d-flex-postcontainer-createpost, #d-flex-postcontainer-followersbox, #d-flex-postcontainer-allGroups, #d-flex-postcontainer-homeGroup, #d-flex-postcontainer-myprofile{
+#d-flex-postcontainer-createpost, #d-flex-postcontainer-followersbox, #d-flex-postcontainer-homeGroup, #d-flex-postcontainer-myprofile{
   padding-top: 20px;
   max-width: 800px;
+  }
+  #d-flex-postcontainer-allGroups, #d-flex-postcontainer-mygroups{
+    padding-top: 48px;
   }
 #dropdown-menu-searchmenu{
   width: 20em; 
@@ -241,3 +244,4 @@ font-size: 3rem;
   object-fit: cover;
 }
 }
+

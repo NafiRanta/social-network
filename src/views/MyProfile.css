@@ -117,6 +117,7 @@ body{
        .profile-cover__action > .btn > span {
            display: inline-block;
        }
+  
    }
    
    @media (max-width: 600px) {
@@ -149,6 +150,12 @@ body{
     .panel {
         margin-bottom: 6px;
     }
+    .card img{
+        height: 200px;
+          margin-bottom: -20px;
+             object-fit: cover;
+          max-width: 800px;
+      }
    }
    
    .panel {
@@ -819,4 +826,20 @@ body{
    .feeds-panel .text {
        color: #696969;
        line-height: 26px;
+   }
+
+   .row1{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    
+   }
+
+   .cols{
+    padding: 3px;
+   }
+
+   .card img{
+    height: 175px;
+    object-fit: cover;
    }

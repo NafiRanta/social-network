@@ -84,7 +84,7 @@ function MyProfile(){
                             </div>
                             <div class="bg-white rounded border shadow p-3">
                                 <div>
-                                    <p class="m-0">Followers</p>
+                                    <p class="m-0">Following</p>
                                 </div>
                                 <div class="follow-box-content p-1 m-0 d-flex">
                                     <a href="#" class="d-flex align-items-center text-decoration-none text-dark">
