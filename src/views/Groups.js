@@ -1,11 +1,10 @@
 import React from 'react';
 import Topnav from './Topnav'
-import CreateGroupPost from '../components/CreateGroupPost'
 import GroupCard from '../components/GroupCard';
 import GroupSidenav from './GroupSidenav'
 
 
-function MyGroups(){
+function Groups(){
     return (
         <div>
             <Topnav />
@@ -26,4 +25,4 @@ function MyGroups(){
     )
 }
 
-export default MyGroups;
+export default Groups;

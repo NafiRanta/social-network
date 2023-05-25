@@ -4,9 +4,9 @@ import CreatePost from '../components/CreatePost'
 import PostContainer from '../components/PostCard';
 import AvatarSquare from '../components/AvatarSquare';
 //import css
-import './MyProfile.css'
+import './Profile.css'
 
-function MyProfile(){
+function Profile(){
     return (
         <div>
             <Topnav />
@@ -136,4 +136,4 @@ function MyProfile(){
     )
 }
 
-export default MyProfile;
+export default Profile;
