@@ -15,7 +15,7 @@ function AllGroups(){
                         <GroupSidenav />
                     </div>
                     <div class="col-12 col-lg-9 pb-5 p-3">
-                        <div class="d-flex flex-column justify-content-center w-100 " id="d-flex-postcontainer-createpost">
+                        <div class="d-flex flex-column justify-content-center w-100 " id="d-flex-postcontainer-allGroups">
                             <h5><strong>All Groups</strong></h5>
                             <GroupCard />
                         </div>

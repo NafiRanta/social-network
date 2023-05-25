@@ -28,9 +28,9 @@ body {
    height: 50px; 
    z-index: 5;
   }
-#d-flex-postcontainer-createpost{
+#d-flex-postcontainer-createpost, #d-flex-postcontainer-followersbox, #d-flex-postcontainer-allGroups, #d-flex-postcontainer-homeGroup, #d-flex-postcontainer-myprofile{
   padding-top: 20px;
-    max-width: 680px;
+  max-width: 800px;
   }
 #dropdown-menu-searchmenu{
   width: 20em; 
@@ -83,6 +83,19 @@ font-size: 3rem;
   height: 35px; 
   object-fit: cover;
 }
+#avatarSquare{
+  width: 100px; 
+  height: 100px; 
+  object-fit: cover;
+}
+.follow-box-content{
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+.follow-box-content a{
+  flex-direction: column;
+  padding: 4px;
+}
 .rounded-circle{
   width: 38px; 
   height: 38px;
@@ -96,6 +109,10 @@ font-size: 3rem;
 
 .navbar-nav {
   padding-top: 56px;
+}
+.navbar-nav-myprofile{
+  padding-top: 9px;
+  list-style: none;
 }
   .fs-0 {
     font-size: 4rem;
@@ -209,3 +226,18 @@ font-size: 3rem;
     }
   }
   
+  @media (min-width: 992px){
+  .col-lg-3 {
+      padding-top: 20px;
+      max-width: 410px;
+  }
+}
+
+@media (max-width: 600px) {
+
+#avatarSquare{
+  width: 65px; 
+  height: 65px; 
+  object-fit: cover;
+}
+}
