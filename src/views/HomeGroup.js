@@ -1,7 +1,7 @@
 import React from 'react';
 import Topnav from './Topnav'
-import CreateGroupPost from '../components/CreateGroupPost'
-import GroupPostCard from '../components/GroupPostCard';
+import CreateGroupPost from '../components/CreatePost/CreateGroupPost'
+import GroupPostCard from '../components/Card/GroupPostCard'
 import GroupSidenav from './GroupSidenav'
 
 function HomeGroup(){

@@ -150,12 +150,6 @@ body{
     .panel {
         margin-bottom: 6px;
     }
-    .card img{
-        height: 200px;
-          margin-bottom: -20px;
-             object-fit: cover;
-          max-width: 800px;
-      }
    }
    
    .panel {
@@ -835,11 +829,3 @@ body{
     
    }
 
-   .cols{
-    padding: 3px;
-   }
-
-   .card img{
-    height: 175px;
-    object-fit: cover;
-   }

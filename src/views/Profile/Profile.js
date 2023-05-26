@@ -1,9 +1,8 @@
 import React from 'react';
-import Topnav from './Topnav'
-import CreatePost from '../components/CreatePost'
-import PostContainer from '../components/PostCard';
-import AvatarSquare from '../components/AvatarSquare';
-//import css
+import Topnav from '../Topnav'
+import CreatePost from '../../components/CreatePost/CreatePost'
+import PostContainer from '../../components/Card/PostCard';
+import AvatarSquare from '../../components/Avatar/AvatarSquare';
 import './Profile.css'
 
 function Profile(){

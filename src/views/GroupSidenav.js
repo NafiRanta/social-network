@@ -1,7 +1,7 @@
 import React from 'react';
-import Avatar from '../components/Avatar'
+import Avatar from '../components/Avatar/Avatar'
 
-function HomeSidenav(){
+function GroupSidenav(){
     return(
         <div class="d-none d-xxl-block h-100 fixed-top overflow-hidden scrollbar">
         <ul class="navbar-nav mt-4 ms-3 d-flex flex-column pb-5 mb-5" >
@@ -53,4 +53,4 @@ function HomeSidenav(){
     )
 }
 
-export default HomeSidenav;
+export default GroupSidenav;

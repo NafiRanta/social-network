@@ -1,6 +1,7 @@
 import React from 'react';
+import './Card.css';
 
-function GroupCard(){
+function GroupProfileCard(){
     return (
         <div class="row1">
             <div class="cols col-lg-3">
@@ -57,5 +58,5 @@ function GroupCard(){
     )
 }
 
-export default GroupCard;
+export default GroupProfileCard;
 
