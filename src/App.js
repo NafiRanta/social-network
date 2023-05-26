@@ -1,20 +1,17 @@
 import './App.css';
 
 import Login from './views/Login'
-import CreatePost from './components/CreatePost/CreatePost'
-import PostCard from './components/Card/PostCard' 
-import Home from './views/Home'
+import Home from './views/Home/Home'
 import Avatar from './components/Avatar/Avatar'
 import Profile from './views/Profile/Profile'
-import GroupProfileCard from './components/Card/GroupProfileCard'
-import Groups from './views/Groups'
-import HomeGroup from './views/HomeGroup'
+import GroupsList from './views/Groups/GroupsList'
+import HomeGroup from './views/Groups/HomeGroup'
 import Chat from './views/Chat/Chat'
-import Searchbar from './components/Searchbar'
+import SingleGroup from './views/Groups/SingleGroup';
 
 function App() {
   return (
-        <Home />
+        <SingleGroup />
         
   );
 }

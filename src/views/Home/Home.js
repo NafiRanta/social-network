@@ -1,10 +1,10 @@
 import React from 'react';
-import Topnav from './Topnav'
-import CreatePost from '../components/CreatePost/CreatePost'
-import PostCard from '../components/Card/PostCard';
+import Topnav from '../Topnav'
+import CreatePost from '../../components/CreatePost/CreatePost'
+import PostCard from '../../components/Card/PostCard';
 import Sidenav from './HomeSidenav'
-import ChatSmallModal from '../components/Modal/ChatSmallModal';
-import Avatar from '../components/Avatar/Avatar';
+import ChatSmallModal from '../../components/Modal/ChatSmallModal';
+import Avatar from '../../components/Avatar/Avatar';
 
 function Home(){
     return (

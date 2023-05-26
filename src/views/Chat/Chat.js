@@ -2,7 +2,7 @@ import React from 'react';
 import '../Chat/Chat.css';
 import Topnav from '../Topnav';
 import Avatar from '../../components/Avatar/Avatar';
-import Searchbar from '../../components/Searchbar';
+import SearchbarChat from '../../components/Searchbar/SearchbarChat';
 
 function Chat(){
     return(
@@ -15,7 +15,7 @@ function Chat(){
                             <div class="row no-gutters">
                                 <div class="col-xl-4 col-lg-4 col-md-4 col-sm-3 col-3">
                                     <div class="users-container">
-                                        <Searchbar />
+                                        <SearchbarChat />
                                         <ul class="users">
                                             <li class="person" data-chat="person1">
                                                 <div class="user">

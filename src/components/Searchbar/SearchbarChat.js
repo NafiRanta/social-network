@@ -1,6 +1,6 @@
 import React from "react";
 
-function Searchbar(){
+function SearchbarChat(){
     return(
         <div class="search-bar">
         <div class="input-group">
@@ -14,4 +14,4 @@ function Searchbar(){
     </div>
     )
 }
-export default Searchbar;
+export default SearchbarChat;

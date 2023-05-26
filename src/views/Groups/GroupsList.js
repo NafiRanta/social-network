@@ -1,10 +1,10 @@
 import React from 'react';
-import Topnav from './Topnav'
-import GroupProfileCard from '../components/Card/GroupProfileCard';
+import Topnav from '../../views/Topnav'
+import GroupProfileCard from '../../components/Card/GroupProfileCard'
 import GroupSidenav from './GroupSidenav'
 
 
-function Groups(){
+function GroupsList(){
     return (
         <div>
             <Topnav />
@@ -25,4 +25,4 @@ function Groups(){
     )
 }
 
-export default Groups;
+export default GroupsList;

@@ -12,7 +12,7 @@ body{
        display: -ms-flexbox;
        display: -webkit-box;
        display: flex;
-       padding: 120px 30px 10px 153px;
+       padding: 600px 30px 10px 153px;
        border-radius: 5px 5px 0 0;
        -ms-flex-wrap: wrap;
        flex-wrap: wrap;
@@ -24,7 +24,17 @@ body{
        background-size: cover;
        margin-top: 25px;
    }
-   
+   .profile-cover-group__bg {
+    display: flex;
+    padding: 600px 30px 10px 153px;
+    border-radius: 5px 5px 0 0;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    overflow: hidden;
+    background: url(https://scontent-hel3-1.xx.fbcdn.net/v/t1.6435-9/134429491_2798458260468119_1882659964586402094_n.jpg?stp=dst-jpg_s960x960&_nc_cat=106&ccb=1-7&_nc_sid=8631f5&_nc_ohc=uvUSg91s3cAAX-_C4-I&_nc_ht=scontent-hel3-1.xx&oh=00_AfCQUiWKShXCgffqgwWP2xe_X9ro4PePOKNqjA_TIFhvsA&oe=6498A8D2) no-repeat;
+    background-size: cover;
+    margin-top: 25px;
+}
    .profile-cover__action {
     display: -ms-flexbox;
     display: -webkit-box;
@@ -140,6 +150,10 @@ body{
         max-width: 100px;
         
     }
+    .profile-cover-group__bg, .profile-cover__bg{
+        margin-top: 0px;
+        padding: 161px 30px 10px 153px;
+    }
     .profile-cover__img > img + .h3 {
         margin-top: 0px;
         font-size: 25px;
@@ -147,11 +161,12 @@ body{
     .profile-cover__action > .btn {
         margin-bottom: 0px;
     }
-    .panel {
+    .panel, .panel-group {
         margin-bottom: 6px;
+        margin-top: -87px;
     }
-   }
-   
+    }
+    
    .panel {
     color: #696969;
     background-color: #fff;
@@ -160,6 +175,10 @@ body{
     display: flex;
     flex-direction: column;
     align-items: center;
+   }
+
+   .panel-group{
+    color: black;
    }
    
    .panel-heading {

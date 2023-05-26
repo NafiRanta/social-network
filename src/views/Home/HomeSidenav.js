@@ -1,5 +1,5 @@
 import React from 'react';
-import Avatar from '../components/Avatar/Avatar'
+import Avatar from '../../components/Avatar/Avatar'
 
 function HomeSidenav(){
     return(
