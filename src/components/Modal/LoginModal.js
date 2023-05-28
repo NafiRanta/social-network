@@ -1,7 +1,7 @@
 import React from "react";
 import "./Modal.css";
 
-function LoginModal(){
+function LoginModal() {
     return(
         <div className="modal fade" id="createModal" tabIndex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
             <div className="modal-dialog modal-dialog-centered">

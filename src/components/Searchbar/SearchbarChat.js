@@ -1,13 +1,13 @@
 import React from "react";
 
-function SearchbarChat(){
+function SearchbarChat() {
     return(
-        <div class="search-bar">
-        <div class="input-group">
-            <input class="form-control" placeholder="Search" />
-            <div class="input-group-btn">
-                <button type="button" class="btn btn-primary">
-                    <i class="fas fa-search"></i>
+        <div className="search-bar">
+        <div className="input-group">
+            <input className="form-control" placeholder="Search" />
+            <div className="input-group-btn">
+                <button type="button" className="btn btn-primary">
+                    <i className="fas fa-search"></i>
                 </button>
             </div>
         </div>

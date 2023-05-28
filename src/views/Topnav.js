@@ -2,133 +2,129 @@ import React from 'react';
 import Avatar from '../components/Avatar/Avatar';
 import SearchbarGlobal from '../components/Searchbar/SearchbarGlobal';
 
-function Topnav(){
+function Topnav() {
     return(
-      <div class="bg-white d-flex align-items-center fixed-top shadow">
-      <div class="container-fluid">
-        <div class="row align-items-center">
-          <div class="col d-flex align-items-center">
-            <i class="fab fa-facebook text-primary"></i>
+      <div className="bg-white d-flex align-items-center fixed-top shadow">
+      <div className="container-fluid">
+        <div className="row align-items-center">
+          <div className="col d-flex align-items-center">
+            <i className="fab fa-facebook text-primary"></i>
             <SearchbarGlobal />
           </div>
-          <div class="col d-flex align-items-center justify-content-end">
-            <div class="rounded-circle p-1 bg-gray d-flex align-items-center justify-content-center mx-2" type="button" id="mainMenu" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
-              <i class="fas fa-ellipsis-h"></i>
+          <div className="col d-flex align-items-center justify-content-end">
+            <div className="rounded-circle p-1 bg-gray d-flex align-items-center justify-content-center mx-2" type="button" id="mainMenu" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+              <i className="fas fa-ellipsis-h"></i>
             </div>
-            <ul class="dropdown-menu border-0 shadow p-3 overflow-auto" aria-labelledby="mainMenu" id="dropdown-menu-mainmenu">
+            <ul className="dropdown-menu border-0 shadow p-3 overflow-auto" aria-labelledby="mainMenu" id="dropdown-menu-mainmenu">
               <div>
-                <li class="p-1 mx-2">
+                <li className="p-1 mx-2">
                   <h2>Menu</h2>
                 </li>
-                <li class="my-2 p-1">
-                  <a href="#" class="text-decoration-none text-dark d-flex align-items-center justify-content-between">
-                    <div class="p-2">
-                      <img src="https://static.xx.fbcdn.net/rsrc.php/v3/yj/r/tSXYIzZlfrS.png" alt="icon from fb" class="rounded-circle" />
+                <li className="my-2 p-1">
+                  <a href="#" className="text-decoration-none text-dark d-flex align-items-center justify-content-between">
+                    <div className="p-2">
+                      <img src="https://static.xx.fbcdn.net/rsrc.php/v3/yj/r/tSXYIzZlfrS.png" alt="icon from fb" className="rounded-circle" />
                     </div>
                     <div>
-                      <p class="m-0">Followers</p>
-                      <span class="fs-7 text-muted">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Odio, commodi.</span>
+                      <p className="m-0">Followers</p>
+                      <span className="fs-7 text-muted">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Odio, commodi.</span>
                     </div>
                   </a>
                 </li>
-                <li class="my-2 p-1">
-                  <a href="#" class="text-decoration-none text-dark d-flex align-items-center justify-content-between">
-                    <div class="p-2">
-                      <img src="https://static.xx.fbcdn.net/rsrc.php/v3/yj/r/Im_0d7HFH4n.png" alt="icon from fb" class="rounded-circle" />
+                <li className="my-2 p-1">
+                  <a href="#" className="text-decoration-none text-dark d-flex align-items-center justify-content-between">
+                    <div className="p-2">
+                      <img src="https://static.xx.fbcdn.net/rsrc.php/v3/yj/r/Im_0d7HFH4n.png" alt="icon from fb" className="rounded-circle" />
                     </div>
                     <div>
-                      <p class="m-0">Groups</p>
-                      <span class="fs-7 text-muted">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Odio, commodi.</span>
+                      <p className="m-0">Groups</p>
+                      <span className="fs-7 text-muted">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Odio, commodi.</span>
                     </div>
                   </a>
                 </li>
-                <li class="my-2 p-1">
+                
                 <hr />
                 <div>
-                  <li class="p-1 mx-2">
+                  <li className="p-1 mx-2">
                     <h2>Create</h2>
                   </li>
-                  <li class="my-2 p-1">
-                    <a href="#" class="text-decoration-none text-dark d-flex align-items-center">
-                      <div class="rounded-circle bg-gray p-1 d-flex align-items-center justify-content-center me-3">
-                        <i class="fas fa-edit"></i>
+                  <li className="my-2 p-1">
+                    <a href="#" className="text-decoration-none text-dark d-flex align-items-center">
+                      <div className="rounded-circle bg-gray p-1 d-flex align-items-center justify-content-center me-3">
+                        <i className="fas fa-edit"></i>
                       </div>
                       <div>
-                        <p class="m-0">Post</p>
+                        <p className="m-0">Post</p>
                       </div>
                     </a>
                   </li>
-                
-                <li class="my-2 p-1">
-                  <a href="#" class="text-decoration-none text-dark d-flex align-items-center">
-                    <div class="rounded-circle bg-gray p-1 d-flex align-items-center justify-content-center me-3">
-                      <i class="fas fa-users"></i>
-                    </div>
-                    <div>
-                      <p class="m-0">Group</p>
-                    </div>
-                  </a>
-                </li>
-              </div>
-                </li>
+                  <li className="my-2 p-1">
+                    <a href="#" className="text-decoration-none text-dark d-flex align-items-center">
+                      <div className="rounded-circle bg-gray p-1 d-flex align-items-center justify-content-center me-3">
+                        <i className="fas fa-users"></i>
+                      </div>
+                      <div>
+                        <p className="m-0">Group</p>
+                      </div>
+                    </a>
+                  </li>
+                </div>
               </div>
             </ul>
-            <div class="rounded-circle p-1 bg-gray d-flex align-items-center justify-content-center mx-2"   type="button" id="chatMenu" >
-              <i class="fas fa-comment"></i>
+            <div className="rounded-circle p-1 bg-gray d-flex align-items-center justify-content-center mx-2"   type="button" id="chatMenu" >
+              <i className="fas fa-comment"></i>
             </div>
-            <div class="rounded-circle p-1 bg-gray d-flex align-items-center justify-content-center mx-2"  type="button" id="notMenu" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
-              <i class="fas fa-bell"></i>
+            <div className="rounded-circle p-1 bg-gray d-flex align-items-center justify-content-center mx-2"  type="button" id="notMenu" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+              <i className="fas fa-bell"></i>
             </div>
-            <ul class="dropdown-menu border-0 shadow p-3" aria-labelledby="notMenu" id="dropdown-menu-notmenu">
-              <li class="p-1">
-                <div class="d-flex justify-content-between">
+            <ul className="dropdown-menu border-0 shadow p-3" aria-labelledby="notMenu" id="dropdown-menu-notmenu">
+              <li className="p-1">
+                <div className="d-flex justify-content-between">
                   <h2>Notifications</h2>
                 </div>
               </li>
-              <li class="my-2 p-1">
-                <a href="#" class="text-decoration-none text-dark d-flex align-items-center">
-                  <div class="d-flex align-items-center justify-content-evenly">
-                    <div class="p-2">
+              <li className="my-2 p-1">
+                <a href="#" className="text-decoration-none text-dark d-flex align-items-center">
+                  <div className="d-flex align-items-center justify-content-evenly">
+                    <div className="p-2">
                       <Avatar />
                     </div>
                   <div>
-                      <p class="fs-7 m-0">Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum unde amet at nulla quae porro.</p>
-                      <span class="fs-7 text-primary">about an hour ago</span>
+                      <p className="fs-7 m-0">Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum unde amet at nulla quae porro.</p>
+                      <span className="fs-7 text-primary">about an hour ago</span>
                     </div>
                   </div>
-                  <i class="fas fa-circle fs-7 text-primary"></i>
+                  <i className="fas fa-circle fs-7 text-primary"></i>
                 </a>
               </li>
             </ul>
-            <div class="rounded-circle p-1 bg-gray d-flex align-items-center justify-content-center mx-2" type="button" id="secondMenu" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+            <div className="rounded-circle p-1 bg-gray d-flex align-items-center justify-content-center mx-2" type="button" id="secondMenu" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
                 <Avatar />
             </div>
-            <ul class="dropdown-menu border-0 shadow p-3" aria-labelledby="notMenu" id="dropdown-menu-notmenu">
-              <li class="my-2 p-1">
-                  <li class="p-1 mx-2">
-                    <div class="d-flex align-items-center">
-                        <Avatar />
-                        <p class="m-0">Zuratun Nafisah Rantasalmi</p>
+            <ul className="dropdown-menu border-0 shadow p-3" aria-labelledby="notMenu" id="dropdown-menu-notmenu">
+                <li className="p-1 mx-2">
+                  <div className="d-flex align-items-center">
+                      <Avatar />
+                      <p className="m-0">Zuratun Nafisah Rantasalmi</p>
+                  </div>
+                </li>
+                <li className="my-2 p-1">
+                  <a href="#" className="text-decoration-none text-dark d-flex align-items-center">
+                    <div className="rounded-circle p-1 bg-gray d-flex align-items-center justify-content-center mx-2">
+                        <i className="fas fa-cog bg-gray p-2 rounded-circle"></i>
                     </div>
-                  </li>
-                  <li class="my-2 p-1">
-                    <a href="#" class="text-decoration-none text-dark d-flex align-items-center">
-                      <div class="rounded-circle p-1 bg-gray d-flex align-items-center justify-content-center mx-2">
-                          <i class="fas fa-cog bg-gray p-2 rounded-circle"></i>
-                      </div>
-                      <p class="m-0">Settings</p>
-                    </a>
-                  </li>
-                  <li class="my-2 p-1">
-                    <a href="#" class="text-decoration-none text-dark d-flex align-items-center">
-                      <div class="rounded-circle p-1 bg-gray d-flex align-items-center justify-content-center mx-2">
-                          <i class="fas fa-power-off bg-gray p-2 rounded-circle"></i>
-                      </div>
-                      <p class="m-0">Log Out</p>
-                    </a>
-                  </li>
-              </li>
-            </ul>
+                    <p className="m-0">Settings</p>
+                  </a>
+                </li>
+                <li className="my-2 p-1">
+                  <a href="#" className="text-decoration-none text-dark d-flex align-items-center">
+                    <div className="rounded-circle p-1 bg-gray d-flex align-items-center justify-content-center mx-2">
+                        <i className="fas fa-power-off bg-gray p-2 rounded-circle"></i>
+                    </div>
+                    <p className="m-0">Log Out</p>
+                  </a>
+                </li>
+             </ul>
           </div>
         </div>
       </div>
