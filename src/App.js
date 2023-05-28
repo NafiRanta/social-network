@@ -19,7 +19,7 @@ function App() {
       ) : (
         <Route path="/" element={<Navigate replace to="/login" />} />
       )}
-    <Route path="/login" element={<Home />} />
+    <Route path="/login" element={<Login />} />
   </Routes>
     // <Home />
     // <Profile />
