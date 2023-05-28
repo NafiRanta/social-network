@@ -1,5 +1,5 @@
 import "./App.css";
-import { Router, Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import Login from "./views/Login";
 import Home from "./views/Home/Home";
 import Profile from "./views/Profile/Profile";
@@ -27,17 +27,6 @@ function App() {
     // <HomeGroup />
     //<Chat />
     // <SingleGroup />
-
-//     <Route
-//   path="project/new"
-//   action={async ({ request }) => {
-//     const data = await request.formData();
-//     const newProject = await createProject(data);
-//     // it's common to redirect after actions complete,
-//     // sending the user to the new record
-//     return redirect(`/projects/${newProject.id}`);
-//   }}
-// />
   );
 }
 
