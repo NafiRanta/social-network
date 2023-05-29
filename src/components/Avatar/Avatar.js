@@ -1,9 +1,9 @@
 import React from 'react';
 import './Avatar.css';
 
-function Avatar(){
+function Avatar() {
     return(
-        <img src="https://source.unsplash.com/random/1" alt="avatar" class="rounded-circle me-2" id="avatar"/>
+        <img src="https://source.unsplash.com/random/1" alt="avatar" className="rounded-circle me-2" id="avatar"/>
     )
 }
 

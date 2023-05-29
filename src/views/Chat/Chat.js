@@ -4,120 +4,120 @@ import Topnav from '../Topnav';
 import Avatar from '../../components/Avatar/Avatar';
 import SearchbarChat from '../../components/Searchbar/SearchbarChat';
 
-function Chat(){
+function Chat() {
     return(
         <div>
             <Topnav />
-            <div class="container-fluid">
-                <div class="row justify-content-evenly">
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 w-100" >
-                        <div class="card-chat m-0">
-                            <div class="row no-gutters">
-                                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-3 col-3">
-                                    <div class="users-container">
+            <div className="container-fluid">
+                <div className="row justify-content-evenly">
+                    <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 w-100" >
+                        <div className="card-chat m-0">
+                            <div className="row no-gutters">
+                                <div className="col-xl-4 col-lg-4 col-md-4 col-sm-3 col-3">
+                                    <div className="users-container">
                                         <SearchbarChat />
-                                        <ul class="users">
-                                            <li class="person" data-chat="person1">
-                                                <div class="user">
+                                        <ul className="users">
+                                            <li className="person" data-chat="person1">
+                                                <div className="user">
                                                     <Avatar />
-                                                    <span class="status busy"></span>
+                                                    <span className="status busy"></span>
                                                 </div>
-                                                <p class="name-time">
-                                                    <span class="name">Jacob Pesämaa</span>
+                                                <p className="name-time">
+                                                    <span className="name">Jacob Pesämaa</span>
                                                 </p>
                                             </li>
-                                            <li class="person" data-chat="person1">
-                                                <div class="user">
+                                            <li className="person" data-chat="person1">
+                                                <div className="user">
                                                     <Avatar />
-                                                    <span class="status offline"></span>
+                                                    <span className="status offline"></span>
                                                 </div>
-                                                <p class="name-time">
-                                                    <span class="name">Ashley Hwa</span>
+                                                <p className="name-time">
+                                                    <span className="name">Ashley Hwa</span>
                                                 </p>
                                             </li>
-                                            <li class="person active-user" data-chat="person2">
-                                                <div class="user">
+                                            <li className="person active-user" data-chat="person2">
+                                                <div className="user">
                                                     <Avatar />
-                                                    <span class="status away"></span>
+                                                    <span className="status away"></span>
                                                 </div>
-                                                <p class="name-time">
-                                                    <span class="name">Gin Thy</span>
+                                                <p className="name-time">
+                                                    <span className="name">Gin Thy</span>
                                                 </p>
                                             </li>
                                         </ul>
                                     </div>
                                 </div>
-                                <div class="col-xl-8 col-lg-8 col-md-8 col-sm-9 col-9">
-                                    <div class="selected-user">
-                                        <span>To: <span class="name">Emily Russell</span></span>
+                                <div className="col-xl-8 col-lg-8 col-md-8 col-sm-9 col-9">
+                                    <div className="selected-user">
+                                        <span>To: <span className="name">Emily Russell</span></span>
                                     </div>
-                                    <div class="chat-container">
-                                        <ul class="chatview-box chatContainerScroll">
-                                            <li class="chat-left">
-                                                <div class="chat-avatar">
+                                    <div className="chat-container">
+                                        <ul className="chatview-box chatContainerScroll">
+                                            <li className="chat-left">
+                                                <div className="chat-avatar">
                                                     <Avatar />
-                                                    <div class="chat-name">Russell</div>
+                                                    <div className="chat-name">Russell</div>
                                                 </div>
-                                                <div class="chat-text">Hello, I'm Russell.
+                                                <div className="chat-text">Hello, I'm Russell.
                                                     <br />How can I help you today?</div>
-                                                <div class="chat-hour">08:55 <span class="fa fa-check-circle"></span></div>
+                                                <div className="chat-hour">08:55 <span className="fa fa-check-circle"></span></div>
                                             </li>
-                                            <li class="chat-right">
-                                                <div class="chat-hour">08:56 <span class="fa fa-check-circle"></span></div>
-                                                <div class="chat-text">Hi, Russell
+                                            <li className="chat-right">
+                                                <div className="chat-hour">08:56 <span className="fa fa-check-circle"></span></div>
+                                                <div className="chat-text">Hi, Russell
                                                     <br /> I need more information about Developer Plan.</div>
-                                                <div class="chat-avatar">
+                                                <div className="chat-avatar">
                                                     <Avatar />
-                                                    <div class="chat-name">Sam</div>
+                                                    <div className="chat-name">Sam</div>
                                                 </div>
                                             </li>
-                                            <li class="chat-left">
-                                                <div class="chat-avatar">
+                                            <li className="chat-left">
+                                                <div className="chat-avatar">
                                                     <Avatar />
-                                                    <div class="chat-name">Russell</div>
+                                                    <div className="chat-name">Russell</div>
                                                 </div>
-                                                <div class="chat-text">Are we meeting today?
+                                                <div className="chat-text">Are we meeting today?
                                                     <br />Project has been already finished and I have results to show you.</div>
-                                                <div class="chat-hour">08:57 <span class="fa fa-check-circle"></span></div>
+                                                <div className="chat-hour">08:57 <span className="fa fa-check-circle"></span></div>
                                             </li>
-                                            <li class="chat-right">
-                                                <div class="chat-hour">08:59 <span class="fa fa-check-circle"></span></div>
-                                                <div class="chat-text">Well I am not sure.
+                                            <li className="chat-right">
+                                                <div className="chat-hour">08:59 <span className="fa fa-check-circle"></span></div>
+                                                <div className="chat-text">Well I am not sure.
                                                     <br />I have results to show you.</div>
-                                                <div class="chat-avatar">
+                                                <div className="chat-avatar">
                                                     <Avatar />
-                                                    <div class="chat-name">Joyse</div>
+                                                    <div className="chat-name">Joyse</div>
                                                 </div>
                                             </li>
-                                            <li class="chat-left">
-                                                <div class="chat-avatar">
+                                            <li className="chat-left">
+                                                <div className="chat-avatar">
                                                     <Avatar />
-                                                    <div class="chat-name">Russell</div>
+                                                    <div className="chat-name">Russell</div>
                                                 </div>
-                                                <div class="chat-text">The rest of the team is not here yet.
+                                                <div className="chat-text">The rest of the team is not here yet.
                                                     <br />Maybe in an hour or so?</div>
-                                                <div class="chat-hour">08:57 <span class="fa fa-check-circle"></span></div>
+                                                <div className="chat-hour">08:57 <span className="fa fa-check-circle"></span></div>
                                             </li>
-                                            <li class="chat-right">
-                                                <div class="chat-hour">08:59 <span class="fa fa-check-circle"></span></div>
-                                                <div class="chat-text">Have you faced any problems at the last phase of the project?</div>
-                                                <div class="chat-avatar">
+                                            <li className="chat-right">
+                                                <div className="chat-hour">08:59 <span className="fa fa-check-circle"></span></div>
+                                                <div className="chat-text">Have you faced any problems at the last phase of the project?</div>
+                                                <div className="chat-avatar">
                                                     <Avatar />
-                                                    <div class="chat-name">Jin</div>
+                                                    <div className="chat-name">Jin</div>
                                                 </div>
                                             </li>
-                                            <li class="chat-left">
-                                                <div class="chat-avatar">
+                                            <li className="chat-left">
+                                                <div className="chat-avatar">
                                                     <Avatar />
-                                                    <div class="chat-name">Russell</div>
+                                                    <div className="chat-name">Russell</div>
                                                 </div>
-                                                <div class="chat-text">Actually everything was fine.
+                                                <div className="chat-text">Actually everything was fine.
                                                     <br />I'm very excited to show this to our team.</div>
-                                                <div class="chat-hour">07:00 <span class="fa fa-check-circle"></span></div>
+                                                <div className="chat-hour">07:00 <span className="fa fa-check-circle"></span></div>
                                             </li>
                                         </ul>
-                                        <div class="form-group mt-3 mb-0">
-                                            <textarea class="form-control" rows="3" placeholder="Type your message here..."></textarea>
+                                        <div className="form-group mt-3 mb-0">
+                                            <textarea className="form-control" rows="3" placeholder="Type your message here..."></textarea>
                                         </div>
                                     </div>
                                 </div>
