@@ -1,4 +1,5 @@
 import "./App.css";
+import React, { useState, useEffect } from "react";
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Login from "./views/Login";
 import Home from "./views/Home/Home";
@@ -9,17 +10,20 @@ import Chat from "./views/Chat/Chat";
 import SingleGroup from "./views/Groups/SingleGroup";
 
 function App() {
-  // (!!): to convert the value to a boolean
-  const isAuthenticated = !!localStorage.getItem('session');
-  console.log(isAuthenticated);
+  const isAuth = !!localStorage.getItem("userInfo");
+  console.log(isAuth)
   return (
     <Routes>
-    {isAuthenticated ? (
+    {isAuth ? (
         <Route path="/" element={<Home />} />
       ) : (
         <Route path="/" element={<Navigate replace to="/login" />} />
       )}
-    <Route path="/login" element={<Login />} />
+    {!isAuth ? (
+        <Route path="/login" element={<Login />} />
+      ) : (
+        <Route path="/login" element={<Navigate replace to="/" />} />
+      )}
   </Routes>
     // <Home />
     // <Profile />
