@@ -53,7 +53,6 @@ func LogIn(w http.ResponseWriter, r *http.Request) {
 			}
 			// Combine the UUID with the session name using a delimiter
 			sessionName := "session-name-" + id.String()
-
 			// Create a new session for the user with the combined session name
 			session, _ := store.Get(r, sessionName)
 
