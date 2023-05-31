@@ -17,7 +17,7 @@ function App() {
   const isAuth = !!localStorage.getItem("userInfo");
   console.log(isAuth)
   const userInfo = JSON.parse(localStorage.getItem("userInfo"))
-  const username = userInfo ? userInfo.UserName : '';
+  const username = userInfo ? userInfo.FirstName + " " + userInfo.LastName  : '';
   
   return (
   <Routes>
