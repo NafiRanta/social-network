@@ -1,7 +1,7 @@
 import React from 'react';
 import Avatar from '../../components/Avatar/Avatar'
 
-function HomeSidenav(){
+function HomeSidenav(props){
     return(
         <div className="d-none d-xxl-block h-100 fixed-top overflow-hidden scrollbar">
         <ul className="navbar-nav mt-4 ms-3 d-flex flex-column pb-5 mb-5" >
@@ -9,7 +9,7 @@ function HomeSidenav(){
                 <div className="p-2">
                     <div className="d-flex align-items-center">
                         <Avatar/>
-                        <p className="m-0">Zuratun Nafisah Rantasalmi</p>
+                        <p className="m-0">{props.username}</p>
                     </div>
                 </div>
             </li>

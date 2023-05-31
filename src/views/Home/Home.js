@@ -3,10 +3,9 @@ import Topnav from '../Topnav'
 import CreatePost from '../../components/CreatePost/CreatePost'
 import PostCard from '../../components/Card/PostCard';
 import Sidenav from './HomeSidenav'
-import ChatSmallModal from '../../components/Modal/ChatSmallModal';
 import Avatar from '../../components/Avatar/Avatar';
 
-function Home() {
+function Home(props) {
     return (
         <div>
             <Topnav />
@@ -36,7 +35,7 @@ function Home() {
                                                 <span className="visually-hidden"></span>
                                             </span>
                                         </div>
-                                        <p className="m-0">Nafi</p>
+                                        <p className="m-0">{props.username}</p>
                                     </div>
                                 </li>
                             </div>

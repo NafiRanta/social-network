@@ -2,7 +2,7 @@ import React from 'react';
 import Avatar from '../components/Avatar/Avatar';
 import SearchbarGlobal from '../components/Searchbar/SearchbarGlobal';
 
-function Topnav() {
+function Topnav(props) {
     return(
       <div className="bg-white d-flex align-items-center fixed-top shadow">
       <div className="container-fluid">
@@ -105,7 +105,7 @@ function Topnav() {
                 <li className="p-1 mx-2">
                   <div className="d-flex align-items-center">
                       <Avatar />
-                      <p className="m-0">Zuratun Nafisah Rantasalmi</p>
+                      <p className="m-0">{props.username}</p>
                   </div>
                 </li>
                 <li className="my-2 p-1">

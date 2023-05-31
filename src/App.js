@@ -3,6 +3,10 @@ import React, { useState, useEffect } from "react";
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Login from "./views/Login";
 import Home from "./views/Home/Home";
+import HomeSidenav from "./views/Home/HomeSidenav";
+import CreatePost from "./components/CreatePost/CreatePost";
+import CreatePostModal from "./components/Modal/CreatePostModal";
+import Topnav from "./views/Topnav";
 import Profile from "./views/Profile/Profile";
 import GroupsList from "./views/Groups/GroupsList";
 import HomeGroup from "./views/Groups/HomeGroup";
@@ -12,10 +16,23 @@ import SingleGroup from "./views/Groups/SingleGroup";
 function App() {
   const isAuth = !!localStorage.getItem("userInfo");
   console.log(isAuth)
+  const userInfo = JSON.parse(localStorage.getItem("userInfo"))
+  const username = userInfo ? userInfo.UserName : '';
+  
   return (
-/*     <Routes>
+  <Routes>
     {isAuth ? (
-        <Route path="/" element={<Home />} />
+         <Route   
+         path="/"
+         element={
+           <div>
+              <HomeSidenav username={username} />
+              <Home username={username} />
+              <Topnav username={username} />
+              <CreatePost username={username} />
+           </div>
+           
+         }/>
       ) : (
         <Route path="/" element={<Navigate replace to="/login" />} />
       )}
@@ -24,8 +41,8 @@ function App() {
       ) : (
         <Route path="/login" element={<Navigate replace to="/" />} />
       )}
-  </Routes> */
-    <Home />
+  </Routes> 
+   // <Home />
     // <Profile />
     // <GroupsList />
     //<SingleGroup />
