@@ -6,6 +6,17 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 In the project directory, you can run:
 
+### `node -v` `npm -v`
+Ensure that Node.js and npm (Node Package Manager) are installed on your system. You can verify this by running the following commands in your terminal:
+
+If Node.js or npm is not installed, visit the official Node.js website (https://nodejs.org) and follow the installation instructions for your operating system.
+
+Once Node.js and npm are installed, navigate to your React project's directory using the terminal.
+
+### `npm install`
+
+Install the required dependencies by running this command.
+
 ### `npm start`
 
 Runs the app in the development mode.\
