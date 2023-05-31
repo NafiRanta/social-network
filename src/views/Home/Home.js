@@ -21,7 +21,6 @@ function Home() {
                             <PostCard />
                         </div>
                     </div>
-                    <ChatSmallModal />
                     <div className="col-12 col-lg-3">
                         <div className="d-none d-xxl-block h-100 fixed-top end-0 overflow-hidden scrollbar" id="d-none-end0">
                             <div className="p-3 mt-4">
@@ -29,11 +28,11 @@ function Home() {
                                 <div className="my-3 d-flex justify-content-between align-items-center">
                                     <p className="text-muted fs-5 m-0">Contacts</p>
                                 </div>
-                                <li className="dropdown-item rounded my-2 px-0" type="button" data-bs-toggle="modal" data-bs-target="#singleChat1">
+                                <li className="dropdown-item rounded my-2 px-0" type="button">
                                     <div className="d-flex align-items-center mx-2 chat-avatar">
                                         <div className="position-relative">
                                             <Avatar />  
-                                            <span className="position-absolute bottom-0 translate-middle border border-light rounded-circle bg-success p-1" >
+                                            <span className="position-absolute bottom-0 translate-middle border border-light rounded-circle-sm bg-success p-1" >
                                                 <span className="visually-hidden"></span>
                                             </span>
                                         </div>

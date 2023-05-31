@@ -92,6 +92,12 @@ font-size: 3rem;
   height: 38px;
 }
 
+.rounded-circle-sm{
+  width: 10px;
+  height: 10px;
+  border-radius: 6px;
+}
+
 .navbar-nav {
   padding-top: 56px;
 }
@@ -188,3 +194,4 @@ font-size: 3rem;
   height: 35px; 
   object-fit: cover;
 }
+

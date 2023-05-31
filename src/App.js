@@ -13,7 +13,7 @@ function App() {
   const isAuth = !!localStorage.getItem("userInfo");
   console.log(isAuth)
   return (
-    <Routes>
+/*     <Routes>
     {isAuth ? (
         <Route path="/" element={<Home />} />
       ) : (
@@ -24,11 +24,11 @@ function App() {
       ) : (
         <Route path="/login" element={<Navigate replace to="/" />} />
       )}
-  </Routes>
-    // <Home />
+  </Routes> */
+    <Home />
     // <Profile />
     // <GroupsList />
-    // <HomeGroup />
+    //<SingleGroup />
     //<Chat />
     // <SingleGroup />
   );
