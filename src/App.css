@@ -195,3 +195,10 @@ font-size: 3rem;
   object-fit: cover;
 }
 
+
+@media screen and (max-width: 767px){
+  #d-none-end0{
+  display: flex;
+  flex-wrap: wrap;
+  }
+}

@@ -12,15 +12,17 @@ import GroupsList from "./views/Groups/GroupsList";
 import HomeGroup from "./views/Groups/HomeGroup";
 import Chat from "./views/Chat/Chat";
 import SingleGroup from "./views/Groups/SingleGroup";
+import Error from "./views/Error/Error";
+import SingleGroupNonMember from "./views/Groups/SingleGroupNonMember";
 
 function App() {
   const isAuth = !!localStorage.getItem("userInfo");
   console.log(isAuth)
-  const userInfo = JSON.parse(localStorage.getItem("userInfo"))
+ /*  const userInfo = JSON.parse(localStorage.getItem("userInfo"))
   const username = userInfo ? userInfo.FirstName + " " + userInfo.LastName  : '';
-  
+   */
   return (
-  <Routes>
+/*   <Routes>
     {isAuth ? (
          <Route   
          path="/"
@@ -41,13 +43,15 @@ function App() {
       ) : (
         <Route path="/login" element={<Navigate replace to="/" />} />
       )}
-  </Routes> 
-   // <Home />
-    // <Profile />
-    // <GroupsList />
+  </Routes>  */
+   //<Home />
+    //<Profile />
+     //<GroupsList />
     //<SingleGroup />
+    // <SingleGroupNonMember />
     //<Chat />
-    // <SingleGroup />
+   <Error />
+  //<HomeGroup />
   );
 }
 

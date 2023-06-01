@@ -35,6 +35,45 @@ function Profile() {
                     <div className="col-12 col-lg-3">
                         <div className="d-flex flex-column justify-content-center w-100 mx-auto" id="d-flex-postcontainer-followersbox">
                             <div className="bg-white rounded border shadow p-3">
+                                <ul  >
+                                    <li className="dropdown-item p-1 rounded">
+                                        <div className="p-2">
+                                            <p className="m-0"><strong>Intro</strong></p>
+                                        </div>
+                                        <div>
+                                            <p className="m-0">Bio</p>
+                                        </div>
+                                    </li>
+                                    <li className="dropdown-item p-1">
+                                        <a href="#" className="btn btn-primary btn-sm d-flex justify-content-center align-items-center"> Add bio</a>
+                                    </li>
+                                    <li className="my-2 p-1">
+                                        <div className="rounded-circle bg-gray p-1 d-flex align-items-center justify-content-center me-3">
+                                            <i className="fas fa-edit"></i>
+                                        </div>
+                                        <div>
+                                            <p className="m-0">Email</p>
+                                        </div>
+                                    </li>
+                                    <li className="dropdown-item p-1 rounded">
+                                        <div>
+                                            <div className="rounded-circle bg-gray p-1 d-flex align-items-center justify-content-center me-3">
+                                                <i className="fas fa-user"></i>
+                                            </div>
+                                            <p className="m-0">Nickname</p>
+                                        </div>
+                                    </li>
+                                    <li className="dropdown-item p-1 rounded">
+                                        <div>
+                                            <div className="rounded-circle bg-gray p-1 d-flex align-items-center justify-content-center me-3">
+                                                <i className="fas fa-birthday-cake"></i>
+                                            </div>
+                                            <p className="m-0">Birthday</p>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div className="bg-white rounded border shadow p-3">
                                 <div>
                                     <p className="m-0">Followers</p>
                                 </div>

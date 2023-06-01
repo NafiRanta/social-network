@@ -13,37 +13,10 @@ function Topnav(props) {
           </div>
           <div className="col d-flex align-items-center justify-content-end">
             <div className="rounded-circle p-1 bg-gray d-flex align-items-center justify-content-center mx-2" type="button" id="mainMenu" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
-              <i className="fas fa-ellipsis-h"></i>
+              <i className="fas fa-plus"></i>
             </div>
             <ul className="dropdown-menu border-0 shadow p-3 overflow-auto" aria-labelledby="mainMenu" id="dropdown-menu-mainmenu">
               <div>
-                <li className="p-1 mx-2">
-                  <h2>Menu</h2>
-                </li>
-                <li className="my-2 p-1">
-                  <a href="#" className="text-decoration-none text-dark d-flex align-items-center justify-content-between">
-                    <div className="p-2">
-                      <img src="https://static.xx.fbcdn.net/rsrc.php/v3/yj/r/tSXYIzZlfrS.png" alt="icon from fb" className="rounded-circle" />
-                    </div>
-                    <div>
-                      <p className="m-0">Followers</p>
-                      <span className="fs-7 text-muted">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Odio, commodi.</span>
-                    </div>
-                  </a>
-                </li>
-                <li className="my-2 p-1">
-                  <a href="#" className="text-decoration-none text-dark d-flex align-items-center justify-content-between">
-                    <div className="p-2">
-                      <img src="https://static.xx.fbcdn.net/rsrc.php/v3/yj/r/Im_0d7HFH4n.png" alt="icon from fb" className="rounded-circle" />
-                    </div>
-                    <div>
-                      <p className="m-0">Groups</p>
-                      <span className="fs-7 text-muted">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Odio, commodi.</span>
-                    </div>
-                  </a>
-                </li>
-                
-                <hr />
                 <div>
                   <li className="p-1 mx-2">
                     <h2>Create</h2>
@@ -71,6 +44,9 @@ function Topnav(props) {
                 </div>
               </div>
             </ul>
+            <div className="rounded-circle p-1 bg-gray d-flex align-items-center justify-content-center mx-2"   type="button" id="chatMenu" >
+              <i className="fas fa-users"></i>
+            </div>
             <div className="rounded-circle p-1 bg-gray d-flex align-items-center justify-content-center mx-2"   type="button" id="chatMenu" >
               <i className="fas fa-comment"></i>
             </div>
@@ -102,24 +78,18 @@ function Topnav(props) {
                 <Avatar />
             </div>
             <ul className="dropdown-menu border-0 shadow p-3" aria-labelledby="notMenu" id="dropdown-menu-notmenu">
-                <li className="p-1 mx-2">
-                  <div className="d-flex align-items-center">
-                      <Avatar />
-                      <p className="m-0">{props.username}</p>
-                  </div>
-                </li>
                 <li className="my-2 p-1">
                   <a href="#" className="text-decoration-none text-dark d-flex align-items-center">
                     <div className="rounded-circle p-1 bg-gray d-flex align-items-center justify-content-center mx-2">
-                        <i className="fas fa-cog bg-gray p-2 rounded-circle"></i>
+                    <Avatar />
                     </div>
-                    <p className="m-0">Settings</p>
+                    <p className="m-0">Nafisah Rantasalmi</p>
                   </a>
                 </li>
                 <li className="my-2 p-1">
                   <a href="#" className="text-decoration-none text-dark d-flex align-items-center">
                     <div className="rounded-circle p-1 bg-gray d-flex align-items-center justify-content-center mx-2">
-                        <i className="fas fa-power-off bg-gray p-2 rounded-circle"></i>
+                        <i className="fas fa-power-off"></i>
                     </div>
                     <p className="m-0">Log Out</p>
                   </a>

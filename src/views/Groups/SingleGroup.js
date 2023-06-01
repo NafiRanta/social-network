@@ -22,6 +22,18 @@ function SingleGroup() {
                                         <i className="fa fa-plus"> </i>
                                         <span> Leave</span>
                                     </button>
+                                    <button className="btn btn-primary btn-sm d-flex justify-content-center align-items-center ">
+                                        <i className="fa fa-plus"> </i>
+                                        <span> Invite</span>
+                                    </button>
+                                    <button className="btn btn-primary btn-sm d-flex justify-content-center align-items-center ">
+                                        <i className="fa fa-plus"> </i>
+                                        <span> Create chat</span>
+                                    </button>
+                                    <button className="btn btn-primary btn-sm d-flex justify-content-center align-items-center ">
+                                        <i className="fa fa-plus"> </i>
+                                        <span> Create event</span>
+                                    </button>
                                 </div>
                             </div>
                         </div>

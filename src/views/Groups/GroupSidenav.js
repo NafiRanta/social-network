@@ -20,7 +20,7 @@ function GroupSidenav() {
                         <img src="https://static.xx.fbcdn.net/rsrc.php/v3/yo/r/hLkEFzsCyXC.png" alt="from fb" className="rounded-circle" id="avatar"/>
                     </div>
                     <div>
-                        <p className="m-0">Your feed</p>
+                        <p className="m-0">For you</p>
                     </div>
                 </a>
             </li>
@@ -30,7 +30,7 @@ function GroupSidenav() {
                         <img src="https://static.xx.fbcdn.net/rsrc.php/v3/yj/r/Im_0d7HFH4n.png" alt="from fb" className="rounded-circle" id="avatar"/>
                     </div>
                     <div>
-                        <p className="m-0">All groups</p>
+                        <p className="m-0">Discover</p>
                     </div>
                 </a>
             </li>
