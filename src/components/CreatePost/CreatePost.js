@@ -15,8 +15,8 @@ function CreatePost() {
               <hr />
               <div className="d-flex flex-column flex-lg-row mt-3">
                 <div className="dropdown-item rounded d-flex align-items-center justify-content-center" type="button">
-                  <i className="fas fa-photo-video me-2 text-success"></i>
-                  <p className="m-0 text-muted">Photo/Video</p>
+                  
+                  <p className="m-0 text-muted">Create Post</p>
                 </div>
               </div>
             </div>
