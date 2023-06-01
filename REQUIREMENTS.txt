@@ -47,8 +47,7 @@ Types:
 - Private profile: Infor can be viewed by followers
 
 Should contain : 
-- User information (Email, Password, First Name, Last Name, Date of Birth)
-- User activity
+- User information (Email, First Name, Last Name, Date of Birth, Nickname, About me)
 - Every post made by the user
 - Followers and following users 
 - Button to public/private their profile
