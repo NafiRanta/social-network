@@ -22,8 +22,8 @@ function CreatePostModal() {
                       <p className="m-0 fw-bold">JJ</p>
                       <select className="form-select border-0 bg-gray w-75 fs-7" aria-label="Default select example">
                         <option defaultValue="1">Public</option>
-                        <option value="2">Pin To Top</option>
-                        <option value="3">Hide</option>
+                        <option value="2">Private</option>
+                        <option value="3">Custom</option>
                       </select>
                     </div>
                   </div>
