@@ -14,6 +14,91 @@ function Chat() {
                         <div className="card-chat m-0">
                             <div className="row no-gutters">
                                 <div className="col-xl-4 col-lg-4 col-md-4 col-sm-3 col-3">
+                                    <div class="education">
+                                        <ul class="nav nav-pills nav-fill mb-3" id="pills-tab" role="tablist">
+                                            <li class="nav-item" role="presentation">
+                                                <a class="nav-link active" id="pills-btech-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-btech" aria-selected="true">B Tech</a>
+                                            </li>
+                                            <li class="nav-item" role="presentation">
+                                                <a class="nav-link" id="pills-intermediate-tab" data-toggle="pill" href="#pills-intermediate" role="tab" aria-controls="pills-intermediate" aria-selected="false">Intermediate</a>
+                                            </li>
+                                            <li class="nav-item" role="presentation">
+                                                <a class="nav-link" id="pills-tenth-tab" data-toggle="pill" href="#pills-tenth" role="tab" aria-controls="pills-tenth" aria-selected="false">Tenth</a>
+                                            </li>
+                                        </ul>
+                                        <div class="tab-content" id="pills-tabContent">
+                                            <div class="tab-pane fade show active" id="pills-btech" role="tabpanel" aria-labelledby="pills-btech-tab">
+                                                <div class="container">
+                                                    <div class="row ">
+                                                        <div class="col lg-6">College Name</div>
+                                                        <div class="col lg-6">CVR College of Engineering</div>
+                                                    </div>
+                                                    <div class="row ">
+                                                        <div class="col lg-6">Location</div>
+                                                        <div class="col lg-6">Mangalpally,Hyderabad</div>
+                                                    </div>
+                                                    <div class="row ">
+                                                        <div class="col lg-6">Stream</div>
+                                                        <div class="col lg-6">CSE</div>
+                                                    </div>
+                                                    <div class="row ">
+                                                        <div class="col lg-6">Graduation Year</div>
+                                                        <div class="col lg-6">2021</div>
+                                                    </div>
+                                                    <div class="row ">
+                                                        <div class="col lg-6">CGPA</div>
+                                                        <div class="col lg-6">9.47</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        <div class="tab-pane fade" id="pills-intermediate" role="tabpanel" aria-labelledby="pills-intermediate-tab">
+                                            <div class="container">
+                                                <div class="row ">
+                                                    <div class="col lg-6">College Name</div>
+                                                    <div class="col lg-6">Narayana Jr College</div>
+                                                </div>
+                                                <div class="row ">
+                                                    <div class="col lg-6">Location</div>
+                                                    <div class="col lg-6">Dilsukhnagar,Hyderabad</div>
+                                                </div>
+                                                <div class="row ">
+                                                    <div class="col lg-6">Stream</div>
+                                                    <div class="col lg-6">MPC</div>
+                                                </div>
+                                                <div class="row ">
+                                                    <div class="col lg-6">Graduation Year</div>
+                                                    <div class="col lg-6">2017</div>
+                                                </div>
+                                                <div class="row ">
+                                                    <div class="col lg-6">Percentage</div>
+                                                    <div class="col lg-6">949</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane fade" id="pills-tenth" role="tabpanel" aria-labelledby="pills-tenth-tab">
+                                            <div class="container">
+                                                <div class="row ">
+                                                    <div class="col lg-6">School Name</div>
+                                                    <div class="col lg-6">Vignan Integrated High School</div>
+                                                </div>
+                                                <div class="row ">
+                                                    <div class="col lg-6">Location</div>
+                                                    <div class="col lg-6">Nadergul,Hyderabad</div>
+                                                </div>
+                                                
+                                                <div class="row ">
+                                                    <div class="col lg-6">Graduation Year</div>
+                                                    <div class="col lg-6">2015</div>
+                                                </div>
+                                                <div class="row ">
+                                                    <div class="col lg-6">CGPA</div>
+                                                    <div class="col lg-6">9.7</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+            
                                     <div className="users-container">
                                         <SearchbarChat />
                                         <ul className="users">

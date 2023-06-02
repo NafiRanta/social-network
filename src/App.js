@@ -49,10 +49,10 @@ function App() {
      //<GroupsList />
     //<SingleGroup />
     // <SingleGroupNonMember />
-    //<Chat />
+    <Chat />
    //<Error />
   //<HomeGroup />
-  <Login />
+  //<Login />
   );
 }
 
