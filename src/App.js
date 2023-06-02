@@ -50,8 +50,9 @@ function App() {
     //<SingleGroup />
     // <SingleGroupNonMember />
     //<Chat />
-   <Error />
+   //<Error />
   //<HomeGroup />
+  <Login />
   );
 }
 

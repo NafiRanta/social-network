@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import LoginModal from "../components/Modal/LoginModal";
+import RegisterModal from "../components/Modal/RegisterModal";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -73,7 +73,7 @@ function Login() {
             >
               <p>Not a user? Register</p>
             </a>
-            <LoginModal />
+            <RegisterModal />
           </div>
         </div>
       </div>
