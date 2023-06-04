@@ -6,7 +6,7 @@ function Topnav(props) {
     return(
       <div className="bg-white d-flex align-items-center fixed-top shadow">
       <div className="container-fluid">
-        <div className="row align-items-center">
+        <div className="row align-items-center">  
           <div className="col d-flex align-items-center">
             <i className="fab fa-facebook text-primary"></i>
             <SearchbarGlobal />

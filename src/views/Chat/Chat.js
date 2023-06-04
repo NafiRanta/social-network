@@ -14,122 +14,198 @@ function Chat() {
                         <div className="card-chat m-0">
                             <div className="row no-gutters">
                                 <div className="col-xl-4 col-lg-4 col-md-4 col-sm-3 col-3">
-                                    <div class="education">
-                                        <ul class="nav nav-pills nav-fill mb-3" id="pills-tab" role="tablist">
-                                            <li class="nav-item" role="presentation">
-                                                <a class="nav-link active" id="pills-btech-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-btech" aria-selected="true">B Tech</a>
-                                            </li>
-                                            <li class="nav-item" role="presentation">
-                                                <a class="nav-link" id="pills-intermediate-tab" data-toggle="pill" href="#pills-intermediate" role="tab" aria-controls="pills-intermediate" aria-selected="false">Intermediate</a>
-                                            </li>
-                                            <li class="nav-item" role="presentation">
-                                                <a class="nav-link" id="pills-tenth-tab" data-toggle="pill" href="#pills-tenth" role="tab" aria-controls="pills-tenth" aria-selected="false">Tenth</a>
-                                            </li>
-                                        </ul>
-                                        <div class="tab-content" id="pills-tabContent">
-                                            <div class="tab-pane fade show active" id="pills-btech" role="tabpanel" aria-labelledby="pills-btech-tab">
-                                                <div class="container">
-                                                    <div class="row ">
-                                                        <div class="col lg-6">College Name</div>
-                                                        <div class="col lg-6">CVR College of Engineering</div>
-                                                    </div>
-                                                    <div class="row ">
-                                                        <div class="col lg-6">Location</div>
-                                                        <div class="col lg-6">Mangalpally,Hyderabad</div>
-                                                    </div>
-                                                    <div class="row ">
-                                                        <div class="col lg-6">Stream</div>
-                                                        <div class="col lg-6">CSE</div>
-                                                    </div>
-                                                    <div class="row ">
-                                                        <div class="col lg-6">Graduation Year</div>
-                                                        <div class="col lg-6">2021</div>
-                                                    </div>
-                                                    <div class="row ">
-                                                        <div class="col lg-6">CGPA</div>
-                                                        <div class="col lg-6">9.47</div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        <div class="tab-pane fade" id="pills-intermediate" role="tabpanel" aria-labelledby="pills-intermediate-tab">
-                                            <div class="container">
-                                                <div class="row ">
-                                                    <div class="col lg-6">College Name</div>
-                                                    <div class="col lg-6">Narayana Jr College</div>
-                                                </div>
-                                                <div class="row ">
-                                                    <div class="col lg-6">Location</div>
-                                                    <div class="col lg-6">Dilsukhnagar,Hyderabad</div>
-                                                </div>
-                                                <div class="row ">
-                                                    <div class="col lg-6">Stream</div>
-                                                    <div class="col lg-6">MPC</div>
-                                                </div>
-                                                <div class="row ">
-                                                    <div class="col lg-6">Graduation Year</div>
-                                                    <div class="col lg-6">2017</div>
-                                                </div>
-                                                <div class="row ">
-                                                    <div class="col lg-6">Percentage</div>
-                                                    <div class="col lg-6">949</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="tab-pane fade" id="pills-tenth" role="tabpanel" aria-labelledby="pills-tenth-tab">
-                                            <div class="container">
-                                                <div class="row ">
-                                                    <div class="col lg-6">School Name</div>
-                                                    <div class="col lg-6">Vignan Integrated High School</div>
-                                                </div>
-                                                <div class="row ">
-                                                    <div class="col lg-6">Location</div>
-                                                    <div class="col lg-6">Nadergul,Hyderabad</div>
-                                                </div>
-                                                
-                                                <div class="row ">
-                                                    <div class="col lg-6">Graduation Year</div>
-                                                    <div class="col lg-6">2015</div>
-                                                </div>
-                                                <div class="row ">
-                                                    <div class="col lg-6">CGPA</div>
-                                                    <div class="col lg-6">9.7</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-            
-                                    <div className="users-container">
+                                    <div className="chat-title">
+                                        <p className="fs-5 m-0"><strong>Chats</strong></p>
                                         <SearchbarChat />
-                                        <ul className="users">
-                                            <li className="person" data-chat="person1">
-                                                <div className="user">
-                                                    <Avatar />
-                                                    <span className="status busy"></span>
+                                    </div>
+                                    
+                                    <div className="users-container">
+                                        <div className="chat-category">
+                                            <ul className="nav nav-pills nav-fill mb-3" id="pills-tab" role="tablist">
+                                                <li className="nav-item" role="presentation">
+                                                    <a className="nav-link" id="pills-inbox-tab" data-toggle="pill" href="#pills-inbox" role="tab" aria-controls="pills-inbox" aria-selected="false">Inbox</a>
+                                                </li>
+                                                <li className="nav-item" role="presentation">
+                                                    <a className="nav-link" id="pills-communities-tab" data-toggle="pill" href="#pills-communities" role="tab" aria-controls="pills-communities" aria-selected="false">Communities</a>
+                                                </li>
+                                            </ul>
+                                            <div className="tab-content" id="pills-tabContent">
+                                                <div className="tab-pane fade" id="pills-inbox" role="tabpanel" aria-labelledby="pills-inbox-tab">
+                                                    <div className="container">
+                                                        <ul className="users">
+                                                            <li className="person" data-chat="person1">
+                                                                <div className="user">
+                                                                    <Avatar />
+                                                                    <span className="status busy"></span>
+                                                                </div>
+                                                                <p className="name-time">
+                                                                    <span className="name">Jacob Pesämaa</span>
+                                                                </p>
+                                                            </li>
+                                                            <li className="person" data-chat="person1">
+                                                                <div className="user">
+                                                                    <Avatar />
+                                                                    <span className="status offline"></span>
+                                                                </div>
+                                                                <p className="name-time">
+                                                                    <span className="name">Ashley Hwa</span>
+                                                                </p>
+                                                            </li>
+                                                            <li className="person active-user" data-chat="person2">
+                                                                <div className="user">
+                                                                    <Avatar />
+                                                                    <span className="status away"></span>
+                                                                </div>
+                                                                <p className="name-time">
+                                                                    <span className="name">Gin Thy</span>
+                                                                </p>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
                                                 </div>
-                                                <p className="name-time">
-                                                    <span className="name">Jacob Pesämaa</span>
-                                                </p>
-                                            </li>
-                                            <li className="person" data-chat="person1">
-                                                <div className="user">
-                                                    <Avatar />
-                                                    <span className="status offline"></span>
+                                                <div className="tab-pane fade" id="pills-communities" role="tabpanel" aria-labelledby="pills-communities-tab">
+                                                    <div className="container">
+                                                        <ul className="users">
+                                                            <li className="person" data-chat="person1">
+                                                                <div className="user">
+                                                                    <Avatar />
+                                                                    <span className="status busy"></span>
+                                                                </div>
+                                                                <p className="name-time">
+                                                                    <span className="name">Russel Lee</span>
+                                                                </p>
+                                                            </li>
+                                                            <li className="person" data-chat="person1">
+                                                                <div className="user">
+                                                                    <Avatar />
+                                                                    <span className="status offline"></span>
+                                                                </div>
+                                                                <p className="name-time">
+                                                                    <span className="name">Joyce Tan</span>
+                                                                </p>
+                                                            </li>
+                                                            <li className="person active-user" data-chat="person2">
+                                                                <div className="user">
+                                                                    <Avatar />
+                                                                    <span className="status away"></span>
+                                                                </div>
+                                                                <p className="name-time">
+                                                                    <span className="name">Adam Ranta</span>
+                                                                </p>
+                                                            </li>
+                                                            <li className="person" data-chat="person1">
+                                                                <div className="user">
+                                                                    <Avatar />
+                                                                    <span className="status busy"></span>
+                                                                </div>
+                                                                <p className="name-time">
+                                                                    <span className="name">Russel Lee</span>
+                                                                </p>
+                                                            </li>
+                                                            <li className="person" data-chat="person1">
+                                                                <div className="user">
+                                                                    <Avatar />
+                                                                    <span className="status offline"></span>
+                                                                </div>
+                                                                <p className="name-time">
+                                                                    <span className="name">Joyce Tan</span>
+                                                                </p>
+                                                            </li>
+                                                            <li className="person active-user" data-chat="person2">
+                                                                <div className="user">
+                                                                    <Avatar />
+                                                                    <span className="status away"></span>
+                                                                </div>
+                                                                <p className="name-time">
+                                                                    <span className="name">Adam Ranta</span>
+                                                                </p>
+                                                            </li>
+                                                            <li className="person" data-chat="person1">
+                                                                <div className="user">
+                                                                    <Avatar />
+                                                                    <span className="status busy"></span>
+                                                                </div>
+                                                                <p className="name-time">
+                                                                    <span className="name">Russel Lee</span>
+                                                                </p>
+                                                            </li>
+                                                            <li className="person" data-chat="person1">
+                                                                <div className="user">
+                                                                    <Avatar />
+                                                                    <span className="status offline"></span>
+                                                                </div>
+                                                                <p className="name-time">
+                                                                    <span className="name">Joyce Tan</span>
+                                                                </p>
+                                                            </li>
+                                                            <li className="person active-user" data-chat="person2">
+                                                                <div className="user">
+                                                                    <Avatar />
+                                                                    <span className="status away"></span>
+                                                                </div>
+                                                                <p className="name-time">
+                                                                    <span className="name">Adam Ranta</span>
+                                                                </p>
+                                                            </li>
+                                                            <li className="person" data-chat="person1">
+                                                                <div className="user">
+                                                                    <Avatar />
+                                                                    <span className="status busy"></span>
+                                                                </div>
+                                                                <p className="name-time">
+                                                                    <span className="name">Russel Lee</span>
+                                                                </p>
+                                                            </li>
+                                                            <li className="person" data-chat="person1">
+                                                                <div className="user">
+                                                                    <Avatar />
+                                                                    <span className="status offline"></span>
+                                                                </div>
+                                                                <p className="name-time">
+                                                                    <span className="name">Joyce Tan</span>
+                                                                </p>
+                                                            </li>
+                                                            <li className="person active-user" data-chat="person2">
+                                                                <div className="user">
+                                                                    <Avatar />
+                                                                    <span className="status away"></span>
+                                                                </div>
+                                                                <p className="name-time">
+                                                                    <span className="name">Adam Ranta</span>
+                                                                </p>
+                                                            </li>
+                                                            <li className="person" data-chat="person1">
+                                                                <div className="user">
+                                                                    <Avatar />
+                                                                    <span className="status busy"></span>
+                                                                </div>
+                                                                <p className="name-time">
+                                                                    <span className="name">Russel Lee</span>
+                                                                </p>
+                                                            </li>
+                                                            <li className="person" data-chat="person1">
+                                                                <div className="user">
+                                                                    <Avatar />
+                                                                    <span className="status offline"></span>
+                                                                </div>
+                                                                <p className="name-time">
+                                                                    <span className="name">Joyce Tan</span>
+                                                                </p>
+                                                            </li>
+                                                            <li className="person active-user" data-chat="person2">
+                                                                <div className="user">
+                                                                    <Avatar />
+                                                                    <span className="status away"></span>
+                                                                </div>
+                                                                <p className="name-time">
+                                                                    <span className="name">Adam Ranta</span>
+                                                                </p>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
                                                 </div>
-                                                <p className="name-time">
-                                                    <span className="name">Ashley Hwa</span>
-                                                </p>
-                                            </li>
-                                            <li className="person active-user" data-chat="person2">
-                                                <div className="user">
-                                                    <Avatar />
-                                                    <span className="status away"></span>
-                                                </div>
-                                                <p className="name-time">
-                                                    <span className="name">Gin Thy</span>
-                                                </p>
-                                            </li>
-                                        </ul>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div className="col-xl-8 col-lg-8 col-md-8 col-sm-9 col-9">
@@ -200,11 +276,28 @@ function Chat() {
                                                     <br />I'm very excited to show this to our team.</div>
                                                 <div className="chat-hour">07:00 <span className="fa fa-check-circle"></span></div>
                                             </li>
+                                            <li className="chat-right">
+                                                <div className="chat-hour">08:59 <span className="fa fa-check-circle"></span></div>
+                                                <div className="chat-text">Have you faced any problems at the last phase of the project?</div>
+                                                <div className="chat-avatar">
+                                                    <Avatar />
+                                                    <div className="chat-name">Jin</div>
+                                                </div>
+                                            </li>
+                                            <li className="chat-left">
+                                                <div className="chat-avatar">
+                                                    <Avatar />
+                                                    <div className="chat-name">Russell</div>
+                                                </div>
+                                                <div className="chat-text">Actually everything was fine.
+                                                    <br />I'm very excited to show this to our team.</div>
+                                                <div className="chat-hour">07:00 <span className="fa fa-check-circle"></span></div>
+                                            </li>
                                         </ul>
-                                        <div className="form-group mt-3 mb-0">
+                                    </div>
+                                    <div className="form-group mt-3 mb-0">
                                             <textarea className="form-control" rows="3" placeholder="Type your message here..."></textarea>
                                         </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
