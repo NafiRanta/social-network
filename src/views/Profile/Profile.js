@@ -47,29 +47,14 @@ function Profile() {
                                     <li className="dropdown-item p-1">
                                         <a href="#" className="btn btn-primary btn-sm d-flex justify-content-center align-items-center"> Add bio</a>
                                     </li>
+                                    <li className="dropdown-item p-1 rounded">
+                                        <span><i className="fas fa-user"></i> <span className="name">Nickname</span></span>
+                                    </li>
                                     <li className="my-2 p-1">
-                                        <div className="rounded-circle bg-gray p-1 d-flex align-items-center justify-content-center me-3">
-                                            <i className="fas fa-edit"></i>
-                                        </div>
-                                        <div>
-                                            <p className="m-0">Email</p>
-                                        </div>
+                                        <span><i className="fas fa-edit"></i> <span className="name">Email</span></span>
                                     </li>
                                     <li className="dropdown-item p-1 rounded">
-                                        <div>
-                                            <div className="rounded-circle bg-gray p-1 d-flex align-items-center justify-content-center me-3">
-                                                <i className="fas fa-user"></i>
-                                            </div>
-                                            <p className="m-0">Nickname</p>
-                                        </div>
-                                    </li>
-                                    <li className="dropdown-item p-1 rounded">
-                                        <div>
-                                            <div className="rounded-circle bg-gray p-1 d-flex align-items-center justify-content-center me-3">
-                                                <i className="fas fa-birthday-cake"></i>
-                                            </div>
-                                            <p className="m-0">Birthday</p>
-                                        </div>
+                                        <span><i className="fas fa-birthday-cake"></i> <span className="name">Birthday</span></span>
                                     </li>
                                 </ul>
                             </div>

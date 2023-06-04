@@ -45,11 +45,11 @@ function App() {
       )}
   </Routes>  */
    //<Home />
-    //<Profile />
+    <Profile />
      //<GroupsList />
     //<SingleGroup />
     // <SingleGroupNonMember />
-    <Chat />
+   // <Chat />
    //<Error />
   //<HomeGroup />
   //<Login />
