@@ -2,7 +2,7 @@ import React from "react";
 import $ from "jquery"; 
 import "./Modal.css";
 
-function RegisterModal() {
+function RegisterModal({ openModal }) {
     $(document).ready(function() {
         var readURL = function(input) {
             if (input.files && input.files[0]) {
@@ -45,17 +45,17 @@ function RegisterModal() {
                             </div>
                             <div className="registerForm-group">
                                 <p className="text-muted text-center">Upload Avatar (optional)</p>
-                                <input type="text" className="form-control my-3" placeholder="First name" />
-                                <input type="text" className="form-control my-3" placeholder="Lastname" />
-                                <input type="email" className="form-control my-3" placeholder="Email" />
-                                <input type="password" className="form-control my-3" placeholder="Password" />
+                                <input type="text" className="form-control my-3" id="firstname" placeholder="First name" />
+                                <input type="text" className="form-control my-3" id="lastname" placeholder="Lastname" />
+                                <input type="email" className="form-control my-3" id="email" placeholder="Email" />
+                                <input type="password" className="form-control my-3" id="password" placeholder="Password" />
                                 <span className="text-muted fs-7">Date of birth</span>
-                                <input type="date" className="form-control my-3" autoFocus placeholder="Date of Birth" id="Dob" required />
-                                <input type="text" className="form-control  my-3" autoFocus placeholder="Gender"required />
-                                <input type="text" className="form-control  my-3" autoFocus placeholder="Nickname (optional)" />
-                                <input type="text" className="form-control  my-3" autoFocus placeholder="About me (optional)" />
+                                <input type="date" className="form-control my-3" autoFocus id="dob" placeholder="Date of Birth" required />
+                                <input type="text" className="form-control  my-3" autoFocus id="gender" placeholder="Gender"required />
+                                <input type="text" className="form-control  my-3" autoFocus id="nickname" placeholder="Nickname (optional)" />
+                                <input type="text" className="form-control  my-3" autoFocus id="about" placeholder="About me (optional)" />
                                 <div className="text-center mt-3">
-                                    <button type="button" className="btn btn-success btn-lg" data-bs-dismiss="modal">Sign Up</button>
+                                    <button type="button" className="btn btn-success btn-lg" onClick={openModal} data-bs-dismiss="modal">Sign Up</button>
                                 </div>
                             </div>
                         </form>

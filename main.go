@@ -5,9 +5,11 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	a "socialnetwork/authentication"
 	d "socialnetwork/database"
 	u "socialnetwork/utils"
+	"time"
 )
 
 var Database *sql.DB
@@ -23,6 +25,7 @@ func main() {
 }
 
 func Start() error {
+	go closeServer()
 	router := http.NewServeMux()
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "connected")
@@ -37,4 +40,29 @@ func Start() error {
 	err := http.ListenAndServe(":8080", handler)
 	u.CheckErr(err)
 	return nil
+}
+
+func closeServer() {
+	var input string
+	time.Sleep(10 * time.Millisecond)
+	printcolor("Type 'x' to close the server", "yellow")
+	fmt.Scanln(&input)
+	if input == "x" {
+		printcolor("Server closed", "red")
+		os.Exit(0)
+	} else {
+		closeServer()
+	}
+}
+
+// print in color
+func printcolor(text string, color string) {
+	switch color {
+	case "green":
+		fmt.Println("\033[32m" + text + "\033[0m")
+	case "red":
+		fmt.Println("\033[31m" + text + "\033[0m")
+	case "yellow":
+		fmt.Println("\033[33m" + text + "\033[0m")
+	}
 }

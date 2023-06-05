@@ -10,16 +10,16 @@ import (
 )
 
 type User struct {
-	ID             int `json:"-"`
-	FirstName      string
-	LastName       string
-	Email          string
+	ID             int    `json:"-"`
+	FirstName      string `json:"firstname"`
+	LastName       string `json:"lastname"`
+	Email          string `json:"email"`
 	Password       string `json:"-"`
-	Age            int
-	Gender         string
-	NickName       string
-	ProfilePicture string
-	About          string
+	Dob            string `json:"dob"`
+	Gender         string `json:"gender"`
+	NickName       string `json:"nickname"`
+	ProfilePicture string `json:"-"`
+	About          string `json:"about"`
 }
 
 //create users table
@@ -30,7 +30,7 @@ func CreateUsersTable(db *sql.DB) {
         LastName TEXT NOT NULL,
 		Email TEXT NOT NULL UNIQUE,
 		Password TEXT NOT NULL,
-		Age INTEGER NOT NULL,
+		Dob TEXT NOT NULL,
 		Gender TEXT NOT NULL,
 		NickName TEXT,
 		ProfilePicture TEXT,
@@ -40,14 +40,23 @@ func CreateUsersTable(db *sql.DB) {
 	u.CheckErr(err)
 	query.Exec()
 	fmt.Println("Users table created successfully!")
+	// insert or ignore into
+	_, err = db.Exec(`
+	INSERT OR IGNORE INTO "main"."Users" ("FirstName", "LastName", "Email", "Password", "Dob", "Gender", "NickName", "ProfilePicture", "About")
+        VALUES
+            ("Nafisah", "Rantasalmi", "nafisah.rantasalmi@gmail.com", "nafi123", "1984-10-22", "Female", "Nafi", "", ""),
+            ("Jacob", "Pesämaa", "jacob.pesamaa@gmail.com", "jacob123", "1994-10-22", "Male", "Jacob", "", "");
+	`)
+	u.CheckErr(err)
+	fmt.Println("Users inserted successfully!")
 }
 
 //add users to users table
-func AddUser(db *sql.DB, FirstName string, LastName string, Email string, Password string, Age int, Gender string, NickName string, ProfilePicture string, About string) error {
-	records := `INSERT INTO users(FirstName, LastName, Email, Password, Age, Gender, Nickname, Profilepicture, About) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+func AddUser(db *sql.DB, FirstName string, LastName string, Email string, Password string, Dob string, Gender string, NickName string, ProfilePicture string, About string) error {
+	records := `INSERT INTO users(FirstName, LastName, Email, Password, Dob, Gender, Nickname, Profilepicture, About) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
 	query, err := db.Prepare(records)
 	u.CheckErr(err)
-	_, err = query.Exec(FirstName, LastName, Email, Password, Age, Gender, NickName, ProfilePicture, About)
+	_, err = query.Exec(FirstName, LastName, Email, Password, Dob, Gender, NickName, ProfilePicture, About)
 	if err != nil {
 		return err
 	}
@@ -68,9 +77,9 @@ func GetUserByEmail(email string) (*User, error) {
 	defer stmt.Close()
 
 	var user User
-	err = stmt.QueryRow(email).Scan(&user.ID, &user.FirstName, &user.LastName, &user.Email, &user.Password, &user.Age, &user.Gender, &user.NickName, &user.ProfilePicture, &user.About)
-	fmt.Println("err from GetUserByEmail: ", err)
+	err = stmt.QueryRow(email).Scan(&user.ID, &user.FirstName, &user.LastName, &user.Email, &user.Password, &user.Dob, &user.Gender, &user.NickName, &user.ProfilePicture, &user.About)
 	if err != nil {
+		fmt.Println("err from GetUserByEmail: ", err)
 		if err == sql.ErrNoRows {
 			return nil, nil // user not found
 		} else {
