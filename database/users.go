@@ -22,7 +22,7 @@ type User struct {
 	About          string `json:"about"`
 }
 
-//create users table
+// create users table
 func CreateUsersTable(db *sql.DB) {
 	usersTable := `CREATE TABLE IF NOT EXISTS Users (
         UserID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
@@ -51,11 +51,15 @@ func CreateUsersTable(db *sql.DB) {
 	fmt.Println("Users inserted successfully!")
 }
 
-//add users to users table
+// add users to users table
 func AddUser(db *sql.DB, FirstName string, LastName string, Email string, Password string, Dob string, Gender string, NickName string, ProfilePicture string, About string) error {
-	records := `INSERT INTO users(FirstName, LastName, Email, Password, Dob, Gender, Nickname, Profilepicture, About) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
+	records := `INSERT INTO Users (FirstName, LastName, Email, Password, Dob, Gender, NickName, ProfilePicture, About) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
 	query, err := db.Prepare(records)
-	u.CheckErr(err)
+	if err != nil {
+		return err
+	}
+	defer query.Close()
+
 	_, err = query.Exec(FirstName, LastName, Email, Password, Dob, Gender, NickName, ProfilePicture, About)
 	if err != nil {
 		return err
