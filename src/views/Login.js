@@ -5,7 +5,54 @@ import RegisterModal from "../components/Modal/RegisterModal";
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [valid, setValid] = useState({ username: true, password: true });
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    if (name === "email") {
+      setEmail(value);
+    } else if (name === "password") {
+      setPassword(value);
+    }
+  };
+  const validLoginForm = () => {
+    let updatedValid = { ...valid };
+
+    // check if username is empty
+    if (email === "") {
+      updatedValid = { ...updatedValid, username: false };
+    } else {
+      // check if usernameemail is valid username or email
+      const emailRegex = new RegExp(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/);
+      const usernameRegex = new RegExp(/^[åäöÅÄÖA-Za-z0-9]+$/);
+      if (!(usernameRegex.test(email) || emailRegex.test(email))) {
+        updatedValid = { ...updatedValid, username: false };
+      } else {
+        // else username is valid
+        updatedValid = { ...updatedValid, username: true };
+      }
+    }
+    // check if password is empty
+    if (password === "") {
+      updatedValid = { ...updatedValid, password: false };
+    } else {
+      // check if password is invalid allow åäöÅÄÖ
+      const passwordLengthRegex = new RegExp(/^[åäöÅÄÖA-Za-z0-9]{5,}$/);
+      if (!passwordLengthRegex.test(password)) {
+        updatedValid = { ...updatedValid, password: false };
+      } else {
+        // else password is valid
+        updatedValid = { ...updatedValid, password: true };
+      }
+    }
+    setValid(updatedValid);
+    // if all booleans are true, return true else return false
+    return updatedValid.username && updatedValid.password;
+  };
   const handleLogin = async () => {
+    if (!validLoginForm()) {
+      return;
+    }
     try {
       const response = await fetch("http://localhost:8080/login", {
         method: "POST",
@@ -21,8 +68,8 @@ function Login() {
         console.log(data);
         // Save session to local storage
         localStorage.setItem("userInfo", JSON.stringify(data));
-       //setIsAuthenticated(true);
-        window.location.reload()
+        //setIsAuthenticated(true);
+        window.location.reload();
       } else {
         // Login failed, handle error
         console.log("Login failed");
@@ -43,28 +90,29 @@ function Login() {
         </div>
         <div className="login-form">
           <div className="bg-white shadow rounded p-3 input-group-lg">
+            <div className="form__input-error-message" id="loginUsernameErrMsg"></div>
             <input
               type="email"
               className="form-control my-3"
               placeholder="Email address or phone number"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              name="email"
+              onChange={handleInputChange}
             />
+            {!valid.username && <div>Username is invalid</div>}
+            <div className="form__input-error-message" id="loginPasswordErrMsg"></div>
             <input
               type="password"
               className="form-control my-3"
               placeholder="Password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              name="password"
+              onChange={handleInputChange}
             />
-            <a>
-              <button
-                className="btn btn-primary w-100 my-3"
-                onClick={handleLogin}
-              >
-                Log In
-              </button>
-            </a>
+            {!valid.password && <div>Password must be at least 5 characters</div>}
+            <button className="btn btn-primary w-100 my-3" onClick={handleLogin}>
+              Log In
+            </button>
             <a
               href="#"
               className="text-decoration-none text-center"

@@ -36,12 +36,12 @@ function RegisterModal() {
                     </div>
                     <div className="modal-body">
                         <form id="registerForm">
-                            <div class="avatar-wrapper">
-                                <img class="profile-pic" src="" />
-                                <div class="upload-button">
-                                    <i class="fa fa-arrow-circle-up" aria-hidden="true"></i>
+                            <div className="avatar-wrapper">
+                                <img className="profile-pic" src="" />
+                                <div className="upload-button">
+                                    <i className="fa fa-arrow-circle-up" aria-hidden="true"></i>
                                 </div>
-                                <input class="file-upload" type="file" accept="image/*"/>
+                                <input className="file-upload" type="file" accept="image/*"/>
                             </div>
                             <div className="registerForm-group">
                                 <p className="text-muted text-center">Upload Avatar (optional)</p>

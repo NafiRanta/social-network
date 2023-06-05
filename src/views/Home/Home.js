@@ -15,6 +15,7 @@ function Home(props) {
                         <div className="bg-white rounded border shadow p-3">
                             <div>
                                 <div className="my-3 d-flex justify-content-between align-items-center">
+                                    <p>{props.username}</p>
                                     <p className="text-muted fs-5 m-0">Contacts/Following</p>
                                 </div>
                                 <li className="dropdown-item rounded my-2 px-0" type="button">

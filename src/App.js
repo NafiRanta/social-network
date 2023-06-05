@@ -18,11 +18,11 @@ import SingleGroupNonMember from "./views/Groups/SingleGroupNonMember";
 function App() {
   const isAuth = !!localStorage.getItem("userInfo");
   console.log(isAuth)
- /*  const userInfo = JSON.parse(localStorage.getItem("userInfo"))
+  const userInfo = JSON.parse(localStorage.getItem("userInfo"))
   const username = userInfo ? userInfo.FirstName + " " + userInfo.LastName  : '';
-   */
+   
   return (
-/*   <Routes>
+ <Routes>
     {isAuth ? (
          <Route   
          path="/"
@@ -43,13 +43,13 @@ function App() {
       ) : (
         <Route path="/login" element={<Navigate replace to="/" />} />
       )}
-  </Routes>  */
+  </Routes>  
    //<Home />
-    <Profile />
+    //<Profile />
      //<GroupsList />
     //<SingleGroup />
     // <SingleGroupNonMember />
-   // <Chat />
+   //<Chat />
    //<Error />
   //<HomeGroup />
   //<Login />
