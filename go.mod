@@ -8,4 +8,7 @@ require (
 	github.com/mattn/go-sqlite3 v1.14.16
 )
 
-require github.com/gorilla/securecookie v1.1.1 // indirect
+require (
+	github.com/gorilla/securecookie v1.1.1 // indirect
+	golang.org/x/crypto v0.9.0
+)

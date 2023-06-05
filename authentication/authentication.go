@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	d "socialnetwork/database"
+	"strconv"
 
 	"github.com/gofrs/uuid"
 	"github.com/gorilla/sessions"
@@ -36,6 +37,10 @@ func LogIn(w http.ResponseWriter, r *http.Request) {
 
 		var storedPassword string
 		user, err := d.GetUserByEmail(email)
+		if err != nil {
+			http.Error(w, "Invalid email or password", http.StatusUnauthorized)
+			return
+		}
 		storedPassword = user.Password
 
 		// Compare the stored password with the password received from the front-end
@@ -93,4 +98,48 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		5. insert username and password hash in database
 		(email validation will be in another video)
 	*/
+	if r.Method != "POST" {
+		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
+		return
+	}
+
+	decoder := json.NewDecoder(r.Body)
+	var data map[string]string
+	err := decoder.Decode(&data)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	firstName := data["firstName"]
+	lastName := data["lastName"]
+	email := data["email"]
+	password := data["password"]
+	gender := data["gender"]
+	nickName := data["nickName"]
+	profilePicture := data["profilePicture"]
+	about := data["about"]
+	age, err := strconv.Atoi(data["age"])
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	// Check if email is already exists in database
+	_, err = d.GetUserByEmail(email)
+	if err != nil {
+		http.Error(w, "You already have an account", http.StatusBadRequest)
+		return
+	}
+
+	// Create bcrypt hash from password
+	hashedPassword := d.HashPassword(password)
+
+	// Insert username and password hash in database
+	db := d.GetDB()
+	// func AddUser(db *sql.DB, FirstName string, LastName string, Email string, Password string, Age int, Gender string, NickName string, ProfilePicture string, About string) error {
+	err = d.AddUser(db, firstName, lastName, email, hashedPassword, age, gender, nickName, profilePicture, about)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
 }

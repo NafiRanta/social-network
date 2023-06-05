@@ -5,17 +5,21 @@ import (
 	"database/sql"
 	"fmt"
 	u "socialnetwork/utils"
+
+	"golang.org/x/crypto/bcrypt"
 )
 
 type User struct {
-	ID        int `json:"-"`
-	FirstName string
-	LastName  string
-	UserName  string
-	Email     string
-	Password  string `json:"-"`
-	Age       int
-	Gender    string
+	ID             int `json:"-"`
+	FirstName      string
+	LastName       string
+	Email          string
+	Password       string `json:"-"`
+	Age            int
+	Gender         string
+	NickName       string
+	ProfilePicture string
+	About          string
 }
 
 //create users table
@@ -24,11 +28,13 @@ func CreateUsersTable(db *sql.DB) {
         UserID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
         FirstName TEXT NOT NULL,
         LastName TEXT NOT NULL,
-		UserName TEXT NOT NULL UNIQUE,
 		Email TEXT NOT NULL UNIQUE,
 		Password TEXT NOT NULL,
 		Age INTEGER NOT NULL,
-		Gender TEXT NOT NULL
+		Gender TEXT NOT NULL,
+		NickName TEXT,
+		ProfilePicture TEXT,
+		About TEXT 
         );`
 	query, err := db.Prepare(usersTable)
 	u.CheckErr(err)
@@ -37,11 +43,11 @@ func CreateUsersTable(db *sql.DB) {
 }
 
 //add users to users table
-func AddUser(db *sql.DB, FirstName string, LastName string, UserName string, Email string, Password string, Age int, Gender string) error {
-	records := `INSERT INTO users(FirstName, LastName, UserName, Email, Password, Age, Gender) VALUES (?, ?, ?, ?, ?, ?, ?)`
+func AddUser(db *sql.DB, FirstName string, LastName string, Email string, Password string, Age int, Gender string, NickName string, ProfilePicture string, About string) error {
+	records := `INSERT INTO users(FirstName, LastName, Email, Password, Age, Gender, Nickname, Profilepicture, About) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
 	query, err := db.Prepare(records)
 	u.CheckErr(err)
-	_, err = query.Exec(FirstName, LastName, UserName, Email, Password, Age, Gender)
+	_, err = query.Exec(FirstName, LastName, Email, Password, Age, Gender, NickName, ProfilePicture, About)
 	if err != nil {
 		return err
 	}
@@ -62,7 +68,7 @@ func GetUserByEmail(email string) (*User, error) {
 	defer stmt.Close()
 
 	var user User
-	err = stmt.QueryRow(email).Scan(&user.ID, &user.FirstName, &user.LastName, &user.UserName, &user.Email, &user.Password, &user.Age, &user.Gender)
+	err = stmt.QueryRow(email).Scan(&user.ID, &user.FirstName, &user.LastName, &user.Email, &user.Password, &user.Age, &user.Gender, &user.NickName, &user.ProfilePicture, &user.About)
 	fmt.Println("err from GetUserByEmail: ", err)
 	if err != nil {
 		if err == sql.ErrNoRows {
@@ -73,4 +79,11 @@ func GetUserByEmail(email string) (*User, error) {
 	}
 
 	return &user, nil
+}
+
+// Create bcrypt hash from password
+func HashPassword(password string) string {
+	hash, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	u.CheckErr(err)
+	return string(hash)
 }

@@ -49,6 +49,25 @@ function Login() {
     // if all booleans are true, return true else return false
     return updatedValid.username && updatedValid.password;
   };
+  const handleRegister = async () => {
+    console.log("Register");
+    try {
+      const response = await fetch("http://localhost:8080/register", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (response.ok) {
+        console.log("Register successful");
+      }
+    } catch (error) {
+      // Handle error
+      console.error("Error:", error);
+      
+    }
+  };
   const handleLogin = async () => {
     if (!validLoginForm()) {
       return;
