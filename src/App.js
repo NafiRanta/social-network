@@ -22,16 +22,13 @@ function App() {
   const username = userInfo ? userInfo.FirstName + " " + userInfo.LastName  : '';
    
   return (
- <Routes>
+/*  <Routes>
     {isAuth ? (
          <Route   
          path="/"
          element={
            <div>
-              <HomeSidenav username={username} />
               <Home username={username} />
-              <Topnav username={username} />
-              <CreatePost username={username} />
            </div>
            
          }/>
@@ -43,7 +40,7 @@ function App() {
       ) : (
         <Route path="/login" element={<Navigate replace to="/" />} />
       )}
-  </Routes>  
+  </Routes>  */ 
    //<Home />
     //<Profile />
      //<GroupsList />
@@ -53,6 +50,7 @@ function App() {
    //<Error />
   //<HomeGroup />
   //<Login />
+  <Topnav />
   );
 }
 

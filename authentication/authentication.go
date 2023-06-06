@@ -40,6 +40,8 @@ func LogIn(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "Invalid email or password", http.StatusUnauthorized)
 			return
 		}
+		// Get the stored password from the database and unhash it
+
 		storedPassword = user.Password
 
 		// Compare the stored password with the password received from the front-end
@@ -88,52 +90,39 @@ func LogOut(w http.ResponseWriter, r *http.Request) {
 }
 
 func Register(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("registering")
+	var user d.User
 
 	if r.Method != "POST" {
-		fmt.Println("Invalid request method")
 		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
 		return
 	}
 
-	decoder := json.NewDecoder(r.Body)
-	var data struct {
-		Email          string `json:"email"`
-		Password       string `json:"password"`
-		FirstName      string `json:"firstname"`
-		LastName       string `json:"lastname"`
-		DateOfBirth    string `json:"dob"`
-		Gender         string `json:"gender"`
-		Nickname       string `json:"nickname"`
-		ProfilePicture string `json:"profilepicture"`
-		About          string `json:"about"`
-	}
-	fmt.Println("register - ln 112")
-	err := decoder.Decode(&data)
+	err := json.NewDecoder(r.Body).Decode(&user)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	fmt.Println("register - ln 117")
-	// Validate input data
 
-	fmt.Println("register - ln 120")
-	// Check if email is already registered
-
-	fmt.Println("register - ln 136")
-	// Create bcrypt hash from password
-	hashedPassword := d.HashPassword(data.Password)
-
-	// Insert user into the database
-	db := d.GetDB()
-	fmt.Println("register - ln 129")
-	err = d.AddUser(db, data.FirstName, data.LastName, data.Email, hashedPassword, data.DateOfBirth, data.Gender, data.Nickname, data.ProfilePicture, data.About)
+	// Check if email already exists in the database
+	_, err = d.GetUserByEmail(user.Email)
 	if err != nil {
-		fmt.Println("Error adding user:", err)
-		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		http.Error(w, "You already have an account", http.StatusBadRequest)
 		return
 	}
-	fmt.Println("register - ln 136")
-	fmt.Println("User registered successfully")
+
+	/* // Create bcrypt hash from password
+	hashedPassword := d.HashPassword(user.Password)
+
+	// Set the hashed password in the user struct
+	user.Password = hashedPassword */
+
+	// Insert user in the database
+	err = d.AddUser(d.GetDB(), user.FirstName, user.LastName, user.Email, user.Password, user.Dob, user.Gender, user.NickName, user.ProfilePicture, user.About)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	fmt.Println("User added successfully")
 	w.WriteHeader(http.StatusOK)
 }

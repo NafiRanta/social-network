@@ -14,7 +14,7 @@ type User struct {
 	FirstName      string `json:"firstname"`
 	LastName       string `json:"lastname"`
 	Email          string `json:"email"`
-	Password       string `json:"-"`
+	Password       string `json:"password"`
 	Dob            string `json:"dob"`
 	Gender         string `json:"gender"`
 	NickName       string `json:"nickname"`
@@ -25,7 +25,7 @@ type User struct {
 // create users table
 func CreateUsersTable(db *sql.DB) {
 	usersTable := `CREATE TABLE IF NOT EXISTS Users (
-        UserID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+        UserID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
         FirstName TEXT NOT NULL,
         LastName TEXT NOT NULL,
 		Email TEXT NOT NULL UNIQUE,
@@ -99,4 +99,16 @@ func HashPassword(password string) string {
 	hash, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	u.CheckErr(err)
 	return string(hash)
+}
+
+// VerifyPassword checks if the entered password matches the stored bcrypt hash
+func VerifyPassword(enteredPassword, storedHash string) error {
+	// Compare the entered password with the stored hash
+	err := bcrypt.CompareHashAndPassword([]byte(storedHash), []byte(enteredPassword))
+	if err != nil {
+		// Passwords don't match
+		return err
+	}
+	// Passwords match
+	return nil
 }

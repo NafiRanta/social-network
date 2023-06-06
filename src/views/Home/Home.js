@@ -72,7 +72,6 @@ function Home(props) {
                         <PostCard />
                     </div>
                 </div>
-               
             </div>
         </div>
     </div>

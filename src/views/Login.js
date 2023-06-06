@@ -87,7 +87,7 @@ function Login() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ registerData }),
+        body: JSON.stringify(registerData),
       });
       if (response.ok) {
         console.log("Register successful");
