@@ -10,6 +10,12 @@ function Home(props) {
         <Topnav />
         <div className="container-fluid">
             <div className="row justify-content-evenly">
+                <div className="col-12 col-lg-6 pb-5">
+                    <div className="d-flex flex-column justify-content-center w-100 mx-auto" id="d-flex-postcontainer-myprofile">
+                        <CreatePost />
+                        <PostCard />
+                    </div>
+                </div>
                 <div className="col-12 col-lg-3">
                     <div className="d-flex flex-column justify-content-center w-100 mx-auto" id="d-flex-postcontainer-followersbox"> 
                         <div className="bg-white rounded border shadow p-3">
@@ -66,12 +72,7 @@ function Home(props) {
                         </div>
                     </div>
                 </div>
-                <div className="col-12 col-lg-6 pb-5">
-                    <div className="d-flex flex-column justify-content-center w-100 mx-auto" id="d-flex-postcontainer-myprofile">
-                        <CreatePost />
-                        <PostCard />
-                    </div>
-                </div>
+                
             </div>
         </div>
     </div>

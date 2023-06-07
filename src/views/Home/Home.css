@@ -1,0 +1,8 @@
+@media (min-width: 62em) {
+    .col-12\ col-lg-6\ pb-5 {
+      order: 2;
+    }
+    .col-12\ col-lg-3 {
+      order: 1;
+    }
+  }

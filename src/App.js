@@ -41,7 +41,7 @@ function App() {
         <Route path="/login" element={<Navigate replace to="/" />} />
       )}
   </Routes>  */ 
-   //<Home />
+   <Home />
     //<Profile />
      //<GroupsList />
     //<SingleGroup />
@@ -50,7 +50,7 @@ function App() {
    //<Error />
   //<HomeGroup />
   //<Login />
-  <Topnav />
+  //<Topnav />
   );
 }
 
