@@ -3,6 +3,7 @@ import Topnav from '../Topnav'
 import CreatePost from '../../components/CreatePost/CreatePost'
 import PostCard from '../../components/Card/PostCard';
 import Avatar from '../../components/Avatar/Avatar';
+import './Home.css'
 
 function Home(props) {
     return (
