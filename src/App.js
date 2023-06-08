@@ -53,7 +53,12 @@ function App() {
       )}
       <Route
         path="/chat"
-        element={<Chat username={username} />} 
+        element={
+          <div>
+            <Topnav username={username} />
+            <Chat username={username} />
+          </div>
+          } 
       />
       <Route
         path="/groups"
