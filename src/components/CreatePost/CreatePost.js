@@ -1,8 +1,8 @@
 import React from 'react';
 import CreatePostModal from '../Modal/CreatePostModal';
 import Avatar from '../../components/Avatar/Avatar';
+
 function CreatePost(props) {
- 
     return(
         <div className="bg-white p-3 mt-3 rounded border shadow">
               <div className="d-flex" type="button">
@@ -15,7 +15,7 @@ function CreatePost(props) {
                   disabled 
                   placeholder={`What's on your mind, ${props.username}?`}
                   data-bs-toggle="modal" 
-                  data-bs-target="#createModal"/>
+                  data-bs-target="#createPostModal"/>
               </div>
               <CreatePostModal username={props.username}/>
               <hr />

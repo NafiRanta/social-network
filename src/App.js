@@ -8,12 +8,14 @@ import CreatePost from "./components/CreatePost/CreatePost";
 import CreatePostModal from "./components/Modal/CreatePostModal";
 import Topnav from "./views/Topnav";
 import Profile from "./views/Profile/Profile";
-import GroupsList from "./views/Groups/GroupsList";
+import MyGroups from "./views/Groups/MyGroups";
 import HomeGroup from "./views/Groups/HomeGroup";
 import Chat from "./views/Chat/Chat";
 import SingleGroup from "./views/Groups/SingleGroup";
 import Error from "./views/Error/Error";
 import SingleGroupNonMember from "./views/Groups/SingleGroupNonMember";
+import GroupSidenav from "./views/Groups/GroupSidenav";
+import AllGroups from "./views/Groups/AllGroups";
 
 function App() {
   const isAuth = !!localStorage.getItem("userInfo");
@@ -49,6 +51,37 @@ function App() {
       ) : (
         <Route path="/login" element={<Navigate replace to="/" />} />
       )}
+      <Route
+        path="/chat"
+        element={<Chat username={username} />} 
+      />
+      <Route
+        path="/groups"
+        element={
+          <div>
+            <Topnav username={username} />
+            <HomeGroup username={username} />
+          </div>
+       } 
+      />
+       <Route
+        path="/allgroups"
+        element={
+          <div>
+            <Topnav username={username} />
+            <AllGroups username={username} />
+          </div>
+       } 
+      />
+       <Route
+        path="/mygroups"
+        element={
+          <div>
+            <Topnav username={username} />
+            <MyGroups username={username} />
+          </div>
+       } 
+      />
   </Routes>  
    //<Home />
     //<Profile />

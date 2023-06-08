@@ -2,9 +2,9 @@ import React from "react";
 import "./Modal.css";
 import Avatar from "../../components/Avatar/Avatar";
 
-function CreateGroupPostModal() {
+function CreateGroupPostModal(props) {
     return(
-        <div className="modal fade" id="createModal" tabIndex="-1" aria-labelledby="createModalLabel" aria-hidden="true" data-bs-backdrop="false">
+        <div className="modal fade" id="createGroupPostModal" tabIndex="-1" aria-labelledby="createModalLabel" aria-hidden="true" data-bs-backdrop="false">
         <div className="modal-dialog modal-dialog-centered">
           <div className="modal-content">
             <div className="modal-header align-items-center">
@@ -19,7 +19,7 @@ function CreateGroupPostModal() {
                       <Avatar /> 
                     </div>
                     <div>
-                      <p className="m-0 fw-bold">John</p>
+                      <p className="m-0 fw-bold">{props.username}</p>
                       <select className="form-select border-0 bg-gray w-75 fs-7" aria-label="Default select example" >
                         <option defaultValue="0">Select your groups</option>
                         <option value="1">Ålands köp och sälj </option>
@@ -32,7 +32,7 @@ function CreateGroupPostModal() {
                     <textarea cols="30" rows="5" className="form-control border-0" placeholder="What's on your mind?"></textarea>
                   </div>
                   <div className="d-flex justify-content-between border border-1 border-light rounded p-3 mt-3">
-                    <p className="m-0">Add to your post</p>
+                    <p className="m-0">Add post to your group</p>
                     <div>
                       <i className="fas fa-images fs-5 text-success pointer mx-1"></i>
                     </div>

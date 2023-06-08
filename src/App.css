@@ -31,7 +31,7 @@ body {
   padding-top: 20px;
   max-width: 800px;
   }
-  #d-flex-postcontainer-allGroups, #d-flex-postcontainer-mygroups{
+  #d-flex-postcontainer-allGroups, #d-flex-postcontainer-mygroups, #d-flex-postcontainer-homeGroup, #d-flex-postcontainer-myhomepage, #d-flex-postcontainer-contactsbox{
     padding-top: 48px;
   }
 #dropdown-menu-searchmenu{

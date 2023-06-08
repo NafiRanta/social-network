@@ -4,7 +4,7 @@ import Avatar from "../../components/Avatar/Avatar";
 
 function CreatePostModal(props) {
     return(
-        <div className="modal fade" id="createModal" tabIndex="-1" aria-labelledby="createModalLabel" aria-hidden="true" data-bs-backdrop="false">
+        <div className="modal fade" id="createPostModal" tabIndex="-1" aria-labelledby="createModalLabel" aria-hidden="true" data-bs-backdrop="false">
         <div className="modal-dialog modal-dialog-centered">
           <div className="modal-content">
             <div className="modal-header align-items-center">
@@ -14,7 +14,6 @@ function CreatePostModal(props) {
             <div className="modal-body">
               <div className="my-1 p-1">
                 <div className="d-flex flex-column">
-      
                   <div className="d-flex align-items-center">
                     <div className="p-2">
                       <Avatar /> 

@@ -1,6 +1,8 @@
 import React from 'react';
 import { Dropdown } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import Avatar from '../components/Avatar/Avatar';
+import CreatePostModal from '../components/Modal/CreatePostModal';
 import SearchbarGlobal from '../components/Searchbar/SearchbarGlobal';
 
 function Topnav(props) {
@@ -8,8 +10,10 @@ function Topnav(props) {
     <div className="bg-white d-flex align-items-center fixed-top shadow">
       <div className="container-fluid">
         <div className="row align-items-center">
-          <div className="col d-flex align-items-center">
-            <i className="fab fa-facebook text-primary"></i>
+          <div className="col d-flex align-items-center" type="button" id="homeMenu"> 
+                <Link to="/" className="text-decoration-none text-dark">
+                  <i className="fab fa-facebook text-primary" ></i>
+                </Link>
             <SearchbarGlobal />
           </div>
           <div className="col d-flex align-items-center justify-content-end">
@@ -32,14 +36,19 @@ function Topnav(props) {
                         <h2>Create</h2>
                       </Dropdown.Item>
                       <Dropdown.Item as="li" className="my-2 p-1">
-                        <a href="#" className="text-decoration-none text-dark d-flex align-items-center">
+                        <div 
+                          type="button" 
+                          className="text-decoration-none text-dark d-flex align-items-center"  
+                          data-bs-toggle="modal" 
+                          data-bs-target="#createPostModal" 
+                        >
                           <div className="rounded-circle bg-gray p-1 d-flex align-items-center justify-content-center me-3">
                             <i className="fas fa-edit"></i>
                           </div>
                           <div>
                             <p className="m-0">Post</p>
                           </div>
-                        </a>
+                        </div>
                       </Dropdown.Item>
                       <Dropdown.Item as="li" className="my-2 p-1">
                         <a href="#" className="text-decoration-none text-dark d-flex align-items-center">
@@ -56,11 +65,15 @@ function Topnav(props) {
                 </Dropdown.Menu>
               </Dropdown>
             </div>
-            <div className="rounded-circle p-1 bg-gray d-flex align-items-center justify-content-center mx-2" type="button" id="chatMenu">
-              <i className="fas fa-users"></i>
+            <div className="rounded-circle p-1 bg-gray d-flex align-items-center justify-content-center mx-2" type="button" id="groupMenu">
+              <Link to="/groups" className="text-decoration-none text-dark">
+                <i className="fas fa-users"></i>
+              </Link>
             </div>
             <div className="rounded-circle p-1 bg-gray d-flex align-items-center justify-content-center mx-2" type="button" id="chatMenu">
-              <i className="fas fa-comment"></i>
+                <Link to="/chat" className="text-decoration-none text-dark">
+                  <i className="fas fa-comment"></i>
+                </Link>
             </div>
             <div className="mx-2">
               <Dropdown>
@@ -111,12 +124,12 @@ function Topnav(props) {
                   aria-labelledby="secondMenu"
                 >
                   <Dropdown.Item as="li" className="my-2 p-1">
-                    <a href="#" className="text-decoration-none text-dark d-flex align-items-center">
+                    <Link to="/" className="text-decoration-none text-dark d-flex align-items-center">
                       <div className="rounded-circle p-1 bg-gray d-flex align-items-center justify-content-center mx-2">
                         <Avatar />
                       </div>
                       <p className="m-0">{props.username}</p>
-                    </a>
+                    </Link>
                   </Dropdown.Item>
                   <Dropdown.Item as="li" className="my-2 p-1">
                     <a href="#" className="text-decoration-none text-dark d-flex align-items-center">
@@ -132,6 +145,7 @@ function Topnav(props) {
           </div>
         </div>
       </div>
+      <CreatePostModal username={props.username}/>
     </div>
   );
 }
