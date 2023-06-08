@@ -22,12 +22,13 @@ function App() {
   const username = userInfo ? userInfo.FirstName + " " + userInfo.LastName  : '';
    
   return (
-/*  <Routes>
+ <Routes>
     {isAuth ? (
          <Route   
          path="/"
          element={
            <div>
+              <Topnav />
               <Home username={username} />
            </div>
            
@@ -40,15 +41,15 @@ function App() {
       ) : (
         <Route path="/login" element={<Navigate replace to="/" />} />
       )}
-  </Routes>  */ 
-   <Home />
+  </Routes>  
+   //<Home />
     //<Profile />
      //<GroupsList />
     //<SingleGroup />
     // <SingleGroupNonMember />
    //<Chat />
    //<Error />
-  //<HomeGroup />
+ // <HomeGroup />
   //<Login />
   //<Topnav />
   );

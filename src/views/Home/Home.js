@@ -1,5 +1,4 @@
 import React from 'react';
-import Topnav from '../Topnav'
 import CreatePost from '../../components/CreatePost/CreatePost'
 import PostCard from '../../components/Card/PostCard';
 import Avatar from '../../components/Avatar/Avatar';
@@ -7,8 +6,6 @@ import './Home.css'
 
 function Home(props) {
     return (
-        <div>
-        <Topnav />
         <div className="container-fluid">
             <div className="row justify-content-evenly">
                 <div className="col-12 col-lg-6 pb-5">
@@ -73,10 +70,8 @@ function Home(props) {
                         </div>
                     </div>
                 </div>
-                
             </div>
         </div>
-    </div>
     )
 }
 

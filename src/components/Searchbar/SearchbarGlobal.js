@@ -1,45 +1,79 @@
-import React from 'react';
+import React, { useRef } from 'react'; // a hook to create mutable reference (value tt can b modified/updated w/o re-rendering)
+import { Dropdown } from 'react-bootstrap';
 import Avatar from '../Avatar/Avatar';
 
+// useRef is used to create a reference to the dropdown menu element. 
+// returns a JS object with a current property that can be used to access the referenced value or element.
+// then used to check if a click event occurs within the dropdown menu. 
+// maintain a reference to the dropdown menu element across renders without causing a re-render.
+
 function SearchbarGlobal() {
-    return (
-        <div className="input-group ms-2" type="button">
-        <span className="input-group-prepend d-lg-none" id="searchMenu" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
-          <div className="input-group-text bg-gray border-0 rounded-circle" id="input-group-text-circle">
-            <i className="fas fa-search text-muted"></i>
-          </div>
-        </span>
-        <span className="input-group-prepend d-none d-lg-block" id="searchMenu" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
-          <div className="input-group-text bg-gray border-0 rounded-pill" id= "input-group-text-pill">
-            <i className="fas fa-search me-2 text-muted"></i>
-            <p className="m-0 fs-7 text-muted">Search ÅlandSocial</p>
-          </div>
-        </span>
-        <ul className="dropdown-menu overflow-auto border-0 shadow p-3" aria-labelledby="searchMenu" id="dropdown-menu-searchmenu">
-          <li>
-            <input type="text" className="rounded-pill border-0 bg-gray dropdown-item" placeholder="Search ÅlandSocial..." autoFocus/>
-          </li>
-          <li className="my-4">
-            <div className="alert fade show dropdown-item  p-1 m-0 d-flex align-items-center justify-content-between" role="alert">
-              <div className="d-flex align-items-center">
-                <Avatar/>
-                <p className="m-0">Nafi</p>
-              </div>
-              <button type="button" className="btn-close p-0 m-0" data-bs-dismiss="alert" aria-label="Close"></button>
+  const inputRef = useRef(null);
+  const buttonRef = useRef(null);
+
+  const handleInputClick = (e) => {
+    e.stopPropagation();
+  };
+
+  const handleButtonClick = (e) => {
+    e.stopPropagation();
+  };
+
+  const handleDropdownToggle = (isOpen, event, metadata) => {
+    if (isOpen && inputRef.current && inputRef.current.contains(document.activeElement)) {
+      // Keep the dropdown open when clicking inside the input field
+      return;
+    }
+
+    // Close the dropdown for other toggle events
+    // You can add additional logic here if needed
+    // For example, to handle pressing the Escape key to close the dropdown
+    if (!isOpen) {
+      return;
+    }
+
+    return true;
+  };
+
+  return (
+    <Dropdown onToggle={handleDropdownToggle}>
+      <Dropdown.Toggle variant="light" id="searchMenu">
+        <div className="input-group-text bg-gray border-0 rounded-pill" id="input-group-text-pill">
+          <i className="fas fa-search me-2 text-muted"></i>
+          <p className="m-0 fs-7 text-muted">Search ÅlandSocial</p>
+        </div>
+      </Dropdown.Toggle>
+      <Dropdown.Menu className="overflow-auto border-0 shadow p-3" aria-labelledby="searchMenu">
+        <Dropdown.Item>
+          <input
+            type="text"
+            className="rounded-pill border-0 bg-gray dropdown-item"
+            placeholder="Search ÅlandSocial..."
+            onClick={handleInputClick}
+            ref={inputRef}
+          />
+        </Dropdown.Item>
+        <Dropdown.Item className="my-4">
+          <div className="alert fade show p-1 m-0 d-flex align-items-center justify-content-between" role="alert">
+            <div className="d-flex align-items-center">
+              <Avatar />
+              <p className="m-0">Nafi</p>
             </div>
-          </li>
-          <li className="my-4">
-            <div className="alert fade show dropdown-item p-1 m-0 d-flex align-items-center justify-content-between" role="alert">
-              <div className="d-flex align-items-center">
-                  <Avatar/>
-                  <p className="m-0">Nafi</p>
-                </div>
-              <button type="button" className="btn-close p-0 m-0" data-bs-dismiss="alert" aria-label="Close"></button>
+            <button type="button" className="btn-close p-0 m-0" data-bs-dismiss="alert" aria-label="Close" onClick={handleButtonClick}></button>
+          </div>
+        </Dropdown.Item>
+        <Dropdown.Item className="my-4">
+          <div className="alert fade show p-1 m-0 d-flex align-items-center justify-content-between" role="alert">
+            <div className="d-flex align-items-center">
+              <Avatar />
+              <p className="m-0">Nafi</p>
             </div>
-          </li>
-        </ul>
-      </div>
-    )
+            <button type="button" className="btn-close p-0 m-0" data-bs-dismiss="alert" aria-label="Close" onClick={handleButtonClick}></button>
+          </div>
+        </Dropdown.Item>
+      </Dropdown.Menu>
+    </Dropdown>
+  );
 }
 
 export default SearchbarGlobal;

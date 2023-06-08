@@ -11,7 +11,9 @@ body {
   -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: transparent;
 }
-
+.dropdown-toggle::after {
+  display: none;
+}
 .login-form{
   width: 100%;
   max-width: 28rem;
