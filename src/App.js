@@ -18,9 +18,17 @@ import SingleGroupNonMember from "./views/Groups/SingleGroupNonMember";
 function App() {
   const isAuth = !!localStorage.getItem("userInfo");
   console.log(isAuth)
-  const userInfo = JSON.parse(localStorage.getItem("userInfo"))
-  const username = userInfo.firstname + " " + userInfo.lastname;
-  console.log("username: " + username)
+
+  // if isAuth is true, get username from localStorage
+  const [username, setUsername] = useState("");
+  useEffect(() => {
+    if (isAuth) {
+      const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+      const username = userInfo.firstname + " " + userInfo.lastname;
+      setUsername(username);
+    }
+  }, [isAuth]);
+
   return (
  <Routes>
     {isAuth ? (
