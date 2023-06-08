@@ -1,5 +1,6 @@
 import React from "react";
 import "./Modal.css";
+import Avatar from "../../components/Avatar/Avatar";
 
 function CreateGroupPostModal() {
     return(
@@ -15,7 +16,7 @@ function CreateGroupPostModal() {
                 <div className="d-flex flex-column">
                   <div className="d-flex align-items-center">
                     <div className="p-2">
-                      <img src="https://source.unsplash.com/collection/happy-people" alt="from fb" className="rounded-circle"/>
+                      <Avatar /> 
                     </div>
                     <div>
                       <p className="m-0 fw-bold">John</p>

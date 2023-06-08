@@ -10,7 +10,7 @@ function Home(props) {
             <div className="row justify-content-evenly">
                 <div className="col-12 col-lg-6 pb-5">
                     <div className="d-flex flex-column justify-content-center w-100 mx-auto" id="d-flex-postcontainer-myprofile">
-                        <CreatePost />
+                        <CreatePost username={props.username}/>
                         <PostCard />
                     </div>
                 </div>
@@ -19,9 +19,15 @@ function Home(props) {
                         <div className="bg-white rounded border shadow p-3">
                             <div>
                                 <div className="my-3 d-flex justify-content-between align-items-center">
-                                    <p>{props.username}</p>
-                                    <p className="text-muted fs-5 m-0">Contacts/Following</p>
+                                    <div className="d-flex align-items-center mx-2 chat-avatar">
+                                        <div className="position-relative">
+                                            <Avatar />  
+                                        </div>
+                                        <p className="m-0"><strong>{props.username}</strong></p>
+                                    </div>
                                 </div>
+                                <hr />
+                                <p className="text-muted fs-5 m-0">Contacts</p>
                                 <li className="dropdown-item rounded my-2 px-0" type="button">
                                     <div className="d-flex align-items-center mx-2 chat-avatar">
                                         <div className="position-relative">

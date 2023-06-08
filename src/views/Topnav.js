@@ -115,7 +115,7 @@ function Topnav(props) {
                       <div className="rounded-circle p-1 bg-gray d-flex align-items-center justify-content-center mx-2">
                         <Avatar />
                       </div>
-                      <p className="m-0">Nafisah Rantasalmi</p>
+                      <p className="m-0">{props.username}</p>
                     </a>
                   </Dropdown.Item>
                   <Dropdown.Item as="li" className="my-2 p-1">

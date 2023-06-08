@@ -19,8 +19,8 @@ function App() {
   const isAuth = !!localStorage.getItem("userInfo");
   console.log(isAuth)
   const userInfo = JSON.parse(localStorage.getItem("userInfo"))
-  const username = userInfo ? userInfo.FirstName + " " + userInfo.LastName  : '';
-   
+  const username = userInfo.firstname + " " + userInfo.lastname;
+  console.log("username: " + username)
   return (
  <Routes>
     {isAuth ? (
@@ -28,7 +28,7 @@ function App() {
          path="/"
          element={
            <div>
-              <Topnav />
+              <Topnav username={username} />
               <Home username={username} />
            </div>
            

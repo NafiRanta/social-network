@@ -1,7 +1,8 @@
 import React from "react";
 import "./Modal.css";
+import Avatar from "../../components/Avatar/Avatar";
 
-function CreatePostModal() {
+function CreatePostModal(props) {
     return(
         <div className="modal fade" id="createModal" tabIndex="-1" aria-labelledby="createModalLabel" aria-hidden="true" data-bs-backdrop="false">
         <div className="modal-dialog modal-dialog-centered">
@@ -16,10 +17,10 @@ function CreatePostModal() {
       
                   <div className="d-flex align-items-center">
                     <div className="p-2">
-                      <img src="https://source.unsplash.com/collection/happy-people" alt="from fb" className="rounded-circle"/>
+                      <Avatar /> 
                     </div>
                     <div>
-                      <p className="m-0 fw-bold">JJ</p>
+                      <p className="m-0 fw-bold">{props.username}</p>
                       <select className="form-select border-0 bg-gray w-75 fs-7" aria-label="Default select example">
                         <option defaultValue="1">Public</option>
                         <option value="2">Private</option>
