@@ -10,7 +10,6 @@ function Login() {
   const openModal = () => {
     console.log("open modal");
     setModalOpen(true);
-    HandleRegister();
   };
 
   const handleInputChange = (e) => {

@@ -35,6 +35,25 @@
     color: #0d6efd !important;
 }
 
+/* .avatar-wrapper {
+	position: relative;
+	display: inline-block;
+	overflow: hidden;
+
+  }
+  
+  .profile-pic {
+	width: 150px;
+	height: 150px;
+	object-fit: cover;
+  }
+  
+  .remove-button {
+	position: absolute;
+	top: 5px;
+	right: 5px
+  } */
+	/* /*  */
 .avatar-wrapper{
 	position: relative;
 	height: 200px;
@@ -79,20 +98,12 @@
 			top: -17px;
 			left: 0;
 			text-align: center;
-			opacity: 0;
 			transition: all .3s ease;
 			color: #34495e;
 		}
-		&:hover .fa-arrow-circle-up{
-			opacity: .9;
-		}
 	}
 }
-
 #registerForm{
     margin-top: -49px;
 }
 
-.registerForm-group{
-    margin-top: -35px;
-}
