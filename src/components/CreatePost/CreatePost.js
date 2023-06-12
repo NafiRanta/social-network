@@ -21,7 +21,6 @@ function CreatePost(props) {
               <hr />
               <div className="d-flex flex-column flex-lg-row mt-3">
                 <div className="dropdown-item rounded d-flex align-items-center justify-content-center" type="button">
-                  
                   <p className="m-0 text-muted">Create Post</p>
                 </div>
               </div>
