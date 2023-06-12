@@ -6,6 +6,12 @@ import CreatePostModal from '../components/Modal/CreatePostModal';
 import SearchbarGlobal from '../components/Searchbar/SearchbarGlobal';
 
 function Topnav(props) {
+  //handle logout
+  const handleLogout = () => {
+    localStorage.removeItem("userInfo");
+    sessionStorage.removeItem("userInfo");
+    window.location.href = "/login";
+  };
   return (
     <div className="bg-white d-flex align-items-center fixed-top shadow">
       <div className="container-fluid">
@@ -132,7 +138,7 @@ function Topnav(props) {
                     </Link>
                   </Dropdown.Item>
                   <Dropdown.Item as="li" className="my-2 p-1">
-                    <a href="#" className="text-decoration-none text-dark d-flex align-items-center">
+                    <a href="#" className="text-decoration-none text-dark d-flex align-items-center" onClick={handleLogout}>
                       <div className="rounded-circle p-1 bg-gray d-flex align-items-center justify-content-center mx-2">
                         <i className="fas fa-power-off"></i>
                       </div>

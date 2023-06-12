@@ -33,6 +33,7 @@ func Start() error {
 
 	router.HandleFunc("/login", a.LogIn)
 	router.HandleFunc("/register", a.Register)
+	router.HandleFunc("/logout", a.LogOut)
 	handler := u.CorsMiddleware(router)
 
 	//fire up the server
