@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import Avatar from '../components/Avatar/Avatar';
 import CreatePostModal from '../components/Modal/CreatePostModal';
 import SearchbarGlobal from '../components/Searchbar/SearchbarGlobal';
+import CreateGroupModal from '../components/Modal/CreateGroupModal';
 
 function Topnav(props) {
   //handle logout
@@ -57,14 +58,19 @@ function Topnav(props) {
                         </div>
                       </Dropdown.Item>
                       <Dropdown.Item as="li" className="my-2 p-1">
-                        <a href="#" className="text-decoration-none text-dark d-flex align-items-center">
+                      <div 
+                          type="button" 
+                          className="text-decoration-none text-dark d-flex align-items-center"  
+                          data-bs-toggle="modal" 
+                          data-bs-target="#createGroupModal" 
+                        >
                           <div className="rounded-circle bg-gray p-1 d-flex align-items-center justify-content-center me-3">
                             <i className="fas fa-users"></i>
                           </div>
                           <div>
                             <p className="m-0">Group</p>
                           </div>
-                        </a>
+                        </div>
                       </Dropdown.Item>
                     </div>
                   </div>
@@ -152,6 +158,7 @@ function Topnav(props) {
         </div>
       </div>
       <CreatePostModal username={props.username}/>
+      <CreateGroupModal username={props.username}/>
     </div>
   );
 }
