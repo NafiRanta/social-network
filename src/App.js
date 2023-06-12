@@ -23,11 +23,15 @@ function App() {
 
   // if isAuth is true, get username from localStorage
   const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [dob, setDob] = useState("");
   useEffect(() => {
     if (isAuth) {
       const userInfo = JSON.parse(localStorage.getItem("userInfo"));
       const username = userInfo.firstname + " " + userInfo.lastname;
       setUsername(username);
+      setEmail(userInfo.email);
+      setDob(userInfo.dob);
     }
   }, [isAuth]);
 
@@ -86,6 +90,20 @@ function App() {
             <MyGroups username={username} />
           </div>
        } 
+      />
+       <Route
+        path="/profile"
+        element={
+          <div>
+            <Topnav username={username} />
+            <Profile 
+              username={username}
+              email={email}
+              dob={dob}
+            />
+          </div>
+       } 
+
       />
   </Routes>  
    //<Home />

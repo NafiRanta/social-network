@@ -136,7 +136,7 @@ function Topnav(props) {
                   aria-labelledby="secondMenu"
                 >
                   <Dropdown.Item as="li" className="my-2 p-1">
-                    <Link to="/" className="text-decoration-none text-dark d-flex align-items-center">
+                    <Link to="/profile" className="text-decoration-none text-dark d-flex align-items-center">
                       <div className="rounded-circle p-1 bg-gray d-flex align-items-center justify-content-center mx-2">
                         <Avatar />
                       </div>

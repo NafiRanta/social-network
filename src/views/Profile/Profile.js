@@ -5,32 +5,55 @@ import PostContainer from '../../components/Card/PostCard';
 import AvatarSquare from '../../components/Avatar/AvatarSquare';
 import './Profile.css'
 
-function Profile() {
+function Profile(props) {
     return (
         <div>
             <Topnav />
             <div className="container-fluid">
-                  <div className="bg-white p-3 mt-3 rounded border shadow" id="bg-white">
-                        <div className="profile-cover__bg bg--img" data-overlay="0.3"></div>
-                        <div className="panel profile-cover p-4">
-                            <div className="profile-cover__img">
-                                <img src="https://scontent-hel3-1.xx.fbcdn.net/v/t39.30808-6/240729290_10161438043602818_6927266341962394575_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=GabteKWVtsMAX9bqdUW&_nc_ht=scontent-hel3-1.xx&oh=00_AfCNVOnNn3krN68kgWTzOcX8oiU89jECUlEMsV7PtTP_bA&oe=6472BDB2" alt="" />
-                                <h3 className="h3"><strong>Nafisah Rantasalmi</strong></h3>
-                            </div>
-                            <div className="profile-cover__info">
-                                <ul className="nav">
-                                    <li><strong>33</strong>Followers</li>
-                                    <li><strong>136</strong>Following</li>
-                                </ul>
-                                <div className="profile-cover__action">
-                                    <button className="btn btn-primary btn-sm d-flex justify-content-center align-items-center ">
-                                        <i className="fa fa-plus"> </i>
-                                        <span> Follow</span>
-                                    </button>
+                <section>
+                    <div className="container py-5 ">
+                        <div className="bg-white" id="bg-white">
+                            <div className="panel profile-cover p-4">
+                                <div className="card">
+                                <div className="card-body p-4">
+                                    <div className="d-flex text-black">
+                                    <div className="flex-shrink-0">
+                                        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp"
+                                        alt="Generic placeholder image" className="img-fluid"
+                                        />
+                                    </div>
+                                    <div className="flex-grow-1 ms-3">
+                                        <h5 className="mb-1">{props.username}</h5>
+                                        <div className="d-flex justify-content-start rounded-3 p-2 mb-2">
+                                            <div>
+                                                <p className="small text-muted mb-1">
+                                                Followers
+                                                </p>
+                                                <p className="mb-0">41</p>
+                                            </div>
+                                            <div className="px-3">
+                                                <p className="small text-muted mb-1">
+                                                Following
+                                                </p>
+                                                <p className="mb-0">976</p>
+                                            </div>
+                                        </div>
+                                        <div className="d-flex pt-1">
+                                        <button type="button" className="btn btn-outline-primary me-1 flex-grow-1">
+                                            Chat
+                                        </button>
+                                        <button type="button" className="btn btn-primary flex-grow-1">
+                                            Follow
+                                        </button>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </section>
                 <div className="row justify-content-evenly">
                     <div className="col-12 col-lg-3">
                         <div className="d-flex flex-column justify-content-center w-100 mx-auto" id="d-flex-postcontainer-followersbox">
@@ -51,10 +74,10 @@ function Profile() {
                                         <span><i className="fas fa-user"></i> <span className="name">Nickname</span></span>
                                     </li>
                                     <li className="my-2 p-1">
-                                        <span><i className="fas fa-edit"></i> <span className="name">Email</span></span>
+                                        <span><i className="fas fa-edit"></i> <span className="name">{props.email}</span></span>
                                     </li>
                                     <li className="dropdown-item p-1 rounded">
-                                        <span><i className="fas fa-birthday-cake"></i> <span className="name">Birthday</span></span>
+                                        <span><i className="fas fa-birthday-cake"></i> <span className="name">{props.dob}</span></span>
                                     </li>
                                 </ul>
                             </div>
@@ -148,11 +171,10 @@ function Profile() {
                     </div>
                     <div className="col-12 col-lg-6 pb-5">
                         <div className="d-flex flex-column justify-content-center w-100 mx-auto" id="d-flex-postcontainer-myprofile">
-                            <CreatePost />
+                            <CreatePost username={props.username}/>
                             <PostContainer />
                         </div>
                     </div>
-                   
                 </div>
             </div>
         </div>
