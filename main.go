@@ -30,10 +30,11 @@ func Start() error {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "connected")
 	})
-
+	//handle user
 	router.HandleFunc("/login", a.LogIn)
 	router.HandleFunc("/register", a.Register)
 	router.HandleFunc("/logout", a.LogOut)
+	//handle post
 	handler := u.CorsMiddleware(router)
 
 	//fire up the server

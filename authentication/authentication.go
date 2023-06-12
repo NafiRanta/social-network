@@ -1,6 +1,7 @@
 package authentication
 
 import (
+	"database/sql"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -110,24 +111,29 @@ func Register(w http.ResponseWriter, r *http.Request) {
 	// Check if email already exists in the database
 	_, err = d.GetUserByEmail(user.Email)
 	if err == nil {
-		fmt.Println("User already exists")
-		http.Error(w, "You already have an account", http.StatusBadRequest)
+		errMsg := "You already have an account"
+		fmt.Println("User already exists:", errMsg)
+		http.Error(w, errMsg, http.StatusConflict)
 		return
+	} else {
+		// Insert user in the database
+		if err == sql.ErrNoRows {
+			fmt.Println("User does not exist")
+			err = d.AddUser(d.GetDB(), user.FirstName, user.LastName, user.Email, user.Password, user.DateOfBirth, user.Gender, user.Nickname, user.Avatar, user.AboutMe)
+			if err != nil {
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+				return
+			}
+		} else {
+			fmt.Println("different error")
+		}
 	}
 
 	/* // Create bcrypt hash from password
-	hashedPassword := d.HashPassword(user.Password)
 
 	// Set the hashed password in the user struct
 	user.Password = hashedPassword */
-
-	// Insert user in the database
-	err = d.AddUser(d.GetDB(), user.FirstName, user.LastName, user.Email, user.Password, user.Dob, user.Gender, user.NickName, user.ProfilePicture, user.About)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	fmt.Println("User added successfully")
 	w.WriteHeader(http.StatusOK)
+	fmt.Println("User added successfully")
+
 }

@@ -6,59 +6,74 @@ import (
 	"fmt"
 	u "socialnetwork/utils"
 
-	"golang.org/x/crypto/bcrypt"
+	"github.com/gofrs/uuid"
 )
 
 type User struct {
-	ID             int    `json:"-"`
+	UserID         string `json:"-"`
 	FirstName      string `json:"firstname"`
 	LastName       string `json:"lastname"`
 	Email          string `json:"email"`
 	Password       string `json:"password"`
-	Dob            string `json:"dob"`
+	Privacy        string `json:"privacy"`
+	Online         int    `json:"online"`
+	DateOfBirth    string `json:"dob"`
 	Gender         string `json:"gender"`
-	NickName       string `json:"nickname"`
-	ProfilePicture string `json:"-"`
-	About          string `json:"about"`
+	Avatar         string `json:"-"`
+	CoverImage     string `json:"-"`
+	Nickname       string `json:"nickname"`
+	AboutMe        string `json:"about"`
+	FollowerIDs    string `json:"-"`
+	OnFollowingIDs string `json:"-"`
 }
 
 // create users table
 func CreateUsersTable(db *sql.DB) {
 	usersTable := `CREATE TABLE IF NOT EXISTS Users (
-        UserID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
-        FirstName TEXT NOT NULL,
-        LastName TEXT NOT NULL,
-		Email TEXT NOT NULL UNIQUE,
-		Password TEXT NOT NULL,
-		Dob TEXT NOT NULL,
+		UserID CHAR(36) NOT NULL PRIMARY KEY,
+		FirstName VARCHAR(255) NOT NULL,
+		LastName VARCHAR(255) NOT NULL,
+		Email VARCHAR(255) NOT NULL UNIQUE,
+		Password CHAR(36) NOT NULL,
+		Privacy TEXT NOT NULL DEFAULT 'public',
+		Online TINYINT(1) NOT NULL DEFAULT 0,
+		DateOfBirth DATETIME NOT NULL,
 		Gender TEXT NOT NULL,
-		NickName TEXT,
-		ProfilePicture TEXT,
-		About TEXT 
-        );`
+		Avatar BLOB DEFAULT 'Default avatar',
+		CoverImage BLOB NOT NULL DEFAULT 'default cover image',
+		Nickname TEXT,
+		AboutMe TEXT,
+		Follower_IDs TEXT,
+		OnFollowing_IDs TEXT
+	);`
 	query, err := db.Prepare(usersTable)
 	u.CheckErr(err)
 	query.Exec()
 	// insert or ignore into
 	_, err = db.Exec(`
-	INSERT OR IGNORE INTO "main"."Users" ("FirstName", "LastName", "Email", "Password", "Dob", "Gender", "NickName", "ProfilePicture", "About")
-        VALUES
-            ("Nafisah", "Rantasalmi", "nafisah.rantasalmi@gmail.com", "nafi123", "1984-10-22", "Female", "Nafi", "", ""),
-            ("Jacob", "Pesämaa", "jacob.pesamaa@gmail.com", "jacob123", "1994-10-22", "Male", "Jacob", "", "");
-	`)
+	INSERT OR IGNORE INTO Users (UserID, FirstName, LastName, Email, Password, Privacy, Online, DateOfBirth, Gender, Avatar, CoverImage, Nickname, AboutMe, Follower_IDs, OnFollowing_IDs)
+	VALUES
+		('1', 'John', 'Doe', 'johndoe@example.com', 'password123', 'public', 0, '1990-01-01', 'Male', 'Default avatar', 'default cover image', 'John', 'About John', '', ''),
+		('2', 'Jane', 'Smith', 'janesmith@example.com', 'password456', 'public', 0, '1995-02-02', 'Female', 'Default avatar', 'default cover image', 'Jane', 'About Jane', '', '');
+`)
+
 	u.CheckErr(err)
 }
 
 // add users to users table
 func AddUser(db *sql.DB, FirstName string, LastName string, Email string, Password string, Dob string, Gender string, NickName string, ProfilePicture string, About string) error {
-	records := `INSERT INTO Users (FirstName, LastName, Email, Password, Dob, Gender, NickName, ProfilePicture, About) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
+	records := `INSERT INTO Users (UserID, FirstName, LastName, Email, Password, Privacy, Online, DateOfBirth, Gender, Avatar, CoverImage, Nickname, AboutMe, Follower_IDs, OnFollowing_IDs)
+	            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
 	query, err := db.Prepare(records)
 	if err != nil {
 		return err
 	}
 	defer query.Close()
 
-	_, err = query.Exec(FirstName, LastName, Email, Password, Dob, Gender, NickName, ProfilePicture, About)
+	// Generate a unique UserID using UUID
+	userID, err := uuid.NewV4()
+
+	_, err = query.Exec(userID, FirstName, LastName, Email, Password, "public", 0, Dob, Gender, "Default avatar", "default cover image", NickName, About, "", "")
 	if err != nil {
 		return err
 	}
@@ -82,36 +97,35 @@ func GetUserByEmail(email string) (*User, error) {
 	defer stmt.Close()
 
 	var user User
-	err = stmt.QueryRow(email).Scan(&user.ID, &user.FirstName, &user.LastName, &user.Email, &user.Password, &user.Dob, &user.Gender, &user.NickName, &user.ProfilePicture, &user.About)
-	fmt.Println("err from queryrow: ", err)
+	err = stmt.QueryRow(email).Scan(&user.UserID, &user.FirstName, &user.LastName, &user.Email, &user.Password, &user.Privacy, &user.Online, &user.DateOfBirth, &user.Gender, &user.Avatar, &user.CoverImage, &user.Nickname, &user.AboutMe, &user.FollowerIDs, &user.OnFollowingIDs)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			fmt.Println("user not found")
-			return &user, nil // user not found
+			return &user, err // user not found
 		} else {
 			fmt.Println("sth else error:", err)
 			return nil, err
 		}
 	}
-
+	//if error is nil -> user found
 	return &user, nil
 }
 
 // Create bcrypt hash from password
-func HashPassword(password string) string {
-	hash, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
-	u.CheckErr(err)
-	return string(hash)
-}
+// func HashPassword(password string) string {
+// 	hash, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+// 	u.CheckErr(err)
+// 	return string(hash)
+// }
 
 // VerifyPassword checks if the entered password matches the stored bcrypt hash
-func VerifyPassword(enteredPassword, storedHash string) error {
-	// Compare the entered password with the stored hash
-	err := bcrypt.CompareHashAndPassword([]byte(storedHash), []byte(enteredPassword))
-	if err != nil {
-		// Passwords don't match
-		return err
-	}
-	// Passwords match
-	return nil
-}
+// func VerifyPassword(enteredPassword, storedHash string) error {
+// 	// Compare the entered password with the stored hash
+// 	err := bcrypt.CompareHashAndPassword([]byte(storedHash), []byte(enteredPassword))
+// 	if err != nil {
+// 		// Passwords don't match
+// 		return err
+// 	}
+// 	// Passwords match
+// 	return nil
+// }
