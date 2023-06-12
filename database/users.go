@@ -39,7 +39,6 @@ func CreateUsersTable(db *sql.DB) {
 	query, err := db.Prepare(usersTable)
 	u.CheckErr(err)
 	query.Exec()
-	fmt.Println("Users table created successfully!")
 	// insert or ignore into
 	_, err = db.Exec(`
 	INSERT OR IGNORE INTO "main"."Users" ("FirstName", "LastName", "Email", "Password", "Dob", "Gender", "NickName", "ProfilePicture", "About")
@@ -48,7 +47,6 @@ func CreateUsersTable(db *sql.DB) {
             ("Jacob", "Pesämaa", "jacob.pesamaa@gmail.com", "jacob123", "1994-10-22", "Male", "Jacob", "", "");
 	`)
 	u.CheckErr(err)
-	fmt.Println("Users inserted successfully!")
 }
 
 // add users to users table
@@ -68,6 +66,7 @@ func AddUser(db *sql.DB, FirstName string, LastName string, Email string, Passwo
 }
 
 func GetUserByEmail(email string) (*User, error) {
+	// if user not found, return nil, nil
 	db, err := sql.Open("sqlite3", "./socialnetwork.db")
 	if err != nil {
 		return nil, err
@@ -76,6 +75,7 @@ func GetUserByEmail(email string) (*User, error) {
 
 	stmt, err := db.Prepare("SELECT * FROM users WHERE email = ?")
 	if err != nil {
+		fmt.Println("err from stmt: ", err)
 		return nil, err
 	}
 	defer stmt.Close()
@@ -83,9 +83,8 @@ func GetUserByEmail(email string) (*User, error) {
 	var user User
 	err = stmt.QueryRow(email).Scan(&user.ID, &user.FirstName, &user.LastName, &user.Email, &user.Password, &user.Dob, &user.Gender, &user.NickName, &user.ProfilePicture, &user.About)
 	if err != nil {
-		fmt.Println("err from GetUserByEmail: ", err)
 		if err == sql.ErrNoRows {
-			return nil, nil // user not found
+			return &user, nil // user not found
 		} else {
 			return nil, err
 		}

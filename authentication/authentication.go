@@ -91,6 +91,7 @@ func LogOut(w http.ResponseWriter, r *http.Request) {
 }
 
 func Register(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("Register")
 	var user d.User
 
 	if r.Method != "POST" {
@@ -107,6 +108,7 @@ func Register(w http.ResponseWriter, r *http.Request) {
 	// Check if email already exists in the database
 	_, err = d.GetUserByEmail(user.Email)
 	if err != nil {
+		fmt.Println("User already exists")
 		http.Error(w, "You already have an account", http.StatusBadRequest)
 		return
 	}
