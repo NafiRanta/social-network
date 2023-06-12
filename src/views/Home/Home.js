@@ -28,6 +28,7 @@ function Home(props) {
                                 </div>
                                 <hr />
                                 <p className="text-muted fs-5 m-0">Contacts</p>
+                                <ul class="list-group">
                                 <li className="dropdown-item rounded my-2 px-0" type="button">
                                     <div className="d-flex align-items-center mx-2 chat-avatar">
                                         <div className="position-relative">
@@ -72,6 +73,7 @@ function Home(props) {
                                         <p className="m-0">Noah R</p>
                                     </div>
                                 </li>
+                                </ul>
                             </div>
                         </div>
                     </div>
