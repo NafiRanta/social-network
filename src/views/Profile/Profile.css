@@ -8,6 +8,16 @@ body{
        z-index: 0;
    }
 
+   .card{
+    border: 0px;
+   }
+   .flex-shrink-0 img{
+        width: 180px; 
+        border-radius: 10px;
+   }
+   .flex-grow-1 p{
+        color: #2b2a2a;
+   }
    .profile-cover__bg {
        display: -ms-flexbox;
        display: -webkit-box;
@@ -162,8 +172,8 @@ body{
         margin-bottom: 0px;
     }
     .panel, .panel-group {
-        margin-bottom: 6px;
-        margin-top: -87px;
+        margin-bottom: -86px;
+        margin-top: -82px;
     }
     }
     
@@ -848,3 +858,15 @@ body{
     
    }
 
+   @media (min-width: 1200px){
+    .container {
+        max-width: 100%;
+    }
+   }
+  
+   @media screen and (max-width: 767px){
+    .container{
+        margin-top: 101px;
+    }
+  }
+  
