@@ -66,6 +66,7 @@ func AddUser(db *sql.DB, FirstName string, LastName string, Email string, Passwo
 }
 
 func GetUserByEmail(email string) (*User, error) {
+	fmt.Println("GetUserByEmail")
 	// if user not found, return nil, nil
 	db, err := sql.Open("sqlite3", "./socialnetwork.db")
 	if err != nil {
@@ -82,10 +83,13 @@ func GetUserByEmail(email string) (*User, error) {
 
 	var user User
 	err = stmt.QueryRow(email).Scan(&user.ID, &user.FirstName, &user.LastName, &user.Email, &user.Password, &user.Dob, &user.Gender, &user.NickName, &user.ProfilePicture, &user.About)
+	fmt.Println("err from queryrow: ", err)
 	if err != nil {
 		if err == sql.ErrNoRows {
+			fmt.Println("user not found")
 			return &user, nil // user not found
 		} else {
+			fmt.Println("sth else error:", err)
 			return nil, err
 		}
 	}

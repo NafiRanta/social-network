@@ -98,16 +98,18 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
 		return
 	}
+	fmt.Println("method accepted")
 
 	err := json.NewDecoder(r.Body).Decode(&user)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
+	fmt.Println(&user)
 
 	// Check if email already exists in the database
 	_, err = d.GetUserByEmail(user.Email)
-	if err != nil {
+	if err == nil {
 		fmt.Println("User already exists")
 		http.Error(w, "You already have an account", http.StatusBadRequest)
 		return
