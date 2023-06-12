@@ -26,16 +26,12 @@ function CreateGroupModal(props) {
                   <div>
                       <form id="createGroupForm">
                           <input type="text" className="form-control my-3" id="groupname" placeholder="Group Name" />
+                          <div>
+                            <textarea cols="30" rows="5" className="form-control border-0" placeholder="Group Description"></textarea>
+                          </div>
                           <select className="form-select form-control my-3" aria-label="Default select example">
                             <option disabled selected>
-                              Choose Privacy
-                            </option>
-                            <option value="1">Public</option>
-                            <option value="2">Private</option>
-                          </select>
-                          <select className="form-select form-control my-3" aria-label="Default select example">
-                            <option disabled selected>
-                              Invite Friends
+                              Invite Friends (optional)
                             </option>
                             <option value="1">
                               <div className="d-flex align-items-center">
