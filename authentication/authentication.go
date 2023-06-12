@@ -37,8 +37,8 @@ func LogIn(w http.ResponseWriter, r *http.Request) {
 		var storedPassword string
 		user, err := d.GetUserByEmail(email)
 		if err != nil {
-			http.Error(w, "Invalid email or password", http.StatusUnauthorized)
-			return
+			fmt.Println("user not found")
+			// http.Error(w, "Invalid email or password", http.StatusUnauthorized)
 		}
 		// Get the stored password from the database and unhash it
 
@@ -87,6 +87,7 @@ func LogIn(w http.ResponseWriter, r *http.Request) {
 
 func LogOut(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("logout")
+
 }
 
 func Register(w http.ResponseWriter, r *http.Request) {

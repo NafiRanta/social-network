@@ -119,6 +119,8 @@ function Login() {
         //setIsAuthenticated(true);
         window.location.reload();
       } else {
+        // show error message #loginUsernameErrMsg incorrect username or password
+        document.getElementById("loginUsernameErrMsg").innerHTML = "Incorrect username or password";
         // Login failed, handle error
         console.log("Login failed");
       }
