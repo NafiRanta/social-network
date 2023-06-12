@@ -1,8 +1,13 @@
-import React from 'react';
-import Avatar from '../../components/Avatar/Avatar';
+import React, { useState, useEffect } from "react";
 import { Link } from 'react-router-dom';
+import CreateGroupModal from '../../components/Modal/CreateGroupModal';
 
 function GroupSidenav(props) {
+    const [modalOpen, setModalOpen] = useState(false);
+    const openModal = () => {
+        console.log("open create group modal");
+        setModalOpen(true);
+    };
     return(
         <div>
         <ul className="navbar-nav mt-4 ms-3 d-flex flex-column pb-5 mb-5" >
@@ -38,8 +43,17 @@ function GroupSidenav(props) {
                 </Link>
             </li>
             <li className="dropdown-item p-1">
-                <a href="#" className="btn btn-primary btn-sm d-flex justify-content-center align-items-center">+ Create new group</a>
+                <a 
+                    href="#" 
+                    className="btn btn-primary btn-sm d-flex justify-content-center align-items-center" 
+                    data-bs-toggle="modal"
+                    data-bs-target="#createGroupModal"
+                >
+                   + Create new group
+                </a>
+                
             </li>
+            <CreateGroupModal username={props.username} openModal={openModal}/>
             <hr className="m-0" />
         </ul>
     </div>
