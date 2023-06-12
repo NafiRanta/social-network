@@ -11,7 +11,7 @@ import (
 	"github.com/gorilla/sessions"
 )
 
-var store = sessions.NewCookieStore([]byte("secret-key"))
+var store = sessions.NewCookieStore([]byte("social-network-2023"))
 
 type UserData struct {
 	User string
@@ -62,11 +62,16 @@ func LogIn(w http.ResponseWriter, r *http.Request) {
 			sessionName := "session-name-" + id.String()
 			// Create a new session for the user with the combined session name
 			session, _ := store.Get(r, sessionName)
-
 			session.Values["authenticated"] = true
 			// Saves all sessions used during the current request
 			session.Save(r, w)
-
+			// Generate a new JWT with the userID
+			token, err := GenerateJWT(user.UserID)
+			if err != nil {
+				http.Error(w, "Failed to generate JWT", http.StatusInternalServerError)
+				return
+			}
+			fmt.Println("token generated:", token)
 			w.WriteHeader(http.StatusOK)
 			// Encode the user as JSON
 			userJSON, err := json.Marshal(user)
@@ -79,6 +84,8 @@ func LogIn(w http.ResponseWriter, r *http.Request) {
 				http.Error(w, err.Error(), http.StatusInternalServerError)
 				return
 			}
+			// Set the token in the response header
+			w.Header().Set("Authorization", "Bearer "+token)
 			w.Header().Set("Content-Type", "application/json")
 			w.Write(userJSON)
 		}
