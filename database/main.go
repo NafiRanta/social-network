@@ -14,6 +14,7 @@ func GetDB() *sql.DB {
 	database, err := sql.Open("sqlite3", "./socialnetwork.db")
 	u.CheckErr(err)
 	CreateUsersTable(database)
+	CreatePostsTable(database)
 	// CreatePostsTable(database)
 	// CreatePostLikesTable(database)
 	// CreateCommentsTable(database)

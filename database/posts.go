@@ -38,14 +38,3 @@ func CreatePostsTable(db *sql.DB) {
 	u.CheckErr(err)
 	query.Exec()
 }
-
-// func AddPost(db *sql.DB, post Post) error {
-// 	records := `INSERT INTO Posts (PostID, AuthorID, Privacy, IncludedFriends, Content, Image, CreateAt, CommentCount, LikeCount)
-// 		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
-
-// 	query, err := db.Prepare(records)
-// 	if err != nil {
-// 		return err
-// 	}
-// 	defer query.Close()
-// }

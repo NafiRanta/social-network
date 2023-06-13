@@ -49,12 +49,11 @@ func CreateUsersTable(db *sql.DB) {
 	query, err := db.Prepare(usersTable)
 	u.CheckErr(err)
 	query.Exec()
-	// insert or ignore into
 	_, err = db.Exec(`
 	INSERT OR IGNORE INTO Users (UserID, FirstName, LastName, Email, Password, Privacy, Online, DateOfBirth, Gender, Avatar, CoverImage, Nickname, AboutMe, Follower_IDs, OnFollowing_IDs)
 	VALUES
-		('1', 'John', 'Doe', 'johndoe@example.com', 'password123', 'public', 0, '1990-01-01', 'Male', 'Default avatar', 'default cover image', 'John', 'About John', '', ''),
-		('2', 'Jane', 'Smith', 'janesmith@example.com', 'password456', 'public', 0, '1995-02-02', 'Female', 'Default avatar', 'default cover image', 'Jane', 'About Jane', '', '');
+		('1', 'John', 'Doe', 'johndoe@example.com', 'Password123!', 'public', 0, '1990-01-01', 'Male', 'Default avatar', 'default cover image', 'John', 'About John', '', ''),
+		('2', 'Jane', 'Smith', 'janesmith@example.com', 'Password456!', 'public', 0, '1995-02-02', 'Female', 'Default avatar', 'default cover image', 'Jane', 'About Jane', '', '');
 `)
 
 	u.CheckErr(err)
