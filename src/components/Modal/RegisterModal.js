@@ -117,9 +117,14 @@ function RegisterModal({ openModal }) {
                 <input type="text" className="form-control my-3" autoFocus id="nickname" placeholder="Nickname (optional)" />
                 <input type="text" className="form-control my-3" autoFocus id="about" placeholder="About me (optional)" />
                 <div className="text-center mt-3">
-                  <button type="button" className="btn btn-success btn-lg" onClick={HandleRegister} data-bs-dismiss="modal">
-                    Sign Up
-                  </button>
+                <input
+                  type="submit"
+                  className="btn btn-success btn-lg"
+                  value="Sign Up"
+                  onClick={HandleRegister}
+                  data-bs-dismiss="modal"
+                />
+
                 </div>
               </div>
             </form>
