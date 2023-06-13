@@ -1,5 +1,4 @@
 import React from 'react';
-import Topnav from '../Topnav'
 import GroupProfileCard from '../../components/Card/GroupProfileCard'
 import GroupSidenav from './GroupSidenav'
 

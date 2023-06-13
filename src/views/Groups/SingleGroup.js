@@ -1,43 +1,82 @@
-import React from 'react';
-import Topnav from '../Topnav'
-import CreatePost from '../../components/CreatePost/CreatePost'
+import React, { useState, useRef, useEffect } from 'react';
+import Topnav from '../Topnav';
+import CreatePost from '../../components/CreatePost/CreatePost';
 import AvatarSquare from '../../components/Avatar/AvatarSquare';
 import GroupPostCard from '../../components/Card/GroupPostCard';
-import '../../views/Profile/Profile.css'
-import '../../components/Card/Card.css'
+import '../../views/Profile/Profile.css';
+import '../../components/Card/Card.css';
 
 function SingleGroup() {
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const dropdownRef = useRef(null);
+  
+    const toggleMenu = () => {
+      setIsMenuOpen((prevState) => !prevState);
+    };
+  
+    useEffect(() => {
+      const handleClickOutside = (event) => {
+        if (
+          dropdownRef.current &&
+          !dropdownRef.current.contains(event.target) &&
+          event.target.className !== 'fa fa-bars'
+        ) {
+          setIsMenuOpen(false);
+        }
+      };
+  
+      document.addEventListener('mousedown', handleClickOutside);
+  
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+      };
+    }, []);
+  
     return (
         <div>
             <Topnav />
             <div className="container-fluid">
-                  <div className="bg-white p-3 mt-3 rounded border shadow" id="bg-white">
-                        <div className="profile-cover-group__bg bg--img" data-overlay="0.3"></div>
-                        <div className="panel-group profile-cover p-4">
-                            <div className="profile-cover__info">
-                                <h2><strong>Ålands köp och sälj</strong></h2>
-                                <p className="card-text">Environmentally friendly, social, completely simple.</p>
-                                <div className="profile-cover__action">
-                                    <button className="btn btn-primary btn-sm d-flex justify-content-center align-items-center ">
-                                        <i className="fa fa-plus"> </i>
-                                        <span> Leave</span>
-                                    </button>
-                                    <button className="btn btn-primary btn-sm d-flex justify-content-center align-items-center ">
-                                        <i className="fa fa-plus"> </i>
-                                        <span> Invite</span>
-                                    </button>
-                                    <button className="btn btn-primary btn-sm d-flex justify-content-center align-items-center ">
-                                        <i className="fa fa-plus"> </i>
-                                        <span> Create chat</span>
-                                    </button>
-                                    <button className="btn btn-primary btn-sm d-flex justify-content-center align-items-center ">
-                                        <i className="fa fa-plus"> </i>
-                                        <span> Create event</span>
-                                    </button>
+                <div className="bg-white p-3 mt-3 rounded border shadow" id="bg-white">
+                    <div className="panel-group profile-cover p-4" style={{ position: 'relative', zIndex: 1 }}>
+                        <div className="profile-cover__info">
+                            <h2><strong>Ålands köp och sälj</strong></h2>
+                            <p className="card-text">Environmentally friendly, social, completely simple.</p>
+                            <div className="profile-cover__action">
+                                <button className="btn btn-primary btn-sm d-flex justify-content-center align-items-center ">
+                                    <i className="fa fa-plus"> </i>
+                                    <span> Invite</span>
+                                </button>
+                                <div
+                                    className="btn btn-primary btn-sm d-flex justify-content-center align-items-center"
+                                    onClick={toggleMenu}
+                                    ref={dropdownRef}
+                                >
+                                    <i className="fa fa-bars"> </i>
+                                    {isMenuOpen && (
+                                        <div
+                                            className="dropdown-menu show"
+                                            style={{
+                                                position: 'absolute',
+                                                top: '84%',
+                                                left: '55%',
+                                            }}
+                                        >
+                                            <button className="dropdown-item" type="button">
+                                            Leave
+                                            </button>
+                                            <button className="dropdown-item" type="button">
+                                            Create Event
+                                            </button>
+                                            <button className="dropdown-item" type="button">
+                                            Create Chat
+                                            </button>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
                 <div className="row justify-content-evenly">
                     <div className="col-12 col-lg-3">
                         <div className="d-flex flex-column justify-content-center w-100 mx-auto" id="d-flex-postcontainer-followersbox">
