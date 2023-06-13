@@ -10,6 +10,13 @@ body{
 
    .card{
     border: 0px;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+   }
+   .card-body{
+    width:50%;  
    }
    .flex-shrink-0 img{
         width: 180px; 
@@ -19,7 +26,7 @@ body{
         color: #2b2a2a;
    }
    .ms-2 {
-    margin-left: 11.5rem!important;
+    margin-left: 29.5rem!important;
 }
    .profile-cover__bg {
        display: -ms-flexbox;
@@ -180,7 +187,9 @@ body{
         margin-top: -82px;
     }
     }
-    
+    .profileTopnav{
+        background-color: #FFFFFF;
+    }
    .panel {
     color: #696969;
     background-color: #fff;
