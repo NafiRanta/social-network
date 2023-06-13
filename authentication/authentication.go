@@ -90,12 +90,10 @@ func LogIn(w http.ResponseWriter, r *http.Request) {
 			w.Write(userJSON)
 		}
 	}
-
 }
 
 func LogOut(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("logout")
-
 }
 
 func Register(w http.ResponseWriter, r *http.Request) {

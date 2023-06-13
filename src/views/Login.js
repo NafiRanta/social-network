@@ -93,7 +93,8 @@ function Login() {
     return true;
   };
   
-  const handleLogin = async () => {
+  const handleLogin = async (event) => {
+    event.preventDefault(); // Prevent form from refreshing the page
     if (!validLoginForm()) {
       return;
     }
@@ -142,8 +143,7 @@ function Login() {
         <div className="login-form">
           <div className="bg-white shadow rounded p-3 input-group-lg">
             <div className="form__input-error-message" id="loginUsernameErrMsg"></div>
-            <form id="loginForm" onSubmit={handleLogin}
->
+            <form id="loginForm" onSubmit={handleLogin}>
               <input
               data-testid="loginEmail"
                 type="email"
