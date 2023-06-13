@@ -7,7 +7,7 @@ import HomeSidenav from "./views/Home/HomeSidenav";
 import CreatePost from "./components/CreatePost/CreatePost";
 import CreatePostModal from "./components/Modal/CreatePostModal";
 import Topnav from "./views/Topnav";
-import Profile from "./views/Profile/Profile";
+import MyProfile from "./views/Profile/MyProfile";
 import MyGroups from "./views/Groups/MyGroups";
 import HomeGroup from "./views/Groups/HomeGroup";
 import Chat from "./views/Chat/Chat";
@@ -16,6 +16,7 @@ import Error from "./views/Error/Error";
 import SingleGroupNonMember from "./views/Groups/SingleGroupNonMember";
 import GroupSidenav from "./views/Groups/GroupSidenav";
 import AllGroups from "./views/Groups/AllGroups";
+import OthersProfile from "./views/Profile/OthersProfile";
 
 function App() {
   const isAuth = !!localStorage.getItem("userInfo");
@@ -96,7 +97,7 @@ function App() {
         element={
           <div>
             <Topnav username={username} />
-            <Profile 
+            <OthersProfile 
               username={username}
               email={email}
               dob={dob}
@@ -116,16 +117,6 @@ function App() {
        } 
       />
   </Routes>  
-   //<Home />
-    //<Profile />
-     //<GroupsList />
-    //<SingleGroup />
-    // <SingleGroupNonMember />
-   //<Chat />
-   //<Error />
- // <HomeGroup />
-  //<Login />
-  //<Topnav />
   );
 }
 

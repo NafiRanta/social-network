@@ -6,7 +6,7 @@ import './Profile.css';
 import ChangeProfilePicModal from '../../components/Modal/ChangeProfilePicModal';
 
 
-function Profile(props) {
+function OthersProfile(props) {
   return (
     <div className="container-fluid">
         <section className="profileTopnav">
@@ -19,14 +19,9 @@ function Profile(props) {
                         <div className="flex-shrink-0">
                             <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp"
                             alt="Generic placeholder image" className="img-fluid"/>
-                            <i
-                                className="fas fa-images fs-5 text-success pointer position-absolute bottom-0 start-0 ms-2"
-                                data-bs-toggle="modal"
-                                data-bs-target="#changeProfilePicModal"
-                            ></i>
                         </div>
                         <div className="flex-grow-1 ms-3">
-                            <h5 className="mb-1">{props.username}</h5>
+                            <h2 className="mb-1"><strong>{props.username}</strong></h2>
                             <div className="d-flex justify-content-start rounded-3 p-2 mb-2"
                             style={{ backgroundColor: '#efefef' }}>
                                 <div className="px-3">
@@ -73,10 +68,6 @@ function Profile(props) {
                                         <p className="m-0">Bio</p>
                                     </div>
                                 </li>
-                                <li className="dropdown-item p-1">
-                                    <a href="#" className="btn btn-primary btn-sm d-flex justify-content-center align-items-center"> Add bio</a>
-                                </li>
-                                
                                 <li className="dropdown-item p-1 rounded">
                                     <span><i className="fas fa-user"></i> <span className="name">Nickname</span></span>
                                 </li>
@@ -85,9 +76,6 @@ function Profile(props) {
                                 </li>
                                 <li className="dropdown-item p-1 rounded">
                                     <span><i className="fas fa-birthday-cake"></i> <span className="name">{props.dob}</span></span>
-                                </li>
-                                <li className="dropdown-item p-1">
-                                    <a href="#" className="btn btn-primary btn-sm d-flex justify-content-center align-items-center"> Edit details</a>
                                 </li>
                             </ul>
                         </div>
@@ -181,7 +169,6 @@ function Profile(props) {
                 </div>
                 <div className="col-12 col-lg-6 pb-5">
                     <div className="d-flex flex-column justify-content-center w-100 mx-auto" id="d-flex-postcontainer-myprofile">
-                        <CreatePost username={props.username}/>
                         <PostContainer />
                     </div>
                 </div>
@@ -191,4 +178,4 @@ function Profile(props) {
     )
 }
 
-export default Profile;
+export default OthersProfile;
