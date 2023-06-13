@@ -8,6 +8,7 @@ import (
 	"os"
 	a "socialnetwork/authentication"
 	d "socialnetwork/database"
+	p "socialnetwork/posts"
 	u "socialnetwork/utils"
 	"time"
 )
@@ -35,6 +36,7 @@ func Start() error {
 	router.HandleFunc("/register", a.Register)
 	router.HandleFunc("/logout", a.LogOut)
 	//handle post
+	router.HandleFunc("/posts", p.GetPostsHandler)
 	handler := u.CorsMiddleware(router)
 
 	//fire up the server
