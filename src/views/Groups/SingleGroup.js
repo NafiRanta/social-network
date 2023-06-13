@@ -3,12 +3,18 @@ import Topnav from '../Topnav';
 import CreatePost from '../../components/CreatePost/CreatePost';
 import AvatarSquare from '../../components/Avatar/AvatarSquare';
 import GroupPostCard from '../../components/Card/GroupPostCard';
+import CreateEventModal from '../../components/Modal/CreateEventModal';
 import '../../views/Profile/Profile.css';
 import '../../components/Card/Card.css';
 
-function SingleGroup() {
+function SingleGroup(props) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const dropdownRef = useRef(null);
+    const [modalOpen, setModalOpen] = useState(false);
+    const openModal = () => {
+        console.log("open create group modal");
+        setModalOpen(true);
+    };
   
     const toggleMenu = () => {
       setIsMenuOpen((prevState) => !prevState);
@@ -31,6 +37,7 @@ function SingleGroup() {
         document.removeEventListener('mousedown', handleClickOutside);
       };
     }, []);
+
   
     return (
         <div>
@@ -64,7 +71,8 @@ function SingleGroup() {
                                             <button className="dropdown-item" type="button">
                                             Leave
                                             </button>
-                                            <button className="dropdown-item" type="button">
+                                            <button className="dropdown-item" type="button"  data-bs-toggle="modal"
+                                            data-bs-target="#createEventModal">
                                             Create Event
                                             </button>
                                             <button className="dropdown-item" type="button">
@@ -77,6 +85,7 @@ function SingleGroup() {
                         </div>
                     </div>
                 </div>
+                <CreateEventModal username={props.username} openModal={openModal}/>
                 <div className="row justify-content-evenly">
                     <div className="col-12 col-lg-3">
                         <div className="d-flex flex-column justify-content-center w-100 mx-auto" id="d-flex-postcontainer-followersbox">
