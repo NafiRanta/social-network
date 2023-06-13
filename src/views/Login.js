@@ -5,7 +5,7 @@ import RegisterModal from "../components/Modal/RegisterModal";
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  //const [valid, setValid] = useState({ email: true, password: true });
+  const [valid, setValid] = useState({ email: true, password: true });
   const [modalOpen, setModalOpen] = useState(false);
   const openModal = () => {
     console.log("open modal");
@@ -26,31 +26,35 @@ function Login() {
     if (email.trim() === '') {
       console.log('Email is required');
       document.getElementById("loginUsernameErrMsg").innerHTML = 'Email is required';
-      return false;
+      setValid({ ...valid, email: false });
     }
   
     // Check if the email is in the correct format
     if (!validateEmail(email)) {
       console.log('Invalid email format');
       document.getElementById("loginUsernameErrMsg").innerHTML = 'Invalid email format';
-      return false;
+      setValid({ ...valid, email: false });
     }
   
     // Check if the password is empty
     if (password.trim() === '') {
       console.log('Password is required');
-      document.getElementById("loginUsernameErrMsg").innerHTML = 'Password is required';
-      return false;
+      document.getElementById("loginPasswordErrMsg").innerHTML = 'Password is required';
+    setValid({ ...valid, password: false });
     }
   
     // Check if the password is in the correct format
     if (!validatePassword(password)) {
       console.log('Invalid password format');
-      document.getElementById("loginUsernameErrMsg").innerHTML = 'Invalid password format';
-      return false;
+      document.getElementById("loginPasswordErrMsg").innerHTML = 'Invalid password format';
+      setValid({ ...valid, password: false });
     }
     // All validations passed
-    return true;
+   if (valid.email && valid.password) {
+      return true;
+    } else {  
+      return false;
+    }
   };
   
   const validateEmail = (email) => {
@@ -112,7 +116,12 @@ function Login() {
         window.location.reload();
       } else {
         // show error message from response
-        // document.getElementById("loginUsernameErrMsg").innerHTML = "Incorrect username or password";
+        console.log(response)
+        if (response.status === 401) {
+          document.getElementById("loginUsernameErrMsg").innerHTML = "Incorrect username or password";
+        } else {
+          document.getElementById("loginUsernameErrMsg").innerHTML = "Something went wrong. Please try again later.";
+        }
         // Login failed, handle error
         console.log("Login failed");
       }
@@ -133,30 +142,36 @@ function Login() {
         <div className="login-form">
           <div className="bg-white shadow rounded p-3 input-group-lg">
             <div className="form__input-error-message" id="loginUsernameErrMsg"></div>
-            <input
-            data-testid="loginEmail"
-              type="email"
-              className="form-control my-3"
-              placeholder="Email address or phone number"
-              value={email}
-              name="email"
-              onChange={handleInputChange}
-            />
-            {/* {!valid.username && <div>Username is invalid</div>} */}
-            <div className="form__input-error-message" id="loginPasswordErrMsg"></div>
-            <input
-            data-testid="loginPassword"
-              type="password"
-              className="form-control my-3"
-              placeholder="Password"
-              value={password}
-              name="password"
-              onChange={handleInputChange}
-            />
-            {/* {!valid.password && <div>Password must be at least 5 characters</div>} */}
-            <button className="btn btn-primary w-100 my-3" onClick={handleLogin}>
-              Log In
-            </button>
+            <form id="loginForm" onSubmit={handleLogin}
+>
+              <input
+              data-testid="loginEmail"
+                type="email"
+                className="form-control my-3"
+                placeholder="Email address or phone number"
+                value={email}
+                name="email"
+                onChange={handleInputChange}
+              />
+              {/* {!valid.username && <div>Username is invalid</div>} */}
+              <div className="form__input-error-message" id="loginPasswordErrMsg"></div>
+              <input
+              data-testid="loginPassword"
+                type="password"
+                className="form-control my-3"
+                placeholder="Password"
+                value={password}
+                name="password"
+                onChange={handleInputChange}
+              />
+              {/* {!valid.password && <div>Password must be at least 5 characters</div>} */}
+              <input
+                type="submit"
+                className="btn btn-primary w-100 my-3"
+                value="Log In"
+              />
+            </form>
+
             <a
               href="#"
               className="text-decoration-none text-center"

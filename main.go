@@ -10,6 +10,7 @@ import (
 	d "socialnetwork/database"
 	p "socialnetwork/posts"
 	u "socialnetwork/utils"
+	ws "socialnetwork/websocket"
 	"time"
 )
 
@@ -37,6 +38,7 @@ func Start() error {
 	router.HandleFunc("/logout", a.LogOut)
 	//handle post
 	router.HandleFunc("/posts", p.GetPostsHandler)
+	router.HandleFunc("/websocket", ws.NewManager)
 	handler := u.CorsMiddleware(router)
 
 	//fire up the server

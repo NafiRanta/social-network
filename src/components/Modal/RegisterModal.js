@@ -2,6 +2,7 @@ import React, { useState, useRef } from "react";
 import "./Modal.css";
 
 function RegisterModal({ openModal }) {
+  //use setStates for the form inputs
     const [profilePicture, setProfilePicture] = useState(null);
     const fileInputRef = useRef();
   
@@ -23,6 +24,9 @@ function RegisterModal({ openModal }) {
     const handleRemoveImage = () => {
       setProfilePicture(null);
     };
+    // const handleInputChange = (e) => {}
+    // const validRegisterForm = () => {}
+
     const HandleRegister = async () => {
       console.log("Register");
       const firstNameInput = document.getElementById('firstname');
@@ -47,7 +51,8 @@ function RegisterModal({ openModal }) {
         about: aboutInput.value,
       };
       console.log("registerData", registerData);
-  
+
+      //need to validate data before sending it
       try {
         const response = await fetch("http://localhost:8080/register", {
           method: "POST",
