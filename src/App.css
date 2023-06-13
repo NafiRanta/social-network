@@ -5,7 +5,7 @@ body {
   font-size: var(--bs-body-font-size);
   font-weight: var(--bs-body-font-weight);
   line-height: var(--bs-body-line-height);
-  color: var(--bs-body-color);
+  /* color: var(--bs-body-color); */
   text-align: var(--bs-body-text-align);
   background-color: var(--bs-body-bg);
   -webkit-text-size-adjust: 100%;
@@ -197,6 +197,11 @@ font-size: 3rem;
   object-fit: cover;
 }
 
+.form__input-error-message{
+  color: #df1313;
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+}
 
 @media screen and (max-width: 767px){
   #d-none-end0{
