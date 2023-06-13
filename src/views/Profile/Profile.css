@@ -18,6 +18,9 @@ body{
    .flex-grow-1 p{
         color: #2b2a2a;
    }
+   .ms-2 {
+    margin-left: 11.5rem!important;
+}
    .profile-cover__bg {
        display: -ms-flexbox;
        display: -webkit-box;

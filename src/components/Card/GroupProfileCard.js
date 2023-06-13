@@ -1,7 +1,10 @@
 import React from 'react';
 import './Card.css';
+import { Link } from 'react-router-dom';
+function GroupProfileCard(props) {
 
-function GroupProfileCard() {
+
+
     return (
         <div className="row1">
             <div className="cols col-lg-3">
@@ -10,7 +13,13 @@ function GroupProfileCard() {
                     <div className="card-body ">   
                         <h3 className="card-title mt-4"><strong>Ålands köp och sälj</strong></h3>
                         <p className="card-text">Environmentally friendly, social, completely simple.</p>
-                        <a href="#" className="btn btn-primary btn-sm d-flex justify-content-center align-items-center">Join</a>
+                            <Link
+                                to="/singlegroups" // Specify the desired path to redirect to
+                                className="btn btn-primary btn-sm d-flex justify-content-center align-items-center"
+                                >
+                                View
+                            </Link>
+                        
                     </div>
                 </div>        
             </div>
@@ -20,7 +29,7 @@ function GroupProfileCard() {
                     <div className="card-body ">   
                         <h3 className="card-title mt-4"><strong>Ålands köp och sälj</strong></h3>
                         <p className="card-text">Environmentally friendly, social, completely simple.</p>
-                        <a href="#" className="btn btn-primary btn-sm d-flex justify-content-center align-items-center">Join</a>
+                        <a href="#" className="btn btn-primary btn-sm d-flex justify-content-center align-items-center">View</a>
                     </div>
                 </div>        
             </div>
@@ -30,7 +39,7 @@ function GroupProfileCard() {
                     <div className="card-body ">   
                         <h3 className="card-title mt-4"><strong>Ålands köp och sälj</strong></h3>
                         <p className="card-text">Environmentally friendly, social, completely simple.</p>
-                        <a href="#" className="btn btn-primary btn-sm d-flex justify-content-center align-items-center">Join</a>
+                        <a href="#" className="btn btn-primary btn-sm d-flex justify-content-center align-items-center">View</a>
                     </div>
                 </div>        
             </div>
@@ -40,7 +49,7 @@ function GroupProfileCard() {
                     <div className="card-body ">   
                         <h3 className="card-title mt-4"><strong>Ålands köp och sälj</strong></h3>
                         <p className="card-text">Environmentally friendly, social, completely simple.</p>
-                        <a href="#" className="btn btn-primary btn-sm d-flex justify-content-center align-items-center">Join</a>
+                        <a href="#" className="btn btn-primary btn-sm d-flex justify-content-center align-items-center">View</a>
                     </div>
                 </div>        
             </div>
@@ -50,7 +59,7 @@ function GroupProfileCard() {
                     <div className="card-body ">   
                         <h3 className="card-title mt-4"><strong>Ålands köp och sälj</strong></h3>
                         <p className="card-text">Environmentally friendly, social, completely simple.</p>
-                        <a href="#" className="btn btn-primary btn-sm d-flex justify-content-center align-items-center">Join</a>
+                        <a href="#" className="btn btn-primary btn-sm d-flex justify-content-center align-items-center">View</a>
                     </div>
                 </div>        
             </div>

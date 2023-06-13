@@ -14,7 +14,7 @@ function MyGroups(props) {
                 <div className="col col-lg-9 pb-5 p-3">
                     <div className="d-flex flex-column justify-content-center w-100 " id="d-flex-postcontainer-mygroups">
                         <h5><strong>All groups you've joined</strong></h5>
-                        <GroupProfileCard />
+                        <GroupProfileCard username={props.username}/>
                     </div>
                 </div>
             </div>

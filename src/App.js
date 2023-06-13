@@ -103,7 +103,17 @@ function App() {
             />
           </div>
        } 
-
+      />
+      <Route
+        path="/singlegroups"
+        element={
+          <div>
+            <Topnav username={username} />
+            <SingleGroup 
+              username={username}
+            />
+          </div>
+       } 
       />
   </Routes>  
    //<Home />
