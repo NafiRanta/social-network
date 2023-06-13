@@ -18,8 +18,11 @@ function Login() {
       setEmail(value);
     } else if (name === "password") {
       setPassword(value);
+      setValid({ ...valid, password: true }); // Reset the password validation state
+      document.getElementById("loginPasswordErrMsg").innerHTML = ''; // Clear the error message
     }
   };
+  
  
   const validLoginForm = () => {
     // Check if email is empty
@@ -96,7 +99,7 @@ function Login() {
   const handleLogin = async (event) => {
     event.preventDefault(); // Prevent form from refreshing the page
     if (!validLoginForm()) {
-      return;
+      return
     }
     try {
       const response = await fetch("http://localhost:8080/login", {
