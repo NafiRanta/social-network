@@ -5,7 +5,7 @@ import RegisterModal from "../components/Modal/RegisterModal";
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [valid, setValid] = useState({ username: true, password: true });
+  //const [valid, setValid] = useState({ email: true, password: true });
   const [modalOpen, setModalOpen] = useState(false);
   const openModal = () => {
     console.log("open modal");
@@ -20,41 +20,75 @@ function Login() {
       setPassword(value);
     }
   };
-  const validLoginForm = () => {
-    let updatedValid = { ...valid };
-
-    // check if username is empty
-    if (email === "") {
-      updatedValid = { ...updatedValid, username: false };
-    } else {
-      // check if usernameemail is valid username or email
-      const emailRegex = new RegExp(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/);
-      const usernameRegex = new RegExp(/^[åäöÅÄÖA-Za-z0-9]+$/);
-      if (!(usernameRegex.test(email) || emailRegex.test(email))) {
-        updatedValid = { ...updatedValid, username: false };
-      } else {
-        // else username is valid
-        updatedValid = { ...updatedValid, username: true };
-      }
-    }
-    // check if password is empty
-    if (password === "") {
-      updatedValid = { ...updatedValid, password: false };
-    } else {
-      // check if password is invalid allow åäöÅÄÖ
-      const passwordLengthRegex = new RegExp(/^[åäöÅÄÖA-Za-z0-9]{5,}$/);
-      if (!passwordLengthRegex.test(password)) {
-        updatedValid = { ...updatedValid, password: false };
-      } else {
-        // else password is valid
-        updatedValid = { ...updatedValid, password: true };
-      }
-    }
-    setValid(updatedValid);
-    // if all booleans are true, return true else return false
-    return updatedValid.username && updatedValid.password;
-  };
  
+  const validLoginForm = () => {
+    // Check if email is empty
+    if (email.trim() === '') {
+      console.log('Email is required');
+      document.getElementById("loginUsernameErrMsg").innerHTML = 'Email is required';
+      return false;
+    }
+  
+    // Check if the email is in the correct format
+    if (!validateEmail(email)) {
+      console.log('Invalid email format');
+      document.getElementById("loginUsernameErrMsg").innerHTML = 'Invalid email format';
+      return false;
+    }
+  
+    // Check if the password is empty
+    if (password.trim() === '') {
+      console.log('Password is required');
+      document.getElementById("loginUsernameErrMsg").innerHTML = 'Password is required';
+      return false;
+    }
+  
+    // Check if the password is in the correct format
+    if (!validatePassword(password)) {
+      console.log('Invalid password format');
+      document.getElementById("loginUsernameErrMsg").innerHTML = 'Invalid password format';
+      return false;
+    }
+    // All validations passed
+    return true;
+  };
+  
+  const validateEmail = (email) => {
+    // Regular expression for email format validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+  
+  const validatePassword = (password) => {
+    // Check if password is at least 5 characters long
+    if (password.length < 5) {
+      return false;
+    }
+  
+    // Check if password contains at least one uppercase letter
+    if (!/[A-Z]/.test(password)) {
+      return false;
+    }
+  
+    // Check if password contains at least one lowercase letter
+    if (!/[a-z]/.test(password)) {
+      return false;
+    }
+  
+    // Check if password contains at least one digit
+    if (!/\d/.test(password)) {
+      return false;
+    }
+  
+    // Check if password contains at least one special character
+    if (!/[!@#$%^&*]/.test(password)) {
+      return false;
+    }
+  
+    // Password format is valid
+    return true;
+  };
+  
   const handleLogin = async () => {
     if (!validLoginForm()) {
       return;
@@ -77,8 +111,8 @@ function Login() {
         //setIsAuthenticated(true);
         window.location.reload();
       } else {
-        // show error message #loginUsernameErrMsg incorrect username or password
-        document.getElementById("loginUsernameErrMsg").innerHTML = "Incorrect username or password";
+        // show error message from response
+        // document.getElementById("loginUsernameErrMsg").innerHTML = "Incorrect username or password";
         // Login failed, handle error
         console.log("Login failed");
       }
@@ -100,6 +134,7 @@ function Login() {
           <div className="bg-white shadow rounded p-3 input-group-lg">
             <div className="form__input-error-message" id="loginUsernameErrMsg"></div>
             <input
+            data-testid="loginEmail"
               type="email"
               className="form-control my-3"
               placeholder="Email address or phone number"
@@ -107,9 +142,10 @@ function Login() {
               name="email"
               onChange={handleInputChange}
             />
-            {!valid.username && <div>Username is invalid</div>}
+            {/* {!valid.username && <div>Username is invalid</div>} */}
             <div className="form__input-error-message" id="loginPasswordErrMsg"></div>
             <input
+            data-testid="loginPassword"
               type="password"
               className="form-control my-3"
               placeholder="Password"
@@ -117,7 +153,7 @@ function Login() {
               name="password"
               onChange={handleInputChange}
             />
-            {!valid.password && <div>Password must be at least 5 characters</div>}
+            {/* {!valid.password && <div>Password must be at least 5 characters</div>} */}
             <button className="btn btn-primary w-100 my-3" onClick={handleLogin}>
               Log In
             </button>
