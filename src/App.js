@@ -97,7 +97,7 @@ function App() {
         element={
           <div>
             <Topnav username={username} />
-            <OthersProfile 
+            <MyProfile 
               username={username}
               email={email}
               dob={dob}

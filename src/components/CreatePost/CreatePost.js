@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import CreatePostModal from '../Modal/CreatePostModal';
 import Avatar from '../../components/Avatar/Avatar';
 
@@ -17,7 +17,7 @@ function CreatePost(props) {
                   data-bs-toggle="modal" 
                   data-bs-target="#createPostModal"/>
               </div>
-              <CreatePostModal username={props.username}/>
+              <CreatePostModal username={props.username} />
               <hr />
               <div className="d-flex flex-column flex-lg-row mt-3">
                 <div className="dropdown-item rounded d-flex align-items-center justify-content-center" type="button">

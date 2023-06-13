@@ -78,9 +78,22 @@ function ChangeProfilePicModal(props) {
             </div>
           </div>
           <div className="modal-footer">
-            <button type="button" className="btn btn-primary w-100">
-              Save
-            </button>
+            <div className="row w-100">
+            <div className="col">
+                <button type="button" className="btn btn-primary w-100">
+                  Upload
+                </button>
+              </div>
+              <div className="col">
+                <button
+                  type="button"
+                  className="btn btn-secondary w-100"
+                  data-bs-dismiss="modal"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>

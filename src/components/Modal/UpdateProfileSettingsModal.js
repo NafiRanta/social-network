@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import "./Modal.css";
 import Avatar from "../Avatar/Avatar";
 
-function CreateEventModal(props) {
+function UpdateProfileSettingsModal(props) {
   console.log("username create group", props.username);
   const [selectedNames, setSelectedNames] = useState([]);
   const [selectedName, setSelectedName] = useState('');
   const [eventDate, setEventDate] = useState('');
   const [eventTime, setEventTime] = useState('');
+  const [privacySetting, setPrivacySetting] = useState('public');
 
   const names = ['John', 'Jane', 'Bob', 'Alice'];
 
@@ -36,13 +37,22 @@ function CreateEventModal(props) {
     setEventTime(event.target.value);
   };
 
+  const handlePrivacyChange = (event) => {
+    setPrivacySetting(event.target.value);
+  };
 
   return (
-    <div className="modal fade" id="createEventModal" tabIndex="-1" aria-labelledby="createModalLabel" aria-hidden="true" data-bs-backdrop="false">
+    <div 
+      className="modal fade" 
+      id="updateProfileSettingsModal" 
+      tabIndex="-1" aria-labelledby="createModalLabel" 
+      aria-hidden="true" 
+      data-bs-backdrop="false"
+    >
       <div className="modal-dialog modal-dialog-centered">
         <div className="modal-content">
           <div className="modal-header align-items-center">
-            <h5 className="text-dark text-center w-100 m-0" id="exampleModalLabel">Create Event</h5>
+            <h5 className="text-dark text-center w-100 m-0" id="exampleModalLabel">Update Profile Details</h5>
             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={props.closeModal}></button>
           </div>
           <div className="modal-body">
@@ -58,31 +68,17 @@ function CreateEventModal(props) {
                 </div>
                 <div>
                   <form id="createGroupForm">
-                    <input type="text" className="form-control my-3" id="groupname" placeholder="Event Name" />
+                    <input type="text" className="form-control my-3" id="groupname" placeholder="Nickname" />
                     <div>
-                      <textarea cols="30" rows="5" className="form-control my-3 border" placeholder="Event Description"></textarea>
+                      <textarea cols="30" rows="5" className="form-control my-3 border" placeholder="About Me"></textarea>
                     </div>
-                    <input type="date" value={eventDate} onChange={handleEventDateChange} className="form-control my-3" placeholder="Event Date" />
-                    <input type="time" value={eventTime} onChange={handleEventTimeChange} className="form-control my-3" placeholder="Event Time" />
-                    <div>
-                      {selectedNames.map((name) => (
-                        <div key={name} className="d-flex align-items-center">
-                          <input type="text" className="form-control me-2" value={name} readOnly />
-                          <button onClick={() => handleRemoveName(name)}>Remove</button>
-                        </div>
-                      ))}
+                    <div className="form-group">
+                      <label htmlFor="privacySetting">Privacy:</label>
+                      <select className="form-select" id="privacySetting" value={privacySetting} onChange={handlePrivacyChange}>
+                        <option value="public">Public</option>
+                        <option value="private">Private</option>
+                      </select>
                     </div>
-                    <select value={selectedName} onChange={handleNameChange} className="form-select form-control my-3">
-                      <option disabled value="">
-                        Invite Friends (optional)
-                      </option>
-                      {names.filter((name) => !selectedNames.includes(name)).map((name) => (
-                        <option key={name} value={name}>
-                          {name}
-                        </option>
-                      ))}
-                    </select>
-                    <button onClick={handleAddName}>Add Name</button>
                   </form>
                 </div>
               </div>
@@ -92,7 +88,7 @@ function CreateEventModal(props) {
             <div className="row w-100">
             <div className="col">
                 <button type="button" className="btn btn-primary w-100">
-                  Create
+                  Save
                 </button>
               </div>
               <div className="col">
@@ -112,4 +108,4 @@ function CreateEventModal(props) {
   )
 }
 
-export default CreateEventModal;
+export default UpdateProfileSettingsModal;

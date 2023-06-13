@@ -4,6 +4,7 @@ import PostContainer from '../../components/Card/PostCard';
 import AvatarSquare from '../../components/Avatar/AvatarSquare';
 import './Profile.css';
 import ChangeProfilePicModal from '../../components/Modal/ChangeProfilePicModal';
+import UpdateProfileSettingsModal from '../../components/Modal/UpdateProfileSettingsModal';
 
 
 function MyProfile(props) {
@@ -42,6 +43,17 @@ function MyProfile(props) {
                                     <p className="mb-0">8.5</p>
                                 </div>
                             </div>
+                            <div className="d-flex pt-1">
+                                <button 
+                                    type="button" 
+                                    className="btn btn-primary" 
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#updateProfileSettingsModal"
+                                >
+                                    Edit Profile
+                                </button>
+                                <UpdateProfileSettingsModal username={props.username}/>
+                            </div>
                         </div>
                         </div>
                     </div>
@@ -58,17 +70,10 @@ function MyProfile(props) {
                         <div className="bg-white rounded border shadow p-3">
                             <ul  >
                                 <li className="dropdown-item p-1 rounded">
-                                    <div className="p-2">
-                                        <p className="m-0"><strong>Intro</strong></p>
-                                    </div>
-                                    <div>
-                                        <p className="m-0">Bio</p>
+                                    <div >
+                                        <p className="m-0"><strong>Bio</strong></p>
                                     </div>
                                 </li>
-                                <li className="dropdown-item p-1">
-                                    <a href="#" className="btn btn-primary btn-sm d-flex justify-content-center align-items-center"> Add bio</a>
-                                </li>
-                                
                                 <li className="dropdown-item p-1 rounded">
                                     <span><i className="fas fa-user"></i> <span className="name">Nickname</span></span>
                                 </li>
@@ -78,10 +83,8 @@ function MyProfile(props) {
                                 <li className="dropdown-item p-1 rounded">
                                     <span><i className="fas fa-birthday-cake"></i> <span className="name">{props.dob}</span></span>
                                 </li>
-                                <li className="dropdown-item p-1">
-                                    <a href="#" className="btn btn-primary btn-sm d-flex justify-content-center align-items-center"> Edit details</a>
-                                </li>
                             </ul>
+                           
                         </div>
                         <div className="bg-white rounded border shadow p-3">
                             <div>

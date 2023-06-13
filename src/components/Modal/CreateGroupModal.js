@@ -49,7 +49,7 @@ function CreateGroupModal(props) {
                   <form id="createGroupForm">
                     <input type="text" className="form-control my-3" id="groupname" placeholder="Group Name" />
                     <div>
-                      <textarea cols="30" rows="5" className="form-control border-0" placeholder="Group Description"></textarea>
+                      <textarea cols="30" rows="5" className="form-control my-3 border" placeholder="Group Description"></textarea>
                     </div>
                     <div>
                       {selectedNames.map((name) => (
@@ -76,7 +76,22 @@ function CreateGroupModal(props) {
             </div>
           </div>
           <div className="modal-footer">
-            <button type="button" className="btn btn-primary w-100">Create</button>
+            <div className="row w-100">
+            <div className="col">
+                <button type="button" className="btn btn-primary w-100">
+                  Create
+                </button>
+              </div>
+              <div className="col">
+                <button
+                  type="button"
+                  className="btn btn-secondary w-100"
+                  data-bs-dismiss="modal"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
