@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import RegisterModal from "../components/Modal/RegisterModal";
 
 export const ValidateEmail = (email) => {
@@ -44,6 +43,7 @@ function Login() {
   const [valid, setValid] = useState({ email: true, password: true });
   const [modalOpen, setModalOpen] = useState(false);
   const openModal = () => {
+    document.getElementById("registerForm").reset();
     console.log("open modal");
     setModalOpen(true);
   };

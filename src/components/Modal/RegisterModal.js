@@ -14,17 +14,6 @@ function RegisterModal({ openModal }) {
   const [about, setAbout] = useState("");
   const [profilePicture, setProfilePicture] = useState(null);
   const fileInputRef = useRef();
-  const [valid, setValid] = useState({
-    firstName: true,
-    lastName: true,
-    email: true,
-    password: true,
-    dob: true,
-    gender: true,
-    nickname: true,
-    about: true,
-    profilePicture: true,
-  });
 
     const handleFileInputChange = (e) => {
       const file = e.target.files[0];
@@ -81,101 +70,91 @@ function RegisterModal({ openModal }) {
       }
     }
     const validRegisterForm = () => {
+      let validBool = true;
       if (firstName.trim() === '') {
         console.log("Firstname is required");
         document.getElementById("registerFirstnameErrMsg").innerHTML = "Firstname is required";
-        setValid({ ...valid, firstName: false });
+        validBool = false;
       } else if (!validateFirstname(firstName)) {
         console.log("Invalid firstname format");
         document.getElementById("registerFirstnameErrMsg").innerHTML = "Invalid Firstname format";
-        setValid({ ...valid, firstName: false });
+        validBool = false;
       } else {
         document.getElementById("registerFirstnameErrMsg").innerHTML = "";
-        setValid({ ...valid, firstName: true });
       }
       if (lastName.trim() === '') {
         console.log("Lastname is required");
         document.getElementById("registerLastnameErrMsg").innerHTML = "Lastname is required";
-        setValid({ ...valid, lastName: false });
+        validBool = false;
       } else if (!validateLastname(lastName)) {
         console.log("Invalid Lastname format");
         document.getElementById("registerLastnameErrMsg").innerHTML = "Invalid Lastname format";
-        setValid({ ...valid, lastName: false });
+        validBool = false;
       } else {
         document.getElementById("registerLastnameErrMsg").innerHTML = "";
-        setValid({ ...valid, lastName: true });
       }
       if (email.trim() === '') {
         console.log("Email is required");
         document.getElementById("registerUsernameErrMsg").innerHTML = "Email is required";
-        setValid({ ...valid, email: false });
+        validBool = false;
       } else if (!ValidateEmail(email)) {
         console.log("Invalid email format");
         document.getElementById("registerUsernameErrMsg").innerHTML = "Invalid email format";
-        setValid({ ...valid, email: false });
+        validBool = false;
       } else {
         document.getElementById("registerUsernameErrMsg").innerHTML = "";
-        setValid({ ...valid, email: true });
       }
       if (password.trim() === '') {
         console.log("Password is required");
         document.getElementById("registerPasswordErrMsg").innerHTML = "Password is required";
-        setValid({ ...valid, password: false });
+        validBool = false;
       } else if (!ValidatePassword(password)) {
         console.log("Invalid password format");
         document.getElementById("registerPasswordErrMsg").innerHTML = "Invalid password format";
-        setValid({ ...valid, password: false });
+        validBool = false;
       } else {
         document.getElementById("registerPasswordErrMsg").innerHTML = "";
-        setValid({ ...valid, password: true });
       }
       if (dob.trim() === '') {
         console.log("Date of birth is required");
         document.getElementById("registerDobErrMsg").innerHTML = "Date of birth is required";
-        setValid({ ...valid, dob: false });
+        validBool = false;
       } else if (!validateDob(dob)) {
         console.log("Invalid date of birth format");
         document.getElementById("registerDobErrMsg").innerHTML = "Invalid date of birth format";
-        setValid({ ...valid, dob: false });
+        validBool = false;
       } else {
         document.getElementById("registerDobErrMsg").innerHTML = "";
-        setValid({ ...valid, dob: true });
       }
       if (!gender.trim() === '') {
         console.log("Gender is required");
         document.getElementById("registerGenderErrMsg").innerHTML = "Gender is required";
-        setValid({ ...valid, gender: false});
+        validBool = false;
       } else if (!validateGender(gender)) {
         console.log("Invalid gender")
         document.getElementById("registerGenderErrMsg").innerHTML = "Invalid gender";
-        setValid({ ...valid, gender: false });
+        // setValid(valid.gender = false);
+        validBool = false;
       } else {
         document.getElementById("registerGenderErrMsg").innerHTML = "";
-        setValid({ ...valid, gender: true });
       }
       // if nickname is longer than 20 characters
       if (nickname.length > 20) {
         console.log("Nickname is too long");
         document.getElementById("registerNicknameErrMsg").innerHTML = "Nickname is too long";
-        setValid({ ...valid, nickname: false });
+        validBool = false;
       } else {
         document.getElementById("registerNicknameErrMsg").innerHTML = "";
-        setValid({ ...valid, nickname: true });
       }
       // if about is longer than 100 characters
       if (about.length > 100) {
         console.log("About is too long");
         document.getElementById("registerAboutErrMsg").innerHTML = "About is too long";
-        setValid({ ...valid, about: false });
+        validBool = false;
       } else {
         document.getElementById("registerAboutErrMsg").innerHTML = "";
-        setValid({ ...valid, about: true });
       }
-      console.log(valid);
-      if (valid.firstName && valid.lastName && valid.email && valid.password && valid.dob && valid.gender && valid.nickname && valid.about) {
-        return true;
-      }
-      return false;
+      return validBool;
     }
 
     const HandleRegister = async (event) => {
@@ -185,7 +164,6 @@ function RegisterModal({ openModal }) {
         console.log("Invalid register form");
         return;
       }
-      //need to validate data before sending it
       try {
         const response = await fetch("http://localhost:8080/register", {
           method: "POST",
@@ -197,9 +175,15 @@ function RegisterModal({ openModal }) {
         });
         if (response.ok) {
           console.log("Register successful");
+          document.getElementById("registerForm").reset();
+          alert("Register successful");
+           window.location.href = "/login";
+        }
+        if (response.status === 409) {
+          console.log("Email already exists");
+          document.getElementById("registerUsernameErrMsg").innerHTML = "Email already exists";
         }
       } catch (error) {
-        // Handle error
         console.error("Error:", error);
         
       }
@@ -215,7 +199,7 @@ function RegisterModal({ openModal }) {
           <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div className="modal-body">
-          <form id="registerForm">
+          <form id="registerForm" onSubmit={HandleRegister}> 
             <div >
               {profilePicture && (
                 <>
@@ -290,6 +274,7 @@ function RegisterModal({ openModal }) {
                   required
                   onChange={handleInputChange}
                   />
+                  <h6 >At least 5 characters, containing uppercase, lowercase, number, and special character</h6>
                 <span className="text-muted fs-7">Date of birth</span>
                 <div className="text-danger text-center" id="registerDobErrMsg"></div>
                 <input 
@@ -338,8 +323,6 @@ function RegisterModal({ openModal }) {
                   type="submit"
                   className="btn btn-success btn-lg"
                   value="Sign Up"
-                  onClick={HandleRegister}
-                  // data-bs-dismiss="modal"
                 />
                 </div>
               </div>

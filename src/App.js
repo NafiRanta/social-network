@@ -29,7 +29,6 @@ function App() {
   const [email, setEmail] = useState("");
   const [dob, setDob] = useState("");
   const [profilePicture, setProfilePic] = useState("");
-  console.log("length.profilePicture", profilePicture?.length)
   useEffect(() => {
     if (isAuth) {
       const userInfo = JSON.parse(localStorage.getItem("userInfo"));
@@ -38,6 +37,7 @@ function App() {
       setEmail(userInfo.email);
       setDob(userInfo.dob);
       setProfilePic(userInfo.profilePicture);
+      console.log("user profile picture", userInfo.profilePicture)
     }
   }, [isAuth]);
 
