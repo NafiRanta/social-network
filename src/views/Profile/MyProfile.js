@@ -68,7 +68,7 @@ function MyProfile(props) {
                 <div className="col-12 col-lg-3">
                     <div className="d-flex flex-column justify-content-center w-100 mx-auto" id="d-flex-postcontainer-followersbox">
                         <div className="bg-white rounded border shadow p-3">
-                            <ul  >
+                            <ul >
                                 <li className="dropdown-item p-1 rounded">
                                     <div >
                                         <p className="m-0"><strong>Bio</strong></p>
@@ -84,7 +84,6 @@ function MyProfile(props) {
                                     <span><i className="fas fa-birthday-cake"></i> <span className="name">{props.dob}</span></span>
                                 </li>
                             </ul>
-                           
                         </div>
                         <div className="bg-white rounded border shadow p-3">
                             <div>

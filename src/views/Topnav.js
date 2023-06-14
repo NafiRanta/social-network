@@ -78,7 +78,7 @@ function Topnav(props) {
               </Dropdown>
             </div>
             <div className="rounded-circle p-1 bg-gray d-flex align-items-center justify-content-center mx-2" type="button" id="groupMenu">
-              <Link to="/groups" className="text-decoration-none text-dark">
+              <Link to="/singleevent" className="text-decoration-none text-dark">
                 <i className="fas fa-users"></i>
               </Link>
             </div>

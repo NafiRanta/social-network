@@ -17,6 +17,7 @@ import SingleGroupNonMember from "./views/Groups/SingleGroupNonMember";
 import GroupSidenav from "./views/Groups/GroupSidenav";
 import AllGroups from "./views/Groups/AllGroups";
 import OthersProfile from "./views/Profile/OthersProfile";
+import SingleEvent from "./views/Events/SingleEvent";
 
 function App() {
   const isAuth = !!localStorage.getItem("userInfo");
@@ -66,11 +67,13 @@ function App() {
           } 
       />
       <Route
-        path="/groups"
+       /*  path="/groups" */
+        path="/singleevent"
         element={
           <div>
             <Topnav username={username} />
-            <HomeGroup username={username} />
+            {/* <HomeGroup username={username} /> */}
+            <SingleEvent username={username} />
           </div>
        } 
       />
