@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	d "socialnetwork/database"
 
@@ -42,15 +43,12 @@ func LogIn(w http.ResponseWriter, r *http.Request) {
 			// http.Error(w, "Invalid email or password", http.StatusUnauthorized)
 		}
 		// Get the stored password from the database and unhash it
-
 		storedPassword = user.Password
-
 		// Compare the stored password with the password received from the front-end
 		if password != storedPassword {
 			http.Error(w, "Invalid email or password", http.StatusUnauthorized)
 			return
 		}
-
 		if user != nil && password == storedPassword {
 			// Generate a new UUID
 			id, err := uuid.NewV4()
@@ -104,7 +102,6 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
 		return
 	}
-	fmt.Println("method accepted")
 
 	err := json.NewDecoder(r.Body).Decode(&user)
 	if err != nil {
@@ -124,9 +121,12 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		// Insert user in the database
 		if err == sql.ErrNoRows {
 			fmt.Println("User does not exist")
-			//  print  user.Avatar
-			fmt.Println("user.Avatar", user.Avatar)
-			err = d.AddUser(d.GetDB(), user.FirstName, user.LastName, user.Email, user.Password, user.DateOfBirth, user.Gender, user.Nickname, user.Avatar, user.AboutMe)
+			if user.Avatar == "" {
+				user.Avatar = string(setDefaultImg("./defaultImg/default-avatar.jpeg"))
+			}
+			//set default cover img
+			defaultCoverImg := string(setDefaultImg("./defaultImg/default-cover.png"))
+			err = d.AddUser(d.GetDB(), user.FirstName, user.LastName, user.Email, user.Password, user.DateOfBirth, user.Gender, user.Nickname, user.Avatar, defaultCoverImg, user.AboutMe)
 			if err != nil {
 				http.Error(w, err.Error(), http.StatusInternalServerError)
 				return
@@ -137,10 +137,16 @@ func Register(w http.ResponseWriter, r *http.Request) {
 	}
 
 	/* // Create bcrypt hash from password
-
 	// Set the hashed password in the user struct
 	user.Password = hashedPassword */
 	w.WriteHeader(http.StatusOK)
 	fmt.Println("User added successfully")
 
+}
+
+func setDefaultImg(imgDefaultPath string) []byte {
+	// Load the default image from the file system
+	imgData, _ := ioutil.ReadFile(imgDefaultPath)
+	// Use the default image data
+	return imgData
 }

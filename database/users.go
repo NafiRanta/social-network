@@ -49,18 +49,10 @@ func CreateUsersTable(db *sql.DB) {
 	query, err := db.Prepare(usersTable)
 	u.CheckErr(err)
 	query.Exec()
-	_, err = db.Exec(`
-	INSERT OR IGNORE INTO Users (UserID, FirstName, LastName, Email, Password, Privacy, Online, DateOfBirth, Gender, Avatar, CoverImage, Nickname, AboutMe, Follower_IDs, OnFollowing_IDs)
-	VALUES
-		('1', 'John', 'Doe', 'johndoe@example.com', 'Password123!', 'public', 0, '1990-01-01', 'Male', 'Default avatar', 'default cover image', 'John', 'About John', '', ''),
-		('2', 'Jane', 'Smith', 'janesmith@example.com', 'Password456!', 'public', 0, '1995-02-02', 'Female', 'Default avatar', 'default cover image', 'Jane', 'About Jane', '', '');
-`)
-
-	u.CheckErr(err)
 }
 
 // add users to users table
-func AddUser(db *sql.DB, FirstName string, LastName string, Email string, Password string, Dob string, Gender string, NickName string, ProfilePicture string, About string) error {
+func AddUser(db *sql.DB, FirstName string, LastName string, Email string, Password string, Dob string, Gender string, NickName string, ProfilePicture string, CoverPicture string, About string) error {
 	records := `INSERT INTO Users (UserID, FirstName, LastName, Email, Password, Privacy, Online, DateOfBirth, Gender, Avatar, CoverImage, Nickname, AboutMe, Follower_IDs, OnFollowing_IDs)
 	            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
 	query, err := db.Prepare(records)
@@ -68,19 +60,10 @@ func AddUser(db *sql.DB, FirstName string, LastName string, Email string, Passwo
 		return err
 	}
 	defer query.Close()
-
-	fmt.Println("ProfilePicture: ", ProfilePicture)
-
-	avatar := "Default avatar"
-	if ProfilePicture != "" {
-		avatar = ProfilePicture
-	}
-
-	fmt.Println("avatar: ", avatar)
 	// Generate a unique UserID using UUID
 	userID, _ := uuid.NewV4()
 
-	_, err = query.Exec(userID, FirstName, LastName, Email, Password, "public", 0, Dob, Gender, avatar, "default cover image", NickName, About, "", "")
+	_, err = query.Exec(userID, FirstName, LastName, Email, Password, "public", 0, Dob, Gender, ProfilePicture, CoverPicture, NickName, About, "", "")
 	if err != nil {
 		return err
 	}
@@ -117,6 +100,8 @@ func GetUserByEmail(email string) (*User, error) {
 	//if error is nil -> user found
 	return &user, nil
 }
+
+//func GetUserByID(userID string) (*User, error) {}
 
 // Create bcrypt hash from password
 // func HashPassword(password string) string {
