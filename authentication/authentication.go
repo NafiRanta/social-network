@@ -2,9 +2,11 @@ package authentication
 
 import (
 	"database/sql"
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 	d "socialnetwork/database"
 
@@ -14,9 +16,21 @@ import (
 
 var store = sessions.NewCookieStore([]byte("social-network-2023"))
 
-type UserData struct {
-	User string
+type UserResponse struct {
+	FirstName      string `json:"firstname"`
+	LastName       string `json:"lastname"`
+	Email          string `json:"email"`
+	Privacy        string `json:"privacy"`
+	DateOfBirth    string `json:"dob"`
+	Gender         string `json:"gender"`
+	Avatar         string `json:"profilePicture"`
+	Nickname       string `json:"nickname"`
+	AboutMe        string `json:"about"`
+	FollowerIDs    string `json:"Follower_IDs"`
+	OnFollowingIDs string `json:"OnFollowing_IDs"`
 }
+
+//user repsonse after login should not have password, the followers should have name, email, pic
 
 func LogIn(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Login")
@@ -73,7 +87,6 @@ func LogIn(w http.ResponseWriter, r *http.Request) {
 			w.WriteHeader(http.StatusOK)
 			// Encode the user as JSON
 			userJSON, err := json.Marshal(user)
-			fmt.Println(user)
 			if err != nil {
 				http.Error(w, "Failed to encode user", http.StatusInternalServerError)
 				return
@@ -122,11 +135,9 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		if err == sql.ErrNoRows {
 			fmt.Println("User does not exist")
 			if user.Avatar == "" {
-				user.Avatar = string(setDefaultImg("./defaultImg/default-avatar.jpeg"))
+				user.Avatar = base64.StdEncoding.EncodeToString(SetDefaultImg("defaultImg/default-avatar.jpeg"))
 			}
-			//set default cover img
-			defaultCoverImg := string(setDefaultImg("./defaultImg/default-cover.png"))
-			err = d.AddUser(d.GetDB(), user.FirstName, user.LastName, user.Email, user.Password, user.DateOfBirth, user.Gender, user.Nickname, user.Avatar, defaultCoverImg, user.AboutMe)
+			err = d.AddUser(d.GetDB(), user.FirstName, user.LastName, user.Email, user.Password, user.DateOfBirth, user.Gender, user.Nickname, user.Avatar, user.AboutMe)
 			if err != nil {
 				http.Error(w, err.Error(), http.StatusInternalServerError)
 				return
@@ -144,9 +155,13 @@ func Register(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func setDefaultImg(imgDefaultPath string) []byte {
+func SetDefaultImg(imgDefaultPath string) []byte {
 	// Load the default image from the file system
-	imgData, _ := ioutil.ReadFile(imgDefaultPath)
-	// Use the default image data
+	imgData, err := ioutil.ReadFile(imgDefaultPath)
+	if err != nil {
+		log.Println("Error reading image file:", err)
+	}
 	return imgData
+	// Use the default image data
+
 }

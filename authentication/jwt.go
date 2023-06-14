@@ -1,6 +1,8 @@
 package authentication
 
 import (
+	"fmt"
+	"strings"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
@@ -25,4 +27,13 @@ func GenerateJWT(userID string) (string, error) {
 	}
 
 	return tokenString, nil
+}
+
+func JWTTokenDecode(authHeader string) (jwt.Token, error) {
+	fmt.Println("JWTTokenDecode")
+	bearerToken := strings.TrimPrefix(authHeader, "Bearer ")
+	token, err := jwt.Parse(bearerToken, func(token *jwt.Token) (interface{}, error) {
+		return []byte("social-network-2023"), nil
+	})
+	return *token, err
 }

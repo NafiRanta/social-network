@@ -20,11 +20,10 @@ type User struct {
 	DateOfBirth    string `json:"dob"`
 	Gender         string `json:"gender"`
 	Avatar         string `json:"profilePicture"`
-	CoverImage     string `json:"-"`
 	Nickname       string `json:"nickname"`
 	AboutMe        string `json:"about"`
-	FollowerIDs    string `json:"-"`
-	OnFollowingIDs string `json:"-"`
+	FollowerIDs    string `json:"Follower_IDs"`
+	OnFollowingIDs string `json:"OnFollowing_IDs"`
 }
 
 // create users table
@@ -39,8 +38,7 @@ func CreateUsersTable(db *sql.DB) {
 		Online TINYINT(1) NOT NULL DEFAULT 0,
 		DateOfBirth DATETIME NOT NULL,
 		Gender TEXT NOT NULL,
-		Avatar BLOB DEFAULT 'Default avatar',
-		CoverImage BLOB NOT NULL DEFAULT 'default cover image',
+		Avatar BLOB,
 		Nickname TEXT,
 		AboutMe TEXT,
 		Follower_IDs TEXT,
@@ -52,9 +50,9 @@ func CreateUsersTable(db *sql.DB) {
 }
 
 // add users to users table
-func AddUser(db *sql.DB, FirstName string, LastName string, Email string, Password string, Dob string, Gender string, NickName string, ProfilePicture string, CoverPicture string, About string) error {
-	records := `INSERT INTO Users (UserID, FirstName, LastName, Email, Password, Privacy, Online, DateOfBirth, Gender, Avatar, CoverImage, Nickname, AboutMe, Follower_IDs, OnFollowing_IDs)
-	            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+func AddUser(db *sql.DB, FirstName string, LastName string, Email string, Password string, Dob string, Gender string, NickName string, ProfilePicture string, About string) error {
+	records := `INSERT INTO Users (UserID, FirstName, LastName, Email, Password, Privacy, Online, DateOfBirth, Gender, Avatar, Nickname, AboutMe, Follower_IDs, OnFollowing_IDs)
+	            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
 	query, err := db.Prepare(records)
 	if err != nil {
 		return err
@@ -63,7 +61,7 @@ func AddUser(db *sql.DB, FirstName string, LastName string, Email string, Passwo
 	// Generate a unique UserID using UUID
 	userID, _ := uuid.NewV4()
 
-	_, err = query.Exec(userID, FirstName, LastName, Email, Password, "public", 0, Dob, Gender, ProfilePicture, CoverPicture, NickName, About, "", "")
+	_, err = query.Exec(userID, FirstName, LastName, Email, Password, "public", 0, Dob, Gender, ProfilePicture, NickName, About, "", "")
 	if err != nil {
 		return err
 	}
@@ -79,7 +77,7 @@ func GetUserByEmail(email string) (*User, error) {
 	}
 	defer db.Close()
 
-	stmt, err := db.Prepare("SELECT * FROM users WHERE email = ?")
+	stmt, err := db.Prepare("SELECT * FROM Users WHERE email = ?")
 	if err != nil {
 		fmt.Println("err from stmt: ", err)
 		return nil, err
@@ -87,7 +85,7 @@ func GetUserByEmail(email string) (*User, error) {
 	defer stmt.Close()
 
 	var user User
-	err = stmt.QueryRow(email).Scan(&user.UserID, &user.FirstName, &user.LastName, &user.Email, &user.Password, &user.Privacy, &user.Online, &user.DateOfBirth, &user.Gender, &user.Avatar, &user.CoverImage, &user.Nickname, &user.AboutMe, &user.FollowerIDs, &user.OnFollowingIDs)
+	err = stmt.QueryRow(email).Scan(&user.UserID, &user.FirstName, &user.LastName, &user.Email, &user.Password, &user.Privacy, &user.Online, &user.DateOfBirth, &user.Gender, &user.Avatar, &user.Nickname, &user.AboutMe, &user.FollowerIDs, &user.OnFollowingIDs)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			fmt.Println("user not found")
@@ -99,6 +97,158 @@ func GetUserByEmail(email string) (*User, error) {
 	}
 	//if error is nil -> user found
 	return &user, nil
+}
+
+func GetUserByID(userID string) (*User, error) {
+	fmt.Println("GetUserByID")
+	// If the user is not found, return nil, nil
+	db, err := sql.Open("sqlite3", "./socialnetwork.db")
+	if err != nil {
+		return nil, err
+	}
+	defer db.Close()
+
+	stmt, err := db.Prepare("SELECT * FROM Users WHERE UserID = ?")
+	if err != nil {
+		fmt.Println("error from stmt:", err)
+		return nil, err
+	}
+	defer stmt.Close()
+
+	var user User
+	err = stmt.QueryRow(userID).Scan(&user.UserID, &user.FirstName, &user.LastName, &user.Email, &user.Password, &user.Privacy, &user.Online, &user.DateOfBirth, &user.Gender, &user.Avatar, &user.Nickname, &user.AboutMe, &user.FollowerIDs, &user.OnFollowingIDs)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			fmt.Println("user not found")
+			return nil, nil // User not found
+		} else {
+			fmt.Println("something else error:", err)
+			return nil, err
+		}
+	}
+	// If the error is nil, the user is found
+	return &user, nil
+}
+
+func GetAllPublicUsers() ([]*User, error) {
+	// Open a connection to the SQL database
+	db, err := sql.Open("sqlite3", "./socialnetwork.db")
+	if err != nil {
+		return nil, err
+	}
+	defer db.Close()
+
+	// Prepare the SQL query
+	query := "SELECT * FROM Users WHERE privacy = 'public'"
+	rows, err := db.Query(query)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	// Iterate over the query results and populate the users slice
+	users := make([]*User, 0)
+	for rows.Next() {
+		user := &User{}
+		err := rows.Scan(
+			&user.UserID,
+			&user.FirstName,
+			&user.LastName,
+			&user.Email,
+			&user.Password,
+			&user.Privacy,
+			&user.Online,
+			&user.DateOfBirth,
+			&user.Gender,
+			&user.Avatar,
+			&user.Nickname,
+			&user.AboutMe,
+			&user.FollowerIDs,
+			&user.OnFollowingIDs,
+		)
+		if err != nil {
+			return nil, err
+		}
+		users = append(users, user)
+	}
+
+	// Check for any errors during the iteration
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return users, nil
+}
+
+func GetAllPrivateUsers() ([]*User, error) {
+	// Open a connection to the SQL database
+	db, err := sql.Open("sqlite3", "./socialnetwork.db")
+	if err != nil {
+		return nil, err
+	}
+	defer db.Close()
+
+	// Prepare the SQL query
+	query := "SELECT * FROM Users WHERE privacy = 'private'"
+	rows, err := db.Query(query)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	// Iterate over the query results and populate the users slice
+	users := make([]*User, 0)
+	for rows.Next() {
+		user := &User{}
+		err := rows.Scan(
+			&user.UserID,
+			&user.FirstName,
+			&user.LastName,
+			&user.Email,
+			&user.Password,
+			&user.Privacy,
+			&user.Online,
+			&user.DateOfBirth,
+			&user.Gender,
+			&user.Avatar,
+			&user.Nickname,
+			&user.AboutMe,
+			&user.FollowerIDs,
+			&user.OnFollowingIDs,
+		)
+		if err != nil {
+			return nil, err
+		}
+		users = append(users, user)
+	}
+
+	// Check for any errors during the iteration
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return users, nil
+}
+
+func UpdateUserPrivacy(user *User) error {
+	db, err := sql.Open("sqlite3", "./socialnetwork.db")
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+
+	stmt, err := db.Prepare("UPDATE Users SET Privacy = ? WHERE UserID = ?")
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
+
+	_, err = stmt.Exec(user.Privacy, user.UserID)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 //func GetUserByID(userID string) (*User, error) {}

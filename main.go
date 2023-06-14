@@ -9,6 +9,7 @@ import (
 	a "socialnetwork/authentication"
 	d "socialnetwork/database"
 	p "socialnetwork/posts"
+	user "socialnetwork/users"
 	u "socialnetwork/utils"
 	"time"
 )
@@ -31,15 +32,17 @@ func Start() error {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "connected")
 	})
-	//handle user
+	//handle user login and register, logout
 	router.HandleFunc("/login", a.LogIn)
 	router.HandleFunc("/register", a.Register)
 	router.HandleFunc("/logout", a.LogOut)
+	//handle user
+	router.HandleFunc("/users", user.GetAllUsers)
+	router.HandleFunc("/updateprivacy", user.ChangePrivacyofUser)
 	//handle post
 	router.HandleFunc("/posts", p.GetPostsHandler)
 	// router.HandleFunc("/websocket", ws)
 	handler := u.CorsMiddleware(router)
-
 	//fire up the server
 	log.Print("Listening on :8080...")
 	err := http.ListenAndServe(":8080", handler)
