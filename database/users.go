@@ -19,7 +19,7 @@ type User struct {
 	Online         int    `json:"online"`
 	DateOfBirth    string `json:"dob"`
 	Gender         string `json:"gender"`
-	Avatar         string `json:"-"`
+	Avatar         string `json:"profilePicture"`
 	CoverImage     string `json:"-"`
 	Nickname       string `json:"nickname"`
 	AboutMe        string `json:"about"`
@@ -69,10 +69,18 @@ func AddUser(db *sql.DB, FirstName string, LastName string, Email string, Passwo
 	}
 	defer query.Close()
 
-	// Generate a unique UserID using UUID
-	userID, err := uuid.NewV4()
+	fmt.Println("ProfilePicture: ", ProfilePicture)
 
-	_, err = query.Exec(userID, FirstName, LastName, Email, Password, "public", 0, Dob, Gender, "Default avatar", "default cover image", NickName, About, "", "")
+	avatar := "Default avatar"
+	if ProfilePicture != "" {
+		avatar = ProfilePicture
+	}
+
+	fmt.Println("avatar: ", avatar)
+	// Generate a unique UserID using UUID
+	userID, _ := uuid.NewV4()
+
+	_, err = query.Exec(userID, FirstName, LastName, Email, Password, "public", 0, Dob, Gender, avatar, "default cover image", NickName, About, "", "")
 	if err != nil {
 		return err
 	}

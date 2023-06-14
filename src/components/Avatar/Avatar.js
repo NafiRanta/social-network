@@ -1,9 +1,9 @@
 import React from 'react';
 import './Avatar.css';
 
-function Avatar() {
+function Avatar(props) {
     return(
-        <img src="https://source.unsplash.com/random/1" alt="avatar" className="rounded-circle me-2" id="avatar"/>
+        <img src={props.profilePicture} alt="avatar" className="rounded-circle me-2" id="avatar"/>
     )
 }
 

@@ -13,7 +13,7 @@ function HomeGroup(props) {
                 <div className="col-12 col-lg-6 pb-5 p-3">
                     <div className="d-flex flex-column justify-content-center w-100" id="d-flex-postcontainer-homeGroup">
                     <h5><strong>Your Feed</strong></h5>
-                        <CreateGroupPost username={props.username} />
+                        <CreateGroupPost username={props.username} profilePicture={props.profilePicture}/>
                         <GroupPostCard />
                     </div>
                 </div>

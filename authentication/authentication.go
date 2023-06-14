@@ -124,6 +124,8 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		// Insert user in the database
 		if err == sql.ErrNoRows {
 			fmt.Println("User does not exist")
+			//  print  user.Avatar
+			fmt.Println("user.Avatar", user.Avatar)
 			err = d.AddUser(d.GetDB(), user.FirstName, user.LastName, user.Email, user.Password, user.DateOfBirth, user.Gender, user.Nickname, user.Avatar, user.AboutMe)
 			if err != nil {
 				http.Error(w, err.Error(), http.StatusInternalServerError)

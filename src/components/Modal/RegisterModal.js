@@ -3,9 +3,18 @@ import "./Modal.css";
 
 function RegisterModal({ openModal }) {
   //use setStates for the form inputs
-    const [profilePicture, setProfilePicture] = useState(null);
-    const fileInputRef = useRef();
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [nickname, setNickname] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [dob, setDob] = useState("");
+  const [gender, setGender] = useState("");
+  const [about, setAbout] = useState("");
+  const [profilePicture, setProfilePicture] = useState(null);
+  const fileInputRef = useRef();
   
+    
     const handleFileInputChange = (e) => {
       const file = e.target.files[0];
       if (file) {
@@ -24,34 +33,33 @@ function RegisterModal({ openModal }) {
     const handleRemoveImage = () => {
       setProfilePicture(null);
     };
-    // const handleInputChange = (e) => {}
+
+    // 
+    const handleInputChange = (e) => {
+      const { name, value } = e.target;
+      if (name === "firstName") {
+        setFirstName(value);
+      } else if (name === "lastName") {
+        setLastName(value);
+      } else if (name === "nickname") {
+        setNickname(value);
+      } else if (name === "email") {
+        setEmail(value);
+      } else if (name === "password") {
+        setPassword(value);
+      } else if (name === "dob") {
+        setDob(value);
+      } else if (name === "about"){
+        setAbout(value);
+      } else if (name === "gender"){
+        setGender(value);
+      }
+    }
     // const validRegisterForm = () => {}
 
-    const HandleRegister = async () => {
+    const HandleRegister = async (event) => {
+      event.preventDefault();
       console.log("Register");
-      const firstNameInput = document.getElementById('firstname');
-      const lastNameInput = document.getElementById('lastname');
-      const emailInput = document.getElementById('email');
-      const passwordInput = document.getElementById('password');
-      const dobInput = document.getElementById('dob');
-      const genderInput = document.getElementById('gender');
-      const nicknameInput = document.getElementById('nickname');
-      const aboutInput = document.getElementById('about');
-  
-      // Get the values from the form inputs
-      
-      const registerData = {
-        firstName: firstNameInput.value,
-        lastName: lastNameInput.value,
-        email: emailInput.value,
-        password: passwordInput.value,
-        dob: dobInput.value,
-        gender: genderInput.value,
-        nickname: nicknameInput.value,
-        about: aboutInput.value,
-      };
-      console.log("registerData", registerData);
-
       //need to validate data before sending it
       try {
         const response = await fetch("http://localhost:8080/register", {
@@ -60,7 +68,7 @@ function RegisterModal({ openModal }) {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(registerData),
+          body: JSON.stringify({firstName, lastName, email, password, dob, gender, nickname, about, profilePicture}),
         });
         if (response.ok) {
           console.log("Register successful");
@@ -99,7 +107,14 @@ function RegisterModal({ openModal }) {
                <div className="avatar-wrapper">
                     <div className="upload-button" onClick={handleUploadButtonClick}>
                         <i className="fa fa-arrow-circle-up" aria-hidden="true"></i>
-                        <input className="file-upload" type="file" accept="image/*" ref={fileInputRef} onChange={handleFileInputChange} />
+                        <input 
+                          className="file-upload" 
+                          type="file" 
+                          accept="image/*" 
+                          ref={fileInputRef} 
+                          onChange={handleFileInputChange} 
+                          name="profilePicture"
+                          />
                     </div>
                 </div> 
               )}
@@ -107,15 +122,81 @@ function RegisterModal({ openModal }) {
             </div>
               <div className="registerForm-group">
                 <p className="text-muted text-center">Upload Avatar (optional)</p>
-                <input type="text" className="form-control my-3" id="firstname" placeholder="First name" />
-                <input type="text" className="form-control my-3" id="lastname" placeholder="Lastname" />
-                <input type="email" className="form-control my-3" id="email" placeholder="Email" />
-                <input type="password" className="form-control my-3" id="password" placeholder="Password" />
+                <input 
+                  className="form-control my-3" 
+                  data-testid="firstname" 
+                  name="firstName"
+                  placeholder="First name" 
+                  type="text"
+                  required
+                  onChange={handleInputChange}
+                  />
+                <input 
+                  className="form-control my-3" 
+                  data-testid="lastname" 
+                  name="lastName"
+                  placeholder="Lastname" 
+                  type="text" 
+                  required
+                  onChange={handleInputChange}
+                  />
+                <input 
+                  className="form-control my-3" 
+                  data-testid="email" 
+                  name="email"
+                  placeholder="Email"
+                  type="email"
+                  required
+                  onChange={handleInputChange}
+                  />
+                <input 
+                  className="form-control my-3" 
+                  data-testid="password" 
+                  name="password"
+                  placeholder="Password" 
+                  type="password" 
+                  required
+                  onChange={handleInputChange}
+                  />
                 <span className="text-muted fs-7">Date of birth</span>
-                <input type="date" className="form-control my-3" autoFocus id="dob" placeholder="Date of Birth" required />
-                <input type="text" className="form-control my-3" autoFocus id="gender" placeholder="Gender" required />
-                <input type="text" className="form-control my-3" autoFocus id="nickname" placeholder="Nickname (optional)" />
-                <input type="text" className="form-control my-3" autoFocus id="about" placeholder="About me (optional)" />
+                <input 
+                  autoFocus id="dob" 
+                  className="form-control my-3" 
+                  data-testid="dob"
+                  name="dob"
+                  placeholder="Date of Birth" 
+                  type="date" 
+                  required 
+                  onChange={handleInputChange}
+                  />
+                <input 
+                  autoFocus 
+                  className="form-control my-3" 
+                  data-testid="gender" 
+                  name="gender"
+                  placeholder="Gender" 
+                  type="text" 
+                  required 
+                  onChange={handleInputChange}
+                  />
+                <input 
+                  autoFocus 
+                  className="form-control my-3" 
+                  data-testid="nickname" 
+                  name="nickname"
+                  placeholder="Nickname (optional)" 
+                  type="text" 
+                  onChange={handleInputChange}
+                  />
+                <input 
+                  autoFocus 
+                  className="form-control my-3" 
+                  data-testid="about" 
+                  name="about"
+                  placeholder="About me (optional)" 
+                  type="text" 
+                  onChange={handleInputChange}
+                  />
                 <div className="text-center mt-3">
                 <input
                   type="submit"
@@ -124,7 +205,6 @@ function RegisterModal({ openModal }) {
                   onClick={HandleRegister}
                   data-bs-dismiss="modal"
                 />
-
                 </div>
               </div>
             </form>

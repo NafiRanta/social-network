@@ -27,6 +27,7 @@ function App() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [dob, setDob] = useState("");
+  const [profilePicture, setProfilePic] = useState("");
   useEffect(() => {
     if (isAuth) {
       const userInfo = JSON.parse(localStorage.getItem("userInfo"));
@@ -34,6 +35,7 @@ function App() {
       setUsername(username);
       setEmail(userInfo.email);
       setDob(userInfo.dob);
+      setProfilePic(userInfo.profilePicture);
     }
   }, [isAuth]);
 
@@ -44,8 +46,8 @@ function App() {
          path="/"
          element={
            <div>
-              <Topnav username={username} />
-              <Home username={username} />
+              <Topnav username={username} profilePicture={profilePicture} />
+              <Home username={username} profilePicture={profilePicture}/>
            </div>
            
          }/>
@@ -61,19 +63,17 @@ function App() {
         path="/chat"
         element={
           <div>
-            <Topnav username={username} />
-            <Chat username={username} />
+            <Topnav username={username} profilePicture={profilePicture} />
+            <Chat username={username} profilePicture={profilePicture}/>
           </div>
           } 
       />
       <Route
-       /*  path="/groups" */
-        path="/singleevent"
+       path="/groups"
         element={
           <div>
-            <Topnav username={username} />
-            {/* <HomeGroup username={username} /> */}
-            <SingleEvent username={username} />
+            <Topnav username={username} profilePicture={profilePicture}/>
+            <HomeGroup username={username} profilePicture={profilePicture}/>
           </div>
        } 
       />
@@ -81,8 +81,8 @@ function App() {
         path="/allgroups"
         element={
           <div>
-            <Topnav username={username} />
-            <AllGroups username={username} />
+            <Topnav username={username} profilePicture={profilePicture}/>
+            <AllGroups username={username} profilePicture={profilePicture}/>
           </div>
        } 
       />
@@ -90,8 +90,8 @@ function App() {
         path="/mygroups"
         element={
           <div>
-            <Topnav username={username} />
-            <MyGroups username={username} />
+            <Topnav username={username} profilePicture={profilePicture}/>
+            <MyGroups username={username} profilePicture={profilePicture}/>
           </div>
        } 
       />
@@ -99,11 +99,12 @@ function App() {
         path="/profile"
         element={
           <div>
-            <Topnav username={username} />
+            <Topnav username={username} profilePicture={profilePicture}/>
             <MyProfile 
               username={username}
               email={email}
               dob={dob}
+              profilePicture={profilePicture}
             />
           </div>
        } 
@@ -112,9 +113,10 @@ function App() {
         path="/singlegroups"
         element={
           <div>
-            <Topnav username={username} />
+            <Topnav username={username} profilePicture={profilePicture}/>
             <SingleGroup 
               username={username}
+              profilePicture={profilePicture}
             />
           </div>
        } 

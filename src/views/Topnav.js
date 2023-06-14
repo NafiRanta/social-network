@@ -78,7 +78,7 @@ function Topnav(props) {
               </Dropdown>
             </div>
             <div className="rounded-circle p-1 bg-gray d-flex align-items-center justify-content-center mx-2" type="button" id="groupMenu">
-              <Link to="/singleevent" className="text-decoration-none text-dark">
+              <Link to="/groups" className="text-decoration-none text-dark">
                 <i className="fas fa-users"></i>
               </Link>
             </div>
@@ -129,7 +129,7 @@ function Topnav(props) {
                   id="secondMenu"
                   className="bg-transparent border-0"
                 >
-                  <Avatar />
+                  <Avatar profilePicture={props.profilePicture} />
                 </Dropdown.Toggle>
                 <Dropdown.Menu
                   className="dropdown-menu border-0 shadow p-3"
@@ -138,7 +138,7 @@ function Topnav(props) {
                   <Dropdown.Item as="li" className="my-2 p-1">
                     <Link to="/profile" className="text-decoration-none text-dark d-flex align-items-center">
                       <div className="rounded-circle p-1 bg-gray d-flex align-items-center justify-content-center mx-2">
-                        <Avatar />
+                        <Avatar profilePicture={props.profilePicture} />
                       </div>
                       <p className="m-0">{props.username}</p>
                     </Link>

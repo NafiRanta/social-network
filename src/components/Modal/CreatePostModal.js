@@ -3,6 +3,7 @@ import "./Modal.css";
 import Avatar from "../../components/Avatar/Avatar";
 
 function CreatePostModal(props) {
+
   const [selectedImage, setSelectedImage] = useState(null);
 
   const handleImageUpload = (event) => {
@@ -17,7 +18,7 @@ function CreatePostModal(props) {
       reader.readAsDataURL(file);
     }
   };
-
+  console.log("create post modal profile picture: ", props.profilePicture);
   return (
     <div
       className="modal fade"
@@ -45,7 +46,7 @@ function CreatePostModal(props) {
               <div className="d-flex flex-column">
                 <div className="d-flex align-items-center">
                   <div className="p-2">
-                    <Avatar />
+                    <Avatar profilePicture={props.profilePicture} />
                   </div>
                   <div>
                     <p className="m-0 fw-bold">{props.username}</p>

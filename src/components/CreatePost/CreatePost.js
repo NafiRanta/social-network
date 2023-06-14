@@ -3,11 +3,12 @@ import CreatePostModal from '../Modal/CreatePostModal';
 import Avatar from '../../components/Avatar/Avatar';
 
 function CreatePost(props) {
+  console.log("create post profile picture", props.profilePicture)
     return(
         <div className="bg-white p-3 mt-3 rounded border shadow">
               <div className="d-flex" type="button">
                 <div className="p-1">
-                  <Avatar />
+                  <Avatar profilePicture={props.profilePicture} />
                 </div>
                 <input 
                   type="text" 
@@ -17,7 +18,7 @@ function CreatePost(props) {
                   data-bs-toggle="modal" 
                   data-bs-target="#createPostModal"/>
               </div>
-              <CreatePostModal username={props.username} />
+              <CreatePostModal username={props.username} profilePicture={props.profilePicture}/>
               <hr />
               <div className="d-flex flex-column flex-lg-row mt-3">
                 <div className="dropdown-item rounded d-flex align-items-center justify-content-center" type="button">
