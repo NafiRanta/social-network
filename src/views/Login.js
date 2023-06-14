@@ -2,6 +2,42 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import RegisterModal from "../components/Modal/RegisterModal";
 
+export const ValidateEmail = (email) => {
+  // Regular expression for email format validation
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+};
+
+export const ValidatePassword = (password) => {
+  // Check if password is at least 5 characters long
+  if (password.length < 5) {
+    return false;
+  }
+
+  // Check if password contains at least one uppercase letter
+  if (!/[A-Z]/.test(password)) {
+    return false;
+  }
+
+  // Check if password contains at least one lowercase letter
+  if (!/[a-z]/.test(password)) {
+    return false;
+  }
+
+  // Check if password contains at least one digit
+  if (!/\d/.test(password)) {
+    return false;
+  }
+
+  // Check if password contains at least one special character
+  if (!/[!@#$%^&*]/.test(password)) {
+    return false;
+  }
+
+  // Password format is valid
+  return true;
+};
+
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -33,7 +69,7 @@ function Login() {
     }
   
     // Check if the email is in the correct format
-    if (!validateEmail(email)) {
+    if (!ValidateEmail(email)) {
       console.log('Invalid email format');
       document.getElementById("loginUsernameErrMsg").innerHTML = 'Invalid email format';
       setValid({ ...valid, email: false });
@@ -47,7 +83,7 @@ function Login() {
     }
   
     // Check if the password is in the correct format
-    if (!validatePassword(password)) {
+    if (!ValidatePassword(password)) {
       console.log('Invalid password format');
       document.getElementById("loginPasswordErrMsg").innerHTML = 'Invalid password format';
       setValid({ ...valid, password: false });
@@ -60,41 +96,6 @@ function Login() {
     }
   };
   
-  const validateEmail = (email) => {
-    // Regular expression for email format validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  };
-  
-  const validatePassword = (password) => {
-    // Check if password is at least 5 characters long
-    if (password.length < 5) {
-      return false;
-    }
-  
-    // Check if password contains at least one uppercase letter
-    if (!/[A-Z]/.test(password)) {
-      return false;
-    }
-  
-    // Check if password contains at least one lowercase letter
-    if (!/[a-z]/.test(password)) {
-      return false;
-    }
-  
-    // Check if password contains at least one digit
-    if (!/\d/.test(password)) {
-      return false;
-    }
-  
-    // Check if password contains at least one special character
-    if (!/[!@#$%^&*]/.test(password)) {
-      return false;
-    }
-  
-    // Password format is valid
-    return true;
-  };
   
   const handleLogin = async (event) => {
     event.preventDefault(); // Prevent form from refreshing the page
