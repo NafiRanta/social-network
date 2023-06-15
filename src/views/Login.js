@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import RegisterModal from "../components/Modal/RegisterModal";
 
 export const ValidateEmail = (email) => {
-  // Regular expression for email format validation
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  // Regular expression for email format validation forbid swedish letters
+  const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
   return emailRegex.test(email);
 };
 
@@ -43,7 +44,6 @@ function Login() {
   const [valid, setValid] = useState({ email: true, password: true });
   const [modalOpen, setModalOpen] = useState(false);
   const openModal = () => {
-    document.getElementById("registerForm").reset();
     console.log("open modal");
     setModalOpen(true);
   };
