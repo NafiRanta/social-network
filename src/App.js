@@ -20,7 +20,6 @@ import OthersProfile from "./views/Profile/OthersProfile";
 import SingleEvent from "./views/Events/SingleEvent";
 
 function App() {
-  
   const isAuth = !!localStorage.getItem("userInfo");
   console.log(isAuth)
   
@@ -30,6 +29,7 @@ function App() {
   const [dob, setDob] = useState("");
   const [profilePicture, setProfilePic] = useState("");
   const [nickname, setNickname] = useState("");
+  const [allusers, setAllUsers] = useState([]);
   useEffect(() => {
     if (isAuth) {
       const userInfo = JSON.parse(localStorage.getItem("userInfo"));
@@ -41,7 +41,30 @@ function App() {
       setProfilePic(userInfo.profilePicture);
       setNickname(nickname);
      // console.log("user profile picture", userInfo.profilePicture)
+
+     const fetchUsers = async () => {
+      try {
+        const res = await fetch("http://localhost:8080/users", {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        
+        if (res.ok) {
+          const data = await res.json();
+          setAllUsers(data);
+        } else {
+          console.log("error");
+        }
+      } catch (error) {
+        // Handle error
+        console.log(error);
+      }
+    };
+    fetchUsers();
     }
+    console.log("allusers" , allusers);
   }, [isAuth]);
 
   return (
@@ -51,7 +74,7 @@ function App() {
          path="/"
          element={
            <div>
-              <Topnav username={username} profilePicture={profilePicture} />
+              <Topnav username={username} profilePicture={profilePicture} allusers={allusers} />
               <Home username={username} profilePicture={profilePicture}/>
            </div>
            

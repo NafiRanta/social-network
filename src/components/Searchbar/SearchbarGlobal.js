@@ -1,13 +1,14 @@
 import React, { useRef } from 'react'; // a hook to create mutable reference (value tt can b modified/updated w/o re-rendering)
 import { Dropdown } from 'react-bootstrap';
 import Avatar from '../Avatar/Avatar';
-
+import { useState, useEffect } from 'react';
 // useRef is used to create a reference to the dropdown menu element. 
 // returns a JS object with a current property that can be used to access the referenced value or element.
 // then used to check if a click event occurs within the dropdown menu. 
 // maintain a reference to the dropdown menu element across renders without causing a re-render.
 
-function SearchbarGlobal() {
+function SearchbarGlobal(props) {
+  console.log("allusers search globalbar" , props.allusers)
   const inputRef = useRef(null);
   const buttonRef = useRef(null);
 
@@ -31,10 +32,27 @@ function SearchbarGlobal() {
     if (!isOpen) {
       return;
     }
-
     return true;
   };
 
+  // write a function to display all of the users from props.allusers in the search bar
+   const displayAllUsers = () => {
+    return props.allusers.map((user) => {
+      // return firstname and lastname from user
+      const username = user.firstname + " " + user.lastname;
+      return (
+        <Dropdown.Item className="my-4">
+          <div className="alert fade show p-1 m-0 d-flex align-items-center justify-content-between" role="alert">
+            <div className="d-flex align-items-center">
+              <Avatar />
+              <p className="m-0">{username}</p>
+            </div>
+            <button type="button" className="btn-close p-0 m-0" data-bs-dismiss="alert" aria-label="Close" onClick={handleButtonClick}></button>
+          </div>
+        </Dropdown.Item>
+      );
+    })
+  }
   return (
     <Dropdown onToggle={handleDropdownToggle}>
       <Dropdown.Toggle variant="light" id="searchMenu">
@@ -54,22 +72,7 @@ function SearchbarGlobal() {
           />
         </Dropdown.Item>
         <Dropdown.Item className="my-4">
-          <div className="alert fade show p-1 m-0 d-flex align-items-center justify-content-between" role="alert">
-            <div className="d-flex align-items-center">
-              <Avatar />
-              <p className="m-0">Nafi</p>
-            </div>
-            <button type="button" className="btn-close p-0 m-0" data-bs-dismiss="alert" aria-label="Close" onClick={handleButtonClick}></button>
-          </div>
-        </Dropdown.Item>
-        <Dropdown.Item className="my-4">
-          <div className="alert fade show p-1 m-0 d-flex align-items-center justify-content-between" role="alert">
-            <div className="d-flex align-items-center">
-              <Avatar />
-              <p className="m-0">Nafi</p>
-            </div>
-            <button type="button" className="btn-close p-0 m-0" data-bs-dismiss="alert" aria-label="Close" onClick={handleButtonClick}></button>
-          </div>
+        {displayAllUsers()}
         </Dropdown.Item>
       </Dropdown.Menu>
     </Dropdown>

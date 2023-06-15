@@ -3,7 +3,6 @@ import CreatePostModal from '../Modal/CreatePostModal';
 import Avatar from '../../components/Avatar/Avatar';
 
 function CreatePost(props) {
-  console.log("create post profile picture", props.profilePicture)
     return(
         <div className="bg-white p-3 mt-3 rounded border shadow">
               <div className="d-flex" type="button">
