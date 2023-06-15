@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import "./Modal.css";
 import Avatar from "../Avatar/Avatar";
+const fileInputRef = useRef();
 
 function ChangeProfilePicModal(props) {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -9,11 +10,10 @@ function ChangeProfilePicModal(props) {
     const file = event.target.files[0];
     const reader = new FileReader();
 
-    reader.onloadend = () => {
-      setSelectedImage(reader.result);
-    };
-
     if (file) {
+      reader.onloadend = () => {
+        setSelectedImage(reader.result);
+      };
       reader.readAsDataURL(file);
     }
   };
@@ -53,7 +53,7 @@ function ChangeProfilePicModal(props) {
                       />
                     ) : (
                       <img
-                        src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp"
+                        src={props.profilePicture}
                         alt="Generic placeholder image"
                         className="img-fluid"
                       />

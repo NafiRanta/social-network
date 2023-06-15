@@ -81,7 +81,17 @@ function UpdateProfileSettingsModal(props) {
                         name="dob"
                         placeholder="Date of Birth" 
                         type="date" 
-                  />
+                    />
+                    </div>
+                    <div className="form-group">
+                      <input 
+                        autoFocus 
+                        className="form-control my-3"   
+                        name="gender"
+                        placeholder="Gender" 
+                        type="text" 
+                        required 
+                      />
                     </div>
                   </form>
                 </div>
