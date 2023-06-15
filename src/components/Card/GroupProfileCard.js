@@ -14,7 +14,7 @@ function GroupProfileCard(props) {
                         <h3 className="card-title mt-4"><strong>Ålands köp och sälj</strong></h3>
                         <p className="card-text">Environmentally friendly, social, completely simple.</p>
                             <Link
-                                to="/singlegroups" // Specify the desired path to redirect to
+                                to="/singlegroup" // Specify the desired path to redirect to
                                 className="btn btn-primary btn-sm d-flex justify-content-center align-items-center"
                                 >
                                 View

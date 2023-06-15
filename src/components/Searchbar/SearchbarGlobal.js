@@ -1,23 +1,22 @@
-import React, { useRef } from 'react'; // a hook to create mutable reference (value tt can b modified/updated w/o re-rendering)
+import React, { useRef } from 'react'; 
+import { BsSearch } from 'react-icons/bs';
 import { Dropdown } from 'react-bootstrap';
-import Avatar from '../Avatar/Avatar';
-import { useState, useEffect } from 'react';
-// useRef is used to create a reference to the dropdown menu element. 
-// returns a JS object with a current property that can be used to access the referenced value or element.
-// then used to check if a click event occurs within the dropdown menu. 
-// maintain a reference to the dropdown menu element across renders without causing a re-render.
+import { Link, useNavigate } from 'react-router-dom';
+
 
 function SearchbarGlobal(props) {
-  console.log("allusers search globalbar" , props.allusers)
+  const navigate = useNavigate();
   const inputRef = useRef(null);
-  const buttonRef = useRef(null);
 
   const handleInputClick = (e) => {
     e.stopPropagation();
   };
 
-  const handleButtonClick = (e) => {
+  const handleButtonClick = (e, email, username) => {
     e.stopPropagation();
+    console.log("Clicked user:", email, "username:", username);
+    // link to user profile
+    navigate(`/profile/${username}`);
   };
 
   const handleDropdownToggle = (isOpen, event, metadata) => {
@@ -27,32 +26,36 @@ function SearchbarGlobal(props) {
     }
 
     // Close the dropdown for other toggle events
-    // You can add additional logic here if needed
-    // For example, to handle pressing the Escape key to close the dropdown
     if (!isOpen) {
       return;
     }
     return true;
   };
 
-  // write a function to display all of the users from props.allusers in the search bar
-   const displayAllUsers = () => {
-    return props.allusers.map((user) => {
-      // return firstname and lastname from user
+  const displayAllUsers = () => {
+    const allusers = props.allusers;
+    if (!allusers) {
+      return null; 
+    }
+    console.log("Searchbar global allusers", allusers);
+    return allusers.map((user) => {
       const username = user.firstname + " " + user.lastname;
       return (
-        <Dropdown.Item className="my-4">
-          <div className="alert fade show p-1 m-0 d-flex align-items-center justify-content-between" role="alert">
-            <div className="d-flex align-items-center">
-              <Avatar />
-              <p className="m-0">{username}</p>
-            </div>
-            <button type="button" className="btn-close p-0 m-0" data-bs-dismiss="alert" aria-label="Close" onClick={handleButtonClick}></button>
+        <div 
+          key={user.email} 
+          className="alert fade show p-1 m-0 d-flex align-items-center justify-content-between" 
+          role="alert" 
+          onClick={(e) => handleButtonClick(e, user.email, username)}
+        >
+          <div className="d-flex align-items-center">
+            <p className="m-0">{user.firstname + " " + user.lastname}</p>
           </div>
-        </Dropdown.Item>
+            <BsSearch />
+        </div>  
       );
-    })
-  }
+    });
+  };
+
   return (
     <Dropdown onToggle={handleDropdownToggle}>
       <Dropdown.Toggle variant="light" id="searchMenu">
@@ -72,7 +75,7 @@ function SearchbarGlobal(props) {
           />
         </Dropdown.Item>
         <Dropdown.Item className="my-4">
-        {displayAllUsers()}
+          {displayAllUsers()}
         </Dropdown.Item>
       </Dropdown.Menu>
     </Dropdown>

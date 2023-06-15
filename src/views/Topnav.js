@@ -21,7 +21,7 @@ function Topnav(props) {
                 <Link to="/" className="text-decoration-none text-dark">
                   <i className="fab fa-facebook text-primary" ></i>
                 </Link>
-            <SearchbarGlobal allusers={props.allusers}/>
+                <SearchbarGlobal allusers={props.allusers}/>
           </div>
           <div className="col d-flex align-items-center justify-content-end">
             <div className="mx-2">
@@ -136,7 +136,7 @@ function Topnav(props) {
                   aria-labelledby="secondMenu"
                 >
                   <Dropdown.Item as="li" className="my-2 p-1">
-                    <Link to="/profile" className="text-decoration-none text-dark d-flex align-items-center">
+                    <Link to={`/profile/${props.username}`} className="text-decoration-none text-dark d-flex align-items-center">
                       <div className="rounded-circle d-flex align-items-center justify-content-center mx-2">
                         <Avatar profilePicture={props.profilePicture} />
                       </div>

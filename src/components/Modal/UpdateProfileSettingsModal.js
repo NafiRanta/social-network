@@ -3,7 +3,6 @@ import "./Modal.css";
 import Avatar from "../Avatar/Avatar";
 
 function UpdateProfileSettingsModal(props) {
-  console.log("update profile", props.profilePicture);
   const [selectedNames, setSelectedNames] = useState([]);
   const [selectedName, setSelectedName] = useState('');
   const [eventDate, setEventDate] = useState('');

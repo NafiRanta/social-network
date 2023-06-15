@@ -18,6 +18,7 @@ import GroupSidenav from "./views/Groups/GroupSidenav";
 import AllGroups from "./views/Groups/AllGroups";
 import OthersProfile from "./views/Profile/OthersProfile";
 import SingleEvent from "./views/Events/SingleEvent";
+import SearchbarGlobal from "./components/Searchbar/SearchbarGlobal";
 
 function App() {
   const isAuth = !!localStorage.getItem("userInfo");
@@ -64,7 +65,6 @@ function App() {
     };
     fetchUsers();
     }
-    console.log("allusers" , allusers);
   }, [isAuth]);
 
   return (
@@ -91,8 +91,7 @@ function App() {
         path="/chat"
         element={
           <div>
-            <Topnav username={username} profilePicture={profilePicture} />
-            <Chat username={username} profilePicture={profilePicture}/>
+            <Chat username={username} profilePicture={profilePicture} allusers={allusers}/>
           </div>
           } 
       />
@@ -100,8 +99,7 @@ function App() {
        path="/groups"
         element={
           <div>
-            <Topnav username={username} profilePicture={profilePicture}/>
-            <HomeGroup username={username} profilePicture={profilePicture}/>
+            <HomeGroup username={username} profilePicture={profilePicture} allusers={allusers}/>
           </div>
        } 
       />
@@ -109,8 +107,7 @@ function App() {
         path="/allgroups"
         element={
           <div>
-            <Topnav username={username} profilePicture={profilePicture}/>
-            <AllGroups username={username} profilePicture={profilePicture}/>
+            <AllGroups username={username} profilePicture={profilePicture} allusers={allusers}/>
           </div>
        } 
       />
@@ -118,35 +115,32 @@ function App() {
         path="/mygroups"
         element={
           <div>
-            <Topnav username={username} profilePicture={profilePicture}/>
-            <MyGroups username={username} profilePicture={profilePicture}/>
+            <MyGroups username={username} profilePicture={profilePicture} allusers={allusers}/>
           </div>
        } 
       />
        <Route
-        path="/profile"
+        path="/profile/:username"
+        //before this element load => fetch user data
         element={
           <div>
-            <Topnav username={username} profilePicture={profilePicture}/>
-            <MyProfile 
-              username={username}
-              email={email}
-              dob={dob}
-              profilePicture={profilePicture}
-              nickname={nickname}
-            />
+            <MyProfile username={username} email={email} dob={dob} profilePicture={profilePicture} nickname={nickname} allusers={allusers}/>
           </div>
        } 
       />
       <Route
-        path="/singlegroups"
+        path="/singlegroup"
         element={
           <div>
-            <Topnav username={username} profilePicture={profilePicture}/>
-            <SingleGroup 
-              username={username}
-              profilePicture={profilePicture}
-            />
+            <SingleGroup username={username} profilePicture={profilePicture} allusers={allusers}/>
+          </div>
+       } 
+      />
+       <Route
+        path="/othersprofile/:username"
+        element={
+          <div>
+            <OthersProfile username={username} profilePicture={profilePicture} allusers={allusers}/>
           </div>
        } 
       />

@@ -45,7 +45,7 @@ function CreatePostModal(props) {
               <div className="d-flex flex-column">
                 <div className="d-flex align-items-center">
                   <div className="p-2">
-                    <Avatar profilePicture={props.profilePicture} />
+                  <Avatar profilePicture={props.profilePicture} />
                   </div>
                   <div>
                     <p className="m-0 fw-bold">{props.username}</p>

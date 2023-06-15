@@ -135,7 +135,7 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		if err == sql.ErrNoRows {
 			fmt.Println("User does not exist")
 			if user.Avatar == "" {
-				user.Avatar = base64.StdEncoding.EncodeToString(SetDefaultImg("defaultImg/default-avatar.jpeg"))
+				user.Avatar = "data:image/*;base64," + base64.StdEncoding.EncodeToString(SetDefaultImg("defaultImg/default-avatar.jpeg"))
 			}
 			err = d.AddUser(d.GetDB(), user.FirstName, user.LastName, user.Email, user.Password, user.DateOfBirth, user.Gender, user.Nickname, user.Avatar, user.AboutMe)
 			if err != nil {
