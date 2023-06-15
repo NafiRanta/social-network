@@ -55,21 +55,22 @@ function RegisterModal({ openModal }) {
     const handleInputChange = (e) => {
       const { name, value } = e.target;
       if (name === "firstName") {
-        setFirstName(value);
+        // trim
+        setFirstName(value.trim());
       } else if (name === "lastName") {
-        setLastName(value);
+        setLastName(value.trim());
       } else if (name === "email") {
-        setEmail(value);
+        setEmail(value.trim());
       } else if (name === "password") {
-        setPassword(value);
+        setPassword(value.trim());
       } else if (name === "dob") {
-        setDob(value);
+        setDob(value.trim());
       } else if (name === "gender"){
-        setGender(value);
+        setGender(value.trim());
       } else if (name === "nickname") {
-        setNickname(value);
+        setNickname(value.trim());
       } else if (name === "about"){
-        setAbout(value);
+        setAbout(value.trim());
       }
     }
     const validRegisterForm = () => {
