@@ -3,7 +3,6 @@ import "./Modal.css";
 import Avatar from "../Avatar/Avatar";
 
 function CreateGroupModal(props) {
-  console.log("username create group", props.username);
   const [selectedNames, setSelectedNames] = useState([]);
   const [selectedName, setSelectedName] = useState('');
 

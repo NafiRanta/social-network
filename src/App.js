@@ -29,15 +29,18 @@ function App() {
   const [email, setEmail] = useState("");
   const [dob, setDob] = useState("");
   const [profilePicture, setProfilePic] = useState("");
+  const [nickname, setNickname] = useState("");
   useEffect(() => {
     if (isAuth) {
       const userInfo = JSON.parse(localStorage.getItem("userInfo"));
       const username = userInfo.firstname + " " + userInfo.lastname;
+      const nickname = userInfo.nickname;
       setUsername(username);
       setEmail(userInfo.email);
       setDob(userInfo.dob);
       setProfilePic(userInfo.profilePicture);
-      console.log("user profile picture", userInfo.profilePicture)
+      setNickname(nickname);
+     // console.log("user profile picture", userInfo.profilePicture)
     }
   }, [isAuth]);
 
@@ -107,6 +110,7 @@ function App() {
               email={email}
               dob={dob}
               profilePicture={profilePicture}
+              nickname={nickname}
             />
           </div>
        } 

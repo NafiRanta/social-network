@@ -137,7 +137,7 @@ function Topnav(props) {
                 >
                   <Dropdown.Item as="li" className="my-2 p-1">
                     <Link to="/profile" className="text-decoration-none text-dark d-flex align-items-center">
-                      <div className="rounded-circle p-1 bg-gray d-flex align-items-center justify-content-center mx-2">
+                      <div className="rounded-circle d-flex align-items-center justify-content-center mx-2">
                         <Avatar profilePicture={props.profilePicture} />
                       </div>
                       <p className="m-0">{props.username}</p>

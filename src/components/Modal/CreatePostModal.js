@@ -18,7 +18,6 @@ function CreatePostModal(props) {
       reader.readAsDataURL(file);
     }
   };
-  console.log("create post modal profile picture: ", props.profilePicture);
   return (
     <div
       className="modal fade"

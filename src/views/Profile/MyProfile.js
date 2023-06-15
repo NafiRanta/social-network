@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import Switch from 'react-switch';
 import CreatePost from '../../components/CreatePost/CreatePost';
 import PostContainer from '../../components/Card/PostCard';
 import AvatarSquare from '../../components/Avatar/AvatarSquare';
@@ -7,7 +8,15 @@ import ChangeProfilePicModal from '../../components/Modal/ChangeProfilePicModal'
 import UpdateProfileSettingsModal from '../../components/Modal/UpdateProfileSettingsModal';
 
 
+
 function MyProfile(props) {
+    console.log("my profile profile pic", props.profilePicture)
+    const [privacy, setPrivacy] = useState(false);
+
+    const handlePrivacyChange = (checked) => {
+      setPrivacy(checked);
+    };
+  
   return (
     <div className="container-fluid">
         <section className="profileTopnav">
@@ -27,32 +36,48 @@ function MyProfile(props) {
                             ></i>
                         </div>
                         <div className="flex-grow-1 ms-3">
-                        <h2 className="mb-1"><strong>{props.username}</strong></h2>
-                            <div className="d-flex justify-content-start rounded-3 p-2 mb-2"
-                            style={{ backgroundColor: '#efefef' }}>
+                            <div className="d-flex align-items-center">
+                                <h2 className="mb-0 mr-2"><strong>{props.username}</strong></h2>
+                                <span className="nickname-text">
+                                    <small className="text-muted">({props.nickname})</small>
+                                </span>
+                            </div>
+                            <div 
+                                className="d-flex justify-content-start rounded-3 p-2 mb-2"
+                                style={{ backgroundColor: '#efefef' }}
+                            >
                                 <div className="px-3">
-                                    <p className="small text-muted mb-1">
-                                    Followers
-                                    </p>
+                                    <p className="small text-muted mb-1">Followers</p>
                                     <p className="mb-0">976</p>
                                 </div>
                                 <div>
-                                    <p className="small text-muted mb-1">
-                                    Following
-                                    </p>
+                                    <p className="small text-muted mb-1">Following</p>
                                     <p className="mb-0">8.5</p>
                                 </div>
                             </div>
-                            <div className="d-flex pt-1">
-                                <button 
-                                    type="button" 
-                                    className="btn btn-primary" 
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#updateProfileSettingsModal"
-                                >
-                                    Edit Profile
-                                </button>
-                                <UpdateProfileSettingsModal username={props.username} profilePicture={props.profilePicture}/>
+                            <div className="d-flex align-items-center">
+                            <i class="fas fa-globe mr-2"></i>
+                                <small className="mb-0 text-muted mr-2">Your profile is now:</small>
+                                <span className="switch">
+                                    <small className="switch-label text-muted mr-2" htmlFor="privacyToggle">
+                                    {privacy ? "Public" : "Private"}
+                                    </small>
+                                    <Switch
+                                    checked={privacy}
+                                    onChange={handlePrivacyChange}
+                                    onColor="#86d3ff"
+                                    onHandleColor="#2693e6"
+                                    handleDiameter={16}
+                                    uncheckedIcon={false}
+                                    checkedIcon={false}
+                                    boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
+                                    activeBoxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
+                                    height={14}
+                                    width={36}
+                                    className="react-switch"
+                                    id="privacyToggle"
+                                    />
+                                </span>
                             </div>
                         </div>
                         </div>
@@ -75,13 +100,24 @@ function MyProfile(props) {
                                     </div>
                                 </li>
                                 <li className="dropdown-item p-1 rounded">
-                                    <span><i className="fas fa-user"></i> <span className="name">Nickname</span></span>
+                                    <span><i className="fas fa-user"></i> <span className="name">{props.nickname}</span></span>
                                 </li>
                                 <li className="my-2 p-1">
                                     <span><i className="fas fa-edit"></i> <span className="name">{props.email}</span></span>
                                 </li>
                                 <li className="dropdown-item p-1 rounded">
                                     <span><i className="fas fa-birthday-cake"></i> <span className="name">{props.dob}</span></span>
+                                </li>
+                                <li className="dropdown-item p-1 rounded">
+                                <button 
+                                    type="button" 
+                                    className="btn btn-primary w-100" 
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#updateProfileSettingsModal"
+                                >
+                                    Edit Profile
+                                </button>
+                                <UpdateProfileSettingsModal username={props.username} profilePicture={props.profilePicture}/>
                                 </li>
                             </ul>
                         </div>

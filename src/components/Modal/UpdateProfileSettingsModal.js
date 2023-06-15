@@ -3,7 +3,7 @@ import "./Modal.css";
 import Avatar from "../Avatar/Avatar";
 
 function UpdateProfileSettingsModal(props) {
-  console.log("username create group", props.username);
+  console.log("update profile", props.profilePicture);
   const [selectedNames, setSelectedNames] = useState([]);
   const [selectedName, setSelectedName] = useState('');
   const [eventDate, setEventDate] = useState('');
@@ -60,7 +60,7 @@ function UpdateProfileSettingsModal(props) {
               <div className="d-flex flex-column">
                 <div className="d-flex align-items-center">
                   <div className="p-2">
-                    <Avatar />
+                    <Avatar profilePicture={props.profilePicture}/>
                   </div>
                   <div>
                     <p className="m-0 fw-bold">{props.username}</p>
@@ -73,11 +73,15 @@ function UpdateProfileSettingsModal(props) {
                       <textarea cols="30" rows="5" className="form-control my-3 border" placeholder="About Me"></textarea>
                     </div>
                     <div className="form-group">
-                      <label htmlFor="privacySetting">Privacy:</label>
-                      <select className="form-select" id="privacySetting" value={privacySetting} onChange={handlePrivacyChange}>
-                        <option value="public">Public</option>
-                        <option value="private">Private</option>
-                      </select>
+                      <label htmlFor="privacySetting">Date of birth:</label>
+                      <input 
+                        autoFocus id="dob" 
+                        className="form-control my-3" 
+                        data-testid="dob"
+                        name="dob"
+                        placeholder="Date of Birth" 
+                        type="date" 
+                  />
                     </div>
                   </form>
                 </div>
