@@ -15,7 +15,6 @@ type UserResponse struct {
 }
 
 func GetAllUsers(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("GetAllUsers")
 	publicUsers, err := d.GetAllPublicUsers()
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
@@ -55,10 +54,6 @@ func GetAllUsers(w http.ResponseWriter, r *http.Request) {
 	// Set the Content-Type header and write the JSON response
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	fmt.Println("allUsers: ", (allUsers))
-	fmt.Println("response: ", (response))
-	fmt.Println("GetAllUsers: " + string(jsonData))
-
 	w.Write(jsonData)
 }
 

@@ -16,7 +16,7 @@ function SearchbarGlobal(props) {
     e.stopPropagation();
     console.log("Clicked user:", email, "username:", username);
     // link to user profile
-    navigate(`/profile/${username}`);
+    navigate(`/othersprofile/${username}`);
   };
 
   const handleDropdownToggle = (isOpen, event, metadata) => {

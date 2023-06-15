@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Switch from 'react-switch';
 import CreatePost from '../../components/CreatePost/CreatePost';
 import PostContainer from '../../components/Card/PostCard';
@@ -9,11 +9,37 @@ import UpdateProfileSettingsModal from '../../components/Modal/UpdateProfileSett
 import Topnav from '../Topnav';
 
 function MyProfile(props) {
-    const [privacy, setPrivacy] = useState(false);
+    const [privacy, setPrivacy] = useState("");
 
+    useEffect(() => {
+      fetchPrivacy();
+    }, []);
+  
     const handlePrivacyChange = (checked) => {
-      setPrivacy(checked); 
+        setPrivacy(checked ? "Public" : "Private");
     };
+  
+    const fetchPrivacy = async () => {
+      try {
+        const res = await fetch("http://localhost:8080/users", {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        if (res.ok) {
+            const data = await res.json();
+            const userPrivacy = data[0].privacy.charAt(0).toUpperCase() + data[0].privacy.slice(1);
+            setPrivacy(userPrivacy);
+            console.log("user privacy: ", userPrivacy);
+        } else {
+          console.log("Error fetching privacy setting");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+  
   
   return (
     <div>
@@ -56,28 +82,30 @@ function MyProfile(props) {
                                                 </div>
                                             </div>
                                             <div className="d-flex align-items-center">
-                                            <i className="fas fa-globe mr-2"></i>
+                                                <i className="fas fa-globe mr-2"></i>
                                                 <small className="mb-0 text-muted mr-2">Your profile is now:</small>
-                                                <span className="switch">
-                                                    <small className="switch-label text-muted mr-2" htmlFor="privacyToggle">
-                                                    {privacy ? "Public" : "Private"}
-                                                    </small>
-                                                    <Switch
-                                                    checked={privacy}
-                                                    onChange={handlePrivacyChange}
-                                                    onColor="#86d3ff"
-                                                    onHandleColor="#2693e6"
-                                                    handleDiameter={16}
-                                                    uncheckedIcon={false}
-                                                    checkedIcon={false}
-                                                    boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
-                                                    activeBoxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
-                                                    height={14}
-                                                    width={36}
-                                                    className="react-switch"
-                                                    id="privacyToggle"
-                                                    />
-                                                </span>
+                                                {privacy !== null && (
+                                                    <span className="switch">
+                                                        <small className="switch-label text-muted mr-2" htmlFor="privacyToggle">
+                                                        {privacy}
+                                                        </small>
+                                                        <Switch
+                                                        checked={privacy === "Public"} // Provide a default value of false when privacy is null
+                                                        onChange={handlePrivacyChange}
+                                                        onColor="#86d3ff"
+                                                        onHandleColor="#2693e6"
+                                                        handleDiameter={16}
+                                                        uncheckedIcon={false}
+                                                        checkedIcon={false}
+                                                        boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
+                                                        activeBoxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
+                                                        height={14}
+                                                        width={36}
+                                                        className="react-switch"
+                                                        id="privacyToggle"
+                                                        />
+                                                    </span>
+                                                )}
                                             </div>
                                         </div>
                                     </div>

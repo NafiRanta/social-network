@@ -22,7 +22,6 @@ import SearchbarGlobal from "./components/Searchbar/SearchbarGlobal";
 
 function App() {
   const isAuth = !!localStorage.getItem("userInfo");
-  console.log(isAuth)
   
   // if isAuth is true, get username from localStorage
   const [username, setUsername] = useState("");
@@ -31,6 +30,7 @@ function App() {
   const [profilePicture, setProfilePic] = useState("");
   const [nickname, setNickname] = useState("");
   const [allusers, setAllUsers] = useState([]);
+
   useEffect(() => {
     if (isAuth) {
       const userInfo = JSON.parse(localStorage.getItem("userInfo"));
@@ -41,44 +41,50 @@ function App() {
       setDob(userInfo.dob);
       setProfilePic(userInfo.profilePicture);
       setNickname(nickname);
-     // console.log("user profile picture", userInfo.profilePicture)
-
-     const fetchUsers = async () => {
-      try {
-        const res = await fetch("http://localhost:8080/users", {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-        
-        if (res.ok) {
-          const data = await res.json();
-          setAllUsers(data);
-        } else {
-          console.log("error");
-        }
-      } catch (error) {
-        // Handle error
-        console.log(error);
-      }
-    };
-    fetchUsers();
     }
   }, [isAuth]);
 
+  useEffect(() => {
+    if (isAuth) {
+      const fetchUsers = async () => {
+        try {
+          const res = await fetch("http://localhost:8080/users", {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+          
+          if (res.ok) {
+            const data = await res.json();
+            // setAllUsers to include users that are not the current user
+            const filteredData = data.filter((user) => user.email !== email);
+            setAllUsers(filteredData);
+          } else {
+            console.log("error");
+          }
+        } catch (error) {
+          // Handle error
+          console.log(error);
+        }
+      };
+      if (isAuth) {
+        fetchUsers();
+      }
+    }
+  }, [isAuth, email]);
+
   return (
- <Routes>
-    {isAuth ? (
-         <Route   
-         path="/"
-         element={
-           <div>
-              <Topnav username={username} profilePicture={profilePicture} allusers={allusers} />
-              <Home username={username} profilePicture={profilePicture}/>
-           </div>
-           
-         }/>
+    <Routes>
+      {isAuth ? (
+        <Route
+          path="/"
+          element={
+            <div>
+              <Home username={username} profilePicture={profilePicture} allusers={allusers} />
+            </div>
+          }
+        />
       ) : (
         <Route path="/" element={<Navigate replace to="/login" />} />
       )}
@@ -121,7 +127,7 @@ function App() {
       />
        <Route
         path="/profile/:username"
-        //before this element load => fetch user data
+        
         element={
           <div>
             <MyProfile username={username} email={email} dob={dob} profilePicture={profilePicture} nickname={nickname} allusers={allusers}/>
@@ -138,6 +144,7 @@ function App() {
       />
        <Route
         path="/othersprofile/:username"
+        
         element={
           <div>
             <OthersProfile username={username} profilePicture={profilePicture} allusers={allusers}/>

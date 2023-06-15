@@ -117,6 +117,7 @@ function Login() {
         console.log(data);
         // Save session to local storage
         localStorage.setItem("userInfo", JSON.stringify(data));
+        console.log("userInfo", JSON.stringify(data));
         //setIsAuthenticated(true);
         window.location.reload();
       } else {
