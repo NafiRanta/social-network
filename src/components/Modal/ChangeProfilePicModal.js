@@ -1,7 +1,7 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import "./Modal.css";
 import Avatar from "../Avatar/Avatar";
-const fileInputRef = useRef();
+
 
 function ChangeProfilePicModal(props) {
   const [selectedImage, setSelectedImage] = useState(null);
