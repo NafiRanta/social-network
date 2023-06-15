@@ -42,8 +42,11 @@ function RegisterModal({ openModal }) {
       return re.test(lastname);
     }
     const validateDob = (dob) => {
+      // 16 years ago
+      const legalAgeDob = new Date(new Date().setFullYear(new Date().getFullYear() - 16));
+      const date = new Date(dob);
       const re = /^\d{4}-\d{2}-\d{2}$/;
-      return re.test(dob);
+      return re.test(dob) && date < legalAgeDob;
     }
     const validateGender = (gender) => {
       const re = /^[a-zA-Z]+$/;
@@ -121,7 +124,7 @@ function RegisterModal({ openModal }) {
         validBool = false;
       } else if (!validateDob(dob)) {
         console.log("Invalid date of birth format");
-        document.getElementById("registerDobErrMsg").innerHTML = "Invalid date of birth format";
+        document.getElementById("registerDobErrMsg").innerHTML = "You have to be at least 16 years old";
         validBool = false;
       } else {
         document.getElementById("registerDobErrMsg").innerHTML = "";
