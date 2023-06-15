@@ -34,11 +34,11 @@ function RegisterModal({ openModal }) {
       setProfilePicture(null);
     };
     const validateFirstname = (firstname) => {
-      const re = /^[a-zA-Z]+$/;
+      const re = /^[a-zA-ZåäöÅÄÖ\-]+$/;
       return re.test(firstname);
     }
     const validateLastname = (lastname) => {
-      const re = /^[a-zA-Z]+$/;
+      const re = /^[a-zA-ZåäöÅÄÖ\-]+$/;
       return re.test(lastname);
     }
     const validateDob = (dob) => {
@@ -49,7 +49,7 @@ function RegisterModal({ openModal }) {
       return re.test(dob) && date < legalAgeDob;
     }
     const validateGender = (gender) => {
-      const re = /^[a-zA-Z]+$/;
+      const re = /^[a-zA-ZåäöÅÄÖ\-]+$/;
       return re.test(gender);
     }
     const handleInputChange = (e) => {
