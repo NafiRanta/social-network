@@ -37,7 +37,6 @@ function SearchbarGlobal(props) {
     if (!allusers) {
       return null; 
     }
-    console.log("Searchbar global allusers", allusers);
     return allusers.map((user) => {
       const username = user.firstname + " " + user.lastname;
       return (
