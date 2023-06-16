@@ -39,6 +39,9 @@ func Start() error {
 	//handle user
 	router.HandleFunc("/users", user.GetAllUsers)
 	router.HandleFunc("/updateprivacy", user.ChangePrivacyofUser)
+	router.HandleFunc("/getUserByEmail", user.GetUserByEmailHandler)
+	router.HandleFunc("/updatebio", user.UpdateBioOfUser)
+
 	//handle post
 	router.HandleFunc("/posts", p.GetPostsHandler)
 	// router.HandleFunc("/websocket", ws)

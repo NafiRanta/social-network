@@ -86,7 +86,21 @@ func LogIn(w http.ResponseWriter, r *http.Request) {
 			fmt.Println("token generated:", token)
 			w.WriteHeader(http.StatusOK)
 			// Encode the user as JSON
-			userJSON, err := json.Marshal(user)
+			//convert user to userResponse
+			userResponse := UserResponse{
+				FirstName:      user.FirstName,
+				LastName:       user.LastName,
+				Email:          user.Email,
+				Privacy:        user.Privacy,
+				DateOfBirth:    user.DateOfBirth,
+				Gender:         user.Gender,
+				Avatar:         user.Avatar,
+				Nickname:       user.Nickname,
+				AboutMe:        user.AboutMe,
+				FollowerIDs:    user.FollowerIDs,
+				OnFollowingIDs: user.OnFollowingIDs,
+			}
+			userJSON, err := json.Marshal(userResponse)
 			if err != nil {
 				http.Error(w, "Failed to encode user", http.StatusInternalServerError)
 				return

@@ -251,6 +251,27 @@ func UpdateUserPrivacy(user *User) error {
 	return nil
 }
 
+func UpdateUserInfo(user *User) error {
+	db, err := sql.Open("sqlite3", "./socialnetwork.db")
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+
+	stmt, err := db.Prepare("UPDATE Users SET DateOfBirth = ?, Gender = ?, Nickname = ?, AboutMe = ? WHERE userID = ?")
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
+
+	_, err = stmt.Exec(user.DateOfBirth, user.Gender, user.Nickname, user.AboutMe, user.UserID)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 //func GetUserByID(userID string) (*User, error) {}
 
 // Create bcrypt hash from password
