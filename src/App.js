@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Login from "./views/Login";
 import Home from "./views/Home/Home";
-import HomeSidenav from "./views/Home/HomeSidenav";
 import CreatePost from "./components/CreatePost/CreatePost";
 import CreatePostModal from "./components/Modal/CreatePostModal";
 import Topnav from "./views/Topnav";
