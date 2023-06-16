@@ -2,7 +2,7 @@ import React from 'react';
 import Avatar from '../Avatar/Avatar';
 import './Card.css';
 
-function CommentCard() {
+function CommentCard(props) {
     return(
         <div className="post__comment mt-3 position-relative">
         <div className="d-flex align-items-center top-0 start-0 position-absolute" id="d-flex-comments">
@@ -34,7 +34,7 @@ function CommentCard() {
               <hr />
               <div className="accordion-body">
                 <div className="d-flex align-items-center my-1">
-                  <Avatar/>
+                  <Avatar username={props.username} userInfo={props.userInfo}/>
                   <div className="p-3 rounded comment__input w-100">
                     <p className="fw-bold m-0">John</p>
                     <p className="m-0 fs-7 bg-gray p-2 rounded">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
@@ -42,7 +42,7 @@ function CommentCard() {
                 </div>
                 <form className="d-flex my-1">
                   <div>
-                    <Avatar/>
+                    <Avatar username={props.username} userInfo={props.userInfo}/>
                   </div>
                   <input type="text" className="form-control border-0 rounded-pill bg-gray" placeholder="Write a comment"/>
                 </form>

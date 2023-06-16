@@ -2,12 +2,12 @@ import React from 'react';
 import CommentCard from './CommentCard';
 import Avatar from '../Avatar/Avatar';  
 
-function GroupPostCard() {
+function GroupPostCard(props) {
     return(
         <div className="bg-white p-4 rounded shadow mt-3">
           <div className="d-flex justify-content-between">
             <div className="d-flex">
-              <Avatar/>
+              <Avatar username={props.username} userInfo={props.userInfo}/>
               <div>
                 <p className="m-0 fw-bold">Ålands köp och sälj</p>
                 <span className="text-muted fs-7">July 17 at 1:23 pm</span>
@@ -29,7 +29,7 @@ function GroupPostCard() {
               </p>
               <img src="https://scontent-hel3-1.xx.fbcdn.net/v/t39.30808-6/345593849_775596664103457_1986651885453575488_n.jpg?stp=cp6_dst-jpg&_nc_cat=101&ccb=1-7&_nc_sid=a83260&_nc_ohc=bkTG8Oh5zj4AX-TW7r-&_nc_ht=scontent-hel3-1.xx&oh=00_AfD4-tUmgn4aCwyS6i1O5FA9n15r4NNt6TWU1rJ84IM9Ow&oe=6473C090" alt="post image" className="img-fluid rounded"/>
             </div>
-            <CommentCard />
+            <CommentCard username={props.username} userInfo={props.userInfo}/>
           </div>
         </div>
       )

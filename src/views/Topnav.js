@@ -109,7 +109,7 @@ function Topnav(props) {
                     <a href="#" className="text-decoration-none text-dark d-flex align-items-center">
                       <div className="d-flex align-items-center justify-content-evenly">
                         <div className="p-2">
-                          <Avatar />
+                          <Avatar username={props.username} userInfo={props.userInfo}/>
                         </div>
                         <div>
                           <p className="fs-7 m-0">Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum unde amet at nulla quae porro.</p>
@@ -129,7 +129,7 @@ function Topnav(props) {
                   id="secondMenu"
                   className="bg-transparent border-0"
                 >
-                  <Avatar profilePicture={props.profilePicture} />
+                  <Avatar username={props.username} userInfo={props.userInfo} />
                 </Dropdown.Toggle>
                 <Dropdown.Menu
                   className="dropdown-menu border-0 shadow p-3"
@@ -138,7 +138,7 @@ function Topnav(props) {
                   <Dropdown.Item as="li" className="my-2 p-1">
                     <Link to={`/profile/${props.username}`} className="text-decoration-none text-dark d-flex align-items-center">
                       <div className="rounded-circle d-flex align-items-center justify-content-center mx-2">
-                        <Avatar profilePicture={props.profilePicture} />
+                        <Avatar username={props.username} userInfo={props.userInfo} />
                       </div>
                       <p className="m-0">{props.username}</p>
                     </Link>
@@ -157,8 +157,8 @@ function Topnav(props) {
           </div>
         </div>
       </div>
-      <CreatePostModal username={props.username}/>
-      <CreateGroupModal username={props.username}/>
+      <CreatePostModal username={props.username} userInfo={props.userInfo}/>
+      <CreateGroupModal username={props.username} userInfo={props.userInfo}/>
     </div>
   );
 }

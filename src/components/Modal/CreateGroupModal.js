@@ -38,7 +38,7 @@ function CreateGroupModal(props) {
               <div className="d-flex flex-column">
                 <div className="d-flex align-items-center">
                   <div className="p-2">
-                    <Avatar />
+                    <Avatar username={props.username} userInfo={props.userInfo}/>
                   </div>
                   <div>
                     <p className="m-0 fw-bold">{props.username}</p>

@@ -1,15 +1,32 @@
 import React from 'react';
 import Topnav from '../../views/Topnav';    
-import PostContainer from '../../components/Card/PostCard';
+import PostCard from '../../components/Card/PostCard';
 import AvatarSquare from '../../components/Avatar/AvatarSquare';
+import { useLocation } from 'react-router-dom';
 import './Profile.css';
-import ChangeProfilePicModal from '../../components/Modal/ChangeProfilePicModal';
+
 
 
 function OthersProfile(props) {
+    console.log("props in othersprofile", props)
+    const location = useLocation();
+    const { pathname } = location;
+    const encodedUsername = pathname.split('/').pop();
+    const clickedProfileUsername = decodeURIComponent(encodedUsername);
+    console.log("username in othersprofile", clickedProfileUsername)
+
+  if (!clickedProfileUsername) {
+    // Handle the error here, such as displaying an error message or redirecting to a different page
+    return <p>Error: User information not found.</p>;
+  }
+  
+  // iterate in allusers and find the user with the user.firstname and user.lastname that matches clickedProfileUsername
+    const clickedProfileInfo = props.allusers.find(user => user.firstname + " " + user.lastname === clickedProfileUsername);
+    console.log("clickedProfile", clickedProfileInfo)
+
   return (
         <div>
-            <Topnav username={props.username} profilePicture={props.profilePicture} allusers={props.allusers}/>
+           <Topnav username={props.username} userInfo={props.userInfo} allusers={props.allusers}/>
             <div className="container-fluid">
                 <section className="profileTopnav">
                     <div className="container py-5 h-100">
@@ -19,11 +36,18 @@ function OthersProfile(props) {
                             <div className="card-body p-4">
                                 <div className="d-flex text-black">
                                 <div className="flex-shrink-0">
-                                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp"
-                                    alt="Generic placeholder image" className="img-fluid"/>
+                                    <img src={clickedProfileInfo.profilePicture}
+                                    className="img-fluid"/>
                                 </div>
                                 <div className="flex-grow-1 ms-3">
-                                    <h2 className="mb-1"><strong>{props.username}</strong></h2>
+                                    <div className="d-flex align-items-center">
+                                        <h2 className="mb-0 mr-2"><strong>{clickedProfileUsername}</strong></h2>
+                                        {clickedProfileInfo.nickname && (
+                                            <span className="nickname-text">
+                                                <small className="text-muted">({clickedProfileInfo.nickname})</small>
+                                            </span>
+                                        )}
+                                    </div>
                                     <div className="d-flex justify-content-start rounded-3 p-2 mb-2"
                                     style={{ backgroundColor: '#efefef' }}>
                                         <div className="px-3">
@@ -55,8 +79,6 @@ function OthersProfile(props) {
                         </div>
                     </div>
                 </section>
-            
-                <ChangeProfilePicModal username={props.username} />
                 <div className="row justify-content-evenly">
                     <div className="col-12 col-lg-3">
                         <div className="d-flex flex-column justify-content-center w-100 mx-auto" id="d-flex-postcontainer-followersbox">
@@ -66,18 +88,20 @@ function OthersProfile(props) {
                                         <div className="p-2">
                                             <p className="m-0"><strong>Intro</strong></p>
                                         </div>
-                                        <div>
-                                            <p className="m-0">Bio</p>
-                                        </div>
+                                         {clickedProfileInfo.about && (
+                                            <li className="dropdown-item p-1 rounded text-center">
+                                                <p className="text-center">{clickedProfileInfo.about}</p>
+                                            </li>
+                                        )}
                                     </li>
-                                    <li className="dropdown-item p-1 rounded">
+                                    {/* <li className="dropdown-item p-1 rounded">
                                         <span><i className="fas fa-user"></i> <span className="name">Nickname</span></span>
-                                    </li>
+                                    </li> */}
                                     <li className="my-2 p-1">
-                                        <span><i className="fas fa-edit"></i> <span className="name">{props.email}</span></span>
+                                        <span><i className="fas fa-edit"></i> <span className="name">{clickedProfileInfo.email}</span></span>
                                     </li>
                                     <li className="dropdown-item p-1 rounded">
-                                        <span><i className="fas fa-birthday-cake"></i> <span className="name">{props.dob}</span></span>
+                                        <span><i className="fas fa-birthday-cake"></i> <span className="name">{clickedProfileInfo.dob}</span></span>
                                     </li>
                                 </ul>
                             </div>
@@ -171,7 +195,7 @@ function OthersProfile(props) {
                     </div>
                     <div className="col-12 col-lg-6 pb-5">
                         <div className="d-flex flex-column justify-content-center w-100 mx-auto" id="d-flex-postcontainer-myprofile">
-                            <PostContainer />
+                            <PostCard username={props.username} userInfo={props.userInfo} />
                         </div>
                     </div>
                 </div>

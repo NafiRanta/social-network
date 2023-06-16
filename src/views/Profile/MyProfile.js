@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Switch from 'react-switch';
 import CreatePost from '../../components/CreatePost/CreatePost';
-import PostContainer from '../../components/Card/PostCard';
+import PostCard from '../../components/Card/PostCard';
 import AvatarSquare from '../../components/Avatar/AvatarSquare';
 import './Profile.css';
 import ChangeProfilePicModal from '../../components/Modal/ChangeProfilePicModal';
@@ -12,38 +12,46 @@ function MyProfile(props) {
     const [privacy, setPrivacy] = useState("");
 
     useEffect(() => {
-      fetchPrivacy();
-    }, []);
+      if (props.userInfo) {
+        const userPrivacy = props.userInfo.privacy.charAt(0).toUpperCase() + props.userInfo.privacy.slice(1);
+        setPrivacy(userPrivacy);
+      }
+    }, [props.userInfo]);
+  
+    if (!props.userInfo) {
+      return null;
+    }
+  
   
     const handlePrivacyChange = (checked) => {
         setPrivacy(checked ? "Public" : "Private");
     };
   
-    const fetchPrivacy = async () => {
-      try {
-        const res = await fetch("http://localhost:8080/users", {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-        if (res.ok) {
-            const data = await res.json();
-            const userPrivacy = data[0].privacy.charAt(0).toUpperCase() + data[0].privacy.slice(1);
-            setPrivacy(userPrivacy);
-            console.log("user privacy: ", userPrivacy);
-        } else {
-          console.log("Error fetching privacy setting");
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
+    // const fetchPrivacy = async () => {
+    //   try {
+    //     const res = await fetch("http://localhost:8080/users", {
+    //       method: 'GET',
+    //       headers: {
+    //         'Content-Type': 'application/json',
+    //       },
+    //     });
+    //     if (res.ok) {
+    //         const data = await res.json();
+    //         const userPrivacy = data[0].privacy.charAt(0).toUpperCase() + data[0].privacy.slice(1);
+    //         setPrivacy(userPrivacy);
+    //         console.log("user privacy: ", userPrivacy);
+    //     } else {
+    //       console.log("Error fetching privacy setting");
+    //     }
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // };
   
   
   return (
     <div>
-        <Topnav username={props.username} profilePicture={props.profilePicture} allusers={props.allusers}/>
+        <Topnav username={props.username} userInfo={props.userInfo} allusers={props.allusers}/>
         <div className="container-fluid">
             <section className="profileTopnav">
                 <div className="container py-5 h-100">
@@ -53,7 +61,7 @@ function MyProfile(props) {
                                 <div className="card-body p-4">
                                     <div className="d-flex text-black">
                                         <div className="flex-shrink-0">
-                                            <img src={props.profilePicture}
+                                            <img src={props.userInfo.profilePicture}
                                             alt="Generic placeholder image" className="img-fluid"/>
                                             <i
                                                 className="fas fa-images fs-5 text-success pointer position-absolute bottom-0 start-0 ms-2"
@@ -64,9 +72,11 @@ function MyProfile(props) {
                                         <div className="flex-grow-1 ms-3">
                                             <div className="d-flex align-items-center">
                                                 <h2 className="mb-0 mr-2"><strong>{props.username}</strong></h2>
-                                                <span className="nickname-text">
-                                                    <small className="text-muted">({props.nickname})</small>
-                                                </span>
+                                                {props.userInfo.nickname && (
+                                                    <span className="nickname-text">
+                                                        <small className="text-muted">({props.userInfo.nickname})</small>
+                                                    </span>
+                                                )}
                                             </div>
                                             <div 
                                                 className="d-flex justify-content-start rounded-3 p-2 mb-2"
@@ -115,7 +125,7 @@ function MyProfile(props) {
                     </div>
                 </div>
             </section>
-            <ChangeProfilePicModal username={props.username} profilePicture={props.profilePicture}/>
+            <ChangeProfilePicModal username={props.username} userInfo={props.userInfo}/>
                 <div className="row justify-content-evenly">
                     <div className="col-12 col-lg-3">
                         <div className="d-flex flex-column justify-content-center w-100 mx-auto" id="d-flex-postcontainer-followersbox">
@@ -123,17 +133,22 @@ function MyProfile(props) {
                                 <ul >
                                     <li className="dropdown-item p-1 rounded">
                                         <div >
-                                            <p className="m-0"><strong>Bio</strong></p>
+                                            <p className="m-0"><strong>Intro</strong></p>
                                         </div>
                                     </li>
-                                    <li className="dropdown-item p-1 rounded">
-                                        <span><i className="fas fa-user"></i> <span className="name">{props.nickname}</span></span>
-                                    </li>
+                                    {props.userInfo.about && (
+                                        <li className="dropdown-item p-1 rounded text-center">
+                                            <p className="text-center">{props.userInfo.about}</p>
+                                        </li>
+                                    )}
+                                    {/* <li className="dropdown-item p-1 rounded">
+                                        <span><i className="fas fa-user"></i> <span className="name">{props.userInfo.nickname}</span></span>
+                                    </li> */}
                                     <li className="my-2 p-1">
-                                        <span><i className="fas fa-edit"></i> <span className="name">{props.email}</span></span>
+                                        <span><i className="fas fa-edit"></i> <span className="name">{props.userInfo.email}</span></span>
                                     </li>
                                     <li className="dropdown-item p-1 rounded">
-                                        <span><i className="fas fa-birthday-cake"></i> <span className="name">{props.dob}</span></span>
+                                        <span><i className="fas fa-birthday-cake"></i> <span className="name">{props.userInfo.dob}</span></span>
                                     </li>
                                     <li className="dropdown-item p-1 rounded">
                                     <button 
@@ -144,7 +159,7 @@ function MyProfile(props) {
                                     >
                                         Edit Profile
                                     </button>
-                                    <UpdateProfileSettingsModal username={props.username} profilePicture={props.profilePicture}/>
+                                    <UpdateProfileSettingsModal username={props.username} userInfo={props.userInfo}/>
                                     </li>
                                 </ul>
                             </div>
@@ -238,8 +253,8 @@ function MyProfile(props) {
                     </div>
                     <div className="col-12 col-lg-6 pb-5">
                         <div className="d-flex flex-column justify-content-center w-100 mx-auto" id="d-flex-postcontainer-myprofile">
-                            <CreatePost username={props.username} profilePicture={props.profilePicture}/>
-                            <PostContainer />
+                            <CreatePost username={props.username} userInfo={props.userInfo} />
+                            <PostCard username={props.username} userInfo={props.userInfo}/>
                         </div>
                     </div>
                 </div>

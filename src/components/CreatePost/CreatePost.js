@@ -7,7 +7,7 @@ function CreatePost(props) {
         <div className="bg-white p-3 mt-3 rounded border shadow">
               <div className="d-flex" type="button">
                 <div className="p-1">
-                  <Avatar profilePicture={props.profilePicture} />
+                  <Avatar userInfo={props.userInfo} username={props.username}/>
                 </div>
                 <input 
                   type="text" 
@@ -17,7 +17,7 @@ function CreatePost(props) {
                   data-bs-toggle="modal" 
                   data-bs-target="#createPostModal"/>
               </div>
-              <CreatePostModal username={props.username} profilePicture={props.profilePicture}/>
+              <CreatePostModal userInfo={props.userInfo} username={props.username} />
               <hr />
               <div className="d-flex flex-column flex-lg-row mt-3">
                 <div className="dropdown-item rounded d-flex align-items-center justify-content-center" type="button">

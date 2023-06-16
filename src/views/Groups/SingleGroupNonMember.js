@@ -6,10 +6,10 @@ import GroupPostCard from '../../components/Card/GroupPostCard';
 import '../../views/Profile/Profile.css'
 import '../../components/Card/Card.css'
 
-function SingleGroupNonMember() {
+function SingleGroupNonMember(props) {
     return (
         <div>
-            <Topnav />
+            <Topnav username={props.username} userInfo={props.userInfo} allusers={props.allusers}/>
             <div className="container-fluid">
                   <div className="bg-white p-3 mt-3 rounded border shadow" id="bg-white">
                         <div className="profile-cover-group__bg bg--img" data-overlay="0.3"></div>

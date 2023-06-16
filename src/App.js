@@ -23,6 +23,7 @@ function App() {
   const isAuth = !!localStorage.getItem("userInfo");
   
   // if isAuth is true, get username from localStorage
+  const [userInfo, setUserInfo] = useState("");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [dob, setDob] = useState("");
@@ -34,12 +35,13 @@ function App() {
     if (isAuth) {
       const userInfo = JSON.parse(localStorage.getItem("userInfo"));
       const username = userInfo.firstname + " " + userInfo.lastname;
-      const nickname = userInfo.nickname;
+      setUserInfo(userInfo);
       setUsername(username);
       setEmail(userInfo.email);
       setDob(userInfo.dob);
       setProfilePic(userInfo.profilePicture);
-      setNickname(nickname);
+      setNickname(userInfo.nickname);
+      console.log("userInfo app", userInfo)
     }
   }, [isAuth]);
 
@@ -80,7 +82,7 @@ function App() {
           path="/"
           element={
             <div>
-              <Home username={username} profilePicture={profilePicture} allusers={allusers} />
+              <Home userInfo={userInfo} username={username} allusers={allusers}/>
             </div>
           }
         />
@@ -96,7 +98,7 @@ function App() {
         path="/chat"
         element={
           <div>
-            <Chat username={username} profilePicture={profilePicture} allusers={allusers}/>
+            <Chat userInfo={userInfo} username={username} allusers={allusers}/>
           </div>
           } 
       />
@@ -104,7 +106,7 @@ function App() {
        path="/groups"
         element={
           <div>
-            <HomeGroup username={username} profilePicture={profilePicture} allusers={allusers}/>
+            <HomeGroup userInfo={userInfo} username={username} allusers={allusers}/>
           </div>
        } 
       />
@@ -112,7 +114,7 @@ function App() {
         path="/allgroups"
         element={
           <div>
-            <AllGroups username={username} profilePicture={profilePicture} allusers={allusers}/>
+            <AllGroups userInfo={userInfo} username={username} allusers={allusers}/>
           </div>
        } 
       />
@@ -120,16 +122,15 @@ function App() {
         path="/mygroups"
         element={
           <div>
-            <MyGroups username={username} profilePicture={profilePicture} allusers={allusers}/>
+            <MyGroups userInfo={userInfo} username={username} allusers={allusers} />
           </div>
        } 
       />
        <Route
         path="/profile/:username"
-        
         element={
           <div>
-            <MyProfile username={username} email={email} dob={dob} profilePicture={profilePicture} nickname={nickname} allusers={allusers}/>
+            <MyProfile userInfo={userInfo} username={username} allusers={allusers} />
           </div>
        } 
       />
@@ -137,16 +138,16 @@ function App() {
         path="/singlegroup"
         element={
           <div>
-            <SingleGroup username={username} profilePicture={profilePicture} allusers={allusers}/>
+            <SingleGroup userInfo={userInfo} username={username} allusers={allusers}/>
           </div>
        } 
       />
        <Route
         path="/othersprofile/:username"
-        
+        // pass :username to othersprofile
         element={
           <div>
-            <OthersProfile username={username} profilePicture={profilePicture} allusers={allusers}/>
+            <OthersProfile userInfo={userInfo} username={username} allusers={allusers}/>
           </div>
        } 
       />

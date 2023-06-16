@@ -18,6 +18,7 @@ function CreatePostModal(props) {
       reader.readAsDataURL(file);
     }
   };
+ 
   return (
     <div
       className="modal fade"
@@ -45,8 +46,7 @@ function CreatePostModal(props) {
               <div className="d-flex flex-column">
                 <div className="d-flex align-items-center">
                   <div className="p-2">
-                    <p>fff</p>
-                      <Avatar profilePicture={props.profilePicture}/>
+                      <Avatar userInfo={props.userInfo} username={props.username}/>
                   </div>
                   <div>
                     <p className="m-0 fw-bold">{props.username}</p>

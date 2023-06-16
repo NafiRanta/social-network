@@ -1,7 +1,7 @@
 import React from 'react';
 import Avatar from './CommentCard';
 
-function PostCard() {
+function PostCard(props) {
     return(
         <div className="bg-white p-4 rounded shadow mt-3">
           <div className="d-flex justify-content-between">
@@ -30,7 +30,7 @@ function PostCard() {
               </p>
               <img src="https://source.unsplash.com/random/12" alt="post image" className="img-fluid rounded"/>
             </div>
-            <Avatar />  
+            <Avatar username={props.username} userInfo={props.userInfo}/>  
           </div>
         </div>
       )

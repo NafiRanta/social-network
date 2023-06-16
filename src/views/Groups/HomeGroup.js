@@ -7,7 +7,7 @@ import Topnav from '../../views/Topnav'
 function HomeGroup(props) {
     return (
         <div>
-            <Topnav username={props.username} profilePicture={props.profilePicture} allusers={props.allusers}/>
+            <Topnav username={props.username} userInfo={props.userInfo} allusers={props.allusers}/>
             <div className="container-fluid">
                 <div className="row justify-content-evenly">
                     <div className="col-12 col-lg-3">
@@ -16,8 +16,8 @@ function HomeGroup(props) {
                     <div className="col-12 col-lg-6 pb-5 p-3">
                         <div className="d-flex flex-column justify-content-center w-100" id="d-flex-postcontainer-homeGroup">
                         <h5><strong>Your Feed</strong></h5>
-                            <CreateGroupPost username={props.username} profilePicture={props.profilePicture}/>
-                            <GroupPostCard />
+                            <CreateGroupPost username={props.username} userInfo={props.userInfo}/>
+                            <GroupPostCard username={props.username} userInfo={props.userInfo}/>
                         </div>
                     </div>
                     <div className="col-12 col-lg-3"></div>

@@ -7,7 +7,7 @@ import Topnav from '../Topnav';
 function Chat(props) {
     return(
         <div>
-            <Topnav username={props.username} profilePicture={props.profilePicture} allusers={props.allusers}/>
+            <Topnav userInfo={props.userInfo} username={props.username} allusers={props.allusers}/>
             <div className="container-fluid">
                 <div className="row justify-content-evenly">
                     <div className="col-12 col-lg-3">

@@ -12,10 +12,14 @@ import (
 )
 
 type UserResponse struct {
-	FirstName string `json:"firstname"`
-	LastName  string `json:"lastname"`
-	Email     string `json:"email"`
-	Privacy   string `json:"privacy"`
+	FirstName      string `json:"firstname"`
+	LastName       string `json:"lastname"`
+	Email          string `json:"email"`
+	Privacy        string `json:"privacy"`
+	DateOfBirth    string `json:"dob"`
+	Nickname       string `json:"nickname"`
+	AboutMe        string `json:"about"`
+	ProfilePicture string `json:"profilePicture"`
 }
 
 func GetAllUsers(w http.ResponseWriter, r *http.Request) {
@@ -40,10 +44,14 @@ func GetAllUsers(w http.ResponseWriter, r *http.Request) {
 	response := make([]UserResponse, len(allUsers))
 	for i, user := range allUsers {
 		response[i] = UserResponse{
-			FirstName: user.FirstName,
-			LastName:  user.LastName,
-			Email:     user.Email,
-			Privacy:   user.Privacy,
+			FirstName:      user.FirstName,
+			LastName:       user.LastName,
+			Email:          user.Email,
+			Privacy:        user.Privacy,
+			DateOfBirth:    user.DateOfBirth,
+			Nickname:       user.Nickname,
+			AboutMe:        user.AboutMe,
+			ProfilePicture: user.Avatar,
 		}
 	}
 
@@ -61,7 +69,7 @@ func GetAllUsers(w http.ResponseWriter, r *http.Request) {
 	w.Write(jsonData)
 }
 
-//get user by id/ email handler
+// get user by id/ email handler
 func GetUserByEmailHandler(w http.ResponseWriter, r *http.Request) {
 	// Check if the request method is GET
 	if r.Method != http.MethodGet {

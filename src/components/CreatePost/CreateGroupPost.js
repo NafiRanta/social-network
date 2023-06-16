@@ -7,7 +7,7 @@ function CreateGroupPost(props) {
       <div className="bg-white p-3 mt-3 rounded border shadow" id="bg-white">
           <div className="d-flex" type="button">
               <div className="p-1">
-                <Avatar profilePicture={props.profilePicture}/>
+              <Avatar username={props.username} userInfo={props.userInfo}/>
               </div>
               <input 
                 type="text" 
@@ -17,7 +17,7 @@ function CreateGroupPost(props) {
                 data-bs-toggle="modal" 
                 data-bs-target="#createGroupPostModal"/>
           </div>
-          <CreateGroupPostModal username={props.username} profilePicture={props.profilePicture}/>
+          <CreateGroupPostModal username={props.username} userInfo={props.userInfo} />
           <hr />
           <div className="d-flex flex-column flex-lg-row mt-3">
             <div className="dropdown-item rounded d-flex align-items-center justify-content-center" type="button">

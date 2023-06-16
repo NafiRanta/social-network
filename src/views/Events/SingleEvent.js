@@ -97,8 +97,8 @@ function SingleEvent(props) {
                 </div>
                 <div className="col-12 col-lg-6 pb-5">
                     <div className="d-flex flex-column justify-content-center w-100 mx-auto" id="d-flex-postcontainer-myprofile">
-                        <CreatePost />
-                        <GroupPostCard />
+                        <CreatePost username={props.username} userInfo={props.userInfo}/>
+                        <GroupPostCard username={props.username} userInfo={props.userInfo}/>
                     </div>
                 </div>
                 
