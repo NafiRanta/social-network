@@ -1,12 +1,106 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import "./Modal.css";
-import Avatar from "../Avatar/Avatar";
+import { set } from 'draft-js/lib/EditorState';
 
 function UpdateProfileSettingsModal(props) {
   const [isDobEditMode, setDobEditMode] = useState(false);
   const [isGenderEditMode, setGenderEditMode] = useState(false);
   const [isNicknameEditMode, setNicknameEditMode] = useState(false);
   const [isAboutEditMode, setAboutEditMode] = useState(false);
+  const [nickname, setNickname] = useState(props.userInfo.nickname);
+  const [nicknameLabel, setNicknameLabel] = useState("");
+  const [about, setAbout] = useState(props.userInfo.about);
+  const [aboutLabel, setAboutLabel] = useState("");
+
+  useEffect(() => {
+    const nicknamelabel = document.getElementById("nicknameLabel");
+    const nicknameInput = document.getElementById("nicknameInput");
+    const aboutlabel = document.getElementById("aboutLabel");
+    const aboutInput = document.getElementById("aboutInput");
+    if (nicknamelabel) {
+      setNicknameLabel(nicknamelabel.innerHTML);
+    }
+    if (nicknameInput) {
+      setNickname(nicknameInput.value);
+    }
+    if (aboutlabel) {
+      setAboutLabel(aboutlabel.innerHTML);
+    }
+    if (aboutInput) {
+      setAbout(aboutInput.value);
+    }
+  }, []);
+
+
+  const handleNicknameEditToggle  = () => {
+    setNicknameEditMode(!isNicknameEditMode);
+    const nicknameInput = document.getElementById("nicknameInput");
+    const nicknameLabel = document.getElementById("nicknameLabel");
+  
+    if (isNicknameEditMode) {
+      if( nicknameInput.value=== "") {
+        if (nickname === "") {
+          setNicknameLabel("Add a nickname");
+          setNickname("");
+          nicknameLabel.innerHTML = "Add a nickname";
+        } else {
+          setNicknameLabel(nickname);
+          nicknameLabel.innerHTML = nickname;
+        }
+      } else {
+        setNicknameLabel(nicknameInput.value);
+        setNickname(nicknameInput.value);
+        nicknameLabel.innerHTML = nicknameInput.value;
+      }
+    }
+ 
+  };
+  
+
+ const handleRemoveNickname = () => {
+  const nicknameLabel = document.getElementById("nicknameLabel");
+  setNicknameLabel("Add a nickname");
+  setNickname("");
+  nicknameLabel.innerHTML = "Add a nickname";
+ }
+
+ const handleNicknameCancelBtn = () => {
+  setNicknameEditMode(!isNicknameEditMode);
+};
+
+const handleAboutEditToggle   = () => {
+  setAboutEditMode(!isAboutEditMode);
+  const aboutInput = document.getElementById("aboutInput");
+  const aboutLabel = document.getElementById("aboutLabel");
+  if (isAboutEditMode) {
+    if (aboutInput.value === "") {
+      setAboutLabel(about);
+      setAbout(about);
+      aboutLabel.innerHTML = about;
+    } else {
+      const aboutLabel = document.getElementById("aboutLabel");
+      setAboutLabel(aboutInput.value);
+      setAbout(aboutInput.value);
+      aboutLabel.innerHTML = aboutInput.value;
+    }
+  }
+};
+
+const handleAboutCancelBtn = () => {
+  setAboutEditMode(!isAboutEditMode);
+  /* if (props.userInfo.about) {
+    setAboutLabel(props.userInfo.about);
+  } else {
+    setAboutLabel("Add a bio");
+  } */
+};
+
+const handleRemoveAbout = () => {
+  const aboutLabel = document.getElementById("aboutLabel");
+  setAboutLabel("Add a description");
+  setAbout("");
+  aboutLabel.innerHTML = "Add a description";
+};
 
   const handleDobEditToggle = () => {
     setDobEditMode(!isDobEditMode);
@@ -16,13 +110,9 @@ function UpdateProfileSettingsModal(props) {
     setGenderEditMode(!isGenderEditMode);
   };
 
-  const handleNicknameEditToggle  = () => {
-    setNicknameEditMode(!isNicknameEditMode);
-  };
+ 
 
-  const handleAboutEditToggle   = () => {
-    setAboutEditMode(!isAboutEditMode);
-  };
+
 
   // handle updateProfile 
   const handleUpdateProfile = async (e) => {
@@ -34,12 +124,35 @@ function UpdateProfileSettingsModal(props) {
       aboutMe: formData[1].value,
       dob: formData[2].value,
       gender: formData[3].value,
+    };
+  
+    if (isNicknameEditMode) {
+      // if nickname is edited, update the nickname and if it is not updated, set it to the original nickname
+      data.nickname = formData.nickname.value ? formData.nickname.value : props.userInfo.nickname;
+      console.log("data.nickname", data.nickname)
     }
+    
+    if (isAboutEditMode) {
+      // if about is edited, update the about and if it is not updated, set it to the original about
+      data.aboutMe = formData.aboutMe.value ? formData.aboutMe.value : props.userInfo.about;
+    }
+    
+    if (isDobEditMode) {
+      // if dob is edited, update the dob and if it is not updated, set it to the original dob
+      data.dob = formData.dob.value ? formData.dob.value : props.userInfo.dob;
+    }
+    
+    if (isGenderEditMode) {
+      // if gender is edited, update the gender and if it is not updated, set it to the original gender
+      data.gender = formData.gender.value? formData.gender.value : props.userInfo.gender
+    }
+    
     console.log("data", data);
     const res = await fetch("http://localhost:8080/updatebio", {
       method: 'POST',
       headers: {
          'Content-Type': 'application/json',
+         'Authorization': 'Bearer'
       },
       body: JSON.stringify(data),
     });
@@ -83,10 +196,15 @@ function UpdateProfileSettingsModal(props) {
                         <>
                           <div className="d-flex justify-content-between align-items-center">
                             <label className="mb-0">
-                              <strong>Nickname:</strong> Add a nickname
+                              <strong>Nickname:</strong> 
                             </label>
+                            <p id="nicknameLabel" className="mb-0">Add a nickname</p>
+                            
                             {!isNicknameEditMode && (
                               <i className="fas fa-pen" onClick={handleNicknameEditToggle}></i>
+                            )}
+                            {(!isNicknameEditMode && nicknameLabel !== "Add a nickname" && nicknameLabel.innerHTML !== props.userInfo.nickname) && (
+                              <i className="fas fa-times" onClick={handleRemoveNickname}></i>
                             )}
                           </div>
                           {isNicknameEditMode ? (
@@ -94,8 +212,8 @@ function UpdateProfileSettingsModal(props) {
                               <input
                                 autoFocus
                                 className="form-control my-3"
+                                id="nicknameInput"
                                 name="nickname"
-                                placeholder="Nickname"
                                 style={{ marginRight: '10px' }}
                                 type="text"
                               />
@@ -109,7 +227,7 @@ function UpdateProfileSettingsModal(props) {
                               <button
                                 type="button"
                                 className="btn btn-secondary"
-                                onClick={handleNicknameEditToggle}
+                                onClick={handleNicknameCancelBtn}
                               >
                                 Cancel
                               </button>
@@ -121,10 +239,14 @@ function UpdateProfileSettingsModal(props) {
                         <>
                           <div className="d-flex justify-content-between align-items-center">
                             <label className="mb-0">
-                              <strong>Nickname:</strong> {props.userInfo.nickname}
+                              <strong>Nickname:</strong> 
+                              <p id="nicknameLabel" className="mb-0">{props.userInfo.nickname}</p>
                             </label>
                             {!isNicknameEditMode && (
                               <i className="fas fa-pen" onClick={handleNicknameEditToggle}></i>
+                            )}
+                             {(!isNicknameEditMode && nicknameLabel !== "Add a nickname" && nicknameLabel.innerHTML !== props.userInfo.nickname) && (
+                              <i className="fas fa-times" onClick={handleRemoveNickname}></i>
                             )}
                           </div>
                           {isNicknameEditMode ? (
@@ -146,7 +268,7 @@ function UpdateProfileSettingsModal(props) {
                               <button
                                 type="button"
                                 className="btn btn-secondary"
-                                onClick={handleNicknameEditToggle}
+                                onClick={handleNicknameCancelBtn}
                               >
                                 Cancel
                               </button>
@@ -160,10 +282,14 @@ function UpdateProfileSettingsModal(props) {
                         <>
                           <div className="d-flex justify-content-between align-items-center">
                             <label className="mb-0">
-                              <strong>About:</strong> {props.userInfo.about}
+                              <strong>About:</strong> 
+                              <p id="aboutLabelDescription" className="mb-0">Add a description</p>
                             </label>
                             {!isAboutEditMode && (
                               <i className="fas fa-pen" onClick={handleAboutEditToggle}></i>
+                            )}
+                             {(!isAboutEditMode && aboutLabel !== "Add a description" && aboutLabel.innerHTML !== props.userInfo.about) && (
+                              <i className="fas fa-times" onClick={handleRemoveNickname}></i>
                             )}
                           </div>
                           {isAboutEditMode ? (
@@ -172,6 +298,7 @@ function UpdateProfileSettingsModal(props) {
                                 cols="30"
                                 rows="5"
                                 className="form-control my-3 border"
+                                id='aboutInput'
                                 name="aboutMe"
                                 placeholder="About Me"
                               ></textarea>
@@ -185,7 +312,7 @@ function UpdateProfileSettingsModal(props) {
                               <button
                                 type="button"
                                 className="btn btn-secondary"
-                                onClick={handleAboutEditToggle}
+                                onClick={handleAboutCancelBtn}
                               >
                                 Cancel
                               </button>
@@ -197,11 +324,13 @@ function UpdateProfileSettingsModal(props) {
                         <>
                           <div className="d-flex justify-content-between align-items-center">
                             <label className="mb-0">
-                              <strong>About:</strong> {props.userInfo.about}
+                              <strong>About:</strong>
+                              <p id="aboutLabel" className="mb-0 ">{props.userInfo.about}</p>
                             </label>
                             {!isAboutEditMode && (
                               <i className="fas fa-pen" onClick={handleAboutEditToggle}></i>
                             )}
+                            <i className="fas fa-times" onClick={handleRemoveAbout}></i>
                           </div>
                           {isAboutEditMode ? (
                             <>
@@ -209,6 +338,7 @@ function UpdateProfileSettingsModal(props) {
                                 cols="30"
                                 rows="5"
                                 className="form-control my-3 border"
+                                id='aboutInput'
                                 name="aboutMe"
                                 placeholder="About Me"
                               ></textarea>
@@ -222,7 +352,7 @@ function UpdateProfileSettingsModal(props) {
                               <button
                                 type="button"
                                 className="btn btn-secondary"
-                                onClick={handleAboutEditToggle}
+                                onClick={handleAboutCancelBtn}
                               >
                                 Cancel
                               </button>
