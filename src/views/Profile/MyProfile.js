@@ -27,28 +27,6 @@ function MyProfile(props) {
         setPrivacy(checked ? "Public" : "Private");
     };
   
-    // const fetchPrivacy = async () => {
-    //   try {
-    //     const res = await fetch("http://localhost:8080/users", {
-    //       method: 'GET',
-    //       headers: {
-    //         'Content-Type': 'application/json',
-    //       },
-    //     });
-    //     if (res.ok) {
-    //         const data = await res.json();
-    //         const userPrivacy = data[0].privacy.charAt(0).toUpperCase() + data[0].privacy.slice(1);
-    //         setPrivacy(userPrivacy);
-    //         console.log("user privacy: ", userPrivacy);
-    //     } else {
-    //       console.log("Error fetching privacy setting");
-    //     }
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // };
-  
-  
   return (
     <div>
         <Topnav username={props.username} userInfo={props.userInfo} allusers={props.allusers}/>
