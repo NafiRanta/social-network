@@ -112,19 +112,20 @@ function Login() {
         body: JSON.stringify({ email, password }),
       });
       if (response.ok) {
-        console.log("Login successful");
         const data = await response.json();
         const token = response.headers.get("Authorization");
-        console.log(data);
         // Save session to local storage
         localStorage.setItem("userInfo", JSON.stringify(data));
         localStorage.setItem("token", token);
-        console.log("userInfo", JSON.stringify(data));
+        console.log("Login successful");
+        console.log("userInfo login", JSON.stringify(data));
+        console.log("token", token);
+        
         //setIsAuthenticated(true);
         window.location.reload();
       } else {
         // show error message from response
-        console.log(response)
+          console.log(response)
         if (response.status === 401) {
           document.getElementById("loginUsernameErrMsg").innerHTML = "Incorrect username or password";
         } else {

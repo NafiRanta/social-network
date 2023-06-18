@@ -35,6 +35,7 @@ function App() {
     if (isAuth) {
       const userInfo = JSON.parse(localStorage.getItem("userInfo"));
       const username = userInfo.firstname + " " + userInfo.lastname;
+      const token = userInfo.token;
       setUserInfo(userInfo);
       setUsername(username);
       setEmail(userInfo.email);
@@ -42,6 +43,7 @@ function App() {
       setProfilePic(userInfo.profilePicture);
       setNickname(userInfo.nickname);
       console.log("userInfo app", userInfo)
+      console.log("token app", token)
     }
   }, [isAuth]);
 
