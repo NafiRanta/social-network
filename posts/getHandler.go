@@ -28,13 +28,15 @@ func GetPostsHandler(w http.ResponseWriter, r *http.Request) {
 	privatePosts, err := d.GetPrivatePosts(userID)
 	fmt.Println(privatePosts)
 	//custom posts with me included
-	// customPosts, err := d.GetCustomPosts(userID)
-	// fmt.Println(customPosts)
+	customPosts, err := d.GetCustomPosts(userID)
+	fmt.Println(len(customPosts))
+	fmt.Println(customPosts)
 
 	// Create a response object containing the posts
 	response := map[string]interface{}{
 		"publicPosts":  publicPosts,
 		"privatePosts": privatePosts,
+		"customPosts":  customPosts,
 	}
 
 	// Convert the response to JSON

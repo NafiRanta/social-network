@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	u "socialnetwork/utils"
+	"sort"
 	"time"
 
 	"github.com/google/uuid"
@@ -196,32 +197,28 @@ func GetCustomPosts(userID string) ([]Post, error) {
 	if err != nil {
 		return nil, err
 	}
-	fmt.Printf("useremail: %v", userEmail)
 
 	query := `
 		SELECT PostID, AuthorID, Privacy, IncludedFriends, Content, Image, CreateAt
 		FROM Posts
-		WHERE Privacy = 'custom' AND IncludedFriends LIKE ?
+		WHERE Privacy = 'custom'
 	`
 	// Append '%' to the email to perform a wildcard search
-	searchEmail := "%" + email + "%"
 
-	rows, err := db.Query(query, searchEmail)
+	rows, err := db.Query(query)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	fmt.Println(rows)
 	var posts []Post
 	for rows.Next() {
 		fmt.Println("this is inside rows")
 		var post Post
-		var includedFriends string
 		err := rows.Scan(
 			&post.PostID,
 			&post.AuthorID,
 			&post.Privacy,
-			&includedFriends,
+			&post.IncludedFriends,
 			&post.Content,
 			&post.Image,
 			&post.CreateAt,
@@ -229,11 +226,26 @@ func GetCustomPosts(userID string) ([]Post, error) {
 		if err != nil {
 			return nil, err
 		}
-		// Split the IncludedFriends string into separate emails
+		var includedFriends []string
+		test := json.Unmarshal([]byte(post.IncludedFriends), &includedFriends)
+		if test != nil {
+			fmt.Println("Error:", err)
+		}
+		fmt.Println(includedFriends)
+		sort.Strings(includedFriends)
 
-		posts = append(posts, post)
+		index := sort.SearchStrings(includedFriends, userEmail)
+
+		if index < len(includedFriends) && includedFriends[index] == userEmail {
+			fmt.Println("Found")
+			posts = append(posts, post)
+		} else {
+			fmt.Println("Not found")
+			continue
+		}
+
 	}
-	fmt.Println("posts: ", posts)
+	// fmt.Println("posts: ", posts)
 	if err := rows.Err(); err != nil {
 		return nil, err
 	}
