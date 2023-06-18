@@ -186,58 +186,34 @@ const handleRemoveAbout = () => {
   // handle updateProfile 
   const handleUpdateProfile = async (e) => {
     e.preventDefault();
-    const formData = {
-      nickname: document.getElementById("nicknameLabel"),
-      aboutMe: document.getElementById("aboutLabel"),
-      dob: document.getElementById("dob"),
-
-    }
-    // get form data
-    const data = {
-      nickname: formData[0].value,
-      aboutMe: formData[1].value,
-      dob: formData[2].value,
-      gender: formData[3].value,
-    };
-    console.log("data", data)
   
-   /*  if (isNicknameEditMode) {
-      // if nickname is edited, update the nickname and if it is not updated, set it to the original nickname
-      data.nickname = formData.nickname.value ? formData.nickname.value : props.userInfo.nickname;
-      console.log("data.nickname", data.nickname)
-    }
-    
-    if (isAboutEditMode) {
-      // if about is edited, update the about and if it is not updated, set it to the original about
-      data.aboutMe = formData.aboutMe.value ? formData.aboutMe.value : props.userInfo.about;
-    }
-    
-    if (isDobEditMode) {
-      // if dob is edited, update the dob and if it is not updated, set it to the original dob
-      data.dob = formData.dob.value ? formData.dob.value : props.userInfo.dob;
-    }
-    
-    if (isGenderEditMode) {
-      // if gender is edited, update the gender and if it is not updated, set it to the original gender
-      data.gender = formData.gender.value? formData.gender.value : props.userInfo.gender
-    }
-    
+    const data = {
+      nickname: nickname,
+      aboutMe: about === "" ? null : about, // Set aboutMe to null if it is an empty string
+      dob: dob,
+      gender: gender,
+    };
     console.log("data", data);
+  
     const res = await fetch("http://localhost:8080/updatebio", {
       method: 'POST',
+      credentials: 'include',
       headers: {
-         'Content-Type': 'application/json',
-         'Authorization': 'Bearer'
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify(data),
     });
-     if (res.ok) {
-      const data = await res.json();
-      console.log("UPDATED SUCCESSFULLY", data);
+    if (res.ok) {
+      const token = res.headers.get('Authorization');
+      console.log(token);
+      const responseData = await res.json();
+      
+      console.log("UPDATED SUCCESSFULLY", responseData);
     } else {
-     console.log("error", res.status);
-    } */
+      console.log("Error:", res.status);
+    }
   };
+  
 
   return (
     <div 

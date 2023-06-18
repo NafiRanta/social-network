@@ -114,9 +114,11 @@ function Login() {
       if (response.ok) {
         console.log("Login successful");
         const data = await response.json();
+        const token = response.headers.get("Authorization");
         console.log(data);
         // Save session to local storage
         localStorage.setItem("userInfo", JSON.stringify(data));
+        localStorage.setItem("token", token);
         console.log("userInfo", JSON.stringify(data));
         //setIsAuthenticated(true);
         window.location.reload();
