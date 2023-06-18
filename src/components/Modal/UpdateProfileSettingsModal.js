@@ -11,52 +11,83 @@ function UpdateProfileSettingsModal(props) {
   const [nicknameLabel, setNicknameLabel] = useState("");
   const [about, setAbout] = useState(props.userInfo.about);
   const [aboutLabel, setAboutLabel] = useState("");
+  const [gender, setGender] = useState(props.userInfo.gender)
+  const [genderLabel, setGenderLabel] = useState(props.userInfo.gender);
+  const [dob, setDob] = useState(props.userInfo.dob);
+  const [dobLabel, setDobLabel] = useState(props.userInfo.dob);
 
   useEffect(() => {
     const nicknamelabel = document.getElementById("nicknameLabel");
     const nicknameInput = document.getElementById("nicknameInput");
     const aboutlabel = document.getElementById("aboutLabel");
     const aboutInput = document.getElementById("aboutInput");
+    const genderlabel = document.getElementById("genderLabel");
+    const genderInput = document.getElementById("genderInput");
+    const doblabel = document.getElementById("dobLabel");
+    const dobInput = document.getElementById("dobInput");
+
     if (nicknamelabel) {
-      setNicknameLabel(nicknamelabel.innerHTML);
+      if (nickname === "") {
+        setNicknameLabel("Add a nickname");
+        nicknamelabel.innerHTML = "Add a nickname";
+      } else {
+        setNicknameLabel(nickname);
+        setNicknameLabel(nicknamelabel.innerHTML);
+      }
     }
     if (nicknameInput) {
       setNickname(nicknameInput.value);
     }
     if (aboutlabel) {
-      setAboutLabel(aboutlabel.innerHTML);
+      if (about === "") {
+        setAboutLabel("Add a description");
+        aboutlabel.innerHTML = "Add a description";
+      } else {
+        setAboutLabel(about);
+        aboutlabel.innerHTML = about;
+      }
     }
     if (aboutInput) {
       setAbout(aboutInput.value);
     }
+    if (genderLabel){
+      setGenderLabel(gender);
+      genderlabel.innerHTML = genderLabel
+    }
+    if (genderInput){
+      setGender(genderInput.value)
+    }
+    if (doblabel){
+      setDobLabel(dob);
+      doblabel.innerHTML = dobLabel;
+    }
+    if (dobInput){
+      setDob(dobInput.value)
+    }
   }, []);
 
-
-  const handleNicknameEditToggle  = () => {
+  // handle nickname change
+  const handleNicknameEditToggle = () => {
     setNicknameEditMode(!isNicknameEditMode);
     const nicknameInput = document.getElementById("nicknameInput");
     const nicknameLabel = document.getElementById("nicknameLabel");
-  
     if (isNicknameEditMode) {
-      if( nicknameInput.value=== "") {
-        if (nickname === "") {
-          setNicknameLabel("Add a nickname");
-          setNickname("");
-          nicknameLabel.innerHTML = "Add a nickname";
-        } else {
-          setNicknameLabel(nickname);
-          nicknameLabel.innerHTML = nickname;
-        }
-      } else {
+      if (nicknameInput && nicknameInput.value === "") {
+        setNicknameLabel(nickname);
+        setNickname(nickname);
+        nicknameLabel.innerHTML = nickname;
+      } else if (nicknameInput && nicknameInput.value === "" && nickname === "") {
+        setNicknameLabel("Add a nickname");
+        setNickname("");
+        nicknameLabel.innerHTML = "Add a nickname";
+      } else if (nicknameInput) {
         setNicknameLabel(nicknameInput.value);
         setNickname(nicknameInput.value);
         nicknameLabel.innerHTML = nicknameInput.value;
       }
     }
- 
   };
   
-
  const handleRemoveNickname = () => {
   const nicknameLabel = document.getElementById("nicknameLabel");
   setNicknameLabel("Add a nickname");
@@ -68,17 +99,24 @@ function UpdateProfileSettingsModal(props) {
   setNicknameEditMode(!isNicknameEditMode);
 };
 
-const handleAboutEditToggle   = () => {
+// handle about change
+const handleAboutEditToggle = () => {
   setAboutEditMode(!isAboutEditMode);
   const aboutInput = document.getElementById("aboutInput");
-  const aboutLabel = document.getElementById("aboutLabel");
+  const aboutLabel = document.getElementById("aboutLabel")
   if (isAboutEditMode) {
-    if (aboutInput.value === "") {
+    console.log("about in handle 2", about);
+    if (aboutInput.value === "" && about !== "") {
       setAboutLabel(about);
       setAbout(about);
       aboutLabel.innerHTML = about;
-    } else {
-      const aboutLabel = document.getElementById("aboutLabel");
+    }
+    else if (aboutInput.value === "" && about === "") {
+      setAboutLabel("Add a description");
+      setAbout("");
+      aboutLabel.innerHTML = "Add a description";
+    }
+    else {
       setAboutLabel(aboutInput.value);
       setAbout(aboutInput.value);
       aboutLabel.innerHTML = aboutInput.value;
@@ -86,13 +124,9 @@ const handleAboutEditToggle   = () => {
   }
 };
 
+
 const handleAboutCancelBtn = () => {
   setAboutEditMode(!isAboutEditMode);
-  /* if (props.userInfo.about) {
-    setAboutLabel(props.userInfo.about);
-  } else {
-    setAboutLabel("Add a bio");
-  } */
 };
 
 const handleRemoveAbout = () => {
@@ -102,14 +136,49 @@ const handleRemoveAbout = () => {
   aboutLabel.innerHTML = "Add a description";
 };
 
+  // handle dob change
   const handleDobEditToggle = () => {
     setDobEditMode(!isDobEditMode);
+    const dobInput = document.getElementById("dobInput");
+    const dobLabel = document.getElementById("dobLabel");
+    if (isDobEditMode) {
+      if (dobInput && dobInput.value === "") {
+        setDobLabel(dob);
+        setDob(dob);
+        dobLabel.innerHTML = dob;
+      } else if (dobInput) {
+        setDobLabel(dobInput.value);
+        setDob(dobInput.value);
+        dobLabel.innerHTML = dobInput.value;
+      }
+    }
   };
 
+  const handleDobCancelBtn = () => {
+    setDobEditMode(!isDobEditMode);
+  };
+ 
+  // handle gender change
   const handleGenderEditToggle = () => {
     setGenderEditMode(!isGenderEditMode);
+    const genderInput = document.getElementById("genderInput");
+    const genderLabel = document.getElementById("genderLabel");
+    if (isGenderEditMode) {
+      if (genderInput && genderInput.value === "") {
+        setNicknameLabel(gender);
+        setNickname(gender);
+        genderLabel.innerHTML = gender;
+      } else if (genderInput){
+        setNicknameLabel(genderInput.value);
+        setGender(genderInput.value);
+        genderLabel.innerHTML = genderInput.value;
+      }
+    }
   };
 
+  const handleGenderCancelBtn = () => {
+    setGenderEditMode(!isGenderEditMode);
+  };
  
 
 
@@ -117,7 +186,12 @@ const handleRemoveAbout = () => {
   // handle updateProfile 
   const handleUpdateProfile = async (e) => {
     e.preventDefault();
-    const formData = document.getElementById("updateProfileForm");
+    const formData = {
+      nickname: document.getElementById("nicknameLabel"),
+      aboutMe: document.getElementById("aboutLabel"),
+      dob: document.getElementById("dob"),
+
+    }
     // get form data
     const data = {
       nickname: formData[0].value,
@@ -125,8 +199,9 @@ const handleRemoveAbout = () => {
       dob: formData[2].value,
       gender: formData[3].value,
     };
+    console.log("data", data)
   
-    if (isNicknameEditMode) {
+   /*  if (isNicknameEditMode) {
       // if nickname is edited, update the nickname and if it is not updated, set it to the original nickname
       data.nickname = formData.nickname.value ? formData.nickname.value : props.userInfo.nickname;
       console.log("data.nickname", data.nickname)
@@ -161,7 +236,7 @@ const handleRemoveAbout = () => {
       console.log("UPDATED SUCCESSFULLY", data);
     } else {
      console.log("error", res.status);
-    }
+    } */
   };
 
   return (
@@ -181,29 +256,20 @@ const handleRemoveAbout = () => {
           <div className="modal-body">
             <div className="my-1 p-1">
               <div className="d-flex flex-column">
-                {/* <div className="d-flex align-items-center">
-                  <div className="p-2">
-                    <Avatar username={props.username} userInfo={props.userInfo}/>
-                  </div>
-                  <div>
-                    <p className="m-0 fw-bold">{props.username}</p>
-                  </div>
-                </div> */}
                 <div>
                   <form id="updateProfileForm" >
-                  <div className="form-group">
-                      {!props.userInfo.nickname && (
+                    <div className="form-group">
+                      {!nickname && (
                         <>
                           <div className="d-flex justify-content-between align-items-center">
                             <label className="mb-0">
                               <strong>Nickname:</strong> 
                             </label>
-                            <p id="nicknameLabel" className="mb-0">Add a nickname</p>
-                            
+                            <p id="nicknameLabel" className="mb-0">{nicknameLabel}</p>
                             {!isNicknameEditMode && (
                               <i className="fas fa-pen" onClick={handleNicknameEditToggle}></i>
                             )}
-                            {(!isNicknameEditMode && nicknameLabel !== "Add a nickname" && nicknameLabel.innerHTML !== props.userInfo.nickname) && (
+                            {(!isNicknameEditMode && nicknameLabel !== "Add a nickname" && nicknameLabel.innerHTML !== nickname && nicknameLabel !== "Add a nickname" )&& (
                               <i className="fas fa-times" onClick={handleRemoveNickname}></i>
                             )}
                           </div>
@@ -235,12 +301,12 @@ const handleRemoveAbout = () => {
                           ) : null}
                         </>
                       )}
-                      {props.userInfo.nickname && (
+                      {nickname && (
                         <>
                           <div className="d-flex justify-content-between align-items-center">
                             <label className="mb-0">
                               <strong>Nickname:</strong> 
-                              <p id="nicknameLabel" className="mb-0">{props.userInfo.nickname}</p>
+                              <p id="nicknameLabel" className="mb-0">{nicknameLabel}</p>
                             </label>
                             {!isNicknameEditMode && (
                               <i className="fas fa-pen" onClick={handleNicknameEditToggle}></i>
@@ -278,23 +344,23 @@ const handleRemoveAbout = () => {
                       )}
                     </div>
                     <div className="form-group">
-                      {!props.userInfo.about && (
+                      {!about && (
                         <>
                           <div className="d-flex justify-content-between align-items-center">
                             <label className="mb-0">
                               <strong>About:</strong> 
-                              <p id="aboutLabelDescription" className="mb-0">Add a description</p>
+                              <p id="aboutLabel" className="mb-0">{aboutLabel}</p>
                             </label>
                             {!isAboutEditMode && (
                               <i className="fas fa-pen" onClick={handleAboutEditToggle}></i>
                             )}
-                             {(!isAboutEditMode && aboutLabel !== "Add a description" && aboutLabel.innerHTML !== props.userInfo.about) && (
-                              <i className="fas fa-times" onClick={handleRemoveNickname}></i>
+                            {(!isAboutEditMode && aboutLabel !== "Add a description" && aboutLabel.innerHTML !== about && aboutLabel !== "Add a description") && (
+                              <i className="fas fa-times" onClick={handleRemoveAbout}></i>
                             )}
                           </div>
                           {isAboutEditMode ? (
                             <>
-                              <textarea
+                              <textarea 
                                 cols="30"
                                 rows="5"
                                 className="form-control my-3 border"
@@ -320,12 +386,12 @@ const handleRemoveAbout = () => {
                           ) : null}
                         </>
                       )}
-                      {props.userInfo.about && (
+                      {about && (
                         <>
                           <div className="d-flex justify-content-between align-items-center">
                             <label className="mb-0">
                               <strong>About:</strong>
-                              <p id="aboutLabel" className="mb-0 ">{props.userInfo.about}</p>
+                              <p id="aboutLabel" className="mb-0 ">{aboutLabel}</p>
                             </label>
                             {!isAboutEditMode && (
                               <i className="fas fa-pen" onClick={handleAboutEditToggle}></i>
@@ -364,8 +430,9 @@ const handleRemoveAbout = () => {
                     <div className="form-group">
                       <div className="d-flex justify-content-between align-items-center">
                         <label className="mb-0">
-                          <strong>Date of birth:</strong> {props.userInfo.dob}
+                          <strong>Date of birth:</strong> 
                         </label>
+                        <p id="dobLabel">{dob}</p>
                         {!isDobEditMode && (
                           <i className="fas fa-pen" onClick={handleDobEditToggle}></i>
                         )}
@@ -375,7 +442,7 @@ const handleRemoveAbout = () => {
                           <>
                             <input
                               autoFocus
-                              id="dob"
+                              id="dobInput"
                               className="form-control my-3 me-2"
                               data-testid="dob"
                               name="dob"
@@ -392,7 +459,7 @@ const handleRemoveAbout = () => {
                             <button
                               type="button"
                               className="btn btn-secondary"
-                              onClick={handleDobEditToggle}
+                              onClick={handleDobCancelBtn}
                             >
                               Cancel
                             </button>
@@ -403,10 +470,11 @@ const handleRemoveAbout = () => {
                     <div className="form-group">
                       <div className="d-flex justify-content-between align-items-center">
                         <label className="mb-0">
-                          <strong>Gender:</strong> {props.userInfo.gender}
+                          <strong>Gender:</strong> 
                         </label>
+                        <p id="genderLabel" className="mb-0">{gender}</p>                     
                         {!isGenderEditMode && (
-                          <i className="fas fa-pen" onClick={handleGenderEditToggle}></i>
+                        <i className="fas fa-pen" onClick={handleGenderEditToggle}></i>
                         )}
                       </div>
                       <div className="d-flex align-items-center">
@@ -415,6 +483,7 @@ const handleRemoveAbout = () => {
                             <input
                               autoFocus
                               className="form-control my-3"
+                              id = "genderInput"
                               name="gender"
                               placeholder="Gender"
                               type="text"
@@ -431,7 +500,7 @@ const handleRemoveAbout = () => {
                             <button
                               type="button"
                               className="btn btn-secondary"
-                              onClick={handleGenderEditToggle}
+                              onClick={handleGenderCancelBtn}
                             >
                               Cancel
                             </button>
