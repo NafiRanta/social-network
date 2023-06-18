@@ -30,6 +30,17 @@ type UserResponse struct {
 	OnFollowingIDs string `json:"OnFollowing_IDs"`
 }
 
+type UserProfile struct {
+	FirstName      string `json:"firstname"`
+	LastName       string `json:"lastname"`
+	Email          string `json:"email"`
+	Privacy        string `json:"privacy"`
+	DateOfBirth    string `json:"dob"`
+	Nickname       string `json:"nickname"`
+	AboutMe        string `json:"about"`
+	ProfilePicture string `json:"profilePicture"`
+}
+
 //user repsonse after login should not have password, the followers should have name, email, pic
 
 func LogIn(w http.ResponseWriter, r *http.Request) {
@@ -149,7 +160,8 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		if err == sql.ErrNoRows {
 			fmt.Println("User does not exist")
 			if user.Avatar == "" {
-				user.Avatar = "data:image/*;base64," + base64.StdEncoding.EncodeToString(SetDefaultImg("defaultImg/default-avatar.jpeg"))
+				user.Avatar = "data:image/jpeg;base64," + base64.StdEncoding.EncodeToString(SetDefaultImg("defaultImg/default-avatar.jpeg"))
+				fmt.Println(user.Avatar)
 			}
 			err = d.AddUser(d.GetDB(), user.FirstName, user.LastName, user.Email, user.Password, user.DateOfBirth, user.Gender, user.Nickname, user.Avatar, user.AboutMe)
 			if err != nil {

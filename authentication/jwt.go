@@ -29,11 +29,31 @@ func GenerateJWT(userID string) (string, error) {
 	return tokenString, nil
 }
 
-func JWTTokenDecode(authHeader string) (jwt.Token, error) {
-	fmt.Println("JWTTokenDecode")
+func ExtractUserIDFromAuthHeader(authHeader string) (string, error) {
+	if authHeader == "" {
+		return "", fmt.Errorf("Missing Authorization header")
+	}
 	bearerToken := strings.TrimPrefix(authHeader, "Bearer ")
 	token, err := jwt.Parse(bearerToken, func(token *jwt.Token) (interface{}, error) {
 		return []byte("social-network-2023"), nil
 	})
-	return *token, err
+	if err != nil {
+		return "", fmt.Errorf("Invalid token")
+	}
+
+	if !token.Valid {
+		return "", fmt.Errorf("Token is not valid")
+	}
+
+	claims, ok := token.Claims.(jwt.MapClaims)
+	if !ok {
+		return "", fmt.Errorf("Invalid token claims")
+	}
+
+	userID, ok := claims["userID"].(string)
+	if !ok {
+		return "", fmt.Errorf("Invalid userID claim")
+	}
+
+	return userID, nil
 }

@@ -10,20 +10,20 @@ import (
 )
 
 type User struct {
-	UserID         string `json:"-"`
-	FirstName      string `json:"firstname"`
-	LastName       string `json:"lastname"`
-	Email          string `json:"email"`
-	Password       string `json:"password"`
-	Privacy        string `json:"privacy"`
-	Online         int    `json:"online"`
-	DateOfBirth    string `json:"dob"`
-	Gender         string `json:"gender"`
-	Avatar         string `json:"profilePicture"`
-	Nickname       string `json:"nickname"`
-	AboutMe        string `json:"about"`
-	FollowerIDs    string `json:"Follower_IDs"`
-	OnFollowingIDs string `json:"OnFollowing_IDs"`
+	UserID         string
+	FirstName      string
+	LastName       string
+	Email          string
+	Password       string
+	Privacy        string
+	Online         int
+	DateOfBirth    string
+	Gender         string
+	Avatar         string
+	Nickname       string
+	AboutMe        string
+	FollowerIDs    string
+	OnFollowingIDs string
 }
 
 // create users table
@@ -70,7 +70,6 @@ func AddUser(db *sql.DB, FirstName string, LastName string, Email string, Passwo
 
 func GetUserByEmail(email string) (*User, error) {
 	fmt.Println("GetUserByEmail")
-	// if user not found, return nil, nil
 	db, err := sql.Open("sqlite3", "./socialnetwork.db")
 	if err != nil {
 		return nil, err
@@ -95,7 +94,6 @@ func GetUserByEmail(email string) (*User, error) {
 			return nil, err
 		}
 	}
-	//if error is nil -> user found
 	return &user, nil
 }
 

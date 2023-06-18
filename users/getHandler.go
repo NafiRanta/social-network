@@ -7,20 +7,7 @@ import (
 
 	a "socialnetwork/authentication"
 	d "socialnetwork/database"
-
-	"github.com/dgrijalva/jwt-go"
 )
-
-type UserResponse struct {
-	FirstName      string `json:"firstname"`
-	LastName       string `json:"lastname"`
-	Email          string `json:"email"`
-	Privacy        string `json:"privacy"`
-	DateOfBirth    string `json:"dob"`
-	Nickname       string `json:"nickname"`
-	AboutMe        string `json:"about"`
-	ProfilePicture string `json:"profilePicture"`
-}
 
 func GetAllUsers(w http.ResponseWriter, r *http.Request) {
 	publicUsers, err := d.GetAllPublicUsers()
@@ -41,9 +28,9 @@ func GetAllUsers(w http.ResponseWriter, r *http.Request) {
 	allUsers := append(publicUsers, privateUsers...)
 
 	// Create a slice of UserResponse with the desired fields
-	response := make([]UserResponse, len(allUsers))
+	response := make([]a.UserProfile, len(allUsers))
 	for i, user := range allUsers {
-		response[i] = UserResponse{
+		response[i] = a.UserProfile{
 			FirstName:      user.FirstName,
 			LastName:       user.LastName,
 			Email:          user.Email,
@@ -69,9 +56,7 @@ func GetAllUsers(w http.ResponseWriter, r *http.Request) {
 	w.Write(jsonData)
 }
 
-// get user by id/ email handler
 func GetUserByEmailHandler(w http.ResponseWriter, r *http.Request) {
-	// Check if the request method is GET
 	if r.Method != http.MethodGet {
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		fmt.Fprint(w, "Method not allowed")
@@ -82,28 +67,17 @@ func GetUserByEmailHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Missing Authorization header", http.StatusUnauthorized)
 		return
 	}
-	token, err := a.JWTTokenDecode(authHeader)
-	if err != nil {
-		http.Error(w, "Invalid token", http.StatusUnauthorized)
+	userID, err := a.ExtractUserIDFromAuthHeader(authHeader)
+	if err != nil && userID == "" {
+		http.Error(w, err.Error(), http.StatusUnauthorized)
 		return
 	}
-	if !token.Valid {
-		http.Error(w, "Token is not valid", http.StatusUnauthorized)
-		return
-	}
-	_, ok := token.Claims.(jwt.MapClaims)
-	if !ok {
-		http.Error(w, "Invalid token claims", http.StatusUnauthorized)
-		return
-	}
-
 	// Get the email parameter from the query string
 	email := r.URL.Query().Get("email")
 	if email == "" {
 		http.Error(w, "Missing email parameter", http.StatusBadRequest)
 		return
 	}
-
 	// Get the user by email from the database
 	user, err := d.GetUserByEmail(email)
 	if err != nil {
@@ -116,8 +90,8 @@ func GetUserByEmailHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "User not found", http.StatusNotFound)
 		return
 	}
-
 	// Create a UserResponse instance with the desired fields
+	//change dob format
 	userResponse := a.UserResponse{
 		FirstName:      user.FirstName,
 		LastName:       user.LastName,
@@ -132,12 +106,10 @@ func GetUserByEmailHandler(w http.ResponseWriter, r *http.Request) {
 		OnFollowingIDs: user.OnFollowingIDs,
 	}
 	userJSON, err := json.Marshal(userResponse)
-
 	if err != nil {
 		http.Error(w, "Error encoding JSON", http.StatusInternalServerError)
 		return
 	}
-
 	// Set the Content-Type header and write the JSON response
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)

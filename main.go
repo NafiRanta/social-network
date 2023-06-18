@@ -44,6 +44,7 @@ func Start() error {
 
 	//handle post
 	router.HandleFunc("/posts", p.GetPostsHandler)
+	router.HandleFunc("/createpost", p.AddPostHandler)
 	// router.HandleFunc("/websocket", ws)
 	handler := u.CorsMiddleware(router)
 	//fire up the server

@@ -1,43 +1,52 @@
 package posts
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 	a "socialnetwork/authentication"
-
-	"github.com/dgrijalva/jwt-go"
+	d "socialnetwork/database"
 )
 
 func GetPostsHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("GetPostsHandler")
-	// Retrieve the Authorization header from the request
 	authHeader := r.Header.Get("Authorization")
-	// Check if the Authorization header is present
 	if authHeader == "" {
 		http.Error(w, "Missing Authorization header", http.StatusUnauthorized)
 		return
 	}
-	// Extract the token from the Authorization header and Validate and decode the token
-	token, err := a.JWTTokenDecode(authHeader)
+	userID, err := a.ExtractUserIDFromAuthHeader(authHeader)
 	if err != nil {
-		http.Error(w, "Invalid token", http.StatusUnauthorized)
+		http.Error(w, err.Error(), http.StatusUnauthorized)
 		return
 	}
-	// Check if the token is valid and has not expired
-	if !token.Valid {
-		http.Error(w, "Token is not valid", http.StatusUnauthorized)
-		return
+	fmt.Println(userID)
+
+	//public posts
+	publicPosts, err := d.GetPublicPosts()
+	fmt.Println(publicPosts)
+	//private posts by me
+	privatePosts, err := d.GetPrivatePosts(userID)
+	fmt.Println(privatePosts)
+	//custom posts with me included
+	// customPosts, err := d.GetCustomPosts(userID)
+	// fmt.Println(customPosts)
+
+	// Create a response object containing the posts
+	response := map[string]interface{}{
+		"publicPosts":  publicPosts,
+		"privatePosts": privatePosts,
 	}
-	// Access the claims from the token, including the userID if it was included in the token payload
-	claims, ok := token.Claims.(jwt.MapClaims)
-	if !ok {
-		http.Error(w, "Invalid token claims", http.StatusUnauthorized)
+
+	// Convert the response to JSON
+	responseJSON, err := json.Marshal(response)
+	if err != nil {
+		http.Error(w, "Failed to marshal response", http.StatusInternalServerError)
 		return
 	}
 
-	userID := claims["userID"].(string)
-	fmt.Println("userID:", userID)
+	// Set the Content-Type header to application/json
+	w.Header().Set("Content-Type", "application/json")
 
-	// Continue with your logic for handling the GET request
-	// ...
+	// Write the JSON response to the HTTP response writer
+	w.Write(responseJSON)
 }
