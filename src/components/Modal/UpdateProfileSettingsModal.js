@@ -1,23 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import "./Modal.css";
 
-
-function decodeJwt(jwt) {
-  if (!jwt) {
-    return null; // Or handle the error in an appropriate way
-  }
-
-  const base64Url = jwt.split(".")[1];
-  if (!base64Url) {
-    return null; // Or handle the error in an appropriate way
-  }
-
-  const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
-  const decoded = atob(base64);
-  const result = JSON.parse(decoded);
-  return result;
-}
-
 function UpdateProfileSettingsModal(props) {
   const [isDobEditMode, setDobEditMode] = useState(false);
   const [isGenderEditMode, setGenderEditMode] = useState(false);
@@ -207,12 +190,7 @@ const handleRemoveAbout = () => {
       dob: dob,
       gender: gender,
     };
-    console.log("data line 210", data);
-    console.log("token line 211", localStorage.getItem('token'))
-    const token = decodeJwt(localStorage.getItem('token'));
-    console.log("token line 212", token)
-    console.log("token line 213", token.userID);
-
+    const token = localStorage.getItem('token');
     const headers = new Headers();
     headers.append('Authorization', 'Bearer ' + token);
     headers.append('Content-Type', 'application/json');
