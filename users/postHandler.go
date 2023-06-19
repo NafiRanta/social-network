@@ -50,15 +50,14 @@ func UpdateBioOfUser(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprint(w, "Method not allowed")
 		return
 	}
+	// get userID from authHeader, which is an object
 	authHeader := r.Header.Get("Authorization")
 	if authHeader == "" {
 		http.Error(w, "Missing Authorization header", http.StatusUnauthorized)
 		return
 	}
 
-	fmt.Println("auth header in updateBioofuser is", authHeader)
 	userID, _ := a.ExtractUserIDFromAuthHeader(authHeader)
-	fmt.Println("user id  in updateBioofuser is", userID)
 	user, err := d.GetUserByID(userID)
 	if err != nil {
 		http.Error(w, "Error retrieving user", http.StatusInternalServerError)

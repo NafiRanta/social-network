@@ -33,18 +33,17 @@ func ExtractUserIDFromAuthHeader(authHeader string) (string, error) {
 	if authHeader == "" {
 		return "", fmt.Errorf("missing Authorization header")
 	}
-	fmt.Println("auth header in extractuseridfromauthheader is", authHeader)
 	bearerToken := strings.TrimPrefix(authHeader, "Bearer ")
-	fmt.Println("bearerToken in extractuseridfromauthheader is", bearerToken)
+
 	token, err := jwt.Parse(bearerToken, func(token *jwt.Token) (interface{}, error) {
 		return []byte("social-network-2023"), nil
 	})
+
 	if err != nil || token == nil {
 		fmt.Println("error in extractuseridfromauthheader is", err)
 		return "", fmt.Errorf("invalid token")
 	}
 	fmt.Println("token in extractuseridfromauthheader is", token)
-	//fmt.Println("token in extractuseridfromauthheader is", string(token))
 	if !token.Valid {
 		return "", fmt.Errorf("token is not valid")
 	}

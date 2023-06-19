@@ -45,10 +45,10 @@ function App() {
       const userInfo = JSON.parse(localStorage.getItem("userInfo"));
       const username = userInfo.firstname + " " + userInfo.lastname;
      // const token = getCookie("token");
-     const cookieString = document.cookie; // session-name-6ca8d09a-10c9-4e24-800f-
+     const cookieString = document.cookie; // session-name-0b19be69-f99d-4ce4-ab80-5f053208f212=MTY4NzE3MjEyM3xEdi1CQkFFQ180SUFBUkFCRUFBQUpmLUNBQUVHYzNSeWFXNW5EQThBRFdGMWRHaGxiblJwWTJGMFpXUUVZbTl2YkFJQ0FBRT18gCtLiTcvz5Bk5CId1ybd3bJJUpE7jgHP3JBNtVnO_30=
      console.log("cookieString", cookieString)
      // get token from cookie string numbers after session-name-
-      const token = cookieString.split("session-name-")[1].split("-")[0];
+      const token = cookieString.split("session-name-")[1].split("=")[0];
       // set to localStorage
       localStorage.setItem("token", token);
       setUserInfo(userInfo);

@@ -89,7 +89,8 @@ func LogIn(w http.ResponseWriter, r *http.Request) {
 			}
 			fmt.Println("token generated:", token)
 			// Combine the UUID with the session name using a delimiter
-			sessionName := "session-name-" + id.String()
+			//sessionName := "session-name-" + id.String()
+			sessionName := "session-name-" + token
 			// Create a new session for the user with the combined session name
 			session, _ := store.Get(r, sessionName)
 			// Set some session values
@@ -125,17 +126,6 @@ func LogIn(w http.ResponseWriter, r *http.Request) {
 			}
 			// Set the token in the response header
 			w.Header().Set("Authorization", "Bearer "+token)
-
-			cookie := http.Cookie{
-				Name:     "token",
-				Value:    token,
-				HttpOnly: true,
-				Secure:   true, // Enable this if using HTTPS
-				Path:     "/",  // Set the cookie for the entire domain
-				// You can also set other options like Expires, MaxAge, etc.
-			}
-			http.SetCookie(w, &cookie)
-
 			w.Header().Set("Content-Type", "application/json")
 			w.Write(userJSON)
 		}
