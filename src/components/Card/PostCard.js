@@ -29,8 +29,6 @@ function PostCard(props) {
     const GetUserPosts = async (e) => {
       //e.preventDefault();
       const headers = new Headers();
-    
-      console.log("userId postcard", userId)
       headers.append('Authorization', 'Bearer ' + token);
       headers.append('Content-Type', 'application/json');
       
@@ -42,7 +40,6 @@ function PostCard(props) {
         
         if (res.ok) {
           const data = await res.json();
-          console.log("data", data)
           // get all posts of that matched with userID
           const publicPosts = data.publicPosts ;
           const privatePosts = data.privatePosts;
@@ -65,20 +62,16 @@ function PostCard(props) {
 
   // Combine the three arrays into one including only posts that match post.AuthorID  with userID
   const allPosts = [...(customPosts || []), ...(privatePosts || []), ...(publicPosts || [])];
-  console.log("all",allPosts)
   // Sort the combined and filtered array by the "CreateAt" property
   const sortedPosts = allPosts.sort((a, b) => new Date(a.CreateAt) - new Date(b.CreateAt));
-  console.log("sorted", sortedPosts)
   // store posts that matched with userID in an array
   const userPosts = sortedPosts.filter((post) => post.AuthorID === userId);
-  console.log("userposts", userPosts)
 
 
   const displayAllPosts = () => {
     // display all posts of that matched with userID
     
     return userPosts.map((post) => {
-      console.log("post", post)
       return (
         <div key={`${post.Privacy + post.PostID}`} className="bg-white p-4 rounded shadow mt-3">
           <div className="d-flex justify-content-between">

@@ -63,8 +63,6 @@ function UpdateProfileSettingsModal(props) {
     if (dobInput){
       setDob(dobInput.value)
     }
-    console.log("nickname l84", nickname);
-    console.log("about l85", about);
   }, [nickname, about]);
 
   // handle nickname change
@@ -95,25 +93,12 @@ function UpdateProfileSettingsModal(props) {
     setNicknameEditMode(!isNicknameEditMode);
   }
 
-
-//  const handleRemoveNickname = () => {
-//   const nicknameLabel = document.getElementById("nicknameLabel");
-//   setNicknameLabel("Add a nickname");
-//   setNickname("");
-//   nicknameLabel.innerHTML = "Add a nickname";
-//   console.log("nicknameLabel", nicknameLabel.innerHTML);
-//   console.log("nickname l94", nickname);
-//  }
-
-//  ;
-
 // handle about change
 const handleAboutEditToggle = () => {
   setAboutEditMode(!isAboutEditMode);
   const aboutInput = document.getElementById("aboutInput");
   const aboutLabel = document.getElementById("aboutLabel")
   if (isAboutEditMode) {
-    console.log("about in handle 2", about);
     if (aboutInput.value === "" && about !== "") {
       setAboutLabel(about);
       setAbout(about);

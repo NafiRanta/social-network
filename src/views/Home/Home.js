@@ -9,7 +9,6 @@ function Home(props) {
     // show allusers under Contacts
     const displayChatUsers = () => {
         const allusers = props.allusers;
-        console.log("allusers", allusers)
         //get all users profilepicture
         
         if (!allusers) {
