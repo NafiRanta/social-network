@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import "./Modal.css";
-import { set } from 'draft-js/lib/EditorState';
 
 function UpdateProfileSettingsModal(props) {
   const [isDobEditMode, setDobEditMode] = useState(false);

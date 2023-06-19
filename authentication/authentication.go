@@ -122,6 +122,17 @@ func LogIn(w http.ResponseWriter, r *http.Request) {
 			}
 			// Set the token in the response header
 			w.Header().Set("Authorization", "Bearer "+token)
+
+			cookie := http.Cookie{
+				Name:     "token",
+				Value:    token,
+				HttpOnly: true,
+				Secure:   true, // Enable this if using HTTPS
+				Path:     "/",  // Set the cookie for the entire domain
+				// You can also set other options like Expires, MaxAge, etc.
+			}
+			http.SetCookie(w, &cookie)
+
 			w.Header().Set("Content-Type", "application/json")
 			w.Write(userJSON)
 		}

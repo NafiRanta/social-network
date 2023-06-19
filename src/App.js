@@ -19,6 +19,15 @@ import OthersProfile from "./views/Profile/OthersProfile";
 import SingleEvent from "./views/Events/SingleEvent";
 import SearchbarGlobal from "./components/Searchbar/SearchbarGlobal";
 
+// Retrieve the value of the "token" cookie
+function getCookie(name) {
+  const value = "; " + document.cookie;
+  const parts = value.split("; " + name + "=");
+  if (parts.length === 2) {
+    return parts.pop().split(";").shift();
+  }
+}
+
 function App() {
   const isAuth = !!localStorage.getItem("userInfo");
   
@@ -35,7 +44,7 @@ function App() {
     if (isAuth) {
       const userInfo = JSON.parse(localStorage.getItem("userInfo"));
       const username = userInfo.firstname + " " + userInfo.lastname;
-      const token = userInfo.token;
+      const token = getCookie("token");
       setUserInfo(userInfo);
       setUsername(username);
       setEmail(userInfo.email);

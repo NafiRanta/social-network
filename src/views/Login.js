@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import RegisterModal from "../components/Modal/RegisterModal";
 
+
 export const ValidateEmail = (email) => {
   // Regular expression for email format validation forbid swedish letters
   const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
@@ -102,6 +103,7 @@ function Login() {
     if (!validLoginForm()) {
       return
     }
+
     try {
       const response = await fetch("http://localhost:8080/login", {
         method: "POST",
@@ -113,13 +115,13 @@ function Login() {
       });
       if (response.ok) {
         const data = await response.json();
-        const token = response.headers.get("Authorization");
+            // Get the value of the "token" cookie
+        
         // Save session to local storage
         localStorage.setItem("userInfo", JSON.stringify(data));
-        localStorage.setItem("token", token);
         console.log("Login successful");
         console.log("userInfo login", JSON.stringify(data));
-        console.log("token", token);
+      
         
         //setIsAuthenticated(true);
         window.location.reload();
