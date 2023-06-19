@@ -34,7 +34,6 @@ func ExtractUserIDFromAuthHeader(authHeader string) (string, error) {
 		return "", fmt.Errorf("missing Authorization header")
 	}
 	bearerToken := strings.TrimPrefix(authHeader, "Bearer ")
-
 	token, err := jwt.Parse(bearerToken, func(token *jwt.Token) (interface{}, error) {
 		return []byte("social-network-2023"), nil
 	})
@@ -43,7 +42,7 @@ func ExtractUserIDFromAuthHeader(authHeader string) (string, error) {
 		fmt.Println("error in extractuseridfromauthheader is", err)
 		return "", fmt.Errorf("invalid token")
 	}
-	fmt.Println("token in extractuseridfromauthheader is", token)
+
 	if !token.Valid {
 		return "", fmt.Errorf("token is not valid")
 	}
@@ -54,7 +53,6 @@ func ExtractUserIDFromAuthHeader(authHeader string) (string, error) {
 	}
 
 	userID, ok := claims["userID"].(string)
-	fmt.Println("user id in extractuseridfromauthheader is", userID)
 	if !ok {
 		return "", fmt.Errorf("invalid userID claim")
 	}

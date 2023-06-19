@@ -15,8 +15,6 @@ function UpdateProfileSettingsModal(props) {
   const [dob, setDob] = useState(props.userInfo.dob);
   const [dobLabel, setDobLabel] = useState(props.userInfo.dob);
 
-  console.log("nickname", nickname);
-
   useEffect(() => {
     const nicknamelabel = document.getElementById("nicknameLabel");
     const nicknameInput = document.getElementById("nicknameInput");
@@ -65,44 +63,49 @@ function UpdateProfileSettingsModal(props) {
     if (dobInput){
       setDob(dobInput.value)
     }
-  }, []);
+    console.log("nickname l84", nickname);
+    console.log("about l85", about);
+  }, [nickname, about]);
 
   // handle nickname change
   const handleNicknameEditToggle = () => {
     setNicknameEditMode(!isNicknameEditMode);
     const nicknameInput = document.getElementById("nicknameInput");
-    const nicknameLabel = document.getElementById("nicknameLabel");
     if (isNicknameEditMode) {
-      console.log("nickname in handle", nickname);
-      if (nicknameInput.value === "" && nickname !== "") {
+      if (nicknameInput.value === "") {
         setNicknameLabel(nickname);
-        setNickname(nickname);
-        nicknameLabel.innerHTML = nickname;
-        console.log("line 82")
-      } else if (nicknameInput.value === "" && nickname === "") {
-        setNicknameLabel("Add a nickname");
-        setNickname("");
-        nicknameLabel.innerHTML = "Add a nickname";
-        console.log("line 87")
-      } else  {
+        console.log("line 82");
+      } else {
         setNicknameLabel(nicknameInput.value);
         setNickname(nicknameInput.value);
-        nicknameLabel.innerHTML = nicknameInput.value;
-        console.log("line92")
+        console.log("line 92");
       }
     }
   };
-  
- const handleRemoveNickname = () => {
-  const nicknameLabel = document.getElementById("nicknameLabel");
-  setNicknameLabel("Add a nickname");
-  setNickname("");
-  nicknameLabel.innerHTML = "Add a nickname";
- }
 
- const handleNicknameCancelBtn = () => {
-  setNicknameEditMode(!isNicknameEditMode);
-};
+
+  const handleRemoveNickname = () => {
+    const nicknameLabel = document.getElementById("nicknameLabel");
+    setNicknameLabel("Add a nickname");
+    setNickname("");
+    nicknameLabel.innerHTML = "Add a nickname";
+  };
+
+  const handleNicknameCancelBtn = () => {
+    setNicknameEditMode(!isNicknameEditMode);
+  }
+
+
+//  const handleRemoveNickname = () => {
+//   const nicknameLabel = document.getElementById("nicknameLabel");
+//   setNicknameLabel("Add a nickname");
+//   setNickname("");
+//   nicknameLabel.innerHTML = "Add a nickname";
+//   console.log("nicknameLabel", nicknameLabel.innerHTML);
+//   console.log("nickname l94", nickname);
+//  }
+
+//  ;
 
 // handle about change
 const handleAboutEditToggle = () => {
@@ -188,31 +191,28 @@ const handleRemoveAbout = () => {
   // handle updateProfile 
   const handleUpdateProfile = async (e) => {
     e.preventDefault();
-  
-    const data = {
-      nickname: nickname,
-      aboutMe: about === "" ? null : about, // Set aboutMe to null if it is an empty string
-      dob: dob,
-      gender: gender,
-    };
     const token = localStorage.getItem('token');
     const headers = new Headers();
     headers.append('Authorization', 'Bearer ' + token);
     headers.append('Content-Type', 'application/json');
-  
-    const res = await fetch("http://localhost:8080/updatebio", {
-      method: 'POST',
-      credentials: 'include',
-      headers: headers,
-      body: JSON.stringify(data),
-    });
-    if (res.ok) {
-      const responseData = await res.json();
-      console.log("UPDATED SUCCESSFULLY", responseData);
-    } else {
-      console.log("Error:", res.status);
+    console.log("nickname handleUPdate", nickname);
+    try{
+      const res = await fetch("http://localhost:8080/updatebio", {
+        method: 'POST',
+        credentials: 'include',
+        headers: headers,
+        body: JSON.stringify({nickname, about, dob, gender}),
+      });
+      if (res.ok) {
+        console.log("UPDATED SUCCESSFULLY");
+      } else {
+        console.log("Error:", res.status);
+      }
     }
-  };
+    catch (err) {
+      console.log("err", err);
+    }
+  }; 
   
 
   return (

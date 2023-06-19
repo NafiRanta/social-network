@@ -98,8 +98,6 @@ func GetUserByEmail(email string) (*User, error) {
 }
 
 func GetUserByID(userID string) (*User, error) {
-	fmt.Println("GetUserByID")
-	fmt.Println("userID: ", userID)
 	// If the user is not found, return nil, nil
 	db, err := sql.Open("sqlite3", "./socialnetwork.db")
 	if err != nil {
@@ -260,12 +258,14 @@ func UpdateUserInfo(user *User) error {
 
 	stmt, err := db.Prepare("UPDATE Users SET DateOfBirth = ?, Gender = ?, Nickname = ?, AboutMe = ? WHERE userID = ?")
 	if err != nil {
+		fmt.Println("error from stmt:", err)
 		return err
 	}
 	defer stmt.Close()
 
 	_, err = stmt.Exec(user.DateOfBirth, user.Gender, user.Nickname, user.AboutMe, user.UserID)
 	if err != nil {
+		fmt.Println("error from exec:", err)
 		return err
 	}
 

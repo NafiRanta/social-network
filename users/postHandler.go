@@ -45,9 +45,9 @@ func ChangePrivacyofUser(w http.ResponseWriter, r *http.Request) {
 
 // change nickname, bio, dob
 func UpdateBioOfUser(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodPost {
-		w.WriteHeader(http.StatusMethodNotAllowed)
-		fmt.Fprint(w, "Method not allowed")
+	fmt.Println("update bio of user")
+	if r.Method != "POST" {
+		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
 		return
 	}
 	// get userID from authHeader, which is an object
@@ -60,15 +60,17 @@ func UpdateBioOfUser(w http.ResponseWriter, r *http.Request) {
 	userID, _ := a.ExtractUserIDFromAuthHeader(authHeader)
 	user, err := d.GetUserByID(userID)
 	if err != nil {
+		fmt.Println("error in getUserByID", err)
 		http.Error(w, "Error retrieving user", http.StatusInternalServerError)
 		return
 	}
+	fmt.Println("userID", userID)
 	// Parse the request body
 	var requestBody struct {
-		DOB      string `json:"dob"`
-		Gender   string `json:"gender"`
 		Nickname string `json:"nickname"`
 		AboutMe  string `json:"about"`
+		DOB      string `json:"dob"`
+		Gender   string `json:"gender"`
 	}
 
 	err = json.NewDecoder(r.Body).Decode(&requestBody)
@@ -78,7 +80,7 @@ func UpdateBioOfUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Update the user fields if new values are provided
-	if requestBody.DOB != "" {
+	if requestBody.DOB == "" {
 		user.DateOfBirth = requestBody.DOB
 	}
 	if requestBody.Gender != "" {
@@ -94,14 +96,14 @@ func UpdateBioOfUser(w http.ResponseWriter, r *http.Request) {
 	// Update the user in the database
 	err = d.UpdateUserInfo(user)
 	if err != nil {
-		fmt.Println(err)
+		fmt.Println("error in updateUserINfo", err)
 		http.Error(w, "Error updating user", http.StatusInternalServerError)
 		return
 	}
 
 	// Send a success response
 	w.WriteHeader(http.StatusOK)
-	fmt.Fprint(w, "User bio updated successfully")
+	fmt.Println("User bio updated successfully")
 
 }
 
