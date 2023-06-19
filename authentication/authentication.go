@@ -81,20 +81,23 @@ func LogIn(w http.ResponseWriter, r *http.Request) {
 				http.Error(w, "Failed to generate session ID", http.StatusInternalServerError)
 				return
 			}
-			// Combine the UUID with the session name using a delimiter
-			sessionName := "session-name-" + id.String()
-			// Create a new session for the user with the combined session name
-			session, _ := store.Get(r, sessionName)
-			session.Values["authenticated"] = true
-			// Saves all sessions used during the current request
-			session.Save(r, w)
-			// Generate a new JWT with the userID
+			fmt.Println("uuid generated:", id.String())
 			token, err := GenerateJWT(user.UserID)
 			if err != nil {
 				http.Error(w, "Failed to generate JWT", http.StatusInternalServerError)
 				return
 			}
 			fmt.Println("token generated:", token)
+			// Combine the UUID with the session name using a delimiter
+			sessionName := "session-name-" + id.String()
+			// Create a new session for the user with the combined session name
+			session, _ := store.Get(r, sessionName)
+			// Set some session values
+			session.Values["authenticated"] = true
+			// Saves all sessions used during the current request
+			session.Save(r, w)
+			// Generate a new JWT with the userID
+
 			w.WriteHeader(http.StatusOK)
 			// Encode the user as JSON
 			//convert user to userResponse

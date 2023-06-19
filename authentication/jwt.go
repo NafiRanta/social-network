@@ -31,28 +31,33 @@ func GenerateJWT(userID string) (string, error) {
 
 func ExtractUserIDFromAuthHeader(authHeader string) (string, error) {
 	if authHeader == "" {
-		return "", fmt.Errorf("Missing Authorization header")
+		return "", fmt.Errorf("missing Authorization header")
 	}
+	fmt.Println("auth header in extractuseridfromauthheader is", authHeader)
 	bearerToken := strings.TrimPrefix(authHeader, "Bearer ")
+	fmt.Println("bearerToken in extractuseridfromauthheader is", bearerToken)
 	token, err := jwt.Parse(bearerToken, func(token *jwt.Token) (interface{}, error) {
 		return []byte("social-network-2023"), nil
 	})
-	if err != nil {
-		return "", fmt.Errorf("Invalid token")
+	if err != nil || token == nil {
+		fmt.Println("error in extractuseridfromauthheader is", err)
+		return "", fmt.Errorf("invalid token")
 	}
-
+	fmt.Println("token in extractuseridfromauthheader is", token)
+	//fmt.Println("token in extractuseridfromauthheader is", string(token))
 	if !token.Valid {
-		return "", fmt.Errorf("Token is not valid")
+		return "", fmt.Errorf("token is not valid")
 	}
 
 	claims, ok := token.Claims.(jwt.MapClaims)
 	if !ok {
-		return "", fmt.Errorf("Invalid token claims")
+		return "", fmt.Errorf("invalid token claims")
 	}
 
 	userID, ok := claims["userID"].(string)
+	fmt.Println("user id in extractuseridfromauthheader is", userID)
 	if !ok {
-		return "", fmt.Errorf("Invalid userID claim")
+		return "", fmt.Errorf("invalid userID claim")
 	}
 
 	return userID, nil

@@ -55,7 +55,10 @@ func UpdateBioOfUser(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Missing Authorization header", http.StatusUnauthorized)
 		return
 	}
-	userID, err := a.ExtractUserIDFromAuthHeader(authHeader)
+
+	fmt.Println("auth header in updateBioofuser is", authHeader)
+	userID, _ := a.ExtractUserIDFromAuthHeader(authHeader)
+	fmt.Println("user id  in updateBioofuser is", userID)
 	user, err := d.GetUserByID(userID)
 	if err != nil {
 		http.Error(w, "Error retrieving user", http.StatusInternalServerError)

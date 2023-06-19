@@ -99,6 +99,7 @@ func GetUserByEmail(email string) (*User, error) {
 
 func GetUserByID(userID string) (*User, error) {
 	fmt.Println("GetUserByID")
+	fmt.Println("userID: ", userID)
 	// If the user is not found, return nil, nil
 	db, err := sql.Open("sqlite3", "./socialnetwork.db")
 	if err != nil {
@@ -114,6 +115,7 @@ func GetUserByID(userID string) (*User, error) {
 	defer stmt.Close()
 
 	var user User
+
 	err = stmt.QueryRow(userID).Scan(&user.UserID, &user.FirstName, &user.LastName, &user.Email, &user.Password, &user.Privacy, &user.Online, &user.DateOfBirth, &user.Gender, &user.Avatar, &user.Nickname, &user.AboutMe, &user.FollowerIDs, &user.OnFollowingIDs)
 	if err != nil {
 		if err == sql.ErrNoRows {

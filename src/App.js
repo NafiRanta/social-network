@@ -44,7 +44,13 @@ function App() {
     if (isAuth) {
       const userInfo = JSON.parse(localStorage.getItem("userInfo"));
       const username = userInfo.firstname + " " + userInfo.lastname;
-      const token = getCookie("token");
+     // const token = getCookie("token");
+     const cookieString = document.cookie; // session-name-6ca8d09a-10c9-4e24-800f-
+     console.log("cookieString", cookieString)
+     // get token from cookie string numbers after session-name-
+      const token = cookieString.split("session-name-")[1].split("-")[0];
+      // set to localStorage
+      localStorage.setItem("token", token);
       setUserInfo(userInfo);
       setUsername(username);
       setEmail(userInfo.email);

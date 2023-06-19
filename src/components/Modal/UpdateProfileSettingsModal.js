@@ -180,8 +180,6 @@ const handleRemoveAbout = () => {
   };
  
 
-
-
   // handle updateProfile 
   const handleUpdateProfile = async (e) => {
     e.preventDefault();
@@ -192,21 +190,20 @@ const handleRemoveAbout = () => {
       dob: dob,
       gender: gender,
     };
-    console.log("data", data);
+    console.log("data line 193", data);
+    const token = localStorage.getItem('token');
+      const headers = new Headers();
+        headers.append('Authorization', 'Bearer ' + token);
+        headers.append('Content-Type', 'application/json');
   
     const res = await fetch("http://localhost:8080/updatebio", {
       method: 'POST',
       credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json'
-      },
+      headers: headers,
       body: JSON.stringify(data),
     });
     if (res.ok) {
-      const token = res.headers.get('Authorization');
-      console.log(token);
       const responseData = await res.json();
-      
       console.log("UPDATED SUCCESSFULLY", responseData);
     } else {
       console.log("Error:", res.status);
