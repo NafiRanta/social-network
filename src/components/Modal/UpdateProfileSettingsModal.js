@@ -15,6 +15,8 @@ function UpdateProfileSettingsModal(props) {
   const [dob, setDob] = useState(props.userInfo.dob);
   const [dobLabel, setDobLabel] = useState(props.userInfo.dob);
 
+  console.log("nickname", nickname);
+
   useEffect(() => {
     const nicknamelabel = document.getElementById("nicknameLabel");
     const nicknameInput = document.getElementById("nicknameInput");
@@ -31,7 +33,7 @@ function UpdateProfileSettingsModal(props) {
         nicknamelabel.innerHTML = "Add a nickname";
       } else {
         setNicknameLabel(nickname);
-        setNicknameLabel(nicknamelabel.innerHTML);
+        nicknamelabel.innerHTML = nickname;
       }
     }
     if (nicknameInput) {
@@ -71,18 +73,22 @@ function UpdateProfileSettingsModal(props) {
     const nicknameInput = document.getElementById("nicknameInput");
     const nicknameLabel = document.getElementById("nicknameLabel");
     if (isNicknameEditMode) {
-      if (nicknameInput && nicknameInput.value === "") {
+      console.log("nickname in handle", nickname);
+      if (nicknameInput.value === "" && nickname !== "") {
         setNicknameLabel(nickname);
         setNickname(nickname);
         nicknameLabel.innerHTML = nickname;
-      } else if (nicknameInput && nicknameInput.value === "" && nickname === "") {
+        console.log("line 82")
+      } else if (nicknameInput.value === "" && nickname === "") {
         setNicknameLabel("Add a nickname");
         setNickname("");
         nicknameLabel.innerHTML = "Add a nickname";
-      } else if (nicknameInput) {
+        console.log("line 87")
+      } else  {
         setNicknameLabel(nicknameInput.value);
         setNickname(nicknameInput.value);
         nicknameLabel.innerHTML = nicknameInput.value;
+        console.log("line92")
       }
     }
   };
@@ -109,8 +115,7 @@ const handleAboutEditToggle = () => {
       setAboutLabel(about);
       setAbout(about);
       aboutLabel.innerHTML = about;
-    }
-    else if (aboutInput.value === "" && about === "") {
+    } else if (aboutInput.value === "" && about === "") {
       setAboutLabel("Add a description");
       setAbout("");
       aboutLabel.innerHTML = "Add a description";
@@ -291,6 +296,7 @@ const handleRemoveAbout = () => {
                               <input
                                 autoFocus
                                 className="form-control my-3"
+                                id="nicknameInput"
                                 name="nickname"
                                 placeholder="Nickname"
                                 type="text"
