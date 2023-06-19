@@ -9,24 +9,47 @@ import UpdateProfileSettingsModal from '../../components/Modal/UpdateProfileSett
 import Topnav from '../Topnav';
 
 function MyProfile(props) {
-    const [privacy, setPrivacy] = useState("");
+  const [privacy, setPrivacy] = useState("");
 
-    useEffect(() => {
-      if (props.userInfo) {
-        const userPrivacy = props.userInfo.privacy.charAt(0).toUpperCase() + props.userInfo.privacy.slice(1);
-        setPrivacy(userPrivacy);
-      }
-    }, [props.userInfo]);
-  
-    if (!props.userInfo) {
-      return null;
+  useEffect(() => {
+    if (props.userInfo) {
+      const userPrivacy = props.userInfo.privacy.charAt(0).toUpperCase() + props.userInfo.privacy.slice(1);
+      setPrivacy(userPrivacy);
     }
-  
-  
-    const handlePrivacyChange = (checked) => {
-        setPrivacy(checked ? "Public" : "Private");
-    };
-  
+  }, [props.userInfo]);
+
+  if (!props.userInfo) {
+    return null;
+  }
+
+  const handlePrivacyChange = (checked) => {
+    const newPrivacy = checked ? "public" : "private";
+    setPrivacy(checked ? "Public" : "Private");
+    updatePrivacy(newPrivacy); // Call the function to update the privacy in the backend
+  };
+
+  const updatePrivacy = (privacy) => {
+    const token = localStorage.getItem('token');
+    const headers = new Headers();
+    headers.append('Authorization', 'Bearer ' + token);
+    headers.append('Content-Type', 'application/json');
+    fetch("http://localhost:8080/updateprivacy", {
+      method: "POST",
+      headers: headers,
+      body: JSON.stringify({ privacy }),
+    })
+      .then((response) => {
+        if (response.ok) {
+          console.log("Privacy updated successfully");
+        } else {
+          throw new Error("Error updating privacy");
+        }
+      })
+      .catch((error) => {
+        console.error("Error updating privacy:", error);
+      });
+  };
+
   return (
     <div>
         <Topnav username={props.username} userInfo={props.userInfo} allusers={props.allusers}/>

@@ -35,30 +35,18 @@ function App() {
   const [userInfo, setUserInfo] = useState("");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
-  const [dob, setDob] = useState("");
-  const [profilePicture, setProfilePic] = useState("");
-  const [nickname, setNickname] = useState("");
   const [allusers, setAllUsers] = useState([]);
 
   useEffect(() => {
     if (isAuth) {
       const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-      const username = userInfo.firstname + " " + userInfo.lastname;
-     // const token = getCookie("token");
-     const cookieString = document.cookie; // session-name-0b19be69-f99d-4ce4-ab80-5f053208f212=MTY4NzE3MjEyM3xEdi1CQkFFQ180SUFBUkFCRUFBQUpmLUNBQUVHYzNSeWFXNW5EQThBRFdGMWRHaGxiblJwWTJGMFpXUUVZbTl2YkFJQ0FBRT18gCtLiTcvz5Bk5CId1ybd3bJJUpE7jgHP3JBNtVnO_30=
-     console.log("cookieString", cookieString)
-     // get token from cookie string numbers after session-name-
-      const token = cookieString.split("session-name-")[1].split("=")[0];
-      // set to localStorage
+      const usernameDisplay = userInfo.firstname + " " + userInfo.lastname;
+      const cookieString = document.cookie; // session-name-0b19be69-f99d-4ce4-ab80-5f053208f212=MTY4NzE3MjEyM3xEdi1CQkFFQ180SUFBUkFCRUFBQUpmLUNBQUVHYzNSeWFXNW5EQThBRFdGMWRHaGxiblJwWTJGMFpXUUVZbTl2YkFJQ0FBRT18gCtLiTcvz5Bk5CId1ybd3bJJUpE7jgHP3JBNtVnO_30=
+      const token = cookieString.split("session-name-")[1].split("=")[0]; 
+      console.log("cookieString", cookieString)
       localStorage.setItem("token", token);
+      setUsername(usernameDisplay);
       setUserInfo(userInfo);
-      setUsername(username);
-      setEmail(userInfo.email);
-      setDob(userInfo.dob);
-      setProfilePic(userInfo.profilePicture);
-      setNickname(userInfo.nickname);
-      console.log("userInfo app", userInfo)
-      console.log("token app", token)
     }
   }, [isAuth]);
 
