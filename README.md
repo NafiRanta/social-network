@@ -1,3 +1,5 @@
+hello
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
@@ -7,6 +9,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 In the project directory, you can run:
 
 ### `node -v` `npm -v`
+
 Ensure that Node.js and npm (Node Package Manager) are installed on your system. You can verify this by running the following commands in your terminal:
 
 If Node.js or npm is not installed, visit the official Node.js website (https://nodejs.org) and follow the installation instructions for your operating system.
