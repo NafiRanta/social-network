@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import "./Modal.css";
-
+import {UpdateUserInfoInLocalStorage} from "../../views/Profile/MyProfile";
 function UpdateProfileSettingsModal(props) {
   const [isDobEditMode, setDobEditMode] = useState(false);
   const [isGenderEditMode, setGenderEditMode] = useState(false);
@@ -190,6 +190,7 @@ const handleRemoveAbout = () => {
       });
       if (res.ok) {
         console.log("UPDATED SUCCESSFULLY");
+
       } else {
         console.log("Error:", res.status);
       }

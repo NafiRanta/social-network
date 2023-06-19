@@ -30,23 +30,23 @@ function getCookie(name) {
 
 function App() {
   const isAuth = !!localStorage.getItem("userInfo");
-  
+  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
   // if isAuth is true, get username from localStorage
-  const [userInfo, setUserInfo] = useState("");
+  //const [userInfo, setUserInfo] = useState("");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [allusers, setAllUsers] = useState([]);
 
   useEffect(() => {
     if (isAuth) {
-      const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+      //const userInfo = JSON.parse(localStorage.getItem("userInfo"));
       const usernameDisplay = userInfo.firstname + " " + userInfo.lastname;
       const cookieString = document.cookie; // session-name-0b19be69-f99d-4ce4-ab80-5f053208f212=MTY4NzE3MjEyM3xEdi1CQkFFQ180SUFBUkFCRUFBQUpmLUNBQUVHYzNSeWFXNW5EQThBRFdGMWRHaGxiblJwWTJGMFpXUUVZbTl2YkFJQ0FBRT18gCtLiTcvz5Bk5CId1ybd3bJJUpE7jgHP3JBNtVnO_30=
       const token = cookieString.split("session-name-")[1].split("=")[0]; 
       console.log("cookieString", cookieString)
       localStorage.setItem("token", token);
       setUsername(usernameDisplay);
-      setUserInfo(userInfo);
+     //setUserInfo(userInfo);
     }
   }, [isAuth]);
 

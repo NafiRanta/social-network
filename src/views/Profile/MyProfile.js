@@ -8,18 +8,23 @@ import ChangeProfilePicModal from '../../components/Modal/ChangeProfilePicModal'
 import UpdateProfileSettingsModal from '../../components/Modal/UpdateProfileSettingsModal';
 import Topnav from '../Topnav';
 
+export const UpdateUserInfoInLocalStorage = (updatedData) => {
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+    const updatedUserInfo = { ...userInfo, ...updatedData };
+    localStorage.setItem("userInfo", JSON.stringify(updatedUserInfo));
+  };
+
 function MyProfile(props) {
-  const [privacy, setPrivacy] = useState("");
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+    const [privacy, setPrivacy] = useState(userInfo.privacy.charAt(0).toUpperCase() + userInfo.privacy.slice(1));
+    useEffect(() => {
+        if (props.userInfo) {
+        setPrivacy(privacy)
+        }
+    }, [props.userInfo]);
 
-  useEffect(() => {
-    if (props.userInfo) {
-      const userPrivacy = props.userInfo.privacy.charAt(0).toUpperCase() + props.userInfo.privacy.slice(1);
-      setPrivacy(userPrivacy);
-    }
-  }, [props.userInfo]);
-
-  if (!props.userInfo) {
-    return null;
+    if (!props.userInfo) {
+        return null;
   }
 
   const handlePrivacyChange = (checked) => {
@@ -41,6 +46,7 @@ function MyProfile(props) {
       .then((response) => {
         if (response.ok) {
           console.log("Privacy updated successfully");
+          UpdateUserInfoInLocalStorage({ privacy });
         } else {
           throw new Error("Error updating privacy");
         }
