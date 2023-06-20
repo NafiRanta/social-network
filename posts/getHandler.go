@@ -9,28 +9,29 @@ import (
 )
 
 func GetPostsHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("GetPostsHandler")
 	authHeader := r.Header.Get("Authorization")
 	if authHeader == "" {
 		http.Error(w, "Missing Authorization header", http.StatusUnauthorized)
 		return
 	}
 	userID, err := a.ExtractUserIDFromAuthHeader(authHeader)
+	fmt.Println("userID in GetPostHandler ln 19:", userID)
 	if err != nil {
+		fmt.Println("error from extractuserid:", err)
 		http.Error(w, err.Error(), http.StatusUnauthorized)
 		return
 	}
 	fmt.Println(userID)
 
 	//public posts
-	publicPosts, err := d.GetPublicPosts()
+	publicPosts, _ := d.GetPublicPosts()
 	fmt.Println(publicPosts)
 	//private posts by me
-	privatePosts, err := d.GetPrivatePosts(userID)
+	privatePosts, _ := d.GetPrivatePosts(userID)
 	fmt.Println(privatePosts)
 	//custom posts with me included
-	customPosts, err := d.GetCustomPosts(userID)
-	fmt.Println(len(customPosts))
-	fmt.Println(customPosts)
+	customPosts, _ := d.GetCustomPosts(userID)
 
 	// Create a response object containing the posts
 	response := map[string]interface{}{
@@ -51,4 +52,6 @@ func GetPostsHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Write the JSON response to the HTTP response writer
 	w.Write(responseJSON)
+	fmt.Println("responseJSON: in getpost", responseJSON)
+	fmt.Println("post retrieved successfully")
 }

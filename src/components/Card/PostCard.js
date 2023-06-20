@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Avatar from './CommentCard';
 
-function decodeJwt(jwt) {
+
+export function decodeJwt(jwt) {
   if (!jwt) {
     return null; // Or handle the error in an appropriate way
   }
@@ -72,6 +73,16 @@ function PostCard(props) {
     // display all posts of that matched with userID
     
     return userPosts.map((post) => {
+      // format createAt 2023-06-20T13:13:30.343Z to 20 Jun 2023 13:13
+      const date = new Date(post.CreateAt);
+      const formattedDate = date.toLocaleDateString("en-GB", {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+        hour: "numeric",
+        minute: "numeric",
+      });
+      console.log("post createAt: ", formattedDate);
       return (
         <div key={`${post.Privacy + post.PostID}`} className="bg-white p-4 rounded shadow mt-3">
           <div className="d-flex justify-content-between">
@@ -79,7 +90,7 @@ function PostCard(props) {
               <img src={props.userInfo.profilePicture} alt="avatar" className="rounded-circle me-2"/>
               <div>
                 <p className="m-0 fw-bold">{props.  username}</p>
-                <span className="text-muted fs-7">{post.CreateAt}</span>
+                <span className="text-muted fs-7">{formattedDate}</span>
               </div>
             </div>
             <i className="fas fa-ellipsis-h" type="button" id="post1Menu" data-bs-toggle="dropdown" aria-expanded="false"></i>

@@ -56,6 +56,12 @@ function MyProfile(props) {
       });
   };
 
+  const userinfo = localStorage.getItem("userInfo");
+  console.log("userinfo from localstorage: ", typeof userinfo);   
+  // get nickname from userinfo
+    const nickname = JSON.parse(userinfo).nickname;
+    console.log("nickname from localstorage: ", nickname); 
+
   return (
     <div>
         <Topnav username={props.username} userInfo={props.userInfo} allusers={props.allusers}/>
@@ -81,7 +87,7 @@ function MyProfile(props) {
                                                 <h2 className="mb-0 mr-2"><strong>{props.username}</strong></h2>
                                                 {props.userInfo.nickname && (
                                                     <span className="nickname-text">
-                                                        <small className="text-muted">({props.userInfo.nickname})</small>
+                                                        <small className="text-muted">({nickname})</small>
                                                     </span>
                                                 )}
                                             </div>

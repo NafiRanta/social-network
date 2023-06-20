@@ -9,6 +9,7 @@ import (
 )
 
 func AddPostHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("AddPostHandler")
 	// Check if the request method is POST
 	if r.Method != http.MethodPost {
 		w.WriteHeader(http.StatusMethodNotAllowed)
@@ -28,6 +29,7 @@ func AddPostHandler(w http.ResponseWriter, r *http.Request) {
 	var post d.PostResponse
 	err = json.NewDecoder(r.Body).Decode(&post)
 	if err != nil {
+		fmt.Println("error from decode:", err)
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
 		return
 	}
@@ -37,12 +39,12 @@ func AddPostHandler(w http.ResponseWriter, r *http.Request) {
 	// Add the post to the database
 	err = d.AddPost(&post)
 	if err != nil {
-		fmt.Println(err)
+		fmt.Println("error from addpost:", err)
 		http.Error(w, "Failed to add post", http.StatusInternalServerError)
 		return
 	}
 
 	// Return a success response
 	w.WriteHeader(http.StatusCreated)
-	fmt.Fprint(w, "Post added successfully")
+	fmt.Println("Post added successfully")
 }

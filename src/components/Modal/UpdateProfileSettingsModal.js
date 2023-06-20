@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react';
 import "./Modal.css";
 import {UpdateUserInfoInLocalStorage} from "../../views/Profile/MyProfile";
 function UpdateProfileSettingsModal(props) {
+  const userinfo = localStorage.getItem("userInfo");
   const [isDobEditMode, setDobEditMode] = useState(false);
   const [isGenderEditMode, setGenderEditMode] = useState(false);
   const [isNicknameEditMode, setNicknameEditMode] = useState(false);
   const [isAboutEditMode, setAboutEditMode] = useState(false);
-  const [nickname, setNickname] = useState(props.userInfo.nickname);
+  const [nickname, setNickname] = useState(JSON.parse(userinfo).nickname);
   const [nicknameLabel, setNicknameLabel] = useState("");
   const [about, setAbout] = useState(props.userInfo.about);
   const [aboutLabel, setAboutLabel] = useState("");
@@ -190,6 +191,7 @@ const handleRemoveAbout = () => {
       });
       if (res.ok) {
         console.log("UPDATED SUCCESSFULLY");
+        UpdateUserInfoInLocalStorage({nickname})
 
       } else {
         console.log("Error:", res.status);

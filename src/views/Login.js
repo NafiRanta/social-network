@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import RegisterModal from "../components/Modal/RegisterModal";
-
+import { useDispatch } from 'react-redux';
 
 export const ValidateEmail = (email) => {
   // Regular expression for email format validation forbid swedish letters
@@ -40,6 +40,7 @@ export const ValidatePassword = (password) => {
 };
 
 function Login() {
+  const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [valid, setValid] = useState({ email: true, password: true });
@@ -115,11 +116,11 @@ function Login() {
       });
       if (response.ok) {
         const data = await response.json();
-            // Get the value of the "token" cookie
         
         // Save session to local storage
         localStorage.setItem("userInfo", JSON.stringify(data));
         console.log("Login successful");
+        dispatch({ type: 'SET_AUTH', payload: true });
         console.log("userInfo login", JSON.stringify(data));
       
         
