@@ -56,8 +56,8 @@ function CreatePostModal(props) {
       if (!response.ok) {
         throw new Error('Error occurred while creating the post');
       }
-      const data = await response.json();
-      console.log(data);
+      alert("Post created");
+      window.location.href = `/profile/${props.username}`;
     } catch (error) {
       console.log("Error:", error);
     }

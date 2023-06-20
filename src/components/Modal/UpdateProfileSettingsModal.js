@@ -190,8 +190,8 @@ const handleRemoveAbout = () => {
         body: JSON.stringify({nickname, about, dob, gender}),
       });
       if (res.ok) {
-        console.log("UPDATED SUCCESSFULLY");
-        UpdateUserInfoInLocalStorage({nickname})
+        alert("Profile updated");
+        window.location.href = `/profile/${props.username}`;
 
       } else {
         console.log("Error:", res.status);
