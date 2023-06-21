@@ -103,9 +103,13 @@ func UpdateBioOfUser(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Error updating user", http.StatusInternalServerError)
 		return
 	}
-
-	// Send a success response
+	updatedUser, _ := d.GetUserByID(userID)
+	jsonData, _ := json.Marshal(updatedUser)
+	// Respond with success message
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
+	w.Write(jsonData)
+	// Send a success response
 	fmt.Println("User bio updated successfully")
 
 }

@@ -139,7 +139,7 @@ function App() {
         path="/profile/:username"
         element={
           <div>
-            <MyProfile allusers={allusers} />
+            <MyProfile userInfo={userInfo} username={username} allusers={allusers} />
           </div>
        } 
       />

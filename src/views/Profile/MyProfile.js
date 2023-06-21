@@ -17,9 +17,7 @@ export const UpdateUserInfoInLocalStorage = (updatedData) => {
   };
 
 function MyProfile(props) {
-    console.log(props)
   const dispatch = useDispatch();
-
     const userInfo = useSelector((state) => state.userInfo);
     const [privacy, setPrivacy] = useState(userInfo.privacy);
     useEffect(() => {
@@ -141,7 +139,7 @@ function MyProfile(props) {
                     </div>
                 </div>
             </section>
-            <ChangeProfilePicModal username={userInfo.username} userInfo={userInfo}/>
+            <ChangeProfilePicModal username={props.username} userInfo={userInfo}/>
                 <div className="row justify-content-evenly">
                     <div className="col-12 col-lg-3">
                         <div className="d-flex flex-column justify-content-center w-100 mx-auto" id="d-flex-postcontainer-followersbox">
@@ -175,7 +173,7 @@ function MyProfile(props) {
                                     >
                                         Edit Profile
                                     </button>
-                                    <UpdateProfileSettingsModal userInfo={userInfo} />
+                                    <UpdateProfileSettingsModal username={props.username} userInfo={userInfo} />
                                     </li>
                                 </ul>
                             </div>

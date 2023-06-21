@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-
+import { useDispatch } from 'react-redux';
 import "./Modal.css";
-import {UpdateUserInfoInLocalStorage} from "../../views/Profile/MyProfile";
+
 function UpdateProfileSettingsModal(props) {
-  console.log("props.userInfo", props.userInfo);
+ /*  const dispatch = useDispatch();
+  const userInfo = useSelector((state) => state.userInfo); */
+  console.log("props.userInfo in updateprofile", props);
   const [isDobEditMode, setDobEditMode] = useState(false);
   const [isGenderEditMode, setGenderEditMode] = useState(false);
   const [isNicknameEditMode, setNicknameEditMode] = useState(false);
@@ -187,11 +189,13 @@ const handleRemoveAbout = () => {
     try{
       const res = await fetch("http://localhost:8080/updatebio", {
         method: 'POST',
-        credentials: 'include',
         headers: headers,
         body: JSON.stringify({nickname, about, dob, gender}),
       });
       if (res.ok) {
+        const data = await res.json();
+          console.log("data update user response data", data);
+          //dispatch({ type: 'SET_USER', payload: data });
         alert("Profile updated");
         window.location.href = `/profile/${props.username}`;
 
@@ -204,7 +208,6 @@ const handleRemoveAbout = () => {
     }
   }; 
   
-
   return (
     <div 
       className="modal fade" 

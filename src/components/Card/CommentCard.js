@@ -1,8 +1,25 @@
 import React from 'react';
 import Avatar from '../Avatar/Avatar';
 import './Card.css';
+import { decodeJwt } from './PostCard';
 
 function CommentCard(props) {
+  console.log("commentcard props", props)
+  const token = localStorage.getItem('token');
+  const authorId = decodeJwt(token).userID;
+
+ const  handleCommentSubmit = (e) => {
+    e.preventDefault();
+    console.log("commentcard props", props)
+    const comment = e.target.elements.comment.value;
+    const postId = props.postId;
+    console.log("postId", postId)
+    console.log("authorID", authorId)
+    console.log("comment", comment)
+
+    //commentID, postID, authorID, content, createAt
+  }
+
     return(
         <div className="post__comment mt-3 position-relative">
         <div className="d-flex align-items-center top-0 start-0 position-absolute" id="d-flex-comments">
@@ -44,7 +61,12 @@ function CommentCard(props) {
                   <div>
                     <Avatar username={props.username} userInfo={props.userInfo}/>
                   </div>
-                  <input type="text" className="form-control border-0 rounded-pill bg-gray" placeholder="Write a comment"/>
+                  <input 
+                    type="text" 
+                    className="form-control border-0 rounded-pill bg-gray" 
+                    placeholder="Write a comment"
+                    onkeydown="handleCommentSubmit()"
+                    />
                 </form>
               </div>
             </div>
