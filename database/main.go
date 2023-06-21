@@ -15,6 +15,7 @@ func GetDB() *sql.DB {
 	u.CheckErr(err)
 	CreateUsersTable(database)
 	CreatePostsTable(database)
+	CreateCommentsTable(database)
 	// CreatePostsTable(database)
 	// CreatePostLikesTable(database)
 	// CreateCommentsTable(database)

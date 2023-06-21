@@ -4,6 +4,8 @@ import (
 	"database/sql"
 	u "socialnetwork/utils"
 	"time"
+
+	"github.com/google/uuid"
 )
 
 type Comment struct {
@@ -47,32 +49,52 @@ func AddComment(comment *CommentResponse) error {
 	query := `
 		INSERT INTO Comments (CommentID, PostID, AuthorID, Content, CreateAt)
 		VALUES (?, ?, ?, ?, ?);`
+
+	// generate uuid for commentID
+	comment.CommentID = uuid.New().String()
 	stmt, err := db.Prepare(query)
 	u.CheckErr(err)
-	_, err = stmt.Exec(comment.CommentID, comment.PostID, comment.AuthorID, comment.Content, comment.CreateAt)
+	_, err = stmt.Exec(
+		comment.CommentID,
+		comment.PostID,
+		comment.AuthorID,
+		comment.Content,
+		comment.CreateAt,
+	)
 	u.CheckErr(err)
 	return nil
 }
 
-func GetCommentsByPostID(postID string) ([]CommentResponse, error) {
+func GetCommentsByPostID(postID string) ([]Comment, error) {
 	db, err := sql.Open("sqlite3", "./socialnetwork.db")
 	if err != nil {
 		return nil, err
 	}
 	defer db.Close()
 	query := `
-	SELECT CommentID, PostID, AuthorID, Content, CreateAt FROM Comments
-	WHERE PostID = ?;`
-	stmt, err := db.Prepare(query)
+		SELECT CommentID, PostID, AuthorID, Content, CreateAt 
+		FROM Comments
+		WHERE PostID = ?
+		`
+	rows, err := db.Query(query, postID)
 	u.CheckErr(err)
-	rows, err := stmt.Query(postID)
-	u.CheckErr(err)
-	var comments []CommentResponse
+	defer rows.Close()
+
+	var comments []Comment
 	for rows.Next() {
-		var comment CommentResponse
-		err := rows.Scan(&comment.CommentID, &comment.PostID, &comment.AuthorID, &comment.Content, &comment.CreateAt)
+		var comment Comment
+		err := rows.Scan(
+			&comment.CommentID,
+			&comment.PostID,
+			&comment.AuthorID,
+			&comment.Content,
+			&comment.CreateAt,
+		)
 		u.CheckErr(err)
 		comments = append(comments, comment)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
 	}
 	return comments, nil
 }

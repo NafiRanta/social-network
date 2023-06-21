@@ -9,7 +9,7 @@ import (
 
 func GetCommentsHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("GetCommentsHandler")
-	// get postID from query
+
 	postID := r.URL.Query().Get("postID")
 	if postID == "" {
 		fmt.Println("Missing postID")

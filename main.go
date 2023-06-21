@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	a "socialnetwork/authentication"
+	c "socialnetwork/comments"
 	d "socialnetwork/database"
 	p "socialnetwork/posts"
 	user "socialnetwork/users"
@@ -45,6 +46,11 @@ func Start() error {
 	//handle post
 	router.HandleFunc("/posts", p.GetPostsHandler)
 	router.HandleFunc("/createpost", p.AddPostHandler)
+
+	//handle comments
+	router.HandleFunc("/addcomment", c.AddCommentHandler)
+	router.HandleFunc("/getcomments", c.GetCommentsHandler)
+
 	// router.HandleFunc("/websocket", ws)
 	handler := u.CorsMiddleware(router)
 	//fire up the server

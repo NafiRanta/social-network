@@ -16,20 +16,16 @@ func GetPostsHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	userID, err := a.ExtractUserIDFromAuthHeader(authHeader)
-	fmt.Println("userID in GetPostHandler ln 19:", userID)
 	if err != nil {
 		fmt.Println("error from extractuserid:", err)
 		http.Error(w, err.Error(), http.StatusUnauthorized)
 		return
 	}
-	fmt.Println(userID)
 
 	//public posts
 	publicPosts, _ := d.GetPublicPosts()
-	fmt.Println(publicPosts)
 	//private posts by me
 	privatePosts, _ := d.GetPrivatePosts(userID)
-	fmt.Println(privatePosts)
 	//custom posts with me included
 	customPosts, _ := d.GetCustomPosts(userID)
 
@@ -52,6 +48,5 @@ func GetPostsHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Write the JSON response to the HTTP response writer
 	w.Write(responseJSON)
-	fmt.Println("responseJSON: in getpost", responseJSON)
 	fmt.Println("post retrieved successfully")
 }

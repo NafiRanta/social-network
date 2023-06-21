@@ -4,21 +4,21 @@ import { useDispatch } from 'react-redux';
 import "./Modal.css";
 
 function UpdateProfileSettingsModal(props) {
- /*  const dispatch = useDispatch();
-  const userInfo = useSelector((state) => state.userInfo); */
+  const dispatch = useDispatch();
+  const userInfo = useSelector((state) => state.userInfo);
   console.log("props.userInfo in updateprofile", props);
   const [isDobEditMode, setDobEditMode] = useState(false);
   const [isGenderEditMode, setGenderEditMode] = useState(false);
   const [isNicknameEditMode, setNicknameEditMode] = useState(false);
   const [isAboutEditMode, setAboutEditMode] = useState(false);
-  const [nickname, setNickname] = useState(props.userInfo.nickname);
+  const [nickname, setNickname] = useState(userInfo.nickname);
   const [nicknameLabel, setNicknameLabel] = useState("");
-  const [about, setAbout] = useState(props.userInfo.about);
+  const [about, setAbout] = useState(userInfo.about);
   const [aboutLabel, setAboutLabel] = useState("");
-  const [gender, setGender] = useState(props.userInfo.gender)
-  const [genderLabel, setGenderLabel] = useState(props.userInfo.gender);
-  const [dob, setDob] = useState(props.userInfo.dob);
-  const [dobLabel, setDobLabel] = useState(props.userInfo.dob);
+  const [gender, setGender] = useState(userInfo.gender)
+  const [genderLabel, setGenderLabel] = useState(userInfo.gender);
+  const [dob, setDob] = useState(userInfo.dob);
+  const [dobLabel, setDobLabel] = useState(userInfo.dob);
 
   useEffect(() => {
     const nicknamelabel = document.getElementById("nicknameLabel");
@@ -195,7 +195,7 @@ const handleRemoveAbout = () => {
       if (res.ok) {
         const data = await res.json();
           console.log("data update user response data", data);
-          //dispatch({ type: 'SET_USER', payload: data });
+          dispatch({ type: 'SET_USER', payload: data });
         alert("Profile updated");
         window.location.href = `/profile/${props.username}`;
 
@@ -280,7 +280,7 @@ const handleRemoveAbout = () => {
                             {!isNicknameEditMode && (
                               <i className="fas fa-pen" onClick={handleNicknameEditToggle}></i>
                             )}
-                             {(!isNicknameEditMode && nicknameLabel !== "Add a nickname" && nicknameLabel.innerHTML !== props.userInfo.nickname) && (
+                             {(!isNicknameEditMode && nicknameLabel !== "Add a nickname" && nicknameLabel.innerHTML !== userInfo.nickname) && (
                               <i className="fas fa-times" onClick={handleRemoveNickname}></i>
                             )}
                           </div>
