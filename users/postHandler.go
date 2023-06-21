@@ -19,7 +19,7 @@ func ChangePrivacyofUser(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Missing Authorization header", http.StatusUnauthorized)
 		return
 	}
-	userID, err := a.ExtractUserIDFromAuthHeader(authHeader)
+	userID, _ := a.ExtractUserIDFromAuthHeader(authHeader)
 	user, err := d.GetUserByID(userID)
 	if err != nil {
 		http.Error(w, "Error retrieving user", http.StatusInternalServerError)
@@ -37,9 +37,12 @@ func ChangePrivacyofUser(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Error updating user privacy", http.StatusInternalServerError)
 		return
 	}
+	updatedUser, _ := d.GetUserByID(userID)
+	jsonData, _ := json.Marshal(updatedUser)
 	// Respond with success message
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	fmt.Fprint(w, "Update privacy successfully")
+	w.Write(jsonData)
 
 }
 

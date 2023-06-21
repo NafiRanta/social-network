@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Avatar from './CommentCard';
+import CommentCard from './CommentCard';
 
 
 export function decodeJwt(jwt) {
@@ -82,7 +82,6 @@ function PostCard(props) {
         hour: "numeric",
         minute: "numeric",
       });
-      console.log("post createAt: ", formattedDate);
       return (
         <div key={`${post.Privacy + post.PostID}`} className="bg-white p-4 rounded shadow mt-3">
           <div className="d-flex justify-content-between">
@@ -91,6 +90,7 @@ function PostCard(props) {
               <div>
                 <p className="m-0 fw-bold">{props.  username}</p>
                 <span className="text-muted fs-7">{formattedDate}</span>
+                <span>{post.PostID}</span>
               </div>
             </div>
             <i className="fas fa-ellipsis-h" type="button" id="post1Menu" data-bs-toggle="dropdown" aria-expanded="false"></i>
@@ -108,7 +108,7 @@ function PostCard(props) {
               <p>{post.Content}</p>
               <img src="https://source.unsplash.com/random/12" alt="post image" className="img-fluid rounded"/>
             </div>
-            <Avatar username={props.username} userInfo={props.userInfo}/>  
+            <CommentCard username={props.username} userInfo={props.userInfo} PostID={post.PostID}/>  
           </div>
         </div>
       )

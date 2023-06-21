@@ -116,16 +116,14 @@ function Login() {
       });
       if (response.ok) {
         const data = await response.json();
-        
-        // Save session to local storage
-        localStorage.setItem("userInfo", JSON.stringify(data));
         console.log("Login successful");
-        dispatch({ type: 'SET_AUTH', payload: true });
-        console.log("userInfo login", JSON.stringify(data));
-      
+        // Save session to local storage
+        dispatch({ type: 'SET_USER', payload: data });
+        //localStorage.setItem("userInfo", JSON.stringify(data));
         
+        dispatch({ type: 'SET_AUTH', payload: true });
         //setIsAuthenticated(true);
-        window.location.reload();
+        window.location.href="/"; 
       } else {
         // show error message from response
           console.log(response)

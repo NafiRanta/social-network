@@ -30,10 +30,12 @@ function getCookie(name) {
 }
 
 function App() {
-  const isAuthFromStore = useSelector((state) => state.isAuth);
-  console.log("isAuthFromStore", isAuthFromStore);
-  const isAuth = !!localStorage.getItem("userInfo");
-  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+  const isAuth = useSelector((state) => state.isAuth);
+
+  const userInfo = useSelector((state) => state.userInfo);
+  console.log("userInfoFromStore", userInfo);
+  // const isAuth = !!localStorage.getItem("userInfo");
+ // const userInfo = JSON.parse(localStorage.getItem("userInfo"));
   // if isAuth is true, get username from localStorage
   //const [userInfo, setUserInfo] = useState("");
   const [username, setUsername] = useState("");
@@ -137,7 +139,7 @@ function App() {
         path="/profile/:username"
         element={
           <div>
-            <MyProfile userInfo={userInfo} username={username} allusers={allusers} />
+            <MyProfile allusers={allusers} />
           </div>
        } 
       />

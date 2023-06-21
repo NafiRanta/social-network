@@ -9,7 +9,7 @@ import CreateGroupModal from '../components/Modal/CreateGroupModal';
 function Topnav(props) {
   //handle logout
   const handleLogout = () => {
-    localStorage.removeItem("userInfo");
+    localStorage.removeItem("reduxState");
     sessionStorage.removeItem("userInfo");
     window.location.href = "/login";
   };

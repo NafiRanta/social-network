@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+
 import "./Modal.css";
 import {UpdateUserInfoInLocalStorage} from "../../views/Profile/MyProfile";
 function UpdateProfileSettingsModal(props) {
-  const userinfo = localStorage.getItem("userInfo");
+  console.log("props.userInfo", props.userInfo);
   const [isDobEditMode, setDobEditMode] = useState(false);
   const [isGenderEditMode, setGenderEditMode] = useState(false);
   const [isNicknameEditMode, setNicknameEditMode] = useState(false);
   const [isAboutEditMode, setAboutEditMode] = useState(false);
-  const [nickname, setNickname] = useState(JSON.parse(userinfo).nickname);
+  const [nickname, setNickname] = useState(props.userInfo.nickname);
   const [nicknameLabel, setNicknameLabel] = useState("");
   const [about, setAbout] = useState(props.userInfo.about);
   const [aboutLabel, setAboutLabel] = useState("");
@@ -233,9 +235,9 @@ const handleRemoveAbout = () => {
                             {!isNicknameEditMode && (
                               <i className="fas fa-pen" onClick={handleNicknameEditToggle}></i>
                             )}
-                            {(!isNicknameEditMode && nicknameLabel !== "Add a nickname" && nicknameLabel.innerHTML !== nickname && nicknameLabel !== "Add a nickname" )&& (
+                            {/* {(!isNicknameEditMode && nicknameLabel !== "Add a nickname" && nicknameLabel.innerHTML !== nickname && nicknameLabel !== "Add a nickname" )&& (
                               <i className="fas fa-times" onClick={handleRemoveNickname}></i>
-                            )}
+                            )} */}
                           </div>
                           {isNicknameEditMode ? (
                             <>
@@ -319,9 +321,9 @@ const handleRemoveAbout = () => {
                             {!isAboutEditMode && (
                               <i className="fas fa-pen" onClick={handleAboutEditToggle}></i>
                             )}
-                            {(!isAboutEditMode && aboutLabel !== "Add a description" && aboutLabel.innerHTML !== about && aboutLabel !== "Add a description") && (
+                            {/* {(!isAboutEditMode && aboutLabel !== "Add a description" && aboutLabel.innerHTML !== about && aboutLabel !== "Add a description") && (
                               <i className="fas fa-times" onClick={handleRemoveAbout}></i>
-                            )}
+                            )} */}
                           </div>
                           {isAboutEditMode ? (
                             <>
