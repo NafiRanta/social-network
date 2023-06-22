@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import CommentCard from './CommentCard';
-
+import React, { useState, useEffect } from "react";
+import CommentCard from "./CommentCard";
 
 export function decodeJwt(jwt) {
   if (!jwt) {
@@ -22,29 +21,28 @@ function PostCard(props) {
   const [publicPosts, setPublicPosts] = useState([]);
   const [privatePosts, setPrivatePosts] = useState([]);
   const [customPosts, setCustomPosts] = useState([]);
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem("token");
   const userId = decodeJwt(token).userID;
   console.log("userId", userId);
   console.log("token", token);
-  
-  
+
   useEffect(() => {
     const GetUserPosts = async (e) => {
       //e.preventDefault();
       const headers = new Headers();
-      headers.append('Authorization', 'Bearer ' + token);
-      headers.append('Content-Type', 'application/json');
-      
+      headers.append("Authorization", "Bearer " + token);
+      headers.append("Content-Type", "application/json");
+
       try {
         const res = await fetch("http://localhost:8080/posts", {
-          method: 'GET',
+          method: "GET",
           headers: headers,
         });
-        
+
         if (res.ok) {
           const data = await res.json();
           // get all posts of that matched with userID
-          const publicPosts = data.publicPosts ;
+          const publicPosts = data.publicPosts;
           const privatePosts = data.privatePosts;
           const customPosts = data.customPosts;
           setPublicPosts(publicPosts);
@@ -53,27 +51,30 @@ function PostCard(props) {
         } else {
           console.log("error");
         }
-      }
-      catch (error) {
+      } catch (error) {
         // Handle error
         console.log(error);
       }
-     
     };
     GetUserPosts();
   }, []);
 
   // Combine the three arrays into one including only posts that match post.AuthorID  with userID
-  const allPosts = [...(customPosts || []), ...(privatePosts || []), ...(publicPosts || [])];
+  const allPosts = [
+    ...(customPosts || []),
+    ...(privatePosts || []),
+    ...(publicPosts || []),
+  ];
   // Sort the combined and filtered array by the "CreateAt" property
-  const sortedPosts = allPosts.sort((a, b) => new Date(a.CreateAt) - new Date(b.CreateAt));
+  const sortedPosts = allPosts.sort(
+    (a, b) => new Date(a.CreateAt) - new Date(b.CreateAt)
+  );
   // store posts that matched with userID in an array
   const userPosts = sortedPosts.filter((post) => post.AuthorID === userId);
 
-
   const displayAllPosts = () => {
     // display all posts of that matched with userID
-    
+
     return userPosts.map((post) => {
       // format createAt 2023-06-20T13:13:30.343Z to 20 Jun 2023 13:13
       const date = new Date(post.CreateAt);
@@ -85,43 +86,73 @@ function PostCard(props) {
         minute: "numeric",
       });
       return (
-        <div key={`${post.Privacy + post.PostID}`} className="bg-white p-4 rounded shadow mt-3">
+        <div
+          key={`${post.Privacy + post.PostID}`}
+          className="bg-white p-4 rounded shadow mt-3"
+        >
           <div className="d-flex justify-content-between">
             <div className="d-flex">
-              <img src={props.userInfo.profilePicture} alt="avatar" className="rounded-circle me-2"/>
+              <img
+                src={props.userInfo.profilePicture}
+                alt="avatar"
+                className="rounded-circle me-2"
+              />
               <div>
-                <p className="m-0 fw-bold">{props.  username}</p>
+                <p className="m-0 fw-bold">{props.username}</p>
                 <span className="text-muted fs-7">{formattedDate}</span>
                 <span>{post.PostID}</span>
               </div>
             </div>
-            <i className="fas fa-ellipsis-h" type="button" id="post1Menu" data-bs-toggle="dropdown" aria-expanded="false"></i>
-            <ul className="dropdown-menu border-0 shadow" aria-labelledby="post1Menu">
+            <i
+              className="fas fa-ellipsis-h"
+              type="button"
+              id="post1Menu"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            ></i>
+            <ul
+              className="dropdown-menu border-0 shadow"
+              aria-labelledby="post1Menu"
+            >
               <li className="d-flex align-items-center">
-                <a className="dropdown-item d-flex justify-content-around align-items-center fs-7" href="#">Edit Post</a>
+                <a
+                  className="dropdown-item d-flex justify-content-around align-items-center fs-7"
+                  href="#"
+                >
+                  Edit Post
+                </a>
               </li>
               <li className="d-flex align-items-center">
-                <a className="dropdown-item d-flex justify-content-around align-items-center fs-7" href="#">Delete Post</a>
+                <a
+                  className="dropdown-item d-flex justify-content-around align-items-center fs-7"
+                  href="#"
+                >
+                  Delete Post
+                </a>
               </li>
             </ul>
           </div>
           <div className="mt-3">
             <div>
               <p>{post.Content}</p>
-              <img src="https://source.unsplash.com/random/12" alt="post image" className="img-fluid rounded"/>
+              <img
+                src="https://source.unsplash.com/random/12"
+                alt="post image"
+                className="img-fluid rounded"
+              />
             </div>
-            <CommentCard username={props.username} userInfo={props.userInfo} PostID={post.PostID}/>  
+            <CommentCard
+              username={props.username}
+              userInfo={props.userInfo}
+              PostID={post.PostID}
+            />
           </div>
         </div>
-      )
-    })
-  }
+      );
+    });
+  };
 
-    return(
-      <>
-        {displayAllPosts()}
-      </>
-      )
+  return <>{displayAllPosts()}</>;
 }
 
 export default PostCard;

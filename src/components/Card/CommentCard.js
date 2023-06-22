@@ -1,15 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import { decodeJwt } from './PostCard';
-import Avatar from '../Avatar/Avatar';
-import './Card.css';
+import React, { useState, useEffect } from "react";
+import { decodeJwt } from "./PostCard";
+import Avatar from "../Avatar/Avatar";
+import "./Card.css";
 
 function CommentCard(props) {
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem("token");
   const authorId = decodeJwt(token).userID;
   const postId = props.PostID;
 
-  const [commentInput, setCommentInput] = useState('');
+  const [commentInput, setCommentInput] = useState("");
   const [comments, setComments] = useState([]);
+  const [commentCount, setCommentCount] = useState(0);
 
   const handleInputChange = (e) => {
     setCommentInput(e.target.value);
@@ -18,19 +19,19 @@ function CommentCard(props) {
   const getComments = async () => {
     const url = `http://localhost:8080/getcomments?postID=${postId}`;
     const headers = new Headers();
-    headers.append('Authorization', 'Bearer ' + token);
-    headers.append('Content-Type', 'application/json');
+    headers.append("Authorization", "Bearer " + token);
+    headers.append("Content-Type", "application/json");
     try {
       const res = await fetch(url, {
-        method: 'GET',
+        method: "GET",
         headers: headers,
       });
       if (res.ok) {
         const data = await res.json();
-        console.log("comments data", data);
         setComments(data.comments);
+        setCommentCount(data.comments.length);
       } else {
-        throw new Error('Error occurred while getting the comments');
+        throw new Error("Error occurred while getting the comments");
       }
     } catch (error) {
       console.log("error", error);
@@ -54,29 +55,26 @@ function CommentCard(props) {
       postId: postId,
     };
 
-    // if comment is empty, do nothing
     if (!comment) {
       return;
     }
 
     const headers = new Headers();
-    headers.append('Authorization', 'Bearer ' + token);
-    headers.append('Content-Type', 'application/json');
+    headers.append("Authorization", "Bearer " + token);
+    headers.append("Content-Type", "application/json");
     try {
       const res = await fetch("http://localhost:8080/addcomment", {
-        method: 'POST',
-        credentials: 'include',
+        method: "POST",
+        credentials: "include",
         headers: headers,
         body: JSON.stringify(commentData),
       });
 
       if (res.ok) {
-        // Refresh the comments
         getComments();
-        // Clear the comment input field
-        setCommentInput('');
+        setCommentInput("");
       } else {
-        throw new Error('Error occurred while creating the comment');
+        throw new Error("Error occurred while creating the comment");
       }
     } catch (error) {
       console.log("error", error);
@@ -93,9 +91,13 @@ function CommentCard(props) {
       minute: "numeric",
     });
   };
+
   return (
     <div className="post__comment mt-3 position-relative">
-      <div className="d-flex align-items-center top-0 start-0 position-absolute" id="d-flex-comments">
+      <div
+        className="d-flex align-items-center top-0 start-0 position-absolute"
+        id="d-flex-comments"
+      >
         <div className="me-2">
           <i className="text-primary fas fa-thumbs-up"></i>
         </div>
@@ -104,8 +106,14 @@ function CommentCard(props) {
       <div className="accordion" id="accordionExample">
         <div className="accordion-item border-0">
           <h2 className="accordion-header" id="headingTwo">
-            <div className="accordion-button collapsed pointer d-flex justify-content-end" data-bs-toggle="collapse" data-bs-target="#collapsePost1" aria-expanded="false" aria-controls="collapsePost1">
-              <p className="m-0">2 Comments</p>
+            <div
+              className="accordion-button collapsed pointer d-flex justify-content-end"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapsePost1"
+              aria-expanded="false"
+              aria-controls="collapsePost1"
+            >
+              <p className="m-0">{commentCount} Comments</p>
             </div>
           </h2>
           <hr />
@@ -115,27 +123,48 @@ function CommentCard(props) {
               <p className="m-0">Like</p>
             </div>
             <div
-              className=" dropdown-item rounded d-flex justify-content-center align-items-center pointer text-muted p-1" data-bs-toggle="collapse" data-bs-target="#collapsePost1" aria-expanded="false" aria-controls="collapsePost1">
+              className=" dropdown-item rounded d-flex justify-content-center align-items-center pointer text-muted p-1"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapsePost1"
+              aria-expanded="false"
+              aria-controls="collapsePost1"
+            >
               <i className="fas fa-comment-alt me-3"></i>
               <p className="m-0">Comment</p>
             </div>
           </div>
-          <div id="collapsePost1" className="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+          <div
+            id="collapsePost1"
+            className="accordion-collapse collapse"
+            aria-labelledby="headingTwo"
+            data-bs-parent="#accordionExample"
+          >
             <hr />
-            <div className="accordion-body" >
-              {comments && comments.map((comment) => (
-                <div className="d-flex align-items-center my-1" key={comment.CommentID+comment+comment.PostID}>
-                  <Avatar username={comment.AuthorID} userInfo={props.userInfo} />
-                  <div className="p-3 rounded comment__input w-100">
-                    <p className="fw-bold m-0">{comment.AuthorID}</p>
-                    <p className="m-0 fs-7 bg-gray p-2 rounded">{comment.Content}</p>
-                    <p className="m-0 fs-7 text-muted">{formatCommentDate(comment.CreateAt)}</p>
+            <div className="accordion-body">
+              {comments &&
+                comments.map((comment) => (
+                  <div
+                    className="d-flex align-items-center my-1"
+                    key={comment.CommentID + comment + comment.PostID}
+                  >
+                    <Avatar
+                      username={comment.AuthorID}
+                      userInfo={props.userInfo}
+                    />
+                    <div className="p-3 rounded comment__input w-100">
+                      <p className="fw-bold m-0">{comment.AuthorID}</p>
+                      <p className="m-0 fs-7 bg-gray p-2 rounded">
+                        {comment.Content}
+                      </p>
+                      <p className="m-0 fs-7 text-muted">
+                        {formatCommentDate(comment.CreateAt)}
+                      </p>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
               <form className="d-flex my-1" onSubmit={handleCommentSubmit}>
                 <div>
-                <Avatar username={props.username}userInfo={props.userInfo} />
+                  <Avatar username={props.username} userInfo={props.userInfo} />
                 </div>
                 <input
                   type="text"
