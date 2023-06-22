@@ -123,7 +123,7 @@ function CommentCard(props) {
           <div id="collapsePost1" className="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
             <hr />
             <div className="accordion-body" >
-              {comments.map((comment) => (
+              {comments && comments.map((comment) => (
                 <div className="d-flex align-items-center my-1" key={comment.CommentID+comment+comment.PostID}>
                   <Avatar username={comment.AuthorID} userInfo={props.userInfo} />
                   <div className="p-3 rounded comment__input w-100">

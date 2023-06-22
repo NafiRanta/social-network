@@ -4,6 +4,7 @@ import Avatar from "../Avatar/Avatar";
 import { decodeJwt } from "../Card/PostCard";
 
 function CreatePostModal(props) {
+  console.log("props", props.userInfo.email);
   const [selectedImage, setSelectedImage] = useState(null);
   const [fileName, setFileName] = useState("");
   const [includedFriends, setIncludedFriends] = useState("");
@@ -26,6 +27,7 @@ function CreatePostModal(props) {
   const handlePostSubmit = async (event) => {
     event.preventDefault();
     const token = localStorage.getItem('token');
+    console.log("token: ", token)
     const authorId = decodeJwt(token).userID;
     const postContent = document.getElementById("postContent").value;
     const postPrivacy = document.getElementById("postPrivacy").value;
@@ -34,6 +36,7 @@ function CreatePostModal(props) {
 
     // Create an object with the required properties
     const postData = {
+      authorID: props.userInfo.email,
       privacy: postPrivacy,
       IncludedFriends: [],
       content: postContent,
