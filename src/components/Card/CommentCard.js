@@ -152,12 +152,16 @@ function CommentCard(props) {
                       userInfo={props.userInfo}
                     />
                     <div className="p-3 rounded comment__input w-100">
-                      <p className="fw-bold m-0">{comment.AuthorID}</p>
+                      <p className="fw-bold m-0">
+                        <p className="fw-bold m-0">
+                          {comment.authorFirstName} {comment.authorLastName}
+                        </p>
+                      </p>
                       <p className="m-0 fs-7 bg-gray p-2 rounded">
-                        {comment.Content}
+                        {comment.content}
                       </p>
                       <p className="m-0 fs-7 text-muted">
-                        {formatCommentDate(comment.CreateAt)}
+                        {formatCommentDate(comment.createAt)}
                       </p>
                     </div>
                   </div>

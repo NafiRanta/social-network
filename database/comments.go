@@ -8,6 +8,7 @@ import (
 	"github.com/google/uuid"
 )
 
+// Comment represents a comment in the social network.
 type Comment struct {
 	CommentID string
 	PostID    string
@@ -16,14 +17,18 @@ type Comment struct {
 	CreateAt  time.Time
 }
 
+// CommentResponse represents a response object for a comment in JSON format.
 type CommentResponse struct {
-	CommentID string    `json:"commentID"`
-	PostID    string    `json:"postID"`
-	AuthorID  string    `json:"authorID"`
-	Content   string    `json:"content"`
-	CreateAt  time.Time `json:"createAt"`
+	CommentID        string    `json:"commentID"`
+	PostID           string    `json:"postID"`
+	AuthorID         string    `json:"authorID"`
+	Content          string    `json:"content"`
+	CreateAt         time.Time `json:"createAt"`
+	AuthorFirstName  string    `json:"authorFirstName"`
+	AuthorLastName   string    `json:"authorLastName"`
 }
 
+// CreateCommentsTable creates the Comments table in the database if it does not exist.
 func CreateCommentsTable(db *sql.DB) {
 	commentsTable := `
 	CREATE TABLE IF NOT EXISTS Comments (
@@ -40,6 +45,7 @@ func CreateCommentsTable(db *sql.DB) {
 	query.Exec()
 }
 
+// AddComment adds a new comment to the database.
 func AddComment(comment *CommentResponse) error {
 	db, err := sql.Open("sqlite3", "./socialnetwork.db")
 	if err != nil {
@@ -48,9 +54,9 @@ func AddComment(comment *CommentResponse) error {
 	defer db.Close()
 	query := `
 		INSERT INTO Comments (CommentID, PostID, AuthorID, Content, CreateAt)
-		VALUES (?, ?, ?, ?, ?);`
+			VALUES (?, ?, ?, ?, ?);`
 
-	// generate uuid for commentID
+	// Generate UUID for commentID
 	comment.CommentID = uuid.New().String()
 	stmt, err := db.Prepare(query)
 	u.CheckErr(err)
@@ -65,24 +71,28 @@ func AddComment(comment *CommentResponse) error {
 	return nil
 }
 
-func GetCommentsByPostID(postID string) ([]Comment, error) {
+// GetCommentsByPostID retrieves all comments associated with a specific postID.
+func GetCommentsByPostID(postID string) ([]CommentResponse, error) {
 	db, err := sql.Open("sqlite3", "./socialnetwork.db")
 	if err != nil {
 		return nil, err
 	}
 	defer db.Close()
+
 	query := `
-		SELECT CommentID, PostID, AuthorID, Content, CreateAt 
+		SELECT CommentID, PostID, AuthorID, Content, CreateAt
 		FROM Comments
 		WHERE PostID = ?
-		`
+	`
 	rows, err := db.Query(query, postID)
-	u.CheckErr(err)
+	if err != nil {
+		return nil, err
+	}
 	defer rows.Close()
 
-	var comments []Comment
+	var comments []CommentResponse
 	for rows.Next() {
-		var comment Comment
+		var comment CommentResponse
 		err := rows.Scan(
 			&comment.CommentID,
 			&comment.PostID,
@@ -90,11 +100,24 @@ func GetCommentsByPostID(postID string) ([]Comment, error) {
 			&comment.Content,
 			&comment.CreateAt,
 		)
-		u.CheckErr(err)
+		if err != nil {
+			return nil, err
+		}
+
+		// Fetch the user information based on the authorID
+		author, err := GetUserByID(comment.AuthorID)
+		if err != nil {
+			return nil, err
+		}
+
+		comment.AuthorFirstName = author.FirstName
+		comment.AuthorLastName = author.LastName
 		comments = append(comments, comment)
 	}
-	if err := rows.Err(); err != nil {
+
+	if err = rows.Err(); err != nil {
 		return nil, err
 	}
+
 	return comments, nil
 }
