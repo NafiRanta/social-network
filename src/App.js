@@ -31,6 +31,7 @@ function getCookie(name) {
 
 function App() {
   const isAuth = useSelector((state) => state.isAuth);
+  let conn;
 
   const userInfo = useSelector((state) => state.userInfo);
   console.log("userInfoFromStore", userInfo);
@@ -51,6 +52,36 @@ function App() {
       localStorage.setItem("token", token);
       setUsername(usernameDisplay);
      //setUserInfo(userInfo);
+
+
+     setTimeout(() => {
+      // all browsers have window object, to check if the browser supports websockets
+      if (window["WebSocket"]){
+          console.log("WebSocket is supported by your Browser!");
+          // connect to ws
+          console.log("token", token)
+          conn = new WebSocket("ws://" + "localhost:8080" + "/ws?otp="+ token);
+          console.log("conn", conn)
+          conn.onopen = function() {
+              console.log("Connection opened");
+          };
+
+          conn.onclose = function(evt){
+              console.log("Connected to WebSocket: false")
+          }
+          
+          conn.onmessage = function(evt){
+              const eventData = JSON.parse(evt.data);
+              console.log("eventData", eventData)
+             // const event = Object.assign(new Event, eventData);
+              //routeEvent(event);
+          }
+      } else {
+          alert("WebSocket is not supported by your Browser!");
+      }
+  }, 500);
+
+
     }
   }, [isAuth]);
 

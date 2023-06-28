@@ -17,13 +17,15 @@ import (
 	"github.com/gorilla/websocket"
 )
 
-var (
-	// make sure client doesnt send huge packets
-	websocketUpgrader = websocket.Upgrader{
-		ReadBufferSize:  1024, // size of the message
-		WriteBufferSize: 1024, // size of the message
-	}
-)
+var websocketUpgrader = websocket.Upgrader{
+	ReadBufferSize:  1024,
+	WriteBufferSize: 1024,
+	CheckOrigin: func(r *http.Request) bool {
+		// Allow requests from the frontend origin (e.g., http://localhost:3000)
+		// Modify the origin check based on your specific frontend URL or allow all origins for development purposes
+		return r.Header.Get("Origin") == "http://localhost:3000"
+	},
+}
 
 var acknowledgement Acknowledgement
 
@@ -128,16 +130,22 @@ func SendLoggedinUsers(event Event, c *Client) error {
 }
 
 // serveWS will updgrade to the websocket connection
-func (m *Manager) serveWS(w http.ResponseWriter, r *http.Request) {
+func (m *Manager) ServeWS(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("new websocket connection")
+	_ = m.otps.NewOTP()
 	otp := r.URL.Query().Get("otp")
+
 	if otp == "" {
+		fmt.Println("no otp")
 		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}
-	if !m.otps.VerifyOTP(otp) {
-		w.WriteHeader(http.StatusUnauthorized)
-		return
-	}
+	// if !m.otps.VerifyOTP(otp) {
+	// 	fmt.Println("otp", otp)
+	// 	fmt.Println("invalid otp")
+	// 	w.WriteHeader(http.StatusUnauthorized)
+	// 	return
+	// }
 
 	log.Println("new connection")
 

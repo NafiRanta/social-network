@@ -10,7 +10,7 @@ import (
 	"net/http"
 	d "socialnetwork/database"
 
-	"github.com/gofrs/uuid"
+	// "github.com/gofrs/uuid"
 	"github.com/gorilla/sessions"
 )
 
@@ -76,17 +76,17 @@ func LogIn(w http.ResponseWriter, r *http.Request) {
 		}
 		if user != nil && password == storedPassword {
 			// Generate a new UUID
-			id, err := uuid.NewV4()
 			if err != nil {
 				http.Error(w, "Failed to generate session ID", http.StatusInternalServerError)
 				return
 			}
-			fmt.Println("uuid generated:", id.String())
 			token, err := GenerateJWT(user.UserID)
 			if err != nil {
 				http.Error(w, "Failed to generate JWT", http.StatusInternalServerError)
 				return
 			}
+
+			// add token to m.otps map
 			fmt.Println("token generated:", token)
 			// Combine the UUID with the session name using a delimiter
 			//sessionName := "session-name-" + id.String()

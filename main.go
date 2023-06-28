@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"database/sql"
 	"fmt"
 	"log"
@@ -12,6 +13,7 @@ import (
 	p "socialnetwork/posts"
 	user "socialnetwork/users"
 	u "socialnetwork/utils"
+	ws "socialnetwork/websocket"
 	"time"
 )
 
@@ -29,10 +31,16 @@ func main() {
 
 func Start() error {
 	go closeServer()
+
+	// websocket
+	ctx := context.Background()
+	manager := ws.NewManager(ctx)
+	fmt.Println("Manager created", manager)
 	router := http.NewServeMux()
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintf(w, "connected")
 	})
+	// handle websocket
+	router.HandleFunc("/ws", manager.ServeWS)
 	//handle user login and register, logout
 	router.HandleFunc("/login", a.LogIn)
 	router.HandleFunc("/register", a.Register)

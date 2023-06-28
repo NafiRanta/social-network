@@ -28,8 +28,15 @@ function CommentCard(props) {
       });
       if (res.ok) {
         const data = await res.json();
-        setComments(data.comments);
-        setCommentCount(data.comments.length);
+        if (data.comments !== null) {
+          setComments(data.comments);
+          setCommentCount(data.comments.length);
+        } else {
+          // Handle the case when data.comments is null
+          console.log("No comments available");
+          setComments([]);
+          setCommentCount(0);
+        }
       } else {
         throw new Error("Error occurred while getting the comments");
       }
@@ -37,6 +44,7 @@ function CommentCard(props) {
       console.log("error", error);
     }
   };
+  
 
   useEffect(() => {
     getComments();

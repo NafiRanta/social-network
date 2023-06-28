@@ -9,6 +9,7 @@ function Home(props) {
     // show allusers under Contacts
     const displayChatUsers = () => {
         const allusers = props.allusers;
+        console.log("allusers", allusers)
         //get all users profilepicture
         
         if (!allusers) {
@@ -16,7 +17,7 @@ function Home(props) {
         }
         return allusers.map((user) => {
           return (
-            <div key={user.email}>
+            <div key={`${"globalSearch" + user.email}`}>
                 <ul className="list-group">
                     <li className="dropdown-item rounded my-2 px-0" type="button">
                         <div className="d-flex align-items-center mx-2 chat-avatar">
