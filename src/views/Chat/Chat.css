@@ -1,5 +1,25 @@
 body{margin-top:56px;}
 
+.sidebar {
+    background-color: #f8f8f8;
+    width: 350px;
+    padding: 20px;
+    position: fixed;
+    top: 13px;
+    left: 0;
+    height: 100%;
+  }
+
+  .nav-pills {
+    position: fixed;
+  }
+
+  #chatUsers{
+    margin-top: 17%;
+    left: -10%;
+    position: relative;
+    width: 280px;
+  }
 
 .search-bar {
     -webkit-border-radius: 3px 0 0 0;
@@ -38,10 +58,10 @@ body{margin-top:56px;}
 /*Users Container*/
 .users-container {
     position: fixed;
-    padding: 1rem 0;
+    padding: 2rem 0;
     border-right: 1px solid var(--bs-body-bg);
     height: 100%;
-    width: 32%;
+    width: auto;
     display: flex;
     flex-direction: column;
     overflow: scroll;
@@ -175,20 +195,33 @@ body{margin-top:56px;}
 /*Chat right side*/
 
 .selected-user {
-    width: 100%;
     position: fixed;
     padding: 0 15px;
     min-height: 64px;
     line-height: 64px;
     border-bottom: 1px solid #e6ecf3;
     border-radius: 0 3px 0 0;
-    background-color: #F4F5FB;
+    background-color: white;
     z-index: 1;
     top: 0;
-    margin-top: 100px;
+    margin-top: 54px;
+    right: 0;
 }
+#chatroomMessageArea {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    background-color: #fff;
+    padding: 10px;
+    z-index: 1;
+  }
 
-
+  .selected-user,
+  #chatroomMessageArea {
+    width: 100%;
+    max-width: calc(100% - 350px); /* Adjust the value as needed */
+    overflow-x: hidden;
+  }
 .selected-user span {
     line-height: 100%;
 }
@@ -201,6 +234,7 @@ body{margin-top:56px;}
     position: relative;
     padding: 1rem;
     margin-top: 150px;
+    width: 1260px;
 }
 
 .chat-container li.chat-left,
