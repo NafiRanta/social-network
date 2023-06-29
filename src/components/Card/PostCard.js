@@ -75,7 +75,7 @@ function PostCard(props) {
   const displayAllPosts = () => {
     // display all posts of that matched with userID
 
-    return userPosts.map((post) => {
+    return userPosts.map((post, index) => {
       // format createAt 2023-06-20T13:13:30.343Z to 20 Jun 2023 13:13
       const date = new Date(post.CreateAt);
       const formattedDate = date.toLocaleDateString("en-GB", {
@@ -87,7 +87,7 @@ function PostCard(props) {
       });
       return (
         <div
-          key={`${post.Privacy + post.PostID}`}
+          key=  {`${ post.PostID}-${index}`}
           className="bg-white p-4 rounded shadow mt-3"
         >
           <div className="d-flex justify-content-between">

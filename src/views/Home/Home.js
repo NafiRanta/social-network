@@ -15,9 +15,9 @@ function Home(props) {
         if (!allusers) {
           return null; 
         }
-        return allusers.map((user) => {
+        return allusers.map((user, index) => {
           return (
-            <div key={`${"globalSearch" + user.email}`}>
+            <div key= {`${ user.email}-${index}`}>
                 <ul className="list-group">
                     <li className="dropdown-item rounded my-2 px-0" type="button">
                         <div className="d-flex align-items-center mx-2 chat-avatar">

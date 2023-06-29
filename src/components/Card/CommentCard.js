@@ -31,6 +31,9 @@ function CommentCard(props) {
         if (data.comments !== null) {
           setComments(data.comments);
           setCommentCount(data.comments.length);
+          comments.map((comment) => {
+            console.log("comment", comment);
+          })
         } else {
           // Handle the case when data.comments is null
           console.log("No comments available");
@@ -150,10 +153,10 @@ function CommentCard(props) {
             <hr />
             <div className="accordion-body">
               {comments &&
-                comments.map((comment) => (
+                comments.map((comment, index) => (
                   <div
                     className="d-flex align-items-center my-1"
-                    key={comment.CommentID + comment + comment.PostID}
+                    key={`${comment.commentID}-${index}`}
                   >
                     <Avatar
                       username={comment.AuthorID}
@@ -161,9 +164,7 @@ function CommentCard(props) {
                     />
                     <div className="p-3 rounded comment__input w-100">
                       <p className="fw-bold m-0">
-                        <p className="fw-bold m-0">
                           {comment.authorFirstName} {comment.authorLastName}
-                        </p>
                       </p>
                       <p className="m-0 fs-7 bg-gray p-2 rounded">
                         {comment.content}
