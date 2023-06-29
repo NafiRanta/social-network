@@ -37,7 +37,7 @@ function SearchbarGlobal(props) {
     if (!allusers) {
       return null; 
     }
-    return allusers.map((user) => {
+    return allusers.filter(user => user.email !== props.userInfo.email).map(user => {
       const username = user.firstname + " " + user.lastname;
       return (
         <div 

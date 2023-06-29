@@ -21,7 +21,7 @@ function Topnav(props) {
                 <Link to="/" className="text-decoration-none text-dark">
                   <i className="fab fa-facebook text-primary" ></i>
                 </Link>
-                <SearchbarGlobal allusers={props.allusers}/>
+                <SearchbarGlobal allusers={props.allusers} userInfo = {props.userInfo}/>
           </div>
           <div className="col d-flex align-items-center justify-content-end">
             <div className="mx-2">

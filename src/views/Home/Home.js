@@ -15,7 +15,8 @@ function Home(props) {
         if (!allusers) {
           return null; 
         }
-        return allusers.map((user, index) => {
+        // show all users except the logged in user
+        return allusers.filter(user => user.email !== props.userInfo.email).map((user, index) => {
           return (
             <div key= {`${ user.email}-${index}`}>
                 <ul className="list-group">

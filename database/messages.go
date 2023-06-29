@@ -40,7 +40,7 @@ func CreateMessagesTable(db *sql.DB) {
 		Content TEXT NOT NULL,
 		Types TEXT NOT NULL,
 		SentAt TIMESTAMP NOT NULL,
-		SeenAt TIMESTAMP 
+		SeenAt TIMESTAMP,
 		PRIMARY KEY (MessageID)
 	);`
 

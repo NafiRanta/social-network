@@ -10,7 +10,8 @@ function Chat(props) {
     if (!allusers) {
       return null;
     }
-    return allusers.map((user) => {
+    // return all users except the current user
+    return allusers.filter(user => user.email !== props.userInfo.email).map(user => {
       const username = user.firstname + " " + user.lastname;
       return (
         <div key={user.email}>
