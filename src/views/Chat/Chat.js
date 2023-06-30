@@ -5,12 +5,53 @@ import SearchbarChat from '../../components/Searchbar/SearchbarChat';
 import Topnav from '../Topnav';
 import { decodeJwt } from '../../components/Card/PostCard';
 
+function useChatMessages(selectedChatMateId, userId, token) {
+  const [chatMessages, setChatMessages] = useState([]);
+
+  useEffect(() => {
+    const fetchChatMessages = async () => {
+      const headers = new Headers();
+      headers.append("Authorization", "Bearer " + token);
+      headers.append("Content-Type", "application/json");
+    
+      try {
+        const response = await fetch("http://localhost:8080/messages", {
+          method: "GET",
+          headers: headers,
+        });
+    
+        if (response.ok) {
+          const data = await response.json();
+          // check for null values
+          if (!data) {
+            return null;
+          }
+          const filteredData = data.filter(
+            (message) =>
+              (message.senderID === userId && message.receiverID === selectedChatMateId) ||
+              (message.senderID === selectedChatMateId && message.receiverID === userId)
+          );
+          filteredData.sort((a, b) => (a.sentAt > b.sentAt ? 1 : -1));
+          setChatMessages(filteredData);
+          console.log("chatMessages", chatMessages);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchChatMessages();
+  }, [selectedChatMateId, userId, token]);
+
+  return chatMessages;
+}
+
 function Chat(props) {
     const token = localStorage.getItem("token");
     const userId = decodeJwt(token).userID;
     const [selectedChatMateName, setSelectedChatMateName] = useState(""); 
-    const [selectedChatMateId, setChosenChatMateId] = useState("");
-    const allusers = props.allusers;
+    const [selectedChatMateId, setSelectedChatMateId] = useState("");
+    const chatMessages = useChatMessages(selectedChatMateId, userId, token);
     
     useEffect(() => {
       console.log('selectedUsername', selectedChatMateName);
@@ -21,17 +62,18 @@ function Chat(props) {
       setSelectedChatMateName(username); // Update the selected username in the state
       console.log("selectedUsername", selectedChatMateName)
       // get email of selected username from allUsers
-      const receiverID = allusers.filter((user) => user.firstname + " " + user.lastname === username)[0].email;
-      setChosenChatMateId(receiverID);
+      const receiverID = props.allusers.filter((user) => user.firstname + " " + user.lastname === username)[0].email;
+      setSelectedChatMateId(receiverID);
+      console.log("receiverId", receiverID) 
     };
     
     const displayAllUsers = () => {
       // this will be users that are followers of current on. now it has all
-        if (!allusers) {
+        if (!props.allusers) {
           return null;
         }
       // save all users except the current user to a variable called filteredData
-      let filteredData = allusers.filter((user) => user.email !== props.userInfo.email);
+      let filteredData = props.allusers.filter((user) => user.email !== props.userInfo.email);
       // sort the filteredData by firstname
       filteredData.sort((a, b) => (a.firstname > b.firstname) ? 1 : -1);    
       // map the filteredData to display all users except the current user
@@ -56,7 +98,6 @@ function Chat(props) {
     };
 
    
-
     const  handleMessageSubmit = async (e) => {
       e.preventDefault();
       // get message from input field id id={`submitMessageBtn${selectedUsername}`}
@@ -65,7 +106,7 @@ function Chat(props) {
       console.log("selectedChatMateId in submitbutton", selectedChatMateId)
       console.log("content", content)
       // get email of selectedUsername from allUsers and save to receiverID
-      const receiverID = allusers.filter((user) => user.firstname + " " + user.lastname === selectedChatMateName)[0].email;
+      const receiverID = props.allusers.filter((user) => user.firstname + " " + user.lastname === selectedChatMateName)[0].email;
       const senderID = userId;
       const sentAt = new Date();
       const headers = new Headers();
@@ -90,7 +131,8 @@ function Chat(props) {
         console.log(error);
       }
     };
-  
+
+
   return (
     <div>
       <Topnav userInfo={props.userInfo} username={props.username} allusers={props.allusers} />
@@ -160,17 +202,43 @@ function Chat(props) {
                 <span>To: <span className="name" id="chatUsernameTitle">{selectedChatMateName}</span></span>
               </div>
               <div className="chat-container" id="chatArea">
-                <ul className="chatview-box chatContainerScroll" id={`chatmessages${selectedChatMateId}`}>
-                  <li className="chat-left">
-                    <div className="chat-avatar">
-                      <Avatar />
-                      <div className="chat-name">Russell</div>
-                    </div>
-                    <div className="chat-text">Hello, I'm Russell.
-                      <br />How can I help you today?</div>
-                    <div className="chat-hour">08:55 <span className="fa fa-check-circle"></span></div>
-                  </li>
-                </ul>
+               {chatMessages.map(message => {
+                 const sentAt = new Date(message.sentAt).toLocaleString('en-US', {
+                  day: 'numeric',
+                  month: 'short',
+                  year: 'numeric',
+                  hour: 'numeric',
+                  minute: 'numeric'
+                });
+                 if (message.senderID === userId) {
+                   return (
+                    <ul className="chatview-box chatContainerScroll" id='chatmessagesSelectedChatMate'>
+                      <li className="chat-left">
+                        <div className="chat-avatar">
+                          <Avatar />
+                          <div className="chat-name">{props.username}</div>
+                        </div>
+                        <div className="chat-text">{message.content}</div>
+                        <div className="chat-hour">{sentAt} <span className="fa fa-check-circle"></span></div>
+                      </li>
+                    </ul>
+                    
+                    )
+                  } else {
+                    return (
+                      <ul className="chatview-box chatContainerScroll" id='chatmessagesSelectedChatMate'>
+                        <li className="chat-left">
+                          <div className="chat-avatar">
+                            <Avatar />
+                            <div className="chat-name">{message.receiverID}</div>
+                          </div>
+                          <div className="chat-text">{message.content}</div>
+                          <div className="chat-hour">{sentAt} <span className="fa fa-check-circle"></span></div>
+                        </li>
+                      </ul>
+                    )
+                  }
+                })}
               </div>
               <div className="form-group mt-3 mb-0" id='chatroomMessageArea'>
                 <form className="chatroom-message" id={`chatroom-message${userId}`}>
