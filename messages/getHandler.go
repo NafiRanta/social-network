@@ -23,22 +23,34 @@ func GetMessagesHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Missing Authorization header", http.StatusUnauthorized)
 		return
 	}
+	// get userID
 	userID, err := a.ExtractUserIDFromAuthHeader(authHeader)
 	if err != nil && userID == "" {
 		fmt.Println("Invalid token")
 		http.Error(w, err.Error(), http.StatusUnauthorized)
 		return
 	}
-	// get message by userID¨
-	messages, err := d.GetMessagesByUserID(userID)
+	userEmail := r.URL.Query().Get("email")
+	fmt.Println("userEmail: ", userEmail)
+	// get userEmail by email
+	user, err := d.GetUserByEmail(userEmail)
+	if err != nil {
+		fmt.Println("Error getting userEmail")
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	fmt.Println("user from getuserbyemail", user)
+	// get message by userEmail
+	messages, err := d.GetMessagesByUserID(user.UserID)
 	if err != nil {
 		fmt.Println("Error getting messages")
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 	// mark messages as seen
-	err = d.MarkMessagesByUserIDAsSeen(userID)
+	err = d.MarkMessagesByUserIDAsSeen(user.Email)
 	if err != nil {
+		fmt.Println("error marking messages as seen")
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
@@ -46,7 +58,7 @@ func GetMessagesHandler(w http.ResponseWriter, r *http.Request) {
 	// return messages
 	responseJSON, err := json.Marshal(messages)
 	if err != nil {
-		fmt.Println("Error encoding messages")
+		fmt.Println("error encoding messages")
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}

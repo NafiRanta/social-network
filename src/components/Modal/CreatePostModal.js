@@ -4,7 +4,6 @@ import Avatar from "../Avatar/Avatar";
 import { decodeJwt } from "../Card/PostCard";
 
 function CreatePostModal(props) {
-  console.log("props", props.userInfo.email);
   const [selectedImage, setSelectedImage] = useState(null);
   const [fileName, setFileName] = useState("");
   const [includedFriends, setIncludedFriends] = useState("");

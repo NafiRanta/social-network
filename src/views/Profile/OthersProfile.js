@@ -8,7 +8,6 @@ import './Profile.css';
 
 
 function OthersProfile(props) {
-    console.log("props in othersprofile", props)
     const location = useLocation();
     const { pathname } = location;
     const encodedUsername = pathname.split('/').pop();

@@ -34,7 +34,6 @@ function App() {
   let conn;
 
   const userInfo = useSelector((state) => state.userInfo);
-  console.log("userInfoFromStore", userInfo);
   // const isAuth = !!localStorage.getItem("userInfo");
  // const userInfo = JSON.parse(localStorage.getItem("userInfo"));
   // if isAuth is true, get username from localStorage
@@ -59,9 +58,7 @@ function App() {
       if (window["WebSocket"]){
           console.log("WebSocket is supported by your Browser!");
           // connect to ws
-          console.log("token", token)
           conn = new WebSocket("ws://" + "localhost:8080" + "/ws?otp="+ token);
-          console.log("conn", conn)
           conn.onopen = function() {
               console.log("Connection opened");
           };

@@ -9,7 +9,6 @@ let initialState = serializedState || defaultInitialState;
 console.log('initialState:', JSON.stringify(initialState))
 
 if (serializedState) {
-  console.log('1')
   initialState = JSON.parse(serializedState);
 } else {
   initialState = {

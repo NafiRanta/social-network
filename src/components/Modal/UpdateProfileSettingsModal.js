@@ -6,7 +6,6 @@ import "./Modal.css";
 function UpdateProfileSettingsModal(props) {
   const dispatch = useDispatch();
   const userInfo = useSelector((state) => state.userInfo);
-  console.log("props.userInfo in updateprofile", props);
   const [isDobEditMode, setDobEditMode] = useState(false);
   const [isGenderEditMode, setGenderEditMode] = useState(false);
   const [isNicknameEditMode, setNicknameEditMode] = useState(false);

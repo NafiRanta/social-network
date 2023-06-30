@@ -10,33 +10,33 @@ import (
 )
 
 type Message struct {
-	MessageID   string
-	SenderID    string
-	ReceiverID  string
-	GroupChatID string
-	Content     string
-	Types       string
-	SentAt      time.Time
-	SeenAt      time.Time
+	MessageID     string
+	SenderEmail   string
+	ReceiverEmail string
+	GroupChatID   string
+	Content       string
+	Types         string
+	SentAt        time.Time
+	SeenAt        time.Time
 }
 
 type MessageResponse struct {
-	MessageID   string    `json:"messageID"`
-	SenderID    string    `json:"senderID"`
-	ReceiverID  string    `json:"receiverID"`
-	GroupChatID string    `json:"groupChatID"`
-	Content     string    `json:"content"`
-	Types       string    `json:"types"`
-	SentAt      time.Time `json:"sentAt"`
-	SeenAt      time.Time `json:"seenAt"`
+	MessageID     string    `json:"messageID"`
+	SenderEmail   string    `json:"SenderEmail"`
+	ReceiverEmail string    `json:"receiverEmail"`
+	GroupChatID   string    `json:"groupChatID"`
+	Content       string    `json:"content"`
+	Types         string    `json:"types"`
+	SentAt        time.Time `json:"sentAt"`
+	SeenAt        time.Time `json:"seenAt"`
 }
 
 func CreateMessagesTable(db *sql.DB) {
 	messagesTable := `
 	CREATE TABLE IF NOT EXISTS Messages (
 		MessageID CHAR(36) NOT NULL,
-		SenderID CHAR(36) NOT NULL,
-		ReceiverID CHAR(36) NOT NULL,
+		SenderEmail CHAR(36) NOT NULL,
+		ReceiverEmail CHAR(36) NOT NULL,
 		GroupChatID CHAR(36) NOT NULL,
 		Content TEXT NOT NULL,
 		Types TEXT NOT NULL,
@@ -57,12 +57,10 @@ func AddMessage(message *MessageResponse) error {
 	}
 	defer db.Close()
 	query := `
-		INSERT INTO Messages (MessageID, SenderID, ReceiverID, GroupChatID, Content, Types, SentAt, SeenAt)
+		INSERT INTO Messages (MessageID, SenderEmail, ReceiverEmail, GroupChatID, Content, Types, SentAt, SeenAt)
 			VALUES (?, ?, ?, ?, ?, ?, ?, ?);`
-
 	// Generate UUID for messageID
 	message.MessageID = uuid.New().String()
-
 	// Get current time
 	message.SentAt = time.Now()
 	// message.SeenAt = time.Now()
@@ -72,7 +70,7 @@ func AddMessage(message *MessageResponse) error {
 	if err != nil {
 		return err
 	}
-	_, err = statement.Exec(message.MessageID, message.SenderID, message.ReceiverID, message.GroupChatID, message.Content, message.Types, message.SentAt, message.SeenAt)
+	_, err = statement.Exec(message.MessageID, message.SenderEmail, message.ReceiverEmail, message.GroupChatID, message.Content, message.Types, message.SentAt, message.SeenAt)
 	if err != nil {
 		return err
 	}
@@ -87,13 +85,17 @@ func GetMessagesByUserID(userID string) ([]MessageResponse, error) {
 	}
 	defer db.Close()
 
-	// if userID is either SenderID or ReceiverID, get the messages
+	// if userID is either SenderEmail or ReceiverID, get the messages
 	query := `
-		SELECT MessageID, SenderID, ReceiverID, GroupChatID, Content, Types, SentAt, SeenAt
+		SELECT MessageID, SenderEmail, ReceiverEmail, GroupChatID, Content, Types, SentAt, SeenAt
 		FROM Messages
-		WHERE SenderID = ? OR ReceiverID = ?;`
-
-	rows, err := db.Query(query, userID, userID)
+		WHERE SenderEmail = ? OR ReceiverEmail = ?;`
+	user, err := GetUserByID(userID)
+	if err != nil {
+		fmt.Println("error getting user")
+		return nil, err
+	}
+	rows, err := db.Query(query, user.Email, user.Email)
 	if err != nil {
 		fmt.Println("error in get messages by user id", err)
 		return nil, err
@@ -103,7 +105,7 @@ func GetMessagesByUserID(userID string) ([]MessageResponse, error) {
 	var messages []MessageResponse
 	for rows.Next() {
 		var message MessageResponse
-		err := rows.Scan(&message.MessageID, &message.SenderID, &message.ReceiverID, &message.GroupChatID, &message.Content, &message.Types, &message.SentAt, &message.SeenAt)
+		err := rows.Scan(&message.MessageID, &message.SenderEmail, &message.ReceiverEmail, &message.GroupChatID, &message.Content, &message.Types, &message.SentAt, &message.SeenAt)
 		if err != nil {
 			return nil, err
 		}
@@ -112,8 +114,8 @@ func GetMessagesByUserID(userID string) ([]MessageResponse, error) {
 	return messages, nil
 }
 
-// Mark all messages where userID is either sender or receiver seenAt to time now
-func MarkMessagesByUserIDAsSeen(userID string) error {
+// Mark all messages where userEmail is either sender or receiver seenAt to time now
+func MarkMessagesByUserIDAsSeen(userEmail string) error {
 	db, err := sql.Open("sqlite3", "./socialnetwork.db")
 	if err != nil {
 		return err
@@ -123,9 +125,9 @@ func MarkMessagesByUserIDAsSeen(userID string) error {
 	query := `
 		UPDATE Messages
 		SET SeenAt = ?
-		WHERE SenderID = ? OR ReceiverID = ?;`
+		WHERE SenderEmail = ? OR ReceiverEmail = ?;`
 
-	_, err = db.Exec(query, time.Now(), userID, userID)
+	_, err = db.Exec(query, time.Now(), userEmail, userEmail)
 	if err != nil {
 		return err
 	}
