@@ -5,9 +5,8 @@ import SearchbarChat from '../../components/Searchbar/SearchbarChat';
 import Topnav from '../Topnav';
 import { decodeJwt } from '../../components/Card/PostCard';
 
-function useChatMessages(selectedChatMateId, userId, token) {
+function useChatMessages(selectedChatMateEmail, userEmail, token) {
   const [chatMessages, setChatMessages] = useState([]);
-
   useEffect(() => {
     const fetchChatMessages = async () => {
       const headers = new Headers();
@@ -15,7 +14,7 @@ function useChatMessages(selectedChatMateId, userId, token) {
       headers.append("Content-Type", "application/json");
     
       try {
-        const response = await fetch("http://localhost:8080/messages", {
+        const response = await fetch(`http://localhost:8080/messages?email=${selectedChatMateEmail}`, {
           method: "GET",
           headers: headers,
         });
@@ -26,14 +25,14 @@ function useChatMessages(selectedChatMateId, userId, token) {
           if (!data) {
             return null;
           }
+          console.log("data", data)
           const filteredData = data.filter(
             (message) =>
-              (message.senderID === userId && message.receiverID === selectedChatMateId) ||
-              (message.senderID === selectedChatMateId && message.receiverID === userId)
+              (message.SenderEmail === userEmail && message.receiverEmail === selectedChatMateEmail) ||
+              (message.SenderEmail === selectedChatMateEmail && message.receiverEmail === userEmail)
           );
           filteredData.sort((a, b) => (a.sentAt > b.sentAt ? 1 : -1));
           setChatMessages(filteredData);
-          console.log("chatMessages", chatMessages);
         }
       } catch (error) {
         console.log(error);
@@ -41,30 +40,33 @@ function useChatMessages(selectedChatMateId, userId, token) {
     };
 
     fetchChatMessages();
-  }, [selectedChatMateId, userId, token]);
+  }, [selectedChatMateEmail, userEmail, token]);
 
   return chatMessages;
 }
 
 function Chat(props) {
     const token = localStorage.getItem("token");
-    const userId = decodeJwt(token).userID;
+    const user = JSON.parse(localStorage.getItem("reduxState")).userInfo;
     const [selectedChatMateName, setSelectedChatMateName] = useState(""); 
-    const [selectedChatMateId, setSelectedChatMateId] = useState("");
-    const chatMessages = useChatMessages(selectedChatMateId, userId, token);
+    const [selectedChatMateEmail, setSelectedChatMateEmail] = useState("");
+    const chatMessages = useChatMessages(selectedChatMateEmail, user.email, token);
+    console.log("user.email", user.email)
     
-    useEffect(() => {
-      console.log('selectedUsername', selectedChatMateName);
-    }, [selectedChatMateName]);
+    // useEffect(() => {
+    //   console.log('selectedUsername', selectedChatMateName);
+    // }, [selectedChatMateName]);
   
 
     const handleUserClick = (username) => {
+      console.log("username", username)
       setSelectedChatMateName(username); // Update the selected username in the state
       console.log("selectedUsername", selectedChatMateName)
       // get email of selected username from allUsers
-      const receiverID = props.allusers.filter((user) => user.firstname + " " + user.lastname === username)[0].email;
-      setSelectedChatMateId(receiverID);
-      console.log("receiverId", receiverID) 
+      const receiverEmail = props.allusers.filter((user) => user.firstname + " " + user.lastname === username)[0].email;
+
+      setSelectedChatMateEmail(receiverEmail);
+      console.log("receiverEmail", receiverEmail) 
     };
     
     const displayAllUsers = () => {
@@ -79,12 +81,13 @@ function Chat(props) {
       // map the filteredData to display all users except the current user
       return filteredData.map(user => {
         const username = user.firstname + " " + user.lastname;
+        console.log("username 1 ", username  )
         return (
           <div key={user.email}>
             <ul className="users">
               <li className="person" data-chat="person1" onClick={() => handleUserClick(username)}>
                 <div className="user">
-                  <img src={user.profilePicture} alt="avatar" className="rounded-circle me-2" id={`avatar${selectedChatMateId}`} />
+                  <img src={user.profilePicture} alt="avatar" className="rounded-circle me-2"  />
                   <span className="status busy"></span>
                 </div>
                 <p className="name-time">
@@ -100,22 +103,23 @@ function Chat(props) {
    
     const  handleMessageSubmit = async (e) => {
       e.preventDefault();
+      
       // get message from input field id id={`submitMessageBtn${selectedUsername}`}
-      const content = document.getElementById(`submitMessageBtn${selectedChatMateId}`).value;
+      const content = document.getElementById(`submitMessageBtn${selectedChatMateEmail}`).value;
       console.log("selectedUsername in submitbutton", selectedChatMateName)
-      console.log("selectedChatMateId in submitbutton", selectedChatMateId)
+      console.log("selectedChatMateEmail in submitbutton", selectedChatMateEmail)
       console.log("content", content)
-      // get email of selectedUsername from allUsers and save to receiverID
-      const receiverID = props.allusers.filter((user) => user.firstname + " " + user.lastname === selectedChatMateName)[0].email;
-      const senderID = userId;
+      // get email of selectedUsername from allUsers and save to ReceiverEmail
+      const receiverEmail = props.allusers.filter((user) => user.firstname + " " + user.lastname === selectedChatMateName)[0].email;
+      const senderEmail = user.email;
       const sentAt = new Date();
       const headers = new Headers();
       headers.append('Authorization', 'Bearer ' + token);
       headers.append('Content-Type', 'application/json');
       const messagedata = {
        "content": content, 
-        "senderID": senderID,
-        "receiverID": receiverID,
+        "senderEmail": senderEmail,
+        "receiverEmail": receiverEmail,
         "sentAt": sentAt
       };  
       try {
@@ -156,7 +160,7 @@ function Chat(props) {
                 <div className="tab-content" id="pills-tabContent">
                   <div className="tab-pane fade" id="pills-inbox" role="tabpanel" aria-labelledby="pills-inbox-tab">
                     <div className="container" id='chatUsers'>
-                      {displayAllUsers()}
+                      {displayAllUsers()} 
                     </div>
                   </div>
                   <div className="tab-pane fade" id="pills-communities" role="tabpanel" aria-labelledby="pills-communities-tab">
@@ -202,7 +206,7 @@ function Chat(props) {
                 <span>To: <span className="name" id="chatUsernameTitle">{selectedChatMateName}</span></span>
               </div>
               <div className="chat-container" id="chatArea">
-               {chatMessages.map(message => {
+               { chatMessages.map(message => {
                  const sentAt = new Date(message.sentAt).toLocaleString('en-US', {
                   day: 'numeric',
                   month: 'short',
@@ -210,7 +214,7 @@ function Chat(props) {
                   hour: 'numeric',
                   minute: 'numeric'
                 });
-                 if (message.senderID === userId) {
+                 if (message.senderEmail === user.email) {
                    return (
                     <ul className="chatview-box chatContainerScroll" id='chatmessagesSelectedChatMate'>
                       <li className="chat-left">
@@ -230,7 +234,7 @@ function Chat(props) {
                         <li className="chat-left">
                           <div className="chat-avatar">
                             <Avatar />
-                            <div className="chat-name">{message.receiverID}</div>
+                            <div className="chat-name">{message.receiverEmail}</div>
                           </div>
                           <div className="chat-text">{message.content}</div>
                           <div className="chat-hour">{sentAt} <span className="fa fa-check-circle"></span></div>
@@ -241,8 +245,8 @@ function Chat(props) {
                 })}
               </div>
               <div className="form-group mt-3 mb-0" id='chatroomMessageArea'>
-                <form className="chatroom-message" id={`chatroom-message${userId}`}>
-                  <textarea className="form-control" rows="3"  id={`submitMessageBtn${selectedChatMateId}`} placeholder={`Message @${selectedChatMateName}`}></textarea>
+                <form className="chatroom-message" id={`chatroom-message${user.email}`}>
+                  <textarea className="form-control" rows="3"  id={`submitMessageBtn${selectedChatMateEmail}`} placeholder={`Message @${selectedChatMateName}`}></textarea>
                   <button type="submit" className="btn btn-primary" onClick={handleMessageSubmit}>Send</button>
                 </form>
               </div>
