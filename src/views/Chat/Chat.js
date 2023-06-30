@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import '../Chat/Chat.css';
 import Avatar from '../../components/Avatar/Avatar';
 import SearchbarChat from '../../components/Searchbar/SearchbarChat';
@@ -8,60 +8,89 @@ import { decodeJwt } from '../../components/Card/PostCard';
 function Chat(props) {
     const token = localStorage.getItem("token");
     const userId = decodeJwt(token).userID;
-    console.log("userId chat", userId);
-    console.log("token chat", token);
-  const displayAllUsers = () => {
+    const [selectedChatMateName, setSelectedChatMateName] = useState(""); 
+    const [selectedChatMateId, setChosenChatMateId] = useState("");
     const allusers = props.allusers;
-    if (!allusers) {
-      return null;
-    }
-    // save all users except the current user to a variable called filteredData
-    let filteredData = allusers.filter((user) => user.email !== props.userInfo.email);
+    
+    useEffect(() => {
+      console.log('selectedUsername', selectedChatMateName);
+    }, [selectedChatMateName]);
+  
 
-    // save all users that the current user has chatted with to a variable called chatUsers. fetch from database
-    let chatUsers = [];
-    const fetchChatUsers = async () => {
-        const headers = new Headers();
-        headers.append('Authorization', 'Bearer ' + token);
-        headers.append('Content-Type', 'application/json');
-    try {
-        const response = await fetch("http://localhost:8080/messages",{ 
-            method: 'GET',
-            headers:headers,
-        });
-        if (response.ok) {
-            const data = await response.json();
-            console.log("data", data);
-        } else {
-            console.log("error");
-        } 
-    } catch (error) {
-        console.log(error);
-    }
+    const handleUserClick = (username) => {
+      setSelectedChatMateName(username); // Update the selected username in the state
+      console.log("selectedUsername", selectedChatMateName)
+      // get email of selected username from allUsers
+      const receiverID = allusers.filter((user) => user.firstname + " " + user.lastname === username)[0].email;
+      setChosenChatMateId(receiverID);
     };
-    fetchChatUsers();
-    // sort the filteredData by firstname
-    filteredData.sort((a, b) => (a.firstname > b.firstname) ? 1 : -1);
-    // map the filteredData to display all users except the current user
-    return filteredData.map(user => {
-      const username = user.firstname + " " + user.lastname;
-      return (
-        <div key={user.email}>
-          <ul className="users">
-            <li className="person" data-chat="person1">
-              <div className="user">
-                <img src={user.profilePicture} alt="avatar" className="rounded-circle me-2" id="avatar" />
-                <span className="status busy"></span>
-              </div>
-              <p className="name-time">
-                <span className="name">{username}</span>
-              </p>
-            </li>
-          </ul>
-        </div>
-      );
-    });
-  };
+    
+    const displayAllUsers = () => {
+      // this will be users that are followers of current on. now it has all
+        if (!allusers) {
+          return null;
+        }
+      // save all users except the current user to a variable called filteredData
+      let filteredData = allusers.filter((user) => user.email !== props.userInfo.email);
+      // sort the filteredData by firstname
+      filteredData.sort((a, b) => (a.firstname > b.firstname) ? 1 : -1);    
+      // map the filteredData to display all users except the current user
+      return filteredData.map(user => {
+        const username = user.firstname + " " + user.lastname;
+        return (
+          <div key={user.email}>
+            <ul className="users">
+              <li className="person" data-chat="person1" onClick={() => handleUserClick(username)}>
+                <div className="user">
+                  <img src={user.profilePicture} alt="avatar" className="rounded-circle me-2" id={`avatar${selectedChatMateId}`} />
+                  <span className="status busy"></span>
+                </div>
+                <p className="name-time">
+                  <span className="name">{username}</span>
+                </p>
+              </li>
+            </ul>
+          </div>
+        );
+      });
+    };
+
+   
+
+    const  handleMessageSubmit = async (e) => {
+      e.preventDefault();
+      // get message from input field id id={`submitMessageBtn${selectedUsername}`}
+      const content = document.getElementById(`submitMessageBtn${selectedChatMateId}`).value;
+      console.log("selectedUsername in submitbutton", selectedChatMateName)
+      console.log("selectedChatMateId in submitbutton", selectedChatMateId)
+      console.log("content", content)
+      // get email of selectedUsername from allUsers and save to receiverID
+      const receiverID = allusers.filter((user) => user.firstname + " " + user.lastname === selectedChatMateName)[0].email;
+      const senderID = userId;
+      const sentAt = new Date();
+      const headers = new Headers();
+      headers.append('Authorization', 'Bearer ' + token);
+      headers.append('Content-Type', 'application/json');
+      const messagedata = {
+       "content": content, 
+        "senderID": senderID,
+        "receiverID": receiverID,
+        "sentAt": sentAt
+      };  
+      try {
+        const response = await fetch ("http://localhost:8080/sendmessage", {
+          method: "POST",
+          headers: headers,
+          body: JSON.stringify(messagedata)
+        });
+        if (!response.ok) {
+          throw new Error('Error occurred while sending message ');
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+  
   return (
     <div>
       <Topnav userInfo={props.userInfo} username={props.username} allusers={props.allusers} />
@@ -128,10 +157,10 @@ function Chat(props) {
           <div className="col-12 col-lg-6 pb-5 p-3">
             <div className="d-flex flex-column justify-content-center w-100">
               <div className="selected-user">
-                <span>To: <span className="name" id="chatUsernameTitle">Emily Russell</span></span>
+                <span>To: <span className="name" id="chatUsernameTitle">{selectedChatMateName}</span></span>
               </div>
               <div className="chat-container" id="chatArea">
-                <ul className="chatview-box chatContainerScroll" id='chatmessagesSelectedChatMate'>
+                <ul className="chatview-box chatContainerScroll" id={`chatmessages${selectedChatMateId}`}>
                   <li className="chat-left">
                     <div className="chat-avatar">
                       <Avatar />
@@ -141,21 +170,12 @@ function Chat(props) {
                       <br />How can I help you today?</div>
                     <div className="chat-hour">08:55 <span className="fa fa-check-circle"></span></div>
                   </li>
-                  <li className="chat-right">
-                    <div className="chat-hour">08:56 <span className="fa fa-check-circle"></span></div>
-                    <div className="chat-text">Hi, Russell
-                      <br /> I need more information about the Developer Plan.</div>
-                    <div className="chat-avatar">
-                      <Avatar />
-                      <div className="chat-name">Sam</div>
-                    </div>
-                  </li>
-                  {/* Rest of the chat messages */}
                 </ul>
               </div>
               <div className="form-group mt-3 mb-0" id='chatroomMessageArea'>
-                <form className="chatroom-message" id={`chatroom-message${props.username}`}>
-                  <textarea className="form-control" rows="3" id={`messageSubmit${props.username}`} placeholder="Message @xxx"></textarea>
+                <form className="chatroom-message" id={`chatroom-message${userId}`}>
+                  <textarea className="form-control" rows="3"  id={`submitMessageBtn${selectedChatMateId}`} placeholder={`Message @${selectedChatMateName}`}></textarea>
+                  <button type="submit" className="btn btn-primary" onClick={handleMessageSubmit}>Send</button>
                 </form>
               </div>
             </div>

@@ -2,6 +2,7 @@ package database
 
 import (
 	"database/sql"
+	"fmt"
 	u "socialnetwork/utils"
 	"time"
 
@@ -79,20 +80,22 @@ func AddMessage(message *MessageResponse) error {
 }
 
 func GetMessagesByUserID(userID string) ([]MessageResponse, error) {
+	fmt.Println("userID in get messagesbyuserid", userID)
 	db, err := sql.Open("sqlite3", "./socialnetwork.db")
 	if err != nil {
 		return nil, err
 	}
 	defer db.Close()
 
-	// Get all messages where userID is either sender or receiver
+	// if userID is either SenderID or ReceiverID, get the messages
 	query := `
 		SELECT MessageID, SenderID, ReceiverID, GroupChatID, Content, Types, SentAt, SeenAt
 		FROM Messages
 		WHERE SenderID = ? OR ReceiverID = ?;`
 
-	rows, err := db.Query(query, userID)
+	rows, err := db.Query(query, userID, userID)
 	if err != nil {
+		fmt.Println("error in get messages by user id", err)
 		return nil, err
 	}
 	defer rows.Close()

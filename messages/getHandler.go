@@ -42,12 +42,9 @@ func GetMessagesHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	// Create a response object containing the messages
-	response := map[string]interface{}{
-		"messages": messages,
-	}
+
 	// return messages
-	responseJSON, err := json.Marshal(response)
+	responseJSON, err := json.Marshal(messages)
 	if err != nil {
 		fmt.Println("Error encoding messages")
 		http.Error(w, err.Error(), http.StatusInternalServerError)
