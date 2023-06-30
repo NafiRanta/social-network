@@ -23,8 +23,8 @@ function PostCard(props) {
   const [customPosts, setCustomPosts] = useState([]);
   const token = localStorage.getItem("token");
   const userId = decodeJwt(token).userID;
-  console.log("userId", userId);
-  console.log("token", token);
+//  console.log("userId", userId);
+  //console.log("token", token);
 
   useEffect(() => {
     const GetUserPosts = async (e) => {

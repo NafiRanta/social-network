@@ -10,10 +10,12 @@ import (
 	a "socialnetwork/authentication"
 	c "socialnetwork/comments"
 	d "socialnetwork/database"
+	m "socialnetwork/messages"
 	p "socialnetwork/posts"
 	user "socialnetwork/users"
 	u "socialnetwork/utils"
 	ws "socialnetwork/websocket"
+
 	"time"
 )
 
@@ -58,6 +60,10 @@ func Start() error {
 	//handle comments
 	router.HandleFunc("/addcomment", c.AddCommentHandler)
 	router.HandleFunc("/getcomments", c.GetCommentsHandler)
+
+	//handle messages
+	router.HandleFunc("/messages", m.GetMessagesHandler)
+	router.HandleFunc("/sendmessage", m.AddMessagesHandler)
 
 	// router.HandleFunc("/websocket", ws)
 	handler := u.CorsMiddleware(router)

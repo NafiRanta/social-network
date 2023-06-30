@@ -85,10 +85,11 @@ func GetMessagesByUserID(userID string) ([]MessageResponse, error) {
 	}
 	defer db.Close()
 
+	// Get all messages where userID is either sender or receiver
 	query := `
 		SELECT MessageID, SenderID, ReceiverID, GroupChatID, Content, Types, SentAt, SeenAt
 		FROM Messages
-		WHERE ReceiverID = ?;`
+		WHERE SenderID = ? OR ReceiverID = ?;`
 
 	rows, err := db.Query(query, userID)
 	if err != nil {

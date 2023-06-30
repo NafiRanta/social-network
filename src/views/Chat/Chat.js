@@ -3,15 +3,47 @@ import '../Chat/Chat.css';
 import Avatar from '../../components/Avatar/Avatar';
 import SearchbarChat from '../../components/Searchbar/SearchbarChat';
 import Topnav from '../Topnav';
+import { decodeJwt } from '../../components/Card/PostCard';
 
 function Chat(props) {
+    const token = localStorage.getItem("token");
+    const userId = decodeJwt(token).userID;
+    console.log("userId chat", userId);
+    console.log("token chat", token);
   const displayAllUsers = () => {
     const allusers = props.allusers;
     if (!allusers) {
       return null;
     }
-    // return all users except the current user
-    return allusers.filter(user => user.email !== props.userInfo.email).map(user => {
+    // save all users except the current user to a variable called filteredData
+    let filteredData = allusers.filter((user) => user.email !== props.userInfo.email);
+
+    // save all users that the current user has chatted with to a variable called chatUsers. fetch from database
+    let chatUsers = [];
+    const fetchChatUsers = async () => {
+        const headers = new Headers();
+        headers.append('Authorization', 'Bearer ' + token);
+        headers.append('Content-Type', 'application/json');
+    try {
+        const response = await fetch("http://localhost:8080/messages",{ 
+            method: 'GET',
+            headers:headers,
+        });
+        if (response.ok) {
+            const data = await response.json();
+            console.log("data", data);
+        } else {
+            console.log("error");
+        } 
+    } catch (error) {
+        console.log(error);
+    }
+    };
+    fetchChatUsers();
+    // sort the filteredData by firstname
+    filteredData.sort((a, b) => (a.firstname > b.firstname) ? 1 : -1);
+    // map the filteredData to display all users except the current user
+    return filteredData.map(user => {
       const username = user.firstname + " " + user.lastname;
       return (
         <div key={user.email}>
