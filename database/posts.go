@@ -13,7 +13,7 @@ import (
 
 type Post struct {
 	PostID          string
-	AuthorID        string
+	UserName        string
 	Privacy         string
 	IncludedFriends string
 	Content         string
@@ -35,7 +35,7 @@ func CreatePostsTable(db *sql.DB) {
 	postsTable := `
 	CREATE TABLE IF NOT EXISTS Posts (
 		PostID CHAR(36) NOT NULL,
-		AuthorID CHAR(36) NOT NULL,
+		UserName CHAR(36) NOT NULL,
 		Privacy TEXT NOT NULL,
 		IncludedFriends TEXT NULL,
 		Content TEXT NOT NULL,
@@ -58,7 +58,7 @@ func AddPost(post *PostResponse) error {
 	}
 	defer db.Close()
 	query := `
-		INSERT INTO Posts (PostID, AuthorID, Privacy, IncludedFriends, Content, Image, CreateAt)
+		INSERT INTO Posts (PostID, UserName, Privacy, IncludedFriends, Content, Image, CreateAt)
 		VALUES (?, ?, ?, ?, ?, ?, ?)
 	`
 
@@ -118,7 +118,7 @@ func GetPublicPosts() ([]Post, error) {
 
 		err := rows.Scan(
 			&post.PostID,
-			&post.AuthorID,
+			&post.UserName,
 			&post.Privacy,
 			&post.IncludedFriends,
 			&post.Content,
@@ -163,7 +163,7 @@ func GetPrivatePosts(userID string) ([]Post, error) {
 
 		err := rows.Scan(
 			&post.PostID,
-			&post.AuthorID,
+			&post.UserName,
 			&post.Privacy,
 			&post.IncludedFriends,
 			&post.Content,
@@ -216,7 +216,7 @@ func GetCustomPosts(userID string) ([]Post, error) {
 		var post Post
 		err := rows.Scan(
 			&post.PostID,
-			&post.AuthorID,
+			&post.UserName,
 			&post.Privacy,
 			&post.IncludedFriends,
 			&post.Content,

@@ -24,6 +24,7 @@ func AddPostHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid authorization header", http.StatusUnauthorized)
 		return
 	}
+	//getuserName from UserID
 
 	// Parse the request body to get the post information
 	var post d.PostResponse

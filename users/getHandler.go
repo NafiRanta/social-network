@@ -33,11 +33,8 @@ func GetAllUsers(w http.ResponseWriter, r *http.Request) {
 		response[i] = a.UserProfile{
 			FirstName:      user.FirstName,
 			LastName:       user.LastName,
-			Email:          user.Email,
+			UserName:       user.UserName,
 			Privacy:        user.Privacy,
-			DateOfBirth:    user.DateOfBirth,
-			Nickname:       user.Nickname,
-			AboutMe:        user.AboutMe,
 			ProfilePicture: user.Avatar,
 		}
 	}

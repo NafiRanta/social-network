@@ -7,8 +7,11 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"math/rand"
 	"net/http"
 	d "socialnetwork/database"
+	"strconv"
+	"time"
 
 	// "github.com/gofrs/uuid"
 	"github.com/gorilla/sessions"
@@ -19,6 +22,7 @@ var store = sessions.NewCookieStore([]byte("social-network-2023"))
 type UserResponse struct {
 	FirstName      string `json:"firstname"`
 	LastName       string `json:"lastname"`
+	UserName       string `json:"username"`
 	Email          string `json:"email"`
 	Privacy        string `json:"privacy"`
 	DateOfBirth    string `json:"dob"`
@@ -33,11 +37,8 @@ type UserResponse struct {
 type UserProfile struct {
 	FirstName      string `json:"firstname"`
 	LastName       string `json:"lastname"`
-	Email          string `json:"email"`
+	UserName       string `json:"username"`
 	Privacy        string `json:"privacy"`
-	DateOfBirth    string `json:"dob"`
-	Nickname       string `json:"nickname"`
-	AboutMe        string `json:"about"`
 	ProfilePicture string `json:"profilePicture"`
 }
 
@@ -67,6 +68,9 @@ func LogIn(w http.ResponseWriter, r *http.Request) {
 			fmt.Println("user not found")
 			// http.Error(w, "Invalid email or password", http.StatusUnauthorized)
 		}
+		test, _ := d.GetUserByUsername(user.UserName)
+		fmt.Println("getuserbyusername work")
+		fmt.Println(test)
 		// Get the stored password from the database and unhash it
 		storedPassword = user.Password
 		// Compare the stored password with the password received from the front-end
@@ -105,6 +109,7 @@ func LogIn(w http.ResponseWriter, r *http.Request) {
 			userResponse := UserResponse{
 				FirstName:      user.FirstName,
 				LastName:       user.LastName,
+				UserName:       user.UserName,
 				Email:          user.Email,
 				Privacy:        user.Privacy,
 				DateOfBirth:    user.DateOfBirth,
@@ -165,9 +170,13 @@ func Register(w http.ResponseWriter, r *http.Request) {
 			fmt.Println("User does not exist")
 			if user.Avatar == "" {
 				user.Avatar = "data:image/jpeg;base64," + base64.StdEncoding.EncodeToString(SetDefaultImg("defaultImg/default-avatar.jpeg"))
-				fmt.Println(user.Avatar)
+				//fmt.Println(user.Avatar)
 			}
-			err = d.AddUser(d.GetDB(), user.FirstName, user.LastName, user.Email, user.Password, user.DateOfBirth, user.Gender, user.Nickname, user.Avatar, user.AboutMe)
+			rand.Seed(time.Now().UnixNano())
+			randomNumber := rand.Intn(100)
+			user.UserName = user.FirstName + `-` + user.LastName + `-` + strconv.Itoa(randomNumber)
+			fmt.Println(user.UserName)
+			err = d.AddUser(d.GetDB(), user.FirstName, user.LastName, user.UserName, user.Email, user.Password, user.DateOfBirth, user.Gender, user.Nickname, user.Avatar, user.AboutMe)
 			if err != nil {
 				http.Error(w, err.Error(), http.StatusInternalServerError)
 				return

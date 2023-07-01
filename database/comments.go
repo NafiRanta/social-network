@@ -12,20 +12,20 @@ import (
 type Comment struct {
 	CommentID string
 	PostID    string
-	AuthorID  string
+	UserName  string
 	Content   string
 	CreateAt  time.Time
 }
 
 // CommentResponse represents a response object for a comment in JSON format.
 type CommentResponse struct {
-	CommentID        string    `json:"commentID"`
-	PostID           string    `json:"postID"`
-	AuthorID         string    `json:"authorID"`
-	Content          string    `json:"content"`
-	CreateAt         time.Time `json:"createAt"`
-	AuthorFirstName  string    `json:"authorFirstName"`
-	AuthorLastName   string    `json:"authorLastName"`
+	CommentID       string    `json:"commentID"`
+	PostID          string    `json:"postID"`
+	UserName        string    `json:"authorID"`
+	Content         string    `json:"content"`
+	CreateAt        time.Time `json:"createAt"`
+	AuthorFirstName string    `json:"authorFirstName"`
+	AuthorLastName  string    `json:"authorLastName"`
 }
 
 // CreateCommentsTable creates the Comments table in the database if it does not exist.
@@ -34,7 +34,7 @@ func CreateCommentsTable(db *sql.DB) {
 	CREATE TABLE IF NOT EXISTS Comments (
 		CommentID CHAR(36) NOT NULL,
 		PostID CHAR(36) NOT NULL,
-		AuthorID CHAR(36) NOT NULL,
+		UserName CHAR(36) NOT NULL,
 		Content TEXT NOT NULL,
 		CreateAt TIMESTAMP NOT NULL,
 		PRIMARY KEY (CommentID)
@@ -53,7 +53,7 @@ func AddComment(comment *CommentResponse) error {
 	}
 	defer db.Close()
 	query := `
-		INSERT INTO Comments (CommentID, PostID, AuthorID, Content, CreateAt)
+		INSERT INTO Comments (CommentID, PostID, UserName, Content, CreateAt)
 			VALUES (?, ?, ?, ?, ?);`
 
 	// Generate UUID for commentID
@@ -63,7 +63,7 @@ func AddComment(comment *CommentResponse) error {
 	_, err = stmt.Exec(
 		comment.CommentID,
 		comment.PostID,
-		comment.AuthorID,
+		comment.UserName,
 		comment.Content,
 		comment.CreateAt,
 	)
@@ -96,7 +96,7 @@ func GetCommentsByPostID(postID string) ([]CommentResponse, error) {
 		err := rows.Scan(
 			&comment.CommentID,
 			&comment.PostID,
-			&comment.AuthorID,
+			&comment.UserName,
 			&comment.Content,
 			&comment.CreateAt,
 		)
@@ -105,7 +105,7 @@ func GetCommentsByPostID(postID string) ([]CommentResponse, error) {
 		}
 
 		// Fetch the user information based on the authorID
-		author, err := GetUserByID(comment.AuthorID)
+		author, err := GetUserByID(comment.UserName)
 		if err != nil {
 			return nil, err
 		}

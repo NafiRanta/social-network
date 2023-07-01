@@ -13,6 +13,7 @@ type User struct {
 	UserID         string
 	FirstName      string
 	LastName       string
+	UserName       string
 	Email          string
 	Password       string
 	Privacy        string
@@ -32,6 +33,7 @@ func CreateUsersTable(db *sql.DB) {
 		UserID CHAR(36) NOT NULL PRIMARY KEY,
 		FirstName VARCHAR(255) NOT NULL,
 		LastName VARCHAR(255) NOT NULL,
+		UserName VARCHAR(255),
 		Email VARCHAR(255) NOT NULL UNIQUE,
 		Password CHAR(36) NOT NULL,
 		Privacy TEXT NOT NULL DEFAULT 'public',
@@ -50,9 +52,9 @@ func CreateUsersTable(db *sql.DB) {
 }
 
 // add users to users table
-func AddUser(db *sql.DB, FirstName string, LastName string, Email string, Password string, Dob string, Gender string, NickName string, ProfilePicture string, About string) error {
-	records := `INSERT INTO Users (UserID, FirstName, LastName, Email, Password, Privacy, Online, DateOfBirth, Gender, Avatar, Nickname, AboutMe, Follower_IDs, OnFollowing_IDs)
-	            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+func AddUser(db *sql.DB, FirstName string, LastName string, UserName string, Email string, Password string, Dob string, Gender string, NickName string, ProfilePicture string, About string) error {
+	records := `INSERT INTO Users (UserID, FirstName, LastName, UserName, Email, Password, Privacy, Online, DateOfBirth, Gender, Avatar, Nickname, AboutMe, Follower_IDs, OnFollowing_IDs)
+	            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
 	query, err := db.Prepare(records)
 	if err != nil {
 		return err
@@ -61,7 +63,7 @@ func AddUser(db *sql.DB, FirstName string, LastName string, Email string, Passwo
 	// Generate a unique UserID using UUID
 	userID, _ := uuid.NewV4()
 
-	_, err = query.Exec(userID, FirstName, LastName, Email, Password, "public", 0, Dob, Gender, ProfilePicture, NickName, About, "", "")
+	_, err = query.Exec(userID, FirstName, LastName, UserName, Email, Password, "public", 0, Dob, Gender, ProfilePicture, NickName, About, "", "")
 	if err != nil {
 		return err
 	}
@@ -84,7 +86,36 @@ func GetUserByEmail(email string) (*User, error) {
 	defer stmt.Close()
 
 	var user User
-	err = stmt.QueryRow(email).Scan(&user.UserID, &user.FirstName, &user.LastName, &user.Email, &user.Password, &user.Privacy, &user.Online, &user.DateOfBirth, &user.Gender, &user.Avatar, &user.Nickname, &user.AboutMe, &user.FollowerIDs, &user.OnFollowingIDs)
+	err = stmt.QueryRow(email).Scan(&user.UserID, &user.FirstName, &user.LastName, &user.UserName, &user.Email, &user.Password, &user.Privacy, &user.Online, &user.DateOfBirth, &user.Gender, &user.Avatar, &user.Nickname, &user.AboutMe, &user.FollowerIDs, &user.OnFollowingIDs)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			fmt.Println("user not found")
+			return &user, err // user not found
+		} else {
+			fmt.Println("sth else error:", err)
+			return nil, err
+		}
+	}
+	return &user, nil
+}
+
+func GetUserByUsername(username string) (*User, error) {
+	fmt.Println("GetUserByUsername")
+	db, err := sql.Open("sqlite3", "./socialnetwork.db")
+	if err != nil {
+		return nil, err
+	}
+	defer db.Close()
+
+	stmt, err := db.Prepare("SELECT * FROM Users WHERE username = ?")
+	if err != nil {
+		fmt.Println("err from stmt: ", err)
+		return nil, err
+	}
+	defer stmt.Close()
+
+	var user User
+	err = stmt.QueryRow(username).Scan(&user.UserID, &user.FirstName, &user.LastName, &user.UserName, &user.Email, &user.Password, &user.Privacy, &user.Online, &user.DateOfBirth, &user.Gender, &user.Avatar, &user.Nickname, &user.AboutMe, &user.FollowerIDs, &user.OnFollowingIDs)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			fmt.Println("user not found")
@@ -152,6 +183,7 @@ func GetAllPublicUsers() ([]*User, error) {
 			&user.UserID,
 			&user.FirstName,
 			&user.LastName,
+			&user.UserName,
 			&user.Email,
 			&user.Password,
 			&user.Privacy,
@@ -202,6 +234,7 @@ func GetAllPrivateUsers() ([]*User, error) {
 			&user.UserID,
 			&user.FirstName,
 			&user.LastName,
+			&user.UserName,
 			&user.Email,
 			&user.Password,
 			&user.Privacy,

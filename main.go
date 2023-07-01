@@ -49,7 +49,10 @@ func Start() error {
 	router.HandleFunc("/logout", a.LogOut)
 	//handle user
 	router.HandleFunc("/users", user.GetAllUsers)
+	// need one api for display users as friends
+	//router.HandleFunc("/friends, user.GetAllFriends")
 	router.HandleFunc("/updateprivacy", user.ChangePrivacyofUser)
+	//fix- getuserbyusername
 	router.HandleFunc("/getUserByEmail", user.GetUserByEmailHandler)
 	router.HandleFunc("/updatebio", user.UpdateBioOfUser)
 
