@@ -234,7 +234,7 @@ function Chat(props) {
                         <li className="chat-left">
                           <div className="chat-avatar">
                             <Avatar />
-                            <div className="chat-name">{message.receiverEmail}</div>
+                            <div className="chat-name">{message.senderName}</div>
                           </div>
                           <div className="chat-text">{message.content}</div>
                           <div className="chat-hour">{sentAt} <span className="fa fa-check-circle"></span></div>

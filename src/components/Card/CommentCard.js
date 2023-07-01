@@ -4,8 +4,13 @@ import Avatar from "../Avatar/Avatar";
 import "./Card.css";
 
 function CommentCard(props) {
+
+  //const token = cookieString.split("session-name-")[1].split("=")[0];
   const token = localStorage.getItem("token");
   const authorId = decodeJwt(token).userID;
+  console.log("token", token);
+  console.log("decodeJwt(token)", decodeJwt(token));
+  console.log("authorId", authorId);
   const postId = props.PostID;
 
   const [commentInput, setCommentInput] = useState("");

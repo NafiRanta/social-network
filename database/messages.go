@@ -10,6 +10,7 @@ import (
 )
 
 type Message struct {
+	SenderName    string
 	MessageID     string
 	SenderEmail   string
 	ReceiverEmail string
@@ -21,6 +22,7 @@ type Message struct {
 }
 
 type MessageResponse struct {
+	SenderName    string    `json:"senderName"`
 	MessageID     string    `json:"messageID"`
 	SenderEmail   string    `json:"SenderEmail"`
 	ReceiverEmail string    `json:"receiverEmail"`
@@ -34,6 +36,7 @@ type MessageResponse struct {
 func CreateMessagesTable(db *sql.DB) {
 	messagesTable := `
 	CREATE TABLE IF NOT EXISTS Messages (
+		SenderName CHAR(36) NOT NULL,
 		MessageID CHAR(36) NOT NULL,
 		SenderEmail CHAR(36) NOT NULL,
 		ReceiverEmail CHAR(36) NOT NULL,
