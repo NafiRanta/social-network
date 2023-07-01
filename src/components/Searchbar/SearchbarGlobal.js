@@ -38,7 +38,7 @@ function SearchbarGlobal(props) {
       return null; 
     }
     // return all users except the current user in alphabetical order
-    let filteredData = allusers.filter((user) => user.email !== props.userInfo.email);
+    let filteredData = allusers.filter((user) => user.username !== props.userInfo.username);
     filteredData.sort((a, b) => (a.firstname > b.firstname) ? 1 : -1);
     return filteredData.map(user => {
       const username = user.firstname + " " + user.lastname;

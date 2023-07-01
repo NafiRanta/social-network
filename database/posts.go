@@ -23,7 +23,7 @@ type Post struct {
 
 type PostResponse struct {
 	PostID          string    `json:"postID"`
-	AuthorID        string    `json:"authorID"`
+	UserName        string    `json:"userName"`
 	Privacy         string    `json:"privacy"`
 	IncludedFriends []string  `json:"includedFriends"`
 	Content         string    `json:"content"`
@@ -79,7 +79,7 @@ func AddPost(post *PostResponse) error {
 	// Execute the statement with the post values
 	_, err = stmt.Exec(
 		post.PostID,
-		post.AuthorID,
+		post.UserName,
 		post.Privacy,
 		string(includedFriendsJSON),
 		post.Content,
@@ -100,7 +100,7 @@ func GetPublicPosts() ([]Post, error) {
 	}
 	defer db.Close()
 	query := `
-		SELECT PostID, AuthorID, Privacy, IncludedFriends, Content, Image, CreateAt
+		SELECT PostID, UserName, Privacy, IncludedFriends, Content, Image, CreateAt
 		FROM Posts
 		WHERE Privacy = 'public'
 	`
@@ -145,9 +145,9 @@ func GetPrivatePosts(userID string) ([]Post, error) {
 	}
 	defer db.Close()
 	query := `
-		SELECT PostID, AuthorID, Privacy, IncludedFriends, Content, Image, CreateAt
+		SELECT PostID, UserName, Privacy, IncludedFriends, Content, Image, CreateAt
 		FROM Posts
-		WHERE Privacy = 'private' AND AuthorID = ?
+		WHERE Privacy = 'private' AND UserName = ?
 	`
 
 	rows, err := db.Query(query, userID)
@@ -191,7 +191,7 @@ func GetCustomPosts(userID string) ([]Post, error) {
 	}
 	defer db.Close()
 	// Retrieve email from Users table based on userID
-	email := "SELECT Email FROM Users WHERE UserID = ?"
+	email := "SELECT Email FROM Users WHERE UserName = ?"
 	var userEmail string
 	err = db.QueryRow(email, userID).Scan(&userEmail)
 	if err != nil {
@@ -199,7 +199,7 @@ func GetCustomPosts(userID string) ([]Post, error) {
 	}
 
 	query := `
-		SELECT PostID, AuthorID, Privacy, IncludedFriends, Content, Image, CreateAt
+		SELECT PostID, UserName, Privacy, IncludedFriends, Content, Image, CreateAt
 		FROM Posts
 		WHERE Privacy = 'custom'
 	`

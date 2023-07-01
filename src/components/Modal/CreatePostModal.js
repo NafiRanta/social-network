@@ -26,16 +26,13 @@ function CreatePostModal(props) {
   const handlePostSubmit = async (event) => {
     event.preventDefault();
     const token = localStorage.getItem('token');
-    console.log("token: ", token)
-    const authorId = decodeJwt(token).userID;
     const postContent = document.getElementById("postContent").value;
     const postPrivacy = document.getElementById("postPrivacy").value;
     const now = new Date();
-    console.log("now: ", now);
 
     // Create an object with the required properties
     const postData = {
-      authorID: props.userInfo.email,
+      username: props.userInfo.username,
       privacy: postPrivacy,
       IncludedFriends: [],
       content: postContent,

@@ -16,9 +16,9 @@ function Home(props) {
           return null; 
         }
         // show all users except the logged in user
-        return allusers.filter(user => user.email !== props.userInfo.email).map((user, index) => {
+        return allusers.filter(user => user.username !== props.userInfo.username).map((user, index) => {
           return (
-            <div key= {`${ user.email}-${index}`}>
+            <div key= {`${ user.username}-${index}`}>
                 <ul className="list-group">
                     <li className="dropdown-item rounded my-2 px-0" type="button">
                         <div className="d-flex align-items-center mx-2 chat-avatar">

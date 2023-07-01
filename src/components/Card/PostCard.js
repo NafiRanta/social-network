@@ -23,8 +23,6 @@ function PostCard(props) {
   const [customPosts, setCustomPosts] = useState([]);
   const token = localStorage.getItem("token");
   const userId = decodeJwt(token).userID;
-//  console.log("userId", userId);
-  //console.log("token", token);
 
   useEffect(() => {
     const GetUserPosts = async (e) => {
@@ -41,6 +39,7 @@ function PostCard(props) {
 
         if (res.ok) {
           const data = await res.json();
+          console.log("data from get posts", data)
           // get all posts of that matched with userID
           const publicPosts = data.publicPosts;
           const privatePosts = data.privatePosts;
@@ -70,7 +69,7 @@ function PostCard(props) {
     (a, b) => new Date(a.CreateAt) - new Date(b.CreateAt)
   );
   // store posts that matched with userID in an array
-  const userPosts = sortedPosts.filter((post) => post.AuthorID === userId);
+  const userPosts = sortedPosts.filter((post) => post.UserName === props.userInfo.username);
 
   const displayAllPosts = () => {
     // display all posts of that matched with userID

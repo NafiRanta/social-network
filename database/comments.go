@@ -2,6 +2,7 @@ package database
 
 import (
 	"database/sql"
+	"fmt"
 	u "socialnetwork/utils"
 	"time"
 
@@ -21,7 +22,7 @@ type Comment struct {
 type CommentResponse struct {
 	CommentID       string    `json:"commentID"`
 	PostID          string    `json:"postID"`
-	UserName        string    `json:"authorID"`
+	UserName        string    `json:"userName"`
 	Content         string    `json:"content"`
 	CreateAt        time.Time `json:"createAt"`
 	AuthorFirstName string    `json:"authorFirstName"`
@@ -80,7 +81,7 @@ func GetCommentsByPostID(postID string) ([]CommentResponse, error) {
 	defer db.Close()
 
 	query := `
-		SELECT CommentID, PostID, AuthorID, Content, CreateAt
+		SELECT CommentID, PostID, UserName, Content, CreateAt
 		FROM Comments
 		WHERE PostID = ?
 	`
@@ -104,9 +105,11 @@ func GetCommentsByPostID(postID string) ([]CommentResponse, error) {
 			return nil, err
 		}
 
-		// Fetch the user information based on the authorID
-		author, err := GetUserByID(comment.UserName)
+		// Fetch the user information based on the UserName
+		fmt.Println("comment", comment)
+		author, err := GetUserByUsername(comment.UserName)
 		if err != nil {
+			fmt.Println("Error fetching user information for comment author.")
 			return nil, err
 		}
 

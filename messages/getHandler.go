@@ -48,7 +48,7 @@ func GetMessagesHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	// mark messages as seen
-	err = d.MarkMessagesByUserIDAsSeen(user.Email)
+	err = d.MarkMessagesByUsernameAsSeen(user.UserName)
 	if err != nil {
 		fmt.Println("error marking messages as seen")
 		http.Error(w, err.Error(), http.StatusInternalServerError)

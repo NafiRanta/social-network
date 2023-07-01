@@ -53,7 +53,7 @@ func GetAllUsers(w http.ResponseWriter, r *http.Request) {
 	w.Write(jsonData)
 }
 
-func GetUserByEmailHandler(w http.ResponseWriter, r *http.Request) {
+func GetUserByUsernameHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		fmt.Fprint(w, "Method not allowed")
@@ -70,13 +70,13 @@ func GetUserByEmailHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	// Get the email parameter from the query string
-	email := r.URL.Query().Get("email")
-	if email == "" {
+	username := r.URL.Query().Get("senderUsername")
+	if username == "" {
 		http.Error(w, "Missing email parameter", http.StatusBadRequest)
 		return
 	}
 	// Get the user by email from the database
-	user, err := d.GetUserByEmail(email)
+	user, err := d.GetUserByUsername(username)
 	if err != nil {
 		http.Error(w, "Error retrieving user", http.StatusInternalServerError)
 		return

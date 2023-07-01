@@ -34,8 +34,15 @@ func AddPostHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
 		return
 	}
-	// Set the AuthorID to the userID
-	post.AuthorID = userID
+
+	// get userName from userID
+	user, err := d.GetUserByID(userID)
+	if err != nil {
+		fmt.Println("error from getuserbyid:", err)
+		http.Error(w, "Failed to get user", http.StatusInternalServerError)
+		return
+	}
+	post.UserName = user.UserName
 
 	// Add the post to the database
 	err = d.AddPost(&post)

@@ -5,16 +5,16 @@ import SearchbarChat from '../../components/Searchbar/SearchbarChat';
 import Topnav from '../Topnav';
 import { decodeJwt } from '../../components/Card/PostCard';
 
-function useChatMessages(selectedChatMateEmail, userEmail, token) {
+function useChatMessages(selectedChatMateUsername, username, token) {
   const [chatMessages, setChatMessages] = useState([]);
   useEffect(() => {
     const fetchChatMessages = async () => {
       const headers = new Headers();
       headers.append("Authorization", "Bearer " + token);
       headers.append("Content-Type", "application/json");
-    
+    console.log("selectedChatMateUsername", selectedChatMateUsername)
       try {
-        const response = await fetch(`http://localhost:8080/messages?email=${selectedChatMateEmail}`, {
+        const response = await fetch(`http://localhost:8080/messages?senderUsername=${selectedChatMateUsername}`, {
           method: "GET",
           headers: headers,
         });
@@ -28,8 +28,8 @@ function useChatMessages(selectedChatMateEmail, userEmail, token) {
           console.log("data", data)
           const filteredData = data.filter(
             (message) =>
-              (message.SenderEmail === userEmail && message.receiverEmail === selectedChatMateEmail) ||
-              (message.SenderEmail === selectedChatMateEmail && message.receiverEmail === userEmail)
+              (message.SenderUsername === username && message.receiverUsername === selectedChatMateUsername) ||
+              (message.SenderUsername === selectedChatMateUsername && message.receiverUsername === username)
           );
           filteredData.sort((a, b) => (a.sentAt > b.sentAt ? 1 : -1));
           setChatMessages(filteredData);
@@ -40,7 +40,7 @@ function useChatMessages(selectedChatMateEmail, userEmail, token) {
     };
 
     fetchChatMessages();
-  }, [selectedChatMateEmail, userEmail, token]);
+  }, [selectedChatMateUsername, username, token]);
 
   return chatMessages;
 }
@@ -48,50 +48,53 @@ function useChatMessages(selectedChatMateEmail, userEmail, token) {
 function Chat(props) {
     const token = localStorage.getItem("token");
     const user = JSON.parse(localStorage.getItem("reduxState")).userInfo;
-    const [selectedChatMateName, setSelectedChatMateName] = useState(""); 
-    const [selectedChatMateEmail, setSelectedChatMateEmail] = useState("");
-    const chatMessages = useChatMessages(selectedChatMateEmail, user.email, token);
-    console.log("user.email", user.email)
+    const [selectedChatMateUsername, setSelectedChatMateUsername] = useState(""); 
+    const [selectedChatMateDisplayname, setSelectedChatMateDisplayname] = useState(""); 
+    const chatMessages = useChatMessages(selectedChatMateUsername, user.username, token);
+    console.log("user.username", user.username)
+
+    // const handleUserClick = (displayName, username) => {
+    //   console.log("username handleclick", displayName)
+    //   console.log("selectedUsername", selectedChatMateUsername)
+    //   // get email of selected username from allUsers
+    //   console.log("props.allusers", props.allusers)
+    //   const receiverUsername = props.allusers.filter((user) => user.username === username);
+      
+    //   setSelectedChatMateUsername(receiverUsername);
+    //   console.log("receiverUsername", receiverUsername) 
+    // };
     
-    // useEffect(() => {
-    //   console.log('selectedUsername', selectedChatMateName);
-    // }, [selectedChatMateName]);
-  
-
-    const handleUserClick = (username) => {
-      console.log("username", username)
-      setSelectedChatMateName(username); // Update the selected username in the state
-      console.log("selectedUsername", selectedChatMateName)
-      // get email of selected username from allUsers
-      const receiverEmail = props.allusers.filter((user) => user.firstname + " " + user.lastname === username)[0].email;
-
-      setSelectedChatMateEmail(receiverEmail);
-      console.log("receiverEmail", receiverEmail) 
+    const handleUserClick = (displayName, username) => {
+      const receiverUsername = props.allusers.find((user) => user.username === username);
+      setSelectedChatMateDisplayname(displayName)
+      setSelectedChatMateUsername(receiverUsername.username);
     };
     
+
     const displayAllUsers = () => {
       // this will be users that are followers of current on. now it has all
         if (!props.allusers) {
           return null;
         }
       // save all users except the current user to a variable called filteredData
-      let filteredData = props.allusers.filter((user) => user.email !== props.userInfo.email);
+      let filteredData = props.allusers.filter((user) => user.username !== props.userInfo.username);
       // sort the filteredData by firstname
       filteredData.sort((a, b) => (a.firstname > b.firstname) ? 1 : -1);    
       // map the filteredData to display all users except the current user
       return filteredData.map(user => {
-        const username = user.firstname + " " + user.lastname;
-        console.log("username 1 ", username  )
+        console.log("username filtereddata", user.username)
+        const displayName = user.firstname + " " + user.lastname;
+        const username = user.username;
         return (
           <div key={user.email}>
             <ul className="users">
-              <li className="person" data-chat="person1" onClick={() => handleUserClick(username)}>
+              <li className="person" data-chat="person1" onClick={() => handleUserClick(displayName, username)}>
                 <div className="user">
                   <img src={user.profilePicture} alt="avatar" className="rounded-circle me-2"  />
                   <span className="status busy"></span>
                 </div>
                 <p className="name-time">
-                  <span className="name">{username}</span>
+                  <span className="name">{displayName}</span>
                 </p>
               </li>
             </ul>
@@ -105,12 +108,12 @@ function Chat(props) {
       e.preventDefault();
       
       // get message from input field id id={`submitMessageBtn${selectedUsername}`}
-      const content = document.getElementById(`submitMessageBtn${selectedChatMateEmail}`).value;
-      console.log("selectedUsername in submitbutton", selectedChatMateName)
-      console.log("selectedChatMateEmail in submitbutton", selectedChatMateEmail)
+      const content = document.getElementById(`submitMessageBtn${selectedChatMateUsername}`).value;
+      console.log("selectedUsername in submitbutton", selectedChatMateUsername)
+      console.log("selectedChatMateEmail in submitbutton", selectedChatMateUsername)
       console.log("content", content)
       // get email of selectedUsername from allUsers and save to ReceiverEmail
-      const receiverEmail = props.allusers.filter((user) => user.firstname + " " + user.lastname === selectedChatMateName)[0].email;
+      const receiverEmail = props.allusers.filter((user) => user.username === selectedChatMateUsername);
       const senderEmail = user.email;
       const sentAt = new Date();
       const headers = new Headers();
@@ -203,7 +206,7 @@ function Chat(props) {
           <div className="col-12 col-lg-6 pb-5 p-3">
             <div className="d-flex flex-column justify-content-center w-100">
               <div className="selected-user">
-                <span>To: <span className="name" id="chatUsernameTitle">{selectedChatMateName}</span></span>
+                <span>To: <span className="name" id="chatUsernameTitle">{selectedChatMateDisplayname}</span></span>
               </div>
               <div className="chat-container" id="chatArea">
                { chatMessages.map(message => {
@@ -214,7 +217,7 @@ function Chat(props) {
                   hour: 'numeric',
                   minute: 'numeric'
                 });
-                 if (message.senderEmail === user.email) {
+                 if (message.senderUsername === user.userName) {
                    return (
                     <ul className="chatview-box chatContainerScroll" id='chatmessagesSelectedChatMate'>
                       <li className="chat-left">
@@ -234,7 +237,7 @@ function Chat(props) {
                         <li className="chat-left">
                           <div className="chat-avatar">
                             <Avatar />
-                            <div className="chat-name">{message.senderName}</div>
+                            <div className="chat-name">{message.userName}</div>
                           </div>
                           <div className="chat-text">{message.content}</div>
                           <div className="chat-hour">{sentAt} <span className="fa fa-check-circle"></span></div>
@@ -246,7 +249,7 @@ function Chat(props) {
               </div>
               <div className="form-group mt-3 mb-0" id='chatroomMessageArea'>
                 <form className="chatroom-message" id={`chatroom-message${user.email}`}>
-                  <textarea className="form-control" rows="3"  id={`submitMessageBtn${selectedChatMateEmail}`} placeholder={`Message @${selectedChatMateName}`}></textarea>
+                  <textarea className="form-control" rows="3"  id={`submitMessageBtn${selectedChatMateUsername}`} placeholder={`Message @${selectedChatMateDisplayname}`}></textarea>
                   <button type="submit" className="btn btn-primary" onClick={handleMessageSubmit}>Send</button>
                 </form>
               </div>

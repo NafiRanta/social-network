@@ -53,7 +53,8 @@ func Start() error {
 	//router.HandleFunc("/friends, user.GetAllFriends")
 	router.HandleFunc("/updateprivacy", user.ChangePrivacyofUser)
 	//fix- getuserbyusername
-	router.HandleFunc("/getUserByEmail", user.GetUserByEmailHandler)
+	router.HandleFunc("/getUserByUsername", user.GetUserByUsernameHandler)
+	// router.HandleFunc("/getUserByEmail", user.GetUserByEmailHandler)
 	router.HandleFunc("/updatebio", user.UpdateBioOfUser)
 
 	//handle post

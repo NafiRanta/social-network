@@ -4,13 +4,8 @@ import Avatar from "../Avatar/Avatar";
 import "./Card.css";
 
 function CommentCard(props) {
-
-  //const token = cookieString.split("session-name-")[1].split("=")[0];
   const token = localStorage.getItem("token");
   const authorId = decodeJwt(token).userID;
-  console.log("token", token);
-  console.log("decodeJwt(token)", decodeJwt(token));
-  console.log("authorId", authorId);
   const postId = props.PostID;
 
   const [commentInput, setCommentInput] = useState("");
@@ -61,14 +56,13 @@ function CommentCard(props) {
   const handleCommentSubmit = async (e) => {
     e.preventDefault();
     const comment = commentInput;
-
     const now = new Date();
 
     const commentData = {
       content: comment,
       createAt: now,
-      authorId: authorId,
-      postId: postId,
+      userName: props.userInfo.username,
+      postID: postId,
     };
 
     if (!comment) {
