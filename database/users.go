@@ -100,8 +100,6 @@ func GetUserByEmail(email string) (*User, error) {
 }
 
 func GetUserByUsername(username string) (*User, error) {
-	fmt.Println("username: ", username)
-	fmt.Println("GetUserByUsername")
 	db, err := sql.Open("sqlite3", "./socialnetwork.db")
 	if err != nil {
 		return nil, err

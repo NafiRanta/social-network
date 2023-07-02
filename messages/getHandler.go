@@ -10,7 +10,7 @@ import (
 
 // getMessagesHandler handles the get messages request
 func GetMessagesHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("get messages handler")
+
 	if r.Method != http.MethodGet {
 		fmt.Println("method not allowed")
 		w.WriteHeader(http.StatusMethodNotAllowed)
@@ -30,16 +30,14 @@ func GetMessagesHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusUnauthorized)
 		return
 	}
-	userEmail := r.URL.Query().Get("email")
-	fmt.Println("userEmail: ", userEmail)
+	username := r.URL.Query().Get("username")
 	// get userEmail by email
-	user, err := d.GetUserByEmail(userEmail)
+	user, err := d.GetUserByUsername(username)
 	if err != nil {
-		fmt.Println("Error getting userEmail")
+		fmt.Println("Error getting usrename")
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	fmt.Println("user from getuserbyemail", user)
 	// get message by userEmail
 	messages, err := d.GetMessagesByUserID(user.UserID)
 	if err != nil {
