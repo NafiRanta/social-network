@@ -171,10 +171,19 @@ func Register(w http.ResponseWriter, r *http.Request) {
 				user.Avatar = "data:image/jpeg;base64," + base64.StdEncoding.EncodeToString(SetDefaultImg("defaultImg/default-avatar.jpeg"))
 				//fmt.Println(user.Avatar)
 			}
+			// generate unique username
 			rand.Seed(time.Now().UnixNano())
 			randomNumber := rand.Intn(100)
 			user.UserName = user.FirstName + `-` + user.LastName + `-` + strconv.Itoa(randomNumber)
-			fmt.Println(user.UserName)
+
+			// format dob
+			dobString := user.DateOfBirth.Format("2006-01-02")
+			dob, err := time.Parse("2006-01-02", dobString)
+			if err != nil {
+				http.Error(w, err.Error(), http.StatusBadRequest)
+				return
+			}
+			user.DateOfBirth = dob
 			err = d.AddUser(d.GetDB(), user.FirstName, user.LastName, user.UserName, user.Email, user.Password, user.DateOfBirth, user.Gender, user.Nickname, user.Avatar, user.AboutMe)
 			if err != nil {
 				http.Error(w, err.Error(), http.StatusInternalServerError)

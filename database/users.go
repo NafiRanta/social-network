@@ -63,8 +63,9 @@ func AddUser(db *sql.DB, FirstName string, LastName string, UserName string, Ema
 	defer query.Close()
 	// Generate a unique UserID using UUID
 	userID, _ := uuid.NewV4()
+	dobFormatted := Dob.Format("2006-01-02 15:04:05")
 
-	_, err = query.Exec(userID, FirstName, LastName, UserName, Email, Password, "public", 0, Dob.Format("2006-01-02 15:04:05"), Gender, ProfilePicture, NickName, About, "", "")
+	_, err = query.Exec(userID, FirstName, LastName, UserName, Email, Password, "public", 0, dobFormatted, Gender, ProfilePicture, NickName, About, "", "")
 	if err != nil {
 		return err
 	}

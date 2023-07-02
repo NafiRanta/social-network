@@ -65,12 +65,11 @@ function RegisterModal({ openModal }) {
       } else if (name === "password") {
         setPassword(value.trim());
       } else if (name === "dob") {
-        const dob = new Date(value);
-        const year = dob.getFullYear().toString().padStart(4, '0');
-        const month = (dob.getMonth() + 1).toString().padStart(2, '0');
-        const day = dob.getDate().toString().padStart(2, '0');
-        const formattedDob = `${year}-${month}-${day}`;
-        console.log("formattedDob", formattedDob)
+        const dob = new Date(value.trim());
+        const year = dob.getFullYear();
+        const month = dob.getMonth() + 1;
+        const day = dob.getDate();
+        const formattedDob = `${year}-${month < 10 ? "0" + month : month}-${day < 10 ? "0" + day : day}`;
         setDob(formattedDob);
       } else if (name === "gender"){
         setGender(value.trim());
@@ -126,7 +125,7 @@ function RegisterModal({ openModal }) {
       } else {
         document.getElementById("registerPasswordErrMsg").innerHTML = "";
       }
-      if (!dob) {
+      if (!dob.trim() === '') {
         console.log("Date of birth is required");
         document.getElementById("registerDobErrMsg").innerHTML = "Date of birth is required";
         validBool = false;
