@@ -78,7 +78,7 @@ func AddMessage(message *MessageResponse) error {
 }
 
 func GetMessagesByUserID(userID string) ([]MessageResponse, error) {
-	fmt.Println("userID in get messagesbyuserid", userID)
+	//fmt.Println("userID in get messagesbyuserid", userID)
 	db, err := sql.Open("sqlite3", "./socialnetwork.db")
 	if err != nil {
 		return nil, err

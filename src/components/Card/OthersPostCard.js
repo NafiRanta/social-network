@@ -104,7 +104,7 @@ function OthersPostCard(props) {
               <p>{post.Content}</p>
               <img src="https://source.unsplash.com/random/12" alt="post image" className="img-fluid rounded"/>
             </div>
-            <CommentCard username={props.username} userInfo={props.userInfo}/>  
+            <CommentCard userDisplayname={props.userDisplayname} userInfo={props.userInfo}/>  
           </div>
         </div>
       )

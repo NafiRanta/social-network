@@ -39,13 +39,13 @@ function Home(props) {
 
     return (
         <div>
-            <Topnav userInfo={props.userInfo} username={props.username} allusers={props.allusers}/>
+            <Topnav userInfo={props.userInfo} userDisplayname={props.userDisplayname} allusers={props.allusers}/>
             <div className="container-fluid">
                 <div className="row justify-content-evenly">
                     <div className="col-12 col-lg-6 pb-5">
                         <div className="d-flex flex-column justify-content-center w-100 mx-auto" id="d-flex-postcontainer-myhomepage">
-                            <CreatePost userInfo={props.userInfo} username={props.username}/>
-                            <PostCard username={props.username} userInfo={props.userInfo}/>
+                            <CreatePost userInfo={props.userInfo} userDisplayname={props.userDisplayname}/>
+                            <PostCard userDisplayname={props.userDisplayname} userInfo={props.userInfo}/>
                         </div>
                     </div>
                     <div className="col-12 col-lg-3">
@@ -55,9 +55,9 @@ function Home(props) {
                                     <div className="my-3 d-flex justify-content-between align-items-center">
                                         <div className="d-flex align-items-center mx-2 chat-avatar">
                                             <div className="position-relative">
-                                                <Avatar userInfo={props.userInfo} username={props.username} />  
+                                                <Avatar userInfo={props.userInfo} userDisplayname={props.userDisplayname} />  
                                             </div>
-                                            <p className="m-0"><strong>{props.username}</strong></p>
+                                            <p className="m-0"><strong>{props.userDisplayname}</strong></p>
                                         </div>
                                     </div>
                                     <hr />

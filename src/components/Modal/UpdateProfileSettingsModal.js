@@ -196,7 +196,7 @@ const handleRemoveAbout = () => {
           console.log("data update user response data", data);
           dispatch({ type: 'SET_USER', payload: data });
         alert("Profile updated");
-        window.location.href = `/profile/${props.username}`;
+        window.location.href = `/profile/${props.userDisplayname}`;
 
       } else {
         console.log("Error:", res.status);

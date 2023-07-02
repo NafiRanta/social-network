@@ -121,7 +121,7 @@ function Topnav(props) {
                     <a href="#" className="text-decoration-none text-dark d-flex align-items-center">
                       <div className="d-flex align-items-center justify-content-evenly">
                         <div className="p-2">
-                          <Avatar username={props.username} userInfo={props.userInfo}/>
+                          <Avatar userDisplayname={props.userDisplayname} userInfo={props.userInfo}/>
                         </div>
                         <div>
                           <p className="fs-7 m-0">Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum unde amet at nulla quae porro.</p>
@@ -141,18 +141,18 @@ function Topnav(props) {
                   id="secondMenu"
                   className="bg-transparent border-0"
                 >
-                  <Avatar username={props.username} userInfo={props.userInfo} />
+                  <Avatar userDisplayname={props.userDisplayname} userInfo={props.userInfo} />
                 </Dropdown.Toggle>
                 <Dropdown.Menu
                   className="dropdown-menu border-0 shadow p-3"
                   aria-labelledby="secondMenu"
                 >
                   <Dropdown.Item as="li" className="my-2 p-1">
-                    <Link to={`/profile/${props.username}`} className="text-decoration-none text-dark d-flex align-items-center">
+                    <Link to={`/profile/${props.userDisplayname}`} className="text-decoration-none text-dark d-flex align-items-center">
                       <div className="rounded-circle d-flex align-items-center justify-content-center mx-2">
-                        <Avatar username={props.username} userInfo={props.userInfo} />
+                        <Avatar username={props.userDisplayname} userInfo={props.userInfo} />
                       </div>
-                      <p className="m-0">{props.username}</p>
+                      <p className="m-0">{props.userDisplayname}</p>
                     </Link>
                   </Dropdown.Item>
                   <Dropdown.Item as="li" className="my-2 p-1">
@@ -169,8 +169,8 @@ function Topnav(props) {
           </div>
         </div>
       </div>
-      <CreatePostModal username={props.username} userInfo={props.userInfo}/>
-      <CreateGroupModal username={props.username} userInfo={props.userInfo}/>
+      <CreatePostModal userDisplayname={props.userDisplayname} userInfo={props.userInfo}/>
+      <CreateGroupModal userDisplayname={props.userDisplayname} userInfo={props.userInfo}/>
     </div>
   );
 }

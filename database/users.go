@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"fmt"
 	u "socialnetwork/utils"
+	"time"
 
 	"github.com/gofrs/uuid"
 )
@@ -18,7 +19,7 @@ type User struct {
 	Password       string
 	Privacy        string
 	Online         int
-	DateOfBirth    string
+	DateOfBirth    time.Time
 	Gender         string
 	Avatar         string
 	Nickname       string
@@ -52,7 +53,7 @@ func CreateUsersTable(db *sql.DB) {
 }
 
 // add users to users table
-func AddUser(db *sql.DB, FirstName string, LastName string, UserName string, Email string, Password string, Dob string, Gender string, NickName string, ProfilePicture string, About string) error {
+func AddUser(db *sql.DB, FirstName string, LastName string, UserName string, Email string, Password string, Dob time.Time, Gender string, NickName string, ProfilePicture string, About string) error {
 	records := `INSERT INTO Users (UserID, FirstName, LastName, UserName, Email, Password, Privacy, Online, DateOfBirth, Gender, Avatar, Nickname, AboutMe, Follower_IDs, OnFollowing_IDs)
 	            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
 	query, err := db.Prepare(records)
@@ -63,7 +64,7 @@ func AddUser(db *sql.DB, FirstName string, LastName string, UserName string, Ema
 	// Generate a unique UserID using UUID
 	userID, _ := uuid.NewV4()
 
-	_, err = query.Exec(userID, FirstName, LastName, UserName, Email, Password, "public", 0, Dob, Gender, ProfilePicture, NickName, About, "", "")
+	_, err = query.Exec(userID, FirstName, LastName, UserName, Email, Password, "public", 0, Dob.Format("2006-01-02 15:04:05"), Gender, ProfilePicture, NickName, About, "", "")
 	if err != nil {
 		return err
 	}

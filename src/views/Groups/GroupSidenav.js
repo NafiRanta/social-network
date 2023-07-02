@@ -53,7 +53,7 @@ function GroupSidenav(props) {
                 </a>
                 
             </li>
-            <CreateGroupModal username={props.username} openModal={openModal}/>
+            <CreateGroupModal userDisplayname={props.userDisplayname} openModal={openModal}/>
             <hr className="m-0" />
         </ul>
     </div>

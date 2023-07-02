@@ -32,25 +32,18 @@ function getCookie(name) {
 function App() {
   const isAuth = useSelector((state) => state.isAuth);
   let conn;
-
   const userInfo = useSelector((state) => state.userInfo);
-  // const isAuth = !!localStorage.getItem("userInfo");
- // const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-  // if isAuth is true, get username from localStorage
-  //const [userInfo, setUserInfo] = useState("");
-  const [username, setUsername] = useState("");
+  const [userDisplayname, setUserDisplayname] = useState("");
   const [email, setEmail] = useState("");
   const [allusers, setAllUsers] = useState([]);
 
   useEffect(() => {
     if (isAuth) {
-      //const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-      const usernameDisplay = userInfo.firstname + " " + userInfo.lastname;
+      const userDisplayname = userInfo.firstname + " " + userInfo.lastname;
       const cookieString = document.cookie; // session-name-0b19be69-f99d-4ce4-ab80-5f053208f212=MTY4NzE3MjEyM3xEdi1CQkFFQ180SUFBUkFCRUFBQUpmLUNBQUVHYzNSeWFXNW5EQThBRFdGMWRHaGxiblJwWTJGMFpXUUVZbTl2YkFJQ0FBRT18gCtLiTcvz5Bk5CId1ybd3bJJUpE7jgHP3JBNtVnO_30=
       const token = cookieString.split("session-name-")[1].split("=")[0]; 
       localStorage.setItem("token", token);
-      setUsername(usernameDisplay);
-     //setUserInfo(userInfo);
+      setUserDisplayname(userDisplayname);
 
 
      setTimeout(() => {
@@ -119,7 +112,7 @@ function App() {
           path="/"
           element={
             <div>
-              <Home userInfo={userInfo} username={username} allusers={allusers}/>
+              <Home userInfo={userInfo} userDisplayname={userDisplayname} allusers={allusers}/>
             </div>
           }
         />
@@ -135,7 +128,7 @@ function App() {
         path="/chat"
         element={
           <div>
-            <Chat userInfo={userInfo} username={username} allusers={allusers}/>
+            <Chat userInfo={userInfo} userDisplayname={userDisplayname} allusers={allusers}/>
           </div>
           } 
       />
@@ -143,7 +136,7 @@ function App() {
        path="/groups"
         element={
           <div>
-            <HomeGroup userInfo={userInfo} username={username} allusers={allusers}/>
+            <HomeGroup userInfo={userInfo} userDisplayname={userDisplayname} allusers={allusers}/>
           </div>
        } 
       />
@@ -151,7 +144,7 @@ function App() {
         path="/allgroups"
         element={
           <div>
-            <AllGroups userInfo={userInfo} username={username} allusers={allusers}/>
+            <AllGroups userInfo={userInfo} userDisplayname={userDisplayname} allusers={allusers}/>
           </div>
        } 
       />
@@ -159,15 +152,15 @@ function App() {
         path="/mygroups"
         element={
           <div>
-            <MyGroups userInfo={userInfo} username={username} allusers={allusers} />
+            <MyGroups userInfo={userInfo} userDisplayname={userDisplayname} allusers={allusers} />
           </div>
        } 
       />
        <Route
-        path="/profile/:username"
+        path="/profile/:userDisplayname"
         element={
           <div>
-            <MyProfile username={username} allusers={allusers} />
+            <MyProfile userDisplayname={userDisplayname} allusers={allusers} />
           </div>
        } 
       />
@@ -175,7 +168,7 @@ function App() {
         path="/singlegroup"
         element={
           <div>
-            <SingleGroup userInfo={userInfo} username={username} allusers={allusers}/>
+            <SingleGroup userInfo={userInfo} userDisplayname={userDisplayname} allusers={allusers}/>
           </div>
        } 
       />
@@ -184,7 +177,7 @@ function App() {
         // pass :username to othersprofile
         element={
           <div>
-            <OthersProfile userInfo={userInfo} username={username} allusers={allusers}/>
+            <OthersProfile userInfo={userInfo} userDisplayname={userDisplayname} allusers={allusers}/>
           </div>
        } 
       /> */}

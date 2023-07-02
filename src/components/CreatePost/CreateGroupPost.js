@@ -7,17 +7,17 @@ function CreateGroupPost(props) {
       <div className="bg-white p-3 mt-3 rounded border shadow" id="bg-white">
           <div className="d-flex" type="button">
               <div className="p-1">
-              <Avatar username={props.username} userInfo={props.userInfo}/>
+              <Avatar userDisplayname={props.userDisplayname} userInfo={props.userInfo}/>
               </div>
               <input 
                 type="text" 
                 className="form-control rounded-pill border-0 bg-gray pointer" 
                 disabled 
-                placeholder={`Post to a group, ${props.username}`} 
+                placeholder={`Post to a group, ${props.userDisplayname}`} 
                 data-bs-toggle="modal" 
                 data-bs-target="#createGroupPostModal"/>
           </div>
-          <CreateGroupPostModal username={props.username} userInfo={props.userInfo} />
+          <CreateGroupPostModal userDisplayname={props.userDisplayname} userInfo={props.userInfo} />
           <hr />
           <div className="d-flex flex-column flex-lg-row mt-3">
             <div className="dropdown-item rounded d-flex align-items-center justify-content-center" type="button">

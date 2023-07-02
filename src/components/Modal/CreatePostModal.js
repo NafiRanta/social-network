@@ -56,7 +56,7 @@ function CreatePostModal(props) {
         throw new Error('Error occurred while creating the post');
       }
       alert("Post created");
-      window.location.href = `/profile/${props.username}`;
+      window.location.href = `/profile/${props.userDisplayname}`;
     } catch (error) {
       console.log("Error:", error);
     }
@@ -82,10 +82,10 @@ function CreatePostModal(props) {
               <div className="d-flex flex-column">
                 <div className="d-flex align-items-center">  
                   <div className="p-2">
-                    <Avatar userInfo={props.userInfo} username={props.username} />
+                    <Avatar userInfo={props.userInfo} userDisplayname={props.userDisplayname} />
                   </div>
                   <div>
-                    <p className="m-0 fw-bold">{props.username}</p>
+                    <p className="m-0 fw-bold">{props.userDisplayname}</p>
                     <select id="postPrivacy" className="form-select border-0 bg-gray w-75 fs-7" aria-label="Default select example">
                     <optgroup label="Choose privacy">
                       <option value="public">Public</option>

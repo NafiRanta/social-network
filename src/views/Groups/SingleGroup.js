@@ -39,7 +39,7 @@ function SingleGroup(props) {
     }, []);
     return (
         <div>
-            <Topnav username={props.username} userInfo={props.userInfo} allusers={props.allusers}/>
+            <Topnav userDisplayname={props.userDisplayname} userInfo={props.userInfo} allusers={props.allusers}/>
             <div className="container-fluid">
                 <div className="bg-white p-3 mt-3 rounded border shadow" id="bg-white">
                     <div className="panel-group profile-cover p-4" style={{ position: 'relative', zIndex: 1 }}>
@@ -83,7 +83,7 @@ function SingleGroup(props) {
                         </div>
                     </div>
                 </div>
-                <CreateEventModal username={props.username} openModal={openModal}/>
+                <CreateEventModal userDisplayname={props.userDisplayname} openModal={openModal}/>
                 <div className="row justify-content-evenly">
                     <div className="col-12 col-lg-3">
                         <div className="d-flex flex-column justify-content-center w-100 mx-auto" id="d-flex-postcontainer-followersbox">
@@ -138,8 +138,8 @@ function SingleGroup(props) {
                     </div>
                     <div className="col-12 col-lg-6 pb-5">
                         <div className="d-flex flex-column justify-content-center w-100 mx-auto" id="d-flex-postcontainer-myprofile">
-                            <CreatePost username={props.username} userInfo={props.userInfo} />
-                            <GroupPostCard username={props.username} userInfo={props.userInfo}/>
+                            <CreatePost userDisplayname={props.userDisplayname} userInfo={props.userInfo} />
+                            <GroupPostCard userDisplayname={props.userDisplayname} userInfo={props.userInfo}/>
                         </div>
                     </div>
                 </div>

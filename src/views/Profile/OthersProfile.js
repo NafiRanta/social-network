@@ -25,7 +25,7 @@ function OthersProfile(props) {
 
   return (
         <div>
-           <Topnav username={props.username} userInfo={props.userInfo} allusers={props.allusers}/>
+           <Topnav userDisplayname={props.userDisplayname} userInfo={props.userInfo} allusers={props.allusers}/>
             <div className="container-fluid">
                 <section className="profileTopnav">
                     <div className="container py-5 h-100">
@@ -194,7 +194,7 @@ function OthersProfile(props) {
                     </div>
                     <div className="col-12 col-lg-6 pb-5">
                         <div className="d-flex flex-column justify-content-center w-100 mx-auto" id="d-flex-postcontainer-myprofile">
-                            <PostCard username={props.username} userInfo={props.userInfo} />
+                            <PostCard userDisplayname={props.userDisplayname} userInfo={props.userInfo} />
                         </div>
                     </div>
                 </div>

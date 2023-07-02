@@ -16,10 +16,10 @@ function CreateGroupPostModal(props) {
                 <div className="d-flex flex-column">
                   <div className="d-flex align-items-center">
                     <div className="p-2">
-                      <Avatar username={props.username} userInfo={props.userInfo}/> 
+                      <Avatar userDisplayname={props.userDisplayname} userInfo={props.userInfo}/> 
                     </div>
                     <div>
-                      <p className="m-0 fw-bold">{props.username}</p>
+                      <p className="m-0 fw-bold">{props.userDisplayname}</p>
                       <select className="form-select border-0 bg-gray w-75 fs-7" aria-label="Default select example" >
                         <option defaultValue="0">Select your groups</option>
                         <option value="1">Ålands köp och sälj </option>

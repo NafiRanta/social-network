@@ -3,7 +3,6 @@ import "./Modal.css";
 import { ValidateEmail, ValidatePassword} from "../../views/Login.js";
 
 function RegisterModal({ openModal }) {
-  //use setStates for the form inputs
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -66,7 +65,13 @@ function RegisterModal({ openModal }) {
       } else if (name === "password") {
         setPassword(value.trim());
       } else if (name === "dob") {
-        setDob(value.trim());
+        const dob = new Date(value);
+        const year = dob.getFullYear().toString().padStart(4, '0');
+        const month = (dob.getMonth() + 1).toString().padStart(2, '0');
+        const day = dob.getDate().toString().padStart(2, '0');
+        const formattedDob = `${year}-${month}-${day}`;
+        console.log("formattedDob", formattedDob)
+        setDob(formattedDob);
       } else if (name === "gender"){
         setGender(value.trim());
       } else if (name === "nickname") {
@@ -121,7 +126,7 @@ function RegisterModal({ openModal }) {
       } else {
         document.getElementById("registerPasswordErrMsg").innerHTML = "";
       }
-      if (dob.trim() === '') {
+      if (!dob) {
         console.log("Date of birth is required");
         document.getElementById("registerDobErrMsg").innerHTML = "Date of birth is required";
         validBool = false;
@@ -162,7 +167,7 @@ function RegisterModal({ openModal }) {
       }
       return validBool;
     }
-
+    console.log("dob 1", dob)
     const HandleRegister = async (event) => {
       event.preventDefault();
       console.log("Register");
@@ -170,6 +175,7 @@ function RegisterModal({ openModal }) {
         console.log("Invalid register form");
         return;
       }
+      
       try {
         const response = await fetch("http://localhost:8080/register", {
           method: "POST",
@@ -179,6 +185,7 @@ function RegisterModal({ openModal }) {
           },
           body: JSON.stringify({firstName, lastName, email, password, dob, gender, nickname, about, profilePicture}),
         });
+        
         if (response.ok) {
           console.log("Register successful");
           document.getElementById("registerForm").reset();

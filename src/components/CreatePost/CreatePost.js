@@ -7,17 +7,17 @@ function CreatePost(props) {
         <div className="bg-white p-3 mt-3 rounded border shadow">
               <div className="d-flex" type="button">
                 <div className="p-1">
-                  <Avatar userInfo={props.userInfo} username={props.username}/>
+                  <Avatar userInfo={props.userInfo} userDisplayname={props.userDisplayname}/>
                 </div>
                 <input 
                   type="text" 
                   className="form-control rounded-pill border-0 bg-gray pointer" 
                   disabled 
-                  placeholder={`What's on your mind, ${props.username}?`}
+                  placeholder={`What's on your mind, ${props.userDisplayname}?`}
                   data-bs-toggle="modal" 
                   data-bs-target="#createPostModal"/>
               </div>
-              <CreatePostModal userInfo={props.userInfo} username={props.username} />
+              <CreatePostModal userInfo={props.userInfo} userDisplayname={props.userDisplayname} />
               <hr />
               <div className="d-flex flex-column flex-lg-row mt-3">
                 <div className="dropdown-item rounded d-flex align-items-center justify-content-center" type="button">

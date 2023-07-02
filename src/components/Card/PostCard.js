@@ -96,7 +96,7 @@ function PostCard(props) {
                 className="rounded-circle me-2"
               />
               <div>
-                <p className="m-0 fw-bold">{props.username}</p>
+                <p className="m-0 fw-bold">{props.userDisplayname}</p>
                 <span className="text-muted fs-7">{formattedDate}</span>
                 <span>{post.PostID}</span>
               </div>
@@ -140,7 +140,7 @@ function PostCard(props) {
               />
             </div>
             <CommentCard
-              username={props.username}
+              userDisplayname={props.userDisplayname}
               userInfo={props.userInfo}
               PostID={post.PostID}
             />

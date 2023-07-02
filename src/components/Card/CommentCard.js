@@ -176,7 +176,7 @@ function CommentCard(props) {
                 ))}
               <form className="d-flex my-1" onSubmit={handleCommentSubmit}>
                 <div>
-                  <Avatar username={props.username} userInfo={props.userInfo} />
+                  <Avatar userDisplayname={props.userDisplayname} userInfo={props.userInfo} />
                 </div>
                 <input
                   type="text"

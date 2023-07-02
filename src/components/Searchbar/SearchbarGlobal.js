@@ -44,7 +44,7 @@ function SearchbarGlobal(props) {
       const username = user.firstname + " " + user.lastname;
       return (
         <div 
-          key={user.email} 
+          key={user.username} 
           className="alert fade show p-1 m-0 d-flex align-items-center justify-content-between" 
           role="alert" 
           onClick={(e) => handleButtonClick(e, user.email, username)}

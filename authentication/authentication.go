@@ -13,25 +13,24 @@ import (
 	"strconv"
 	"time"
 
-	// "github.com/gofrs/uuid"
 	"github.com/gorilla/sessions"
 )
 
 var store = sessions.NewCookieStore([]byte("social-network-2023"))
 
 type UserResponse struct {
-	FirstName      string `json:"firstname"`
-	LastName       string `json:"lastname"`
-	UserName       string `json:"username"`
-	Email          string `json:"email"`
-	Privacy        string `json:"privacy"`
-	DateOfBirth    string `json:"dob"`
-	Gender         string `json:"gender"`
-	Avatar         string `json:"profilePicture"`
-	Nickname       string `json:"nickname"`
-	AboutMe        string `json:"about"`
-	FollowerIDs    string `json:"Follower_IDs"`
-	OnFollowingIDs string `json:"OnFollowing_IDs"`
+	FirstName      string    `json:"firstname"`
+	LastName       string    `json:"lastname"`
+	UserName       string    `json:"username"`
+	Email          string    `json:"email"`
+	Privacy        string    `json:"privacy"`
+	DateOfBirth    time.Time `json:"dob"`
+	Gender         string    `json:"gender"`
+	Avatar         string    `json:"profilePicture"`
+	Nickname       string    `json:"nickname"`
+	AboutMe        string    `json:"about"`
+	FollowerIDs    string    `json:"Follower_IDs"`
+	OnFollowingIDs string    `json:"OnFollowing_IDs"`
 }
 
 type UserProfile struct {

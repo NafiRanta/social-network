@@ -66,5 +66,5 @@ func GetMessagesHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Write the JSON response to the HTTP response writer
 	w.Write(responseJSON)
-	fmt.Println("messages returned")
+	//fmt.Println("messages returned")
 }

@@ -46,7 +46,7 @@ function Chat(props) {
     const [selectedChatMateUsername, setSelectedChatMateUsername] = useState(""); 
     const [selectedChatMateDisplayname, setSelectedChatMateDisplayname] = useState(""); 
     const [senderUsername, setSenderUsername] = useState(props.userInfo.username);
-    const [senderDisplayname, setSenderDisplayname] = useState(props.username);
+    const [senderDisplayname, setSenderDisplayname] = useState(props.userDisplayname);
     
     const handleUserClick = (chatMateDisplayName, chatMateUsername) => {
       const chatMate = props.allusers.find((chatMate) => chatMate.username === chatMateUsername);
@@ -68,7 +68,7 @@ function Chat(props) {
         const chatMatedisplayName = user.firstname + " " + user.lastname;
         const chatMateusername = user.username;
         return (
-          <div key={user.email}>
+          <div key={chatMateusername}>
             <ul className="users">
               <li className="person" data-chat="person1" onClick={() => handleUserClick(chatMatedisplayName, chatMateusername)}>
                 <div className="user">
@@ -116,7 +116,7 @@ function Chat(props) {
 
   return (
     <div>
-      <Topnav userInfo={props.userInfo} username={props.username} allusers={props.allusers} />
+      <Topnav userInfo={props.userInfo} userDisplayname={props.userDisplayname} allusers={props.allusers} />
       <div className="container-fluid">
         <div className="row justify-content-evenly">
           <div className="col-12 col-lg-3 sidebar">
@@ -223,8 +223,14 @@ function Chat(props) {
               </div>
               <div className="form-group mt-3 mb-0" id='chatroomMessageArea'>
                 <form className="chatroom-message" id={`chatroom-message${selectedChatMateUsername}`}>
-                  <textarea className="form-control" rows="3"  id={`submitMessageBtn${selectedChatMateUsername}`} placeholder={`Message @${selectedChatMateDisplayname}`}></textarea>
-                  <button type="submit" className="btn btn-primary" onClick={handleMessageSubmit}>Send</button>
+                  <div className="row">
+                    <div className="col-10">
+                      <textarea className="form-control" rows="3" id={`submitMessageBtn${selectedChatMateUsername}`} placeholder={`Message @${selectedChatMateDisplayname}`}></textarea>
+                    </div>
+                    <div className="col-2 col-sm-2 d-flex align-items-center justify-content-center">
+                      <button type="submit" className="btn btn-primary" onClick={handleMessageSubmit}>Send</button>
+                    </div>
+                  </div>
                 </form>
               </div>
             </div>
