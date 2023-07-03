@@ -19,6 +19,18 @@ export const UpdateUserInfoInLocalStorage = (updatedData) => {
 function MyProfile(props) {
   const dispatch = useDispatch();
     const userInfo = useSelector((state) => state.userInfo);
+
+    // format date of birth to be displayed to dd month yyyy
+    const dob = new Date(userInfo.dateOfBirth).toLocaleDateString('en-US', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+      });
+      const day = dob.split(' ')[1];
+      const month = dob.split(' ')[0];
+      const year = dob.split(' ')[2];
+      const formattedDOB = (`${day} ${month} ${year}`).replace(/,/g, ''); // remove comma from date
+
     const [privacy, setPrivacy] = useState(userInfo.privacy);
     useEffect(() => {
         if (userInfo) {
@@ -160,7 +172,7 @@ function MyProfile(props) {
                                         <span><i className="fas fa-edit"></i> <span className="name">{userInfo.email}</span></span>
                                     </li>
                                     <li className="dropdown-item p-1 rounded">
-                                        <span><i className="fas fa-birthday-cake"></i> <span className="name">{userInfo.dob}</span></span>
+                                        <span><i className="fas fa-birthday-cake"></i> <span className="name">{formattedDOB}</span></span>
                                     </li>
                                     <li className="dropdown-item p-1 rounded">
                                     <button 

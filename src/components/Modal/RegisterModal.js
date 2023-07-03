@@ -65,12 +65,7 @@ function RegisterModal({ openModal }) {
       } else if (name === "password") {
         setPassword(value.trim());
       } else if (name === "dob") {
-        const dob = new Date(value.trim());
-        const year = dob.getFullYear();
-        const month = dob.getMonth() + 1;
-        const day = dob.getDate();
-        const formattedDob = `${year}-${month < 10 ? "0" + month : month}-${day < 10 ? "0" + day : day}`;
-        setDob(formattedDob);
+        setDob(value.trim());
       } else if (name === "gender"){
         setGender(value.trim());
       } else if (name === "nickname") {
@@ -166,10 +161,11 @@ function RegisterModal({ openModal }) {
       }
       return validBool;
     }
-    console.log("dob 1", dob)
+    
     const HandleRegister = async (event) => {
       event.preventDefault();
       console.log("Register");
+      console.log("dob 1", dob)
       if (!validRegisterForm()) {
         console.log("Invalid register form");
         return;
@@ -182,7 +178,16 @@ function RegisterModal({ openModal }) {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({firstName, lastName, email, password, dob, gender, nickname, about, profilePicture}),
+          body: JSON.stringify({
+            firstname: firstName, 
+            lastname: lastName, 
+            email: email, 
+            password: password, 
+            dateOfBirth: dob, 
+            gender: gender, 
+            nickname: nickname, 
+            about: about, 
+            profilePicture: profilePicture}),
         });
         
         if (response.ok) {

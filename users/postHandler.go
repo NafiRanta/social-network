@@ -6,7 +6,6 @@ import (
 	"net/http"
 	a "socialnetwork/authentication"
 	d "socialnetwork/database"
-	"time"
 )
 
 func ChangePrivacyofUser(w http.ResponseWriter, r *http.Request) {
@@ -71,10 +70,10 @@ func UpdateBioOfUser(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("userID", userID)
 	// Parse the request body
 	var requestBody struct {
-		Nickname string    `json:"nickname"`
-		AboutMe  string    `json:"about"`
-		DOB      time.Time `json:"dob"`
-		Gender   string    `json:"gender"`
+		Nickname string `json:"nickname"`
+		AboutMe  string `json:"about"`
+		DOB      string `json:"dob"`
+		Gender   string `json:"gender"`
 	}
 
 	err = json.NewDecoder(r.Body).Decode(&requestBody)

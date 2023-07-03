@@ -6,6 +6,19 @@ import "./Modal.css";
 function UpdateProfileSettingsModal(props) {
   const dispatch = useDispatch();
   const userInfo = useSelector((state) => state.userInfo);
+  
+    // format date of birth to be displayed to dd month yyyy
+    const dateOfBirth = new Date(userInfo.dateOfBirth).toLocaleDateString('en-US', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    });
+    const day = dateOfBirth.split(' ')[1];
+    const month = dateOfBirth.split(' ')[0];
+    const year = dateOfBirth.split(' ')[2];
+    const formattedDOB = (`${day} ${month} ${year}`).replace(/,/g, ''); // remove comma from date
+
+
   const [isDobEditMode, setDobEditMode] = useState(false);
   const [isGenderEditMode, setGenderEditMode] = useState(false);
   const [isNicknameEditMode, setNicknameEditMode] = useState(false);
@@ -16,8 +29,8 @@ function UpdateProfileSettingsModal(props) {
   const [aboutLabel, setAboutLabel] = useState("");
   const [gender, setGender] = useState(userInfo.gender)
   const [genderLabel, setGenderLabel] = useState(userInfo.gender);
-  const [dob, setDob] = useState(userInfo.dob);
-  const [dobLabel, setDobLabel] = useState(userInfo.dob);
+  const [dob, setDob] = useState(formattedDOB);
+  const [dobLabel, setDobLabel] = useState(formattedDOB);
 
   useEffect(() => {
     const nicknamelabel = document.getElementById("nicknameLabel");

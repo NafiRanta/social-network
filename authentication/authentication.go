@@ -19,18 +19,18 @@ import (
 var store = sessions.NewCookieStore([]byte("social-network-2023"))
 
 type UserResponse struct {
-	FirstName      string    `json:"firstname"`
-	LastName       string    `json:"lastname"`
-	UserName       string    `json:"username"`
-	Email          string    `json:"email"`
-	Privacy        string    `json:"privacy"`
-	DateOfBirth    time.Time `json:"dob"`
-	Gender         string    `json:"gender"`
-	Avatar         string    `json:"profilePicture"`
-	Nickname       string    `json:"nickname"`
-	AboutMe        string    `json:"about"`
-	FollowerIDs    string    `json:"Follower_IDs"`
-	OnFollowingIDs string    `json:"OnFollowing_IDs"`
+	FirstName      string `json:"firstname"`
+	LastName       string `json:"lastname"`
+	UserName       string `json:"username"`
+	Email          string `json:"email"`
+	Privacy        string `json:"privacy"`
+	DateOfBirth    string `json:"dateOfBirth"`
+	Gender         string `json:"gender"`
+	Avatar         string `json:"profilePicture"`
+	Nickname       string `json:"nickname"`
+	AboutMe        string `json:"about"`
+	FollowerIDs    string `json:"Follower_IDs"`
+	OnFollowingIDs string `json:"OnFollowing_IDs"`
 }
 
 type UserProfile struct {
@@ -154,6 +154,7 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
+	fmt.Println("Request Body:", r.Body)
 	fmt.Println(&user)
 
 	// Check if email already exists in the database
@@ -176,14 +177,6 @@ func Register(w http.ResponseWriter, r *http.Request) {
 			randomNumber := rand.Intn(100)
 			user.UserName = user.FirstName + `-` + user.LastName + `-` + strconv.Itoa(randomNumber)
 
-			// format dob
-			dobString := user.DateOfBirth.Format("2006-01-02")
-			dob, err := time.Parse("2006-01-02", dobString)
-			if err != nil {
-				http.Error(w, err.Error(), http.StatusBadRequest)
-				return
-			}
-			user.DateOfBirth = dob
 			err = d.AddUser(d.GetDB(), user.FirstName, user.LastName, user.UserName, user.Email, user.Password, user.DateOfBirth, user.Gender, user.Nickname, user.Avatar, user.AboutMe)
 			if err != nil {
 				http.Error(w, err.Error(), http.StatusInternalServerError)
