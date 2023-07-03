@@ -36,7 +36,7 @@ function CreatePostModal(props) {
       privacy: postPrivacy,
       IncludedFriends: [],
       content: postContent,
-      image: "",
+      image: selectedImage,
       createAt: now
     };
     console.log(postData)

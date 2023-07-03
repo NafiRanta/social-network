@@ -31,11 +31,11 @@ func GetAllUsers(w http.ResponseWriter, r *http.Request) {
 	response := make([]a.UserProfile, len(allUsers))
 	for i, user := range allUsers {
 		response[i] = a.UserProfile{
-			FirstName:      user.FirstName,
-			LastName:       user.LastName,
-			UserName:       user.UserName,
-			Privacy:        user.Privacy,
-			ProfilePicture: user.Avatar,
+			FirstName: user.FirstName,
+			LastName:  user.LastName,
+			UserName:  user.UserName,
+			Privacy:   user.Privacy,
+			Avatar:    user.Avatar,
 		}
 	}
 

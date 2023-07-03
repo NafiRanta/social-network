@@ -17,7 +17,7 @@ type Post struct {
 	Privacy         string
 	IncludedFriends string
 	Content         string
-	Image           []byte
+	Image           string
 	CreateAt        time.Time
 }
 
@@ -27,7 +27,7 @@ type PostResponse struct {
 	Privacy         string    `json:"privacy"`
 	IncludedFriends []string  `json:"includedFriends"`
 	Content         string    `json:"content"`
-	Image           []byte    `json:"image"`
+	Image           string    `json:"image"`
 	CreateAt        time.Time `json:"createAt"`
 }
 

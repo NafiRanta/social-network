@@ -187,7 +187,7 @@ function RegisterModal({ openModal }) {
             gender: gender, 
             nickname: nickname, 
             about: about, 
-            profilePicture: profilePicture}),
+            avatar: profilePicture}),
         });
         
         if (response.ok) {

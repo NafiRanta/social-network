@@ -52,10 +52,9 @@ func Start() error {
 	// need one api for display users as friends
 	//router.HandleFunc("/friends, user.GetAllFriends")
 	router.HandleFunc("/updateprivacy", user.ChangePrivacyofUser)
-	//fix- getuserbyusername
 	router.HandleFunc("/getUserByUsername", user.GetUserByUsernameHandler)
-	// router.HandleFunc("/getUserByEmail", user.GetUserByEmailHandler)
 	router.HandleFunc("/updatebio", user.UpdateBioOfUser)
+	router.HandleFunc("/updateavatar", user.UpdateAvatarOfUser)
 
 	//handle post
 	router.HandleFunc("/posts", p.GetPostsHandler)

@@ -1,8 +1,12 @@
 import React, { useState, useRef } from "react";
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import "./Modal.css";
 
-function ChangeProfilePicModal({ closeModal }) {
-  const [profilePicture, setProfilePicture] = useState(null);
+function ChangeProfilePicModal({ closeModal }, props) {
+  const dispatch = useDispatch();
+  const userInfo = useSelector((state) => state.userInfo);
+  const [avatar, setProfilePicture] = useState(null);
   const fileInputRef = useRef();
 
   const handleFileInputChange = (e) => {
@@ -25,9 +29,33 @@ function ChangeProfilePicModal({ closeModal }) {
     setProfilePicture(null);
   };
 
-  const handleSaveProfilePicture = () => {
-    // Logic to save the profile picture
-    closeModal();
+  const handleSaveProfilePicture = async (e) => {
+    e.preventDefault();
+    const token = localStorage.getItem("token");
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
+    headers.append("Authorization", `Bearer ${token}`);
+
+    try {
+      const res  = await fetch ("http://localhost:8080/updateavatar", {
+        "method": "POST",
+        headers: headers,
+        body: JSON.stringify({Avatar: avatar}),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        console.log("Profile Picture Updated");
+        dispatch({ type: 'SET_USER', payload: data });
+        alert("Profile updated");
+        window.location.href = `/profile/${props.userDisplayname}`;
+      } else {
+        console.log("Error updating profile picture");
+      }
+    }
+    catch (err) {
+      console.log(err);
+    }
+
   };
 
   return (
@@ -46,14 +74,14 @@ function ChangeProfilePicModal({ closeModal }) {
           </div>
           <div className="modal-body">
             <div>
-              {profilePicture && (
+              {avatar && (
                 <>
                   <div className="avatar-wrapper">
-                    <img className="profile-pic" src={profilePicture} alt="Profile Picture" />
+                    <img className="profile-pic" src={avatar} alt="Profile Picture" />
                   </div>
                 </>
               )}
-              {!profilePicture && (
+              {!avatar && (
                 <div className="avatar-wrapper">
                   <div className="upload-button" onClick={handleUploadButtonClick}>
                     <i className="fa fa-arrow-circle-up" aria-hidden="true"></i>
@@ -76,6 +104,7 @@ function ChangeProfilePicModal({ closeModal }) {
                     type="button"
                     className="btn btn-primary w-100"
                     data-bs-dismiss="modal"
+                    onClick={handleSaveProfilePicture}
                   >
                     Save
                   </button>

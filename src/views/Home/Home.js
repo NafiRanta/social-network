@@ -6,6 +6,7 @@ import './Home.css'
 import Topnav from '../Topnav';
 
 function Home(props) {
+    console.log("props.userInfo", props.userInfo)
     // show allusers under Contacts
     const displayChatUsers = () => {
         const allusers = props.allusers;
@@ -23,7 +24,7 @@ function Home(props) {
                     <li className="dropdown-item rounded my-2 px-0" type="button">
                         <div className="d-flex align-items-center mx-2 chat-avatar">
                             <div className="position-relative">
-                            <   img src={user.profilePicture} alt="avatar" className="rounded-circle me-2"/>
+                            <   img src={user.avatar} alt="avatar" className="rounded-circle me-2"/>
                                 <span className="position-absolute bottom-0 translate-middle border border-light rounded-circle-sm bg-success p-1" >
                                     <span className="visually-hidden"></span>
                                 </span>

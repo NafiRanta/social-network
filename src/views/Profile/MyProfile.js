@@ -85,7 +85,7 @@ function MyProfile(props) {
                                 <div className="card-body p-4">
                                     <div className="d-flex text-black">
                                         <div className="flex-shrink-0">
-                                            <img src={userInfo.profilePicture}
+                                            <img src={userInfo.avatar}
                                             alt="Generic placeholder image" className="img-fluid"/>
                                             <i
                                                 className="fas fa-images fs-5 text-success pointer position-absolute bottom-0 start-0 ms-2"

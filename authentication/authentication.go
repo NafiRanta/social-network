@@ -1,6 +1,7 @@
 package authentication
 
 import (
+	"bytes"
 	"database/sql"
 	"encoding/base64"
 	"encoding/json"
@@ -26,7 +27,7 @@ type UserResponse struct {
 	Privacy        string `json:"privacy"`
 	DateOfBirth    string `json:"dateOfBirth"`
 	Gender         string `json:"gender"`
-	Avatar         string `json:"profilePicture"`
+	Avatar         string `json:"avatar"`
 	Nickname       string `json:"nickname"`
 	AboutMe        string `json:"about"`
 	FollowerIDs    string `json:"Follower_IDs"`
@@ -34,11 +35,11 @@ type UserResponse struct {
 }
 
 type UserProfile struct {
-	FirstName      string `json:"firstname"`
-	LastName       string `json:"lastname"`
-	UserName       string `json:"username"`
-	Privacy        string `json:"privacy"`
-	ProfilePicture string `json:"profilePicture"`
+	FirstName string `json:"firstname"`
+	LastName  string `json:"lastname"`
+	UserName  string `json:"username"`
+	Privacy   string `json:"privacy"`
+	Avatar    string `json:"avatar"`
 }
 
 //user repsonse after login should not have password, the followers should have name, email, pic
@@ -149,12 +150,31 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err := json.NewDecoder(r.Body).Decode(&user)
+	/* err := json.NewDecoder(r.Body).Decode(&user)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 	fmt.Println("Request Body:", r.Body)
+	fmt.Println(&user) */
+
+	// Read the request body
+	body, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	// Create a new buffer with the request body content
+	buffer := bytes.NewBuffer(body)
+
+	// Decode the request body into the user variable
+	err = json.NewDecoder(buffer).Decode(&user)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	fmt.Println("Request Body:", string(body))
 	fmt.Println(&user)
 
 	// Check if email already exists in the database

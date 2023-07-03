@@ -91,7 +91,7 @@ function PostCard(props) {
           <div className="d-flex justify-content-between">
             <div className="d-flex">
               <img
-                src={props.userInfo.profilePicture}
+                src={props.userInfo.avatar}
                 alt="avatar"
                 className="rounded-circle me-2"
               />
@@ -134,7 +134,7 @@ function PostCard(props) {
             <div>
               <p>{post.Content}</p>
               <img
-                src="https://source.unsplash.com/random/12"
+                src={post.Image}
                 alt="post image"
                 className="img-fluid rounded"
               />

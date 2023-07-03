@@ -52,7 +52,7 @@ func CreateUsersTable(db *sql.DB) {
 }
 
 // add users to users table
-func AddUser(db *sql.DB, FirstName string, LastName string, UserName string, Email string, Password string, Dob string, Gender string, NickName string, ProfilePicture string, About string) error {
+func AddUser(db *sql.DB, FirstName string, LastName string, UserName string, Email string, Password string, Dob string, Gender string, NickName string, Avatar string, About string) error {
 	records := `INSERT INTO Users (UserID, FirstName, LastName, UserName, Email, Password, Privacy, Online, DateOfBirth, Gender, Avatar, Nickname, AboutMe, Follower_IDs, OnFollowing_IDs)
 	            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
 	query, err := db.Prepare(records)
@@ -63,7 +63,7 @@ func AddUser(db *sql.DB, FirstName string, LastName string, UserName string, Ema
 	// Generate a unique UserID using UUID
 	userID, _ := uuid.NewV4()
 
-	_, err = query.Exec(userID, FirstName, LastName, UserName, Email, Password, "public", 0, Dob, Gender, ProfilePicture, NickName, About, "", "")
+	_, err = query.Exec(userID, FirstName, LastName, UserName, Email, Password, "public", 0, Dob, Gender, Avatar, NickName, About, "", "")
 	if err != nil {
 		return err
 	}
@@ -304,23 +304,25 @@ func UpdateUserInfo(user *User) error {
 	return nil
 }
 
-//func GetUserByID(userID string) (*User, error) {}
+func UpdateUserAvatar(user *User) error {
+	db, err := sql.Open("sqlite3", "./socialnetwork.db")
+	if err != nil {
+		return err
+	}
+	defer db.Close()
 
-// Create bcrypt hash from password
-// func HashPassword(password string) string {
-// 	hash, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
-// 	u.CheckErr(err)
-// 	return string(hash)
-// }
+	stmt, err := db.Prepare("UPDATE Users SET Avatar = ? WHERE userID = ?")
+	if err != nil {
+		fmt.Println("error from stmt:", err)
+		return err
+	}
+	defer stmt.Close()
 
-// VerifyPassword checks if the entered password matches the stored bcrypt hash
-// func VerifyPassword(enteredPassword, storedHash string) error {
-// 	// Compare the entered password with the stored hash
-// 	err := bcrypt.CompareHashAndPassword([]byte(storedHash), []byte(enteredPassword))
-// 	if err != nil {
-// 		// Passwords don't match
-// 		return err
-// 	}
-// 	// Passwords match
-// 	return nil
-// }
+	_, err = stmt.Exec(user.Avatar, user.UserID)
+	if err != nil {
+		fmt.Println("error from exec:", err)
+		return err
+	}
+
+	return nil
+}

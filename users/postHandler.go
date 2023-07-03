@@ -1,8 +1,10 @@
 package users
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	a "socialnetwork/authentication"
 	d "socialnetwork/database"
@@ -83,9 +85,9 @@ func UpdateBioOfUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Update the user fields if new values are provided
-	/* if requestBody.DOB == "" {
+	if requestBody.DOB == "" {
 		user.DateOfBirth = requestBody.DOB
-	} */
+	}
 	if requestBody.Gender != "" {
 		user.Gender = requestBody.Gender
 	}
@@ -115,4 +117,58 @@ func UpdateBioOfUser(w http.ResponseWriter, r *http.Request) {
 }
 
 // change avatar
-func ChangeAvatarofUser(w http.ResponseWriter, r *http.Request) {}
+func UpdateAvatarOfUser(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("change avatar of user")
+	if r.Method != "POST" {
+		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
+		return
+	}
+	// get userID from authHeader, which is an object
+	authHeader := r.Header.Get("Authorization")
+	if authHeader == "" {
+		http.Error(w, "Missing Authorization header", http.StatusUnauthorized)
+		return
+	}
+	userID, _ := a.ExtractUserIDFromAuthHeader(authHeader)
+	user, err := d.GetUserByID(userID)
+	if err != nil {
+		fmt.Println("error in getUserByID", err)
+		http.Error(w, "Error retrieving user", http.StatusInternalServerError)
+		return
+	}
+	fmt.Println("userID", userID)
+	body, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	// Create a new buffer with the request body content
+	buffer := bytes.NewBuffer(body)
+	// Parse the request body
+	var requestBody struct {
+		Avatar string `json:"avatar"`
+	}
+	err = json.NewDecoder(buffer).Decode(&requestBody)
+	if err != nil {
+		http.Error(w, "Invalid request body", http.StatusBadRequest)
+		return
+	}
+	fmt.Println("Request Body:", string(body))
+	//fmt.Println("&requestBody", &requestBody)
+	if requestBody.Avatar == "" {
+		user.Avatar = requestBody.Avatar
+	}
+	err = d.UpdateUserAvatar(user)
+	if err != nil {
+		fmt.Println("error in updateUserAvatar", err)
+		http.Error(w, "Error updating user", http.StatusInternalServerError)
+		return
+	}
+	updatedUser, _ := d.GetUserByID(userID)
+	jsonData, _ := json.Marshal(updatedUser)
+	// Respond with success message
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	w.Write(jsonData)
+}

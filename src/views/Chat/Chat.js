@@ -72,7 +72,7 @@ function Chat(props) {
             <ul className="users">
               <li className="person" data-chat="person1" onClick={() => handleUserClick(chatMatedisplayName, chatMateusername)}>
                 <div className="user">
-                  <img src={user.profilePicture} alt="avatar" className="rounded-circle me-2"  />
+                  <img src={user.avatar} alt="avatar" className="rounded-circle me-2"  />
                   <span className="status busy"></span>
                 </div>
                 <p className="name-time">

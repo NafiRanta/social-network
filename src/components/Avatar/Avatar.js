@@ -8,7 +8,7 @@ function Avatar(props) {
     }
 
     return(
-        <img src={props.userInfo.profilePicture} alt="avatar" className="rounded-circle me-2" id="avatar"/>
+        <img src={props.userInfo.avatar} alt="avatar" className="rounded-circle me-2" id="avatar"/>
     )
 }
 
