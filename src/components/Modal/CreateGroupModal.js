@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import "./Modal.css";
 import Avatar from "../Avatar/Avatar";
+import { create } from 'draft-js/lib/CharacterMetadata';
 
 function CreateGroupModal(props) {
   const [selectedNames, setSelectedNames] = useState([]);
@@ -25,6 +26,50 @@ function CreateGroupModal(props) {
     setSelectedNames(updatedNames);
   };
 
+  const handleGroupSubmit = async (event) => {
+    event.preventDefault();
+    const token = localStorage.getItem('token');
+    const groupName = document.getElementById("groupname").value;
+    const groupDescription = document.getElementById("groupdescription").value;
+    const now = new Date();
+    const groupData = {
+      groupName: groupName,
+      groupDescription: groupDescription,
+      groupAdmin: props.userInfo.username,
+      invitedFriends: selectedNames,
+      createAt: now
+    };
+    console.log("groupData", groupData)
+
+    const headers = new Headers();
+    headers.append('Authorization', 'Bearer ' + token);
+    headers.append('Content-Type', 'application/json');
+
+    try {
+      const response = await fetch("http://localhost:8080/creategroup", {
+        method: 'POST',
+        credentials: 'include',
+        headers: headers,
+        body: JSON.stringify(groupData) // Stringify the entire object
+      });
+      if (!response.ok) {
+        throw new Error('Error occurred while creating the group');
+      }
+
+      // fetch the group id
+      const group = await response.json();
+      console.log("group", group);
+      const groupId = group.groupID;
+      console.log("groupId", groupId);
+      alert("Group created");
+     window.location.href = `/singlegroup/${groupId}`;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+
+
   return (
     <div className="modal fade" id="createGroupModal" tabIndex="-1" aria-labelledby="createModalLabel" aria-hidden="true" data-bs-backdrop="false">
       <div className="modal-dialog modal-dialog-centered">
@@ -48,7 +93,7 @@ function CreateGroupModal(props) {
                   <form id="createGroupForm">
                     <input type="text" className="form-control my-3" id="groupname" placeholder="Group Name" />
                     <div>
-                      <textarea cols="30" rows="5" className="form-control my-3 border" placeholder="Group Description"></textarea>
+                      <textarea cols="30" rows="5" className="form-control my-3 border" id="groupdescription" placeholder="Group Description"></textarea>
                     </div>
                     <div>
                       {selectedNames.map((name) => (
@@ -77,7 +122,11 @@ function CreateGroupModal(props) {
           <div className="modal-footer">
             <div className="row w-100">
             <div className="col">
-                <button type="button" className="btn btn-primary w-100">
+                <button 
+                  type="button" 
+                  className="btn btn-primary w-100"
+                  onClick={handleGroupSubmit}
+                  >
                   Create
                 </button>
               </div>

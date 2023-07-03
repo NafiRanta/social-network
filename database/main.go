@@ -17,6 +17,7 @@ func GetDB() *sql.DB {
 	CreatePostsTable(database)
 	CreateCommentsTable(database)
 	CreateMessagesTable(database)
+	CreateGroupsTable(database)
 	// CreatePostsTable(database)
 	// CreatePostLikesTable(database)
 	// CreateCommentsTable(database)

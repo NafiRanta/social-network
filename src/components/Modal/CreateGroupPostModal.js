@@ -3,6 +3,7 @@ import "./Modal.css";
 import Avatar from "../../components/Avatar/Avatar";
 
 function CreateGroupPostModal(props) {
+ 
     return(
         <div className="modal fade" id="createGroupPostModal" tabIndex="-1" aria-labelledby="createModalLabel" aria-hidden="true" data-bs-backdrop="false">
         <div className="modal-dialog modal-dialog-centered">

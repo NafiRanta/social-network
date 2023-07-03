@@ -165,7 +165,7 @@ function App() {
        } 
       />
       <Route
-        path="/singlegroup"
+        path="/singlegroup/:groupid"
         element={
           <div>
             <SingleGroup userInfo={userInfo} userDisplayname={userDisplayname} allusers={allusers}/>
