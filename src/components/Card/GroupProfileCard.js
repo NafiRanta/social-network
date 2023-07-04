@@ -1,71 +1,117 @@
-import React from 'react';
+import React, { useState, useEffect } from "react";
 import './Card.css';
 import { Link } from 'react-router-dom';
+import { set } from "draft-js/lib/DefaultDraftBlockRenderMap";
 function GroupProfileCard(props) {
+    console.log("props", props);
+    console.log("username", props.userInfo?.username)
+    const [username, setUsername] = useState("");
+    const [groupsToDisplay, setGroupsToDisplay] = useState([]);
+    useEffect(() => {
+        const displayUserGroups = async (e) => {
+                const token = localStorage.getItem("token");
+                const headers = new Headers();
+                headers.append("Authorization", "Bearer " + token);
+                headers.append("Content-Type", "application/json");
+                try {
+                    const res = await fetch("http://localhost:8080/getmygroups", {
+                        method: "GET",
+                        headers: headers,
+                    });
+                    if (res.ok) {
+                        const data = await res.json();
+                        console.log("data", data);
+                        const username = props.userInfo?.username;
+                        setUsername(username);
+                        const invitedGroups = data.userMemberGroups;
+                        const adminGroups = data.userAdminGroups
+                        const allGroups = data.allGroups;
+                        ;
 
+                        // add all groups to one array and sort by CreateAt
+                        const allMyGroups = [
+                            ...(invitedGroups || []),
+                            ...(adminGroups|| []),
+                        ];
 
-
-    return (
-        <div className="row1">
-            <div className="cols col-lg-3">
-                <div className="card shadow d-flex justify-content-center align-items-center">
-                    <img src="https://source.unsplash.com/collection/happy-people" className="card-img-top rounded-top" alt="Designer desk" />
-                    <div className="card-body ">   
-                        <h3 className="card-title mt-4"><strong>Ålands köp och sälj</strong></h3>
-                        <p className="card-text">Environmentally friendly, social, completely simple.</p>
-                            <Link
-                                to="/singlegroup" // Specify the desired path to redirect to
-                                className="btn btn-primary btn-sm d-flex justify-content-center align-items-center"
-                                >
-                                View
-                            </Link>
+                        const currentPath = window.location.pathname;
+                        if (currentPath === "/mygroups") {
+                            setGroupsToDisplay(allMyGroups);
+                          } else if (currentPath === "/allgroups") {
+                            setGroupsToDisplay(allGroups);
+                          }
                         
-                    </div>
-                </div>        
+                    } else {
+                        console.log("error");
+                    }
+                } catch (error) {
+                    // Handle error
+                    console.log(error);
+                }
+            };
+        
+            displayUserGroups();
+    }, []);
+
+    const renderGroupActions = (group) => {
+        console.log("group", group);
+        if (window.location.pathname === "/allgroups") {
+          const memberUsernames = JSON.parse(group.MemberUsernames);
+          console.log("group.name", group.GroupName, "memberUsernames", memberUsernames);
+          const isMember = memberUsernames.includes(props.userInfo?.username);
+          console.log("memberUsernames", memberUsernames, isMember);
+          const isAdmin =
+            username && group.Admin === username;
+            console.log("isAdmin", isAdmin);
+    
+          if (isMember || isAdmin) {
+            return (
+              <Link
+                to={`/singlegroup/${group.GroupID}`}
+                className="btn btn-primary btn-sm d-flex justify-content-center align-items-center"
+              >
+                View
+              </Link>
+            );
+          } else {
+            return (
+              <Link
+                to={`/singlegroup/${group.GroupID}`}
+                className="btn btn-primary btn-sm d-flex justify-content-center align-items-center"
+              >
+                Join
+              </Link>
+            );
+          }
+        } else {
+          return (
+            <Link
+              to={`/singlegroup/${group.GroupID}`}
+              className="btn btn-primary btn-sm d-flex justify-content-center align-items-center"
+            >
+              View
+            </Link>
+          );
+        }
+      };
+    
+      return (
+        <div className="row1">
+          {groupsToDisplay.map((group) => (
+            <div className="cols col-lg-3" key={group.GroupID}>
+              <div className="card shadow d-flex justify-content-center align-items-center">
+                <div className="card-body">
+                  <h3 className="card-title">
+                    <strong>{group.GroupName}</strong>
+                  </h3>
+                  <p className="card-text">{group.GroupDescription}</p>
+                  {renderGroupActions(group)}
+                </div>
+              </div>
             </div>
-            <div className="cols col-lg-3">
-                <div className="card shadow d-flex justify-content-center align-items-center">  
-                    <img src="https://source.unsplash.com/collection/happy-people" className="card-img-top rounded-top" alt="Designer desk" />
-                    <div className="card-body ">   
-                        <h3 className="card-title mt-4"><strong>Ålands köp och sälj</strong></h3>
-                        <p className="card-text">Environmentally friendly, social, completely simple.</p>
-                        <a href="#" className="btn btn-primary btn-sm d-flex justify-content-center align-items-center">View</a>
-                    </div>
-                </div>        
-            </div>
-            <div className="cols col-lg-3">
-                <div className="card shadow d-flex justify-content-center align-items-center">
-                    <img src="https://source.unsplash.com/collection/happy-people" className="card-img-top rounded-top" alt="Designer desk" />
-                    <div className="card-body ">   
-                        <h3 className="card-title mt-4"><strong>Ålands köp och sälj</strong></h3>
-                        <p className="card-text">Environmentally friendly, social, completely simple.</p>
-                        <a href="#" className="btn btn-primary btn-sm d-flex justify-content-center align-items-center">View</a>
-                    </div>
-                </div>        
-            </div>
-            <div className="cols col-lg-3">
-                <div className="card shadow d-flex justify-content-center align-items-center">
-                    <img src="https://source.unsplash.com/collection/happy-people" className="card-img-top rounded-top" alt="Designer desk" />
-                    <div className="card-body ">   
-                        <h3 className="card-title mt-4"><strong>Ålands köp och sälj</strong></h3>
-                        <p className="card-text">Environmentally friendly, social, completely simple.</p>
-                        <a href="#" className="btn btn-primary btn-sm d-flex justify-content-center align-items-center">View</a>
-                    </div>
-                </div>        
-            </div>
-            <div className="cols col-lg-3">
-                <div className="card shadow d-flex justify-content-center align-items-center">
-                    <img src="https://source.unsplash.com/collection/happy-people" className="card-img-top rounded-top" alt="Designer desk" />
-                    <div className="card-body ">   
-                        <h3 className="card-title mt-4"><strong>Ålands köp och sälj</strong></h3>
-                        <p className="card-text">Environmentally friendly, social, completely simple.</p>
-                        <a href="#" className="btn btn-primary btn-sm d-flex justify-content-center align-items-center">View</a>
-                    </div>
-                </div>        
-            </div>
-        </div> 
-    )
+          ))}
+        </div>
+      );
 }
 
 export default GroupProfileCard;
-

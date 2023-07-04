@@ -71,6 +71,7 @@ func Start() error {
 
 	//handle groups
 	router.HandleFunc("/creategroup", g.CreateGroupHandler)
+	router.HandleFunc("/getmygroups", g.GetMyGroupsHandler)
 
 	// router.HandleFunc("/websocket", ws)
 	handler := u.CorsMiddleware(router)

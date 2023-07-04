@@ -5,7 +5,6 @@ import CreateGroupModal from '../../components/Modal/CreateGroupModal';
 function GroupSidenav(props) {
     const [modalOpen, setModalOpen] = useState(false);
     const openModal = () => {
-        console.log("open create group modal");
         setModalOpen(true);
     };
     return(
@@ -53,7 +52,7 @@ function GroupSidenav(props) {
                 </a>
                 
             </li>
-            <CreateGroupModal userDisplayname={props.userDisplayname} openModal={openModal}/>
+           {/*  <CreateGroupModal userDisplayname={props.userDisplayname} openModal={openModal} allusers={props.allusers}/> */}
             <hr className="m-0" />
         </ul>
     </div>

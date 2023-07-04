@@ -11,12 +11,12 @@ function AllGroups(props){
             <div className="container-fluid">
                 <div className="row justify-content-evenly">
                     <div className="col-12 col-lg-3">
-                        <GroupSidenav userDisplayname={props.userDisplayname}/>
+                        <GroupSidenav userDisplayname={props.userDisplayname} userInfo={props.userInfo} allusers={props.allusers}/>
                     </div>
                     <div className="col col-lg-9 pb-5 p-3">
                         <div className="d-flex flex-column justify-content-center w-100 " id="d-flex-postcontainer-allGroups">
                             <h5><strong>Discover all groups you can join</strong></h5>
-                            <GroupCard />
+                            <GroupCard userDisplayname={props.userDisplayname} userInfo={props.userInfo} allusers={props.allusers}/>
                         </div>
                     </div>
                     

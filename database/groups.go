@@ -3,6 +3,7 @@ package database
 import (
 	"database/sql"
 	"encoding/json"
+	"fmt"
 	u "socialnetwork/utils"
 	"time"
 
@@ -14,7 +15,6 @@ type Group struct {
 	GroupName        string
 	GroupDescription string
 	Admin            string
-	InvitedFriends   string
 	MemberUsernames  string
 	PostIDs          string
 	EventIDs         string
@@ -26,8 +26,7 @@ type GroupResponse struct {
 	GroupName        string    `json:"groupName"`
 	GroupDescription string    `json:"groupDescription"`
 	Admin            string    `json:"adminID"`
-	InvitedFriends   []string  `json:"invitedFriends"`
-	Members          []string  `json:"memberUsernames"`
+	MemberUsernames  []string  `json:"memberUsernames"`
 	PostIDs          []string  `json:"postIDs"`
 	EventIDs         []string  `json:"eventIDs"`
 	CreateAt         time.Time `json:"createAt"`
@@ -40,8 +39,7 @@ func CreateGroupsTable(db *sql.DB) {
 		GroupName TEXT NOT NULL,
 		GroupDescription TEXT NOT NULL,
 		Admin TEXT NOT NULL,
-		InvitedFriends TEXT,
-		Members TEXT,
+		MemberUsernames TEXT,
 		PostIDs TEXT,
 		EventIDs TEXT,
 		CreateAt TIMESTAMP NOT NULL,
@@ -60,16 +58,12 @@ func AddGroup(group *GroupResponse) error {
 	}
 	defer db.Close()
 	query := `
-	INSERT INTO Groups (GroupID, GroupName, GroupDescription, Admin, InvitedFriends, Members, PostIDs, EventIDs, CreateAt)
-	VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
+	INSERT INTO Groups (GroupID, GroupName, GroupDescription, Admin, MemberUsernames, PostIDs, EventIDs, CreateAt)
+	VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
 
 	group.GroupID = uuid.New().String()
-	invitedFriendsJSON, err := json.Marshal(group.InvitedFriends)
-	if err != nil {
-		return err
-	}
 
-	membersJSON, err := json.Marshal(group.Members)
+	membersJSON, err := json.Marshal(group.MemberUsernames)
 	if err != nil {
 		return err
 	}
@@ -93,7 +87,6 @@ func AddGroup(group *GroupResponse) error {
 		group.GroupName,
 		group.GroupDescription,
 		group.Admin,
-		string(invitedFriendsJSON),
 		string(membersJSON),
 		string(postIDsJSON),
 		string(eventIDsJSON),
@@ -103,4 +96,106 @@ func AddGroup(group *GroupResponse) error {
 		return err
 	}
 	return nil
+}
+
+func GetGroupsByAdminUsername(username string) ([]Group, error) {
+	db, err := sql.Open("sqlite3", "./socialnetwork.db")
+	if err != nil {
+		return nil, err
+	}
+	defer db.Close()
+	query := `SELECT * FROM Groups WHERE Admin = ?`
+	rows, err := db.Query(query, username)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var groups []Group
+	for rows.Next() {
+		var group Group
+		err := rows.Scan(
+			&group.GroupID,
+			&group.GroupName,
+			&group.GroupDescription,
+			&group.Admin,
+			&group.MemberUsernames,
+			&group.PostIDs,
+			&group.EventIDs,
+			&group.CreateAt,
+		)
+		if err != nil {
+			return nil, err
+		}
+		groups = append(groups, group)
+	}
+
+	return groups, nil
+}
+
+func GetGroupsByMembersUsername(username string) ([]Group, error) {
+	db, err := sql.Open("sqlite3", "./socialnetwork.db")
+	if err != nil {
+		return nil, err
+	}
+	defer db.Close()
+
+	query := `SELECT * FROM Groups WHERE MemberUsernames LIKE '%' || ? || '%'`
+	rows, err := db.Query(query, username)
+	if err != nil {
+		fmt.Println("query error", err)
+		return nil, err
+	}
+	defer rows.Close()
+	var groups []Group
+	for rows.Next() {
+		var group Group
+		err := rows.Scan(
+			&group.GroupID,
+			&group.GroupName,
+			&group.GroupDescription,
+			&group.Admin,
+			&group.MemberUsernames,
+			&group.PostIDs,
+			&group.EventIDs,
+			&group.CreateAt,
+		)
+		if err != nil {
+			return nil, err
+		}
+		groups = append(groups, group)
+	}
+	return groups, nil
+}
+
+func GetAllGroups() ([]Group, error) {
+	db, err := sql.Open("sqlite3", "./socialnetwork.db")
+	if err != nil {
+		return nil, err
+	}
+	defer db.Close()
+	quey := `SELECT * FROM Groups`
+	rows, err := db.Query(quey)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var groups []Group
+	for rows.Next() {
+		var group Group
+		err := rows.Scan(
+			&group.GroupID,
+			&group.GroupName,
+			&group.GroupDescription,
+			&group.Admin,
+			&group.MemberUsernames,
+			&group.PostIDs,
+			&group.EventIDs,
+			&group.CreateAt,
+		)
+		if err != nil {
+			return nil, err
+		}
+		groups = append(groups, group)
+	}
+	return groups, nil
 }

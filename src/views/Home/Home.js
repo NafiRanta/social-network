@@ -6,11 +6,9 @@ import './Home.css'
 import Topnav from '../Topnav';
 
 function Home(props) {
-    console.log("props.userInfo", props.userInfo)
     // show allusers under Contacts
     const displayChatUsers = () => {
         const allusers = props.allusers;
-        console.log("allusers", allusers)
         //get all users profilepicture
         
         if (!allusers) {

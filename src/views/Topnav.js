@@ -9,6 +9,7 @@ import CreateGroupModal from '../components/Modal/CreateGroupModal';
 function Topnav(props) {
   //handle logout
   const handleLogout = () => {
+    
     localStorage.removeItem("reduxState");
     sessionStorage.removeItem("userInfo");
     localStorage.removeItem("token");
@@ -170,7 +171,7 @@ function Topnav(props) {
         </div>
       </div>
       <CreatePostModal userDisplayname={props.userDisplayname} userInfo={props.userInfo}/>
-      <CreateGroupModal userDisplayname={props.userDisplayname} userInfo={props.userInfo}/>
+      <CreateGroupModal userDisplayname={props.userDisplayname} userInfo={props.userInfo} allusers={props.allusers}/>
     </div>
   );
 }

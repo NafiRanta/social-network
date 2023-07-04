@@ -1,15 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import "./Modal.css";
 import Avatar from "../Avatar/Avatar";
-import { create } from 'draft-js/lib/CharacterMetadata';
 
 function CreateGroupModal(props) {
+  const [myFriends, setMyFriends] = useState([]); // [{username: "John", displayname: "John Doe"}, {username: "Jane", displayname: "Jane Doe"}
   const [selectedNames, setSelectedNames] = useState([]);
   const [selectedName, setSelectedName] = useState('');
+  const names = myFriends.map((friend) => friend.displayname);
 
-  const names = ['John', 'Jane', 'Bob', 'Alice'];
+  useEffect(() => {
+    const allusers = props.allusers;
+    const filteredData = allusers.filter((user) => user.username !== props.userInfo.username);
+    const updatedFriends = filteredData.map((friend) => ({
+      username: friend.username,
+      displayname: friend.firstname + " " + friend.lastname,
+    }));
+    setMyFriends(updatedFriends);
+  }, [props.allusers, props.userInfo.username]);
+  
+
 
   const handleNameChange = (event) => {
+    // get username of the selected name
     setSelectedName(event.target.value);
   };
 
@@ -31,15 +43,22 @@ function CreateGroupModal(props) {
     const token = localStorage.getItem('token');
     const groupName = document.getElementById("groupname").value;
     const groupDescription = document.getElementById("groupdescription").value;
+   // get usernames of the selected names
+    const selectedUserNames = [];
+    selectedNames.forEach((name) => {
+      const user = myFriends.find((friend) => friend.displayname === name);
+      selectedUserNames.push(user.username);
+    });
+
+    console.log("selectedNames", selectedUserNames)
     const now = new Date();
     const groupData = {
       groupName: groupName,
       groupDescription: groupDescription,
       groupAdmin: props.userInfo.username,
-      invitedFriends: selectedNames,
+      memberUsernames: selectedUserNames,
       createAt: now
     };
-    console.log("groupData", groupData)
 
     const headers = new Headers();
     headers.append('Authorization', 'Bearer ' + token);
@@ -105,7 +124,7 @@ function CreateGroupModal(props) {
                     </div>
                     <select value={selectedName} onChange={handleNameChange} className="form-select form-control my-3">
                       <option disabled value="">
-                        Invite Friends (optional)
+                        Add Friends (optional)
                       </option>
                       {names.filter((name) => !selectedNames.includes(name)).map((name) => (
                         <option key={name} value={name}>
