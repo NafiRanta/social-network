@@ -5,7 +5,6 @@ import "./Card.css";
 
 function CommentCard(props) {
   const token = localStorage.getItem("token");
-  const authorId = decodeJwt(token).userID;
   const postId = props.PostID;
 
   const [commentInput, setCommentInput] = useState("");

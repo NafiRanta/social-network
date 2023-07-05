@@ -76,3 +76,36 @@ func GetMyGroupsHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("groups retrieved successfully")
 
 }
+
+func GetSingleGroupHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("getSingleGroupHandler")
+
+	groupID := r.URL.Query().Get("groupID")
+	if groupID == "" {
+		http.Error(w, "Missing groupID", http.StatusBadRequest)
+		return
+	}
+
+	group, err := d.GetGroupByID(groupID)
+	if err != nil {
+		fmt.Println("error getting group")
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	response := map[string]interface{}{
+		"group": group,
+	}
+
+	// Convert the response to JSON
+	responseJSON, err := json.Marshal(response)
+	if err != nil {
+		http.Error(w, "Failed to marshal response", http.StatusInternalServerError)
+		return
+	}
+
+	// Set the Content-Type header to application/json
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(responseJSON)
+
+}

@@ -53,6 +53,37 @@ function GroupProfileCard(props) {
             displayUserGroups();
     }, []);
 
+    const handleJoinGroup = async (groupId) => {
+        try {
+          const token = localStorage.getItem("token");
+          const headers = new Headers();
+          headers.append("Authorization", "Bearer " + token);
+          headers.append("Content-Type", "application/json");
+    
+          const url = `http://localhost:8080/joingroup?groupID=${groupId}`;
+    
+          const res = await fetch(url, {
+            method: "POST",
+            headers: headers,
+          });
+    
+          if (res.ok) {
+            // Update the component state to reflect the user's membership status in the group
+            setGroupsToDisplay((prevGroups) =>
+              prevGroups.map((group) =>
+                group.GroupID === groupId
+                  ? { ...group, MemberUsernames: [...group.MemberUsernames, username] }
+                  : group
+              )
+            );
+          } else {
+            throw new Error("Failed to join the group.");
+          }
+        } catch (error) {
+          console.log("ERROR",error);
+        }
+      };
+
     const renderGroupActions = (group) => {
         console.log("group", group);
         if (window.location.pathname === "/allgroups") {
@@ -75,12 +106,12 @@ function GroupProfileCard(props) {
             );
           } else {
             return (
-              <Link
-                to={`/singlegroup/${group.GroupID}`}
+                <button
                 className="btn btn-primary btn-sm d-flex justify-content-center align-items-center"
+                onClick={() => handleJoinGroup(group.GroupID)}
               >
                 Join
-              </Link>
+              </button>
             );
           }
         } else {

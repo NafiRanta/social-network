@@ -199,3 +199,85 @@ func GetAllGroups() ([]Group, error) {
 	}
 	return groups, nil
 }
+
+func GetGroupByID(groupID string) ([]GroupResponse, error) {
+	fmt.Println("groupID", groupID)
+	db, err := sql.Open("sqlite3", "./socialnetwork.db")
+	if err != nil {
+		return nil, err
+	}
+	defer db.Close()
+	query := `SELECT * FROM Groups WHERE GroupID = ?`
+	rows, err := db.Query(query, groupID)
+	if err != nil {
+		fmt.Println("query error", err)
+		return nil, err
+	}
+	defer rows.Close()
+	var groups []GroupResponse
+	for rows.Next() {
+		var group GroupResponse
+		var memberUsernames string
+		var postIDs string
+		var eventIDs string
+		err := rows.Scan(
+			&group.GroupID,
+			&group.GroupName,
+			&group.GroupDescription,
+			&group.Admin,
+			&memberUsernames,
+			&postIDs,
+			&eventIDs,
+			&group.CreateAt,
+		)
+		if err != nil {
+			fmt.Println("scan error", err)
+			return nil, err
+		}
+		// Convert the MemberUsernames string to a slice of strings
+		err = json.Unmarshal([]byte(memberUsernames), &group.MemberUsernames)
+		if err != nil {
+			fmt.Println("unmarshal error", err)
+			return nil, err
+		}
+		// Convert the PostIDs string to a slice of strings
+		err = json.Unmarshal([]byte(postIDs), &group.PostIDs)
+		if err != nil {
+			fmt.Println("unmarshal error", err)
+			return nil, err
+		}
+		// Convert the EventIDs string to a slice of strings
+		err = json.Unmarshal([]byte(eventIDs), &group.EventIDs)
+		if err != nil {
+			fmt.Println("unmarshal error", err)
+			return nil, err
+		}
+
+		groups = append(groups, group)
+	}
+	return groups, nil
+}
+
+func AddUserToGroup(groupID string, username string) error {
+	fmt.Println("groupID in addusertogroup", groupID)
+	fmt.Println("username in addusertogroup", username)
+	db, err := sql.Open("sqlite3", "./socialnetwork.db")
+	if err != nil {
+		fmt.Println("open error", err)
+		return err
+	}
+	defer db.Close()
+	// add username to the MemberUsernames slice in the Groups table
+	query := `UPDATE Groups SET MemberUsernames = json_insert(MemberUsernames, '$[#]', ?) WHERE GroupID = ?`
+	stmt, err := db.Prepare(query)
+	if err != nil {
+		fmt.Println("prepare error", err)
+		return err
+	}
+	_, err = stmt.Exec(username, groupID)
+	if err != nil {
+		fmt.Println("exec error", err)
+		return err
+	}
+	return nil
+}
