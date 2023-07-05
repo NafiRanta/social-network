@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import RegisterModal from "../components/Modal/RegisterModal";
 import { useDispatch } from 'react-redux';
+import "./Login.css"
 
 export const ValidateEmail = (email) => {
   // Regular expression for email format validation forbid swedish letters

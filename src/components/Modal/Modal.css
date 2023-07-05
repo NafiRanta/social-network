@@ -35,6 +35,18 @@
     color: #0d6efd !important;
 }
 
+.smallLetters {
+	font-size: 80%;
+	font-style: italic;
+	margin-bottom: 1%;
+	margin-left: 1%;
+}
+
+#DOB {
+	margin-left: 1% !important;
+	margin-top: 10px;
+}
+
 /* .avatar-wrapper {
 	position: relative;
 	display: inline-block;
@@ -56,9 +68,10 @@
 	/* /*  */
 .avatar-wrapper{
 	position: relative;
-	height: 200px;
-	width: 200px;
-	margin: 50px auto;
+	height: 170px;
+	width: 170px;
+	margin: 15px auto;
+	margin-top: 50px;
 	border-radius: 50%;
 	overflow: hidden;
 	box-shadow: 1px 1px 15px -5px black;
@@ -93,9 +106,9 @@
 		height: 100%;
 		width: 100%;
 		.fa-arrow-circle-up{
-			position: absolute;
-			font-size: 234px;
-			top: -17px;
+			position: center;
+			font-size: 200px;
+			margin-top: -16px;
 			left: 0;
 			text-align: center;
 			transition: all .3s ease;

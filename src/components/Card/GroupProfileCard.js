@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import './Card.css';
 import { Link } from 'react-router-dom';
-import { set } from "draft-js/lib/DefaultDraftBlockRenderMap";
+//import { set } from "draft-js/lib/DefaultDraftBlockRenderMap";
 function GroupProfileCard(props) {
     console.log("props", props);
     console.log("username", props.userInfo?.username)

@@ -6,7 +6,7 @@ import GroupPostCard from '../../components/Card/GroupPostCard';
 import CreateEventModal from '../../components/Modal/CreateEventModal';
 import '../../views/Profile/Profile.css';
 import '../../components/Card/Card.css';
-import { set } from 'draft-js/lib/DefaultDraftBlockRenderMap';
+//import { set } from 'draft-js/lib/DefaultDraftBlockRenderMap';
 
 function SingleGroup(props) {
     const token = localStorage.getItem("token");

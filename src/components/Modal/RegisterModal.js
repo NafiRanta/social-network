@@ -154,7 +154,7 @@ function RegisterModal({ openModal }) {
       // if about is longer than 100 characters
       if (about.length > 100) {
         console.log("About is too long");
-        document.getElementById("registerAboutErrMsg").innerHTML = "About is too long";
+        document.getElementById("registerAboutErrMsg").innerHTML = "Exceeds the limit of 100 characters";
         validBool = false;
       } else {
         document.getElementById("registerAboutErrMsg").innerHTML = "";
@@ -251,6 +251,7 @@ function RegisterModal({ openModal }) {
             </div>
               <div className="registerForm-group">
                 <p className="text-muted text-center">Upload Avatar (optional)</p>
+                <div className="smallLetters">* All fields are required unless specified optional</div>
                 <div className="text-danger text-center" id="registerFirstnameErrMsg"></div>
                 <input 
                   className="form-control my-3" 
@@ -291,8 +292,8 @@ function RegisterModal({ openModal }) {
                   required
                   onChange={handleInputChange}
                   />
-                  <h6 >At least 5 characters, containing uppercase, lowercase, number, and special character</h6>
-                <span className="text-muted fs-7">Date of birth</span>
+                  <div className="smallLetters">* At least 5 characters, containing uppercase, lowercase, number, and special character</div>
+                <div className="text-muted fs-7" id="DOB"><h6>Date of birth</h6></div>
                 <div className="text-danger text-center" id="registerDobErrMsg"></div>
                 <input 
                   autoFocus id="dob" 
