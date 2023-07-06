@@ -198,7 +198,7 @@ function App() {
         path="/singlegroup/:groupid"
         element={
           <div>
-            <SingleGroup userInfo={userInfo} userDisplayname={userDisplayname} allusers={allusers}/>
+            <SingleGroup userInfo={userInfo} username={username} userDisplayname={userDisplayname} allusers={allusers} myGroups={myGroups} allgroups={allGroups} />
           </div>
        } 
       />
