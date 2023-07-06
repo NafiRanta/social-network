@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./Modal.css";
 import Avatar from "../../components/Avatar/Avatar";
 
 function CreateGroupPostModal(props) {
- 
+  const [myGroups, setMyGroups] = useState(props.myGroups);
     return(
         <div className="modal fade" id="createGroupPostModal" tabIndex="-1" aria-labelledby="createModalLabel" aria-hidden="true" data-bs-backdrop="false">
         <div className="modal-dialog modal-dialog-centered">
@@ -23,9 +23,11 @@ function CreateGroupPostModal(props) {
                       <p className="m-0 fw-bold">{props.userDisplayname}</p>
                       <select className="form-select border-0 bg-gray w-75 fs-7" aria-label="Default select example" >
                         <option defaultValue="0">Select your groups</option>
-                        <option value="1">Ålands köp och sälj </option>
-                        <option value="2">Marimekko Pre-loved</option>
-                        <option value="3">Gritlab Drink and Socialise</option>
+                        {myGroups.map((group) => (
+                        <option key={group.GroupID} value={group.GroupID}>
+                          {group.GroupName}
+                        </option>
+                      ))}
                       </select>
                     </div>
                   </div>

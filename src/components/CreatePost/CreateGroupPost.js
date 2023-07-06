@@ -17,7 +17,7 @@ function CreateGroupPost(props) {
                 data-bs-toggle="modal" 
                 data-bs-target="#createGroupPostModal"/>
           </div>
-          <CreateGroupPostModal userDisplayname={props.userDisplayname} userInfo={props.userInfo} />
+          <CreateGroupPostModal userDisplayname={props.userDisplayname} userInfo={props.userInfo} myGroups={props.myGroups} allgroups={props.allgroups}/>
           <hr />
           <div className="d-flex flex-column flex-lg-row mt-3">
             <div className="dropdown-item rounded d-flex align-items-center justify-content-center" type="button">

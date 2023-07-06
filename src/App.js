@@ -19,27 +19,24 @@ import AllGroups from "./views/Groups/AllGroups";
 import OthersProfile from "./views/Profile/OthersProfile";
 import SingleEvent from "./views/Events/SingleEvent";
 import SearchbarGlobal from "./components/Searchbar/SearchbarGlobal";
-
-// Retrieve the value of the "token" cookie
-function getCookie(name) {
-  const value = "; " + document.cookie;
-  const parts = value.split("; " + name + "=");
-  if (parts.length === 2) {
-    return parts.pop().split(";").shift();
-  }
-}
+import { set } from "draft-js/lib/DefaultDraftBlockRenderMap";
 
 function App() {
   const isAuth = useSelector((state) => state.isAuth);
   let conn;
   const userInfo = useSelector((state) => state.userInfo);
   const [userDisplayname, setUserDisplayname] = useState("");
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [allusers, setAllUsers] = useState([]);
+  const [myGroups, setMyGroups] = useState([]);
+  const [allGroups, setAllGroups] = useState([]);
 
   useEffect(() => {
     if (isAuth) {
       const userDisplayname = userInfo.firstname + " " + userInfo.lastname;
+      const username = userInfo.username;
+      setUsername(username);
       const cookieString = document.cookie; // session-name-0b19be69-f99d-4ce4-ab80-5f053208f212=MTY4NzE3MjEyM3xEdi1CQkFFQ180SUFBUkFCRUFBQUpmLUNBQUVHYzNSeWFXNW5EQThBRFdGMWRHaGxiblJwWTJGMFpXUUVZbTl2YkFJQ0FBRT18gCtLiTcvz5Bk5CId1ybd3bJJUpE7jgHP3JBNtVnO_30=
       const token = cookieString.split("session-name-")[1].split("=")[0]; 
       localStorage.setItem("token", token);
@@ -105,6 +102,39 @@ function App() {
     }
   }, [isAuth, email]);
 
+  // get all groups that the user is a member of or admin from /getmygroups
+  useEffect(() => {
+    if (isAuth) {
+      const token = localStorage.getItem("token");
+      const headers = new Headers();
+      headers.append("Authorization", "Bearer " + token);
+      headers.append("Content-Type", "application/json");
+      const fetchGroups = async () => {
+        try {
+          const res = await fetch("http://localhost:8080/getmygroups", {
+            method: 'GET',
+            headers: headers,
+          });
+          if (res.ok) {
+            const data = await res.json();
+         // add userMemberGroups and adminGroups to one object
+            const mygroups = [...data.userMemberGroups, ...data.userAdminGroups];
+            setMyGroups(mygroups);
+            setAllGroups(data.allGroups);
+          } else {
+            console.log("error");
+          }
+        } catch (error) {
+          // Handle error
+          console.log(error);
+        }
+      };
+      if (isAuth) {
+        fetchGroups();
+      }
+    }
+  }, [isAuth]);
+
   return (
     <Routes>
       {isAuth ? (
@@ -128,7 +158,7 @@ function App() {
         path="/chat"
         element={
           <div>
-            <Chat userInfo={userInfo} userDisplayname={userDisplayname} allusers={allusers}/>
+            <Chat userInfo={userInfo} username={username} userDisplayname={userDisplayname} allusers={allusers}/>
           </div>
           } 
       />
@@ -136,7 +166,7 @@ function App() {
        path="/groups"
         element={
           <div>
-            <HomeGroup userInfo={userInfo} userDisplayname={userDisplayname} allusers={allusers}/>
+            <HomeGroup userInfo={userInfo} username={username}  userDisplayname={userDisplayname} myGroups={myGroups} allgroups={allGroups} allusers={allusers}/>
           </div>
        } 
       />
@@ -144,7 +174,7 @@ function App() {
         path="/allgroups"
         element={
           <div>
-            <AllGroups userInfo={userInfo} userDisplayname={userDisplayname} allusers={allusers}/>
+            <AllGroups userInfo={userInfo} username={username}  userDisplayname={userDisplayname} myGroups={myGroups} allgroups={allGroups} allusers={allusers}/>
           </div>
        } 
       />
@@ -152,7 +182,7 @@ function App() {
         path="/mygroups"
         element={
           <div>
-            <MyGroups userInfo={userInfo} userDisplayname={userDisplayname} allusers={allusers} />
+            <MyGroups userInfo={userInfo} username={username} userDisplayname={userDisplayname} myGroups={myGroups} allgroups={allGroups} allusers={allusers} />
           </div>
        } 
       />
@@ -160,7 +190,7 @@ function App() {
         path="/profile/:userDisplayname"
         element={
           <div>
-            <MyProfile userDisplayname={userDisplayname} allusers={allusers} />
+            <MyProfile userDisplayname={userDisplayname} username={username} allusers={allusers} />
           </div>
        } 
       />

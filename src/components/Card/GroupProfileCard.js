@@ -3,76 +3,35 @@ import './Card.css';
 import { Link } from 'react-router-dom';
 //import { set } from "draft-js/lib/DefaultDraftBlockRenderMap";
 function GroupProfileCard(props) {
-    console.log("props", props);
-    console.log("username", props.userInfo?.username)
-    const [username, setUsername] = useState("");
+  console.log("props", props);
     const [groupsToDisplay, setGroupsToDisplay] = useState([]);
+    const currentPath = window.location.pathname;
+    
     useEffect(() => {
-        const displayUserGroups = async (e) => {
-                const token = localStorage.getItem("token");
-                const headers = new Headers();
-                headers.append("Authorization", "Bearer " + token);
-                headers.append("Content-Type", "application/json");
-                try {
-                    const res = await fetch("http://localhost:8080/getmygroups", {
-                        method: "GET",
-                        headers: headers,
-                    });
-                    if (res.ok) {
-                        const data = await res.json();
-                        console.log("data", data);
-                        const username = props.userInfo?.username;
-                        setUsername(username);
-                        const invitedGroups = data.userMemberGroups;
-                        const adminGroups = data.userAdminGroups
-                        const allGroups = data.allGroups;
-                        ;
-
-                        // add all groups to one array and sort by CreateAt
-                        const allMyGroups = [
-                            ...(invitedGroups || []),
-                            ...(adminGroups|| []),
-                        ];
-
-                        const currentPath = window.location.pathname;
-                        if (currentPath === "/mygroups") {
-                            setGroupsToDisplay(allMyGroups);
-                          } else if (currentPath === "/allgroups") {
-                            setGroupsToDisplay(allGroups);
-                          }
-                        
-                    } else {
-                        console.log("error");
-                    }
-                } catch (error) {
-                    // Handle error
-                    console.log(error);
-                }
-            };
-        
-            displayUserGroups();
-    }, []);
-
+      if (currentPath === "/mygroups") {
+          setGroupsToDisplay(props.myGroups);
+        } else if (currentPath === "/allgroups") {
+          setGroupsToDisplay(props.allgroups);
+        }
+    }, [props.myGroups, props.allgroups, currentPath]);
+    
     const handleJoinGroup = async (groupId) => {
         try {
           const token = localStorage.getItem("token");
           const headers = new Headers();
           headers.append("Authorization", "Bearer " + token);
           headers.append("Content-Type", "application/json");
-    
           const url = `http://localhost:8080/joingroup?groupID=${groupId}`;
-    
           const res = await fetch(url, {
             method: "POST",
             headers: headers,
           });
     
           if (res.ok) {
-            // Update the component state to reflect the user's membership status in the group
             setGroupsToDisplay((prevGroups) =>
               prevGroups.map((group) =>
                 group.GroupID === groupId
-                  ? { ...group, MemberUsernames: [...group.MemberUsernames, username] }
+                  ? { ...group, MemberUsernames: [...group.MemberUsernames, props.username] }
                   : group
               )
             );
@@ -85,16 +44,10 @@ function GroupProfileCard(props) {
       };
 
     const renderGroupActions = (group) => {
-        console.log("group", group);
         if (window.location.pathname === "/allgroups") {
           const memberUsernames = JSON.parse(group.MemberUsernames);
-          console.log("group.name", group.GroupName, "memberUsernames", memberUsernames);
-          const isMember = memberUsernames.includes(props.userInfo?.username);
-          console.log("memberUsernames", memberUsernames, isMember);
-          const isAdmin =
-            username && group.Admin === username;
-            console.log("isAdmin", isAdmin);
-    
+          const isMember = memberUsernames.includes(props.username);
+          const isAdmin = props.username && group.admin === props.username;
           if (isMember || isAdmin) {
             return (
               <Link
@@ -124,19 +77,19 @@ function GroupProfileCard(props) {
             </Link>
           );
         }
-      };
+      }; 
     
       return (
         <div className="row1">
-          {groupsToDisplay.map((group) => (
-            <div className="cols col-lg-3" key={group.GroupID}>
+         {groupsToDisplay.map((group) => ( 
+            <div className="cols col-lg-3" key={group.GroupID} >
               <div className="card shadow d-flex justify-content-center align-items-center">
                 <div className="card-body">
                   <h3 className="card-title">
                     <strong>{group.GroupName}</strong>
                   </h3>
-                  <p className="card-text">{group.GroupDescription}</p>
-                  {renderGroupActions(group)}
+                  <p className="card-text"> {group.GroupDescription}</p>
+                  {renderGroupActions(group)}  
                 </div>
               </div>
             </div>

@@ -10,7 +10,6 @@ import '../../components/Card/Card.css';
 
 function SingleGroup(props) {
     const token = localStorage.getItem("token");
-    console.log("props", props)
     const [group, setGroup] = useState([]);
     const [adminUsername, setAdminUsername] = useState([]);
     const [adminDisplayName, setAdminDisplayName] = useState([]);
@@ -194,7 +193,7 @@ function SingleGroup(props) {
                     <div className="col-12 col-lg-6 pb-5">
                         <div className="d-flex flex-column justify-content-center w-100 mx-auto" id="d-flex-postcontainer-myprofile">
                             <CreatePost userDisplayname={props.userDisplayname} userInfo={props.userInfo} />
-                            <GroupPostCard userDisplayname={props.userDisplayname} userInfo={props.userInfo}/>
+                            <GroupPostCard userDisplayname={props.userDisplayname} userInfo={props.userInfo} />
                         </div>
                     </div>
                 </div>
