@@ -18,8 +18,6 @@ function CreateGroupModal(props) {
     setMyFriends(updatedFriends);
   }, [props.allusers, props.userInfo.username]);
   
-
-
   const handleNameChange = (event) => {
     // get username of the selected name
     setSelectedName(event.target.value);
@@ -50,7 +48,6 @@ function CreateGroupModal(props) {
       selectedUserNames.push(user.username);
     });
 
-    console.log("selectedNames", selectedUserNames)
     const now = new Date();
     const groupData = {
       groupName: groupName,
@@ -77,11 +74,9 @@ function CreateGroupModal(props) {
 
       // fetch the group id
       const group = await response.json();
-      console.log("group", group);
       const groupId = group.groupID;
-      console.log("groupId", groupId);
       alert("Group created");
-     window.location.href = `/singlegroup/${groupId}`;
+      window.location.href = `/singlegroup/${groupId}`;
     } catch (error) {
       console.log(error);
     }

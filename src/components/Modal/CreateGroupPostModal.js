@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { useSelector } from 'react-redux';
 import "./Modal.css";
 import Avatar from "../../components/Avatar/Avatar";
 
 function CreateGroupPostModal(props) {
-  const [myGroups, setMyGroups] = useState(props.myGroups);
+  const mygroups = useSelector((state) => state.myGroups);
+  console.log("mygroups in create group post modal: ", mygroups);
+  //const [myGroups, setMyGroups] = useState(props.myGroups);
   const url = window.location.href;
   
   return (
@@ -26,7 +29,7 @@ function CreateGroupPostModal(props) {
                     {url === "http://localhost:3000/groups" && (
                       <select className="form-select border-0 bg-gray w-75 fs-7" aria-label="Default select example">
                         <option defaultValue="0">Select your groups</option>
-                        {myGroups.map((group) => (
+                        {mygroups.map((group) => (
                           <option key={group.GroupID} value={group.GroupID}>
                             {group.GroupName}
                           </option>

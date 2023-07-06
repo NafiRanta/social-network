@@ -1,4 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import Topnav from '../Topnav';
 import CreateGroupPost from '../../components/CreatePost/CreateGroupPost';
 import AvatarSquare from '../../components/Avatar/AvatarSquare';
@@ -10,23 +12,26 @@ import { set } from 'draft-js/lib/DefaultDraftBlockRenderMap';
 //import { set } from 'draft-js/lib/DefaultDraftBlockRenderMap';
 
 function SingleGroup(props) {
+    console.log("props", props)
     const [group, setGroup] = useState([]);
     const [adminDisplayName, setAdminDisplayName] = useState([]);
     const [membersInfo, setMembersInfo] = useState([]);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const dropdownRef = useRef(null);
     const [modalOpen, setModalOpen] = useState(false);
-
+    const dispatch = useDispatch();
+    const allgroups = useSelector((state) => state.allGroups);
     const groupID = window.location.pathname.split('/')[2];
 
-    // get information about the group from props.allgroups
+    // get information about the group from allgroups
     useEffect(() => {
-        const group = props.allgroups.filter((group) => group.GroupID === groupID);
+        const group = allgroups.filter((group) => group.GroupID === groupID);
+        console.log("group", group)
         //if not null then set the state
         if (group.length > 0) {
             const adminUsername = group[0].Admin;
-            const adminInfo = props.allusers.filter((user) => user.username === adminUsername);
-            const adminDisplayName = adminInfo[0].firstname + " " + adminInfo[0].lastname;
+            //const adminInfo = props.allusers.filter((user) => user.username === adminUsername);
+           // const adminDisplayName = adminInfo[0].firstname + " " + adminInfo[0].lastname;
             // make membersUsernames an array
             const membersUsernames = JSON.parse(group[0].MemberUsernames);
              const membersInfo = membersUsernames.map((username) => {
@@ -40,10 +45,10 @@ function SingleGroup(props) {
                 };
             });
             setGroup(group);
-            setAdminDisplayName(adminDisplayName);
+           // setAdminDisplayName(adminDisplayName);
             setMembersInfo(membersInfo);
         }
-    }, [props.allgroups, props.allusers, groupID]);
+    }, [allgroups, props.allusers, groupID]);
 
 
     const openModal = () => {
@@ -131,7 +136,7 @@ function SingleGroup(props) {
                                         </div>
                                     </li>
                                     <li className="dropdown-item p-1 rounded">
-                                        <span><i className="fas fa-user"> Admin: </i> <span className="name">{adminDisplayName}</span></span>
+                                        <span><i className="fas fa-user"> Admin: </i> <span className="name">{/* {adminDisplayName} */}</span></span>
                                     </li>
                                     <li className="dropdown-item p-1 rounded">
                                         <span><i className="fas fa-birthday-cake"> Created: </i> <span className="name">{new Date(groupItem.CreateAt).toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' })}</span></span>

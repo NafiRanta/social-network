@@ -1,19 +1,22 @@
 import React, { useState, useEffect } from "react";
+import { useSelector } from 'react-redux';
 import './Card.css';
 import { Link } from 'react-router-dom';
 //import { set } from "draft-js/lib/DefaultDraftBlockRenderMap";
 function GroupProfileCard(props) {
-  console.log("props", props);
     const [groupsToDisplay, setGroupsToDisplay] = useState([]);
     const currentPath = window.location.pathname;
+    const allgroups = useSelector((state) => state.allGroups);
+    console.log("allgroups", allgroups);
+    const mygroups = useSelector((state) => state.myGroups);
     
     useEffect(() => {
       if (currentPath === "/mygroups") {
-          setGroupsToDisplay(props.myGroups);
+          setGroupsToDisplay(mygroups);
         } else if (currentPath === "/allgroups") {
-          setGroupsToDisplay(props.allgroups);
+          setGroupsToDisplay(allgroups);
         }
-    }, [props.myGroups, props.allgroups, currentPath]);
+    }, [mygroups, allgroups, currentPath]);
     
     const handleJoinGroup = async (groupId) => {
         try {
@@ -45,9 +48,11 @@ function GroupProfileCard(props) {
 
     const renderGroupActions = (group) => {
         if (window.location.pathname === "/allgroups") {
+          console.log("group rendergroupactions", group )
+          console.log("props", props)
           const memberUsernames = JSON.parse(group.MemberUsernames);
           const isMember = memberUsernames.includes(props.username);
-          const isAdmin = props.username && group.admin === props.username;
+          const isAdmin = props.username && group.Admin === props.username;
           if (isMember || isAdmin) {
             return (
               <Link
@@ -81,15 +86,15 @@ function GroupProfileCard(props) {
     
       return (
         <div className="row1">
-         {groupsToDisplay.map((group) => ( 
-            <div className="cols col-lg-3" key={group.GroupID} >
+         {groupsToDisplay.map((group, index) => ( 
+            <div className="cols col-lg-3" key={group.GroupID + index} >
               <div className="card shadow d-flex justify-content-center align-items-center">
                 <div className="card-body">
                   <h3 className="card-title">
                     <strong>{group.GroupName}</strong>
                   </h3>
                   <p className="card-text"> {group.GroupDescription}</p>
-                  {renderGroupActions(group)}  
+                 {renderGroupActions(group)}
                 </div>
               </div>
             </div>

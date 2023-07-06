@@ -1,5 +1,6 @@
 import "./App.css";
 import React, { useState, useEffect } from "react";
+import { useDispatch } from 'react-redux';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Login from "./views/Login";
@@ -22,6 +23,7 @@ import SearchbarGlobal from "./components/Searchbar/SearchbarGlobal";
 import { set } from "draft-js/lib/DefaultDraftBlockRenderMap";
 
 function App() {
+  const dispatch = useDispatch();
   const isAuth = useSelector((state) => state.isAuth);
   let conn;
   const userInfo = useSelector((state) => state.userInfo);
@@ -118,9 +120,12 @@ function App() {
           if (res.ok) {
             const data = await res.json();
          // add userMemberGroups and adminGroups to one object
-            const mygroups = [...data.userMemberGroups, ...data.userAdminGroups];
+         const mygroups = [...(data.userMemberGroups || []), ...(data.userAdminGroups || [])];
             setMyGroups(mygroups);
-            setAllGroups(data.allGroups);
+            console.log("mygroups in apps", mygroups);
+            setAllGroups(data.allGroups || []);
+            dispatch({ type: 'SET_MYGROUPS', payload: mygroups });
+            dispatch({ type: 'SET_ALLGROUPS', payload: data.allGroups || [] });
           } else {
             console.log("error");
           }
@@ -166,7 +171,7 @@ function App() {
        path="/groups"
         element={
           <div>
-            <HomeGroup userInfo={userInfo} username={username}  userDisplayname={userDisplayname} myGroups={myGroups} allgroups={allGroups} allusers={allusers}/>
+            <HomeGroup userInfo={userInfo} username={username}  userDisplayname={userDisplayname} allusers={allusers}/>
           </div>
        } 
       />
@@ -174,7 +179,7 @@ function App() {
         path="/allgroups"
         element={
           <div>
-            <AllGroups userInfo={userInfo} username={username}  userDisplayname={userDisplayname} myGroups={myGroups} allgroups={allGroups} allusers={allusers}/>
+            <AllGroups userInfo={userInfo} username={username}  userDisplayname={userDisplayname} allusers={allusers}/>
           </div>
        } 
       />
@@ -182,7 +187,7 @@ function App() {
         path="/mygroups"
         element={
           <div>
-            <MyGroups userInfo={userInfo} username={username} userDisplayname={userDisplayname} myGroups={myGroups} allgroups={allGroups} allusers={allusers} />
+            <MyGroups userInfo={userInfo} username={username} userDisplayname={userDisplayname} allusers={allusers} />
           </div>
        } 
       />
@@ -198,7 +203,7 @@ function App() {
         path="/singlegroup/:groupid"
         element={
           <div>
-            <SingleGroup userInfo={userInfo} username={username} userDisplayname={userDisplayname} allusers={allusers} myGroups={myGroups} allgroups={allGroups} />
+            <SingleGroup userInfo={userInfo} username={username} userDisplayname={userDisplayname} allusers={allusers}  />
           </div>
        } 
       />

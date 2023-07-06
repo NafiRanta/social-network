@@ -1,7 +1,7 @@
 // store.js
 import { configureStore } from '@reduxjs/toolkit';
 
-let defaultInitialState = { isAuth: false, userInfo: {} };
+let defaultInitialState = { isAuth: false, userInfo: {}, myGroups: [], allGroups: [] };
 let serializedState = localStorage.getItem('reduxState');
 console.log('serializedState:', serializedState)
 
@@ -31,6 +31,18 @@ function rootReducer(state = initialState, action) {
         ...state,
         userInfo: action.payload
     };
+
+    case 'SET_MYGROUPS':
+      return {
+          ...state,
+          myGroups: action.payload
+      };
+
+      case 'SET_ALLGROUPS':
+        return {
+            ...state,
+            allGroups: action.payload
+        };
     default:
       return state;
   }
