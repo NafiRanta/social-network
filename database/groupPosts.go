@@ -11,31 +11,33 @@ import (
 
 // GroupPost represents a group post in the social network.
 type GroupPost struct {
-	CommentID string
-	PostID    string
-	UserName  string
-	Content   string
-	CreateAt  time.Time
+	GroupPostID string
+	GroupID     string
+	UserName    string
+	Content     string
+	Image       string
+	CreateAt    time.Time
 }
 
 // GroupPostResponse represents a response object for a GroupPost in JSON format.
 type GroupPostResponse struct {
-	CommentID       string    `json:"commentID"`
-	PostID          string    `json:"postID"`
-	UserName        string    `json:"userName"`
-	Content         string    `json:"content"`
-	CreateAt        time.Time `json:"createAt"`
-	AuthorFirstName string    `json:"authorFirstName"`
-	AuthorLastName  string    `json:"authorLastName"`
+	GroupPostID string    `json:"groupPostID"`
+	GroupID     string    `json:"groupID"`
+	UserName    string    `json:"userName"`
+	Content     string    `json:"content"`
+	Image       string    `json:"image"`
+	CreateAt    time.Time `json:"createAt"`
 }
 
 // CreateGroupPostsTable creates the GroupPosts table in the database if it does not exist.
 func CreateGroupPostsTable(db *sql.DB) {
 	groupPostsTable := `
-	CREATE TABLE IF NOT EXISTS groupPosts (
+	CREATE TABLE IF NOT EXISTS GroupPosts (
+		GroupPostID CHAR(36) NOT NULL,
 		GroupID CHAR(36) NOT NULL,
 		UserName CHAR(36) NOT NULL,
 		Content TEXT NOT NULL,
+		Image BLOB NULL,
 		CreateAt TIMESTAMP NOT NULL,
 		PRIMARY KEY (GroupID)
 	);`
@@ -54,12 +56,12 @@ func AddGroupPost(groupPost *GroupPostResponse) error {
 	defer db.Close()
 
 	query := `
-		INSERT INTO groupPosts (GroupID, UserName, Content, CreateAt)
-			VALUES (?, ?, ?, ?);`
+		INSERT INTO groupPosts (GroupPostID, GroupID, UserName, Content, Image, CreateAt)
+			VALUES (?, ?, ?, ?, ?, ?);`
 
 	// Generate UUID for groupPostID
 	groupPostID := uuid.New().String()
-	_, err = db.Exec(query, groupPostID, groupPost.UserName, groupPost.Content, groupPost.CreateAt)
+	_, err = db.Exec(query, groupPostID, groupPost.GroupID, groupPost.UserName, groupPost.Content, groupPost.Image, groupPost.CreateAt)
 	if err != nil {
 		return err
 	}
