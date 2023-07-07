@@ -1,13 +1,6 @@
-package createGroupPost
+package groupposts
 
-import (
-	"encoding/json"
-	"fmt"
-	"net/http"
-	d "socialnetwork/database"
-)
-
-//get group posts
+/* //get group posts
 func GetGroupPostsHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("GetGroupPostsHandler")
 
@@ -39,4 +32,4 @@ func GetGroupPostsHandler(w http.ResponseWriter, r *http.Request) {
 	// Set the Content-Type header to application/json
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(responseJSON)
-}
+} */

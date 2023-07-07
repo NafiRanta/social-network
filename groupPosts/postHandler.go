@@ -1,4 +1,4 @@
-package createGroupPost
+package groupposts
 
 import (
 	"encoding/json"
@@ -7,7 +7,7 @@ import (
 	d "socialnetwork/database"
 )
 
-//add group post
+// add group post
 func AddGroupPostHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("AddGroupPostHandler")
 	// Check if the request method is POST

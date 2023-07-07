@@ -3,7 +3,6 @@ import CreateGroupPostModal from '../Modal/CreateGroupPostModal';
 import Avatar from '../Avatar/Avatar';
 
 function CreateGroupPost(props) {
-  console.log("props in create group post", props)
     return(
       <div className="bg-white p-3 mt-3 rounded border shadow" id="bg-white">
           <div className="d-flex" type="button">
@@ -18,7 +17,7 @@ function CreateGroupPost(props) {
                 data-bs-toggle="modal" 
                 data-bs-target="#createGroupPostModal"/>
           </div>
-          <CreateGroupPostModal userDisplayname={props.userDisplayname} userInfo={props.userInfo} allusers={props.allusers} />
+          <CreateGroupPostModal userDisplayname={props.userDisplayname} userInfo={props.userInfo} allusers={props.allusers} groupID={props.groupID}/>
           <hr />
           <div className="d-flex flex-column flex-lg-row mt-3">
             <div className="dropdown-item rounded d-flex align-items-center justify-content-center" type="button">

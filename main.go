@@ -10,6 +10,7 @@ import (
 	a "socialnetwork/authentication"
 	c "socialnetwork/comments"
 	d "socialnetwork/database"
+	gp "socialnetwork/groupposts"
 	g "socialnetwork/groups"
 	m "socialnetwork/messages"
 	p "socialnetwork/posts"
@@ -74,6 +75,9 @@ func Start() error {
 	router.HandleFunc("/getmygroups", g.GetMyGroupsHandler)
 	router.HandleFunc("/getsinglegroup", g.GetSingleGroupHandler)
 	router.HandleFunc("/joingroup", g.AddUserToGroupHandler)
+
+	// handle group posts
+	router.HandleFunc("/addgrouppost", gp.AddGroupPostHandler)
 
 	// router.HandleFunc("/websocket", ws)
 	handler := u.CorsMiddleware(router)
