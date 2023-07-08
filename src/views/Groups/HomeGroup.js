@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import CreateGroupPost from '../../components/CreatePost/CreateGroupPost'
 import { useSelector } from 'react-redux';
-import GroupPostCard from '../../components/Card/GroupPostCard'
 import GroupSidenav from '../../views/Groups/GroupSidenav'
 import Topnav from '../../views/Topnav'
 import CommentCard from "../../components/Card/CommentCard";
