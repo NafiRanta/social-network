@@ -74,7 +74,7 @@ function GroupPostCard(props) {
               <p>{post.content}</p>
               {post.image && <img src={post.image} alt="post image" className="img-fluid rounded" />}
             </div>
-            <CommentCard userDisplayname={props.userDisplayname} userInfo={props.userInfo} />
+            <CommentCard userDisplayname={props.userDisplayname} />
           </div>
         </div>
       ))}

@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import Topnav from '../Topnav';
 import CreatePost from '../../components/CreatePost/CreatePost';
 import AvatarSquare from '../../components/Avatar/AvatarSquare';
@@ -8,6 +9,7 @@ import '../../views/Profile/Profile.css';
 import '../../components/Card/Card.css';
 
 function SingleEvent(props) {
+    const userInfo = useSelector((state) => state.userInfo);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const dropdownRef = useRef(null);
     const [modalOpen, setModalOpen] = useState(false);
@@ -97,8 +99,8 @@ function SingleEvent(props) {
                 </div>
                 <div className="col-12 col-lg-6 pb-5">
                     <div className="d-flex flex-column justify-content-center w-100 mx-auto" id="d-flex-postcontainer-myprofile">
-                        <CreatePost userDisplayname={props.userDisplayname} userInfo={props.userInfo}/>
-                        <GroupPostCard userDisplayname={props.userDisplayname} userInfo={props.userInfo}/>
+                        <CreatePost userDisplayname={props.userDisplayname} />
+                        <GroupPostCard userDisplayname={props.userDisplayname} />
                     </div>
                 </div>
                 

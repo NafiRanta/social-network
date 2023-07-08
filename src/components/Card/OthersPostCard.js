@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import CommentCard from './CommentCard';
 
 
@@ -19,6 +20,7 @@ export function decodeJwt(jwt) {
 }
 
 function OthersPostCard(props) {
+  const userInfo = useSelector((state) => state.userInfo);
   const [publicPosts, setPublicPosts] = useState([]);
   const [privatePosts, setPrivatePosts] = useState([]);
   const [customPosts, setCustomPosts] = useState([]);
@@ -83,9 +85,9 @@ function OthersPostCard(props) {
         <div key={`${post.Privacy + post.PostID}`} className="bg-white p-4 rounded shadow mt-3">
           <div className="d-flex justify-content-between">
             <div className="d-flex">
-              <img src={props.userInfo.avatar} alt="avatar" className="rounded-circle me-2"/>
+              <img src={userInfo.avatar} alt="avatar" className="rounded-circle me-2"/>
               <div>
-                <p className="m-0 fw-bold">{props.  username}</p>
+                <p className="m-0 fw-bold">{props.username}</p>
                 <span className="text-muted fs-7">{formattedDate}</span>
               </div>
             </div>
@@ -104,7 +106,7 @@ function OthersPostCard(props) {
               <p>{post.Content}</p>
               <img src="https://source.unsplash.com/random/12" alt="post image" className="img-fluid rounded"/>
             </div>
-            <CommentCard userDisplayname={props.userDisplayname} userInfo={props.userInfo}/>  
+            <CommentCard userDisplayname={props.userDisplayname} />  
           </div>
         </div>
       )

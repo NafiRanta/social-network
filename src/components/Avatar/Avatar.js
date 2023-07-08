@@ -1,14 +1,15 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import './Avatar.css';
 
 function Avatar(props) {
-    // handle null for userInfo
-    if (!props.userInfo) {
+    const userInfo = useSelector((state) => state.userInfo);
+    if (!userInfo) {
         return null;
     }
 
     return(
-        <img src={props.userInfo.avatar} alt="avatar" className="rounded-circle me-2" id="avatar"/>
+        <img src={userInfo.avatar} alt="avatar" className="rounded-circle me-2" id="avatar"/>
     )
 }
 

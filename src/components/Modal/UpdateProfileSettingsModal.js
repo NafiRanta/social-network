@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
 import "./Modal.css";
 
 function UpdateProfileSettingsModal(props) {
+  console.log("UpdateProfileSettingsModal.js: props: ", props)
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const userInfo = useSelector((state) => state.userInfo);
   
@@ -209,7 +212,6 @@ const handleRemoveAbout = () => {
           console.log("data update user response data", data);
           dispatch({ type: 'SET_USER', payload: data });
         alert("Profile updated");
-        window.location.href = `/profile/${props.userDisplayname}`;
 
       } else {
         console.log("Error:", res.status);

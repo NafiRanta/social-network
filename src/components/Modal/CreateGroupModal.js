@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import "./Modal.css";
 import Avatar from "../Avatar/Avatar";
 
 function CreateGroupModal(props) {
+  const userInfo = useSelector((state) => state.userInfo);
   const [myFriends, setMyFriends] = useState([]); // [{username: "John", displayname: "John Doe"}, {username: "Jane", displayname: "Jane Doe"}
   const [selectedNames, setSelectedNames] = useState([]);
   const [selectedName, setSelectedName] = useState('');
@@ -10,13 +12,13 @@ function CreateGroupModal(props) {
 
   useEffect(() => {
     const allusers = props.allusers;
-    const filteredData = allusers.filter((user) => user.username !== props.userInfo.username);
+    const filteredData = allusers.filter((user) => user.username !== userInfo.username);
     const updatedFriends = filteredData.map((friend) => ({
       username: friend.username,
       displayname: friend.firstname + " " + friend.lastname,
     }));
     setMyFriends(updatedFriends);
-  }, [props.allusers, props.userInfo.username]);
+  }, [props.allusers, userInfo.username]);
   
   const handleNameChange = (event) => {
     // get username of the selected name
@@ -52,7 +54,7 @@ function CreateGroupModal(props) {
     const groupData = {
       groupName: groupName,
       groupDescription: groupDescription,
-      groupAdmin: props.userInfo.username,
+      groupAdmin: userInfo.username,
       memberUsernames: selectedUserNames,
       createAt: now
     };
@@ -97,7 +99,7 @@ function CreateGroupModal(props) {
               <div className="d-flex flex-column">
                 <div className="d-flex align-items-center">
                   <div className="p-2">
-                    <Avatar userDisplayname={props.userDisplayname} userInfo={props.userInfo}/>
+                    <Avatar userDisplayname={props.userDisplayname} />
                   </div>
                   <div>
                     <p className="m-0 fw-bold">{props.userDisplayname}</p>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useSelector } from 'react-redux';
 import CommentCard from "./CommentCard";
 
 export function decodeJwt(jwt) {
@@ -18,6 +19,7 @@ export function decodeJwt(jwt) {
 }
 
 function PostCard(props) {
+  const userInfo = useSelector((state) => state.userInfo);
   const [publicPosts, setPublicPosts] = useState([]);
   const [privatePosts, setPrivatePosts] = useState([]);
   const [customPosts, setCustomPosts] = useState([]);
@@ -68,7 +70,7 @@ function PostCard(props) {
     (a, b) => new Date(a.CreateAt) - new Date(b.CreateAt)
   );
   // store posts that matched with userID in an array
-  const userPosts = sortedPosts.filter((post) => post.UserName === props.userInfo.username);
+  const userPosts = sortedPosts.filter((post) => post.UserName === userInfo.username);
 
   const displayAllPosts = () => {
     // display all posts of that matched with userID
@@ -91,7 +93,7 @@ function PostCard(props) {
           <div className="d-flex justify-content-between">
             <div className="d-flex">
               <img
-                src={props.userInfo.avatar}
+                src={userInfo.avatar}
                 alt="avatar"
                 className="rounded-circle me-2"
               />
@@ -133,15 +135,10 @@ function PostCard(props) {
           <div className="mt-3">
             <div>
               <p>{post.Content}</p>
-              <img
-                src={post.Image}
-                alt="post image"
-                className="img-fluid rounded"
-              />
+              {post.Image && <img src={post.Image} alt="post image" className="img-fluid rounded" />}
             </div>
             <CommentCard
               userDisplayname={props.userDisplayname}
-              userInfo={props.userInfo}
               PostID={post.PostID}
             />
           </div>

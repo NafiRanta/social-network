@@ -1,12 +1,14 @@
 import React from 'react';
 import { Dropdown } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import Avatar from '../components/Avatar/Avatar';
 import CreatePostModal from '../components/Modal/CreatePostModal';
 import SearchbarGlobal from '../components/Searchbar/SearchbarGlobal';
 import CreateGroupModal from '../components/Modal/CreateGroupModal';
 
 function Topnav(props) {
+  const userInfo = useSelector((state) => state.userInfo);
   //handle logout
   const handleLogout = () => {
     localStorage.removeItem("reduxState");
@@ -33,7 +35,7 @@ function Topnav(props) {
                 <Link to="/" className="text-decoration-none text-dark">
                   <i className="fab fa-facebook text-primary" ></i>
                 </Link>
-                <SearchbarGlobal allusers={props.allusers} userInfo = {props.userInfo}/>
+                <SearchbarGlobal allusers={props.allusers} />
           </div>
           <div className="col d-flex align-items-center justify-content-end">
             <div className="mx-2">
@@ -121,7 +123,7 @@ function Topnav(props) {
                     <a href="#" className="text-decoration-none text-dark d-flex align-items-center">
                       <div className="d-flex align-items-center justify-content-evenly">
                         <div className="p-2">
-                          <Avatar userDisplayname={props.userDisplayname} userInfo={props.userInfo}/>
+                          <Avatar userDisplayname={props.userDisplayname} />
                         </div>
                         <div>
                           <p className="fs-7 m-0">Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum unde amet at nulla quae porro.</p>
@@ -141,7 +143,7 @@ function Topnav(props) {
                   id="secondMenu"
                   className="bg-transparent border-0"
                 >
-                  <Avatar userDisplayname={props.userDisplayname} userInfo={props.userInfo} />
+                  <Avatar userDisplayname={props.userDisplayname} />
                 </Dropdown.Toggle>
                 <Dropdown.Menu
                   className="dropdown-menu border-0 shadow p-3"
@@ -150,7 +152,7 @@ function Topnav(props) {
                   <Dropdown.Item as="li" className="my-2 p-1">
                     <Link to={`/profile/${props.userDisplayname}`} className="text-decoration-none text-dark d-flex align-items-center">
                       <div className="rounded-circle d-flex align-items-center justify-content-center mx-2">
-                        <Avatar username={props.userDisplayname} userInfo={props.userInfo} />
+                        <Avatar username={props.userDisplayname} />
                       </div>
                       <p className="m-0">{props.userDisplayname}</p>
                     </Link>
@@ -169,8 +171,8 @@ function Topnav(props) {
           </div>
         </div>
       </div>
-      <CreatePostModal userDisplayname={props.userDisplayname} userInfo={props.userInfo}/>
-      <CreateGroupModal userDisplayname={props.userDisplayname} userInfo={props.userInfo} allusers={props.allusers}/>
+      <CreatePostModal userDisplayname={props.userDisplayname}/>
+      <CreateGroupModal userDisplayname={props.userDisplayname} allusers={props.allusers}/>
     </div>
   );
 }

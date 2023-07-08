@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import { useSelector } from 'react-redux';
 import '../Chat/Chat.css';
 import Avatar from '../../components/Avatar/Avatar';
 import SearchbarChat from '../../components/Searchbar/SearchbarChat';
@@ -42,10 +43,11 @@ function useChatMessages(selectedChatMateUsername, senderUsername, token, handle
 }
 
 function Chat(props) {
+    const userInfo = useSelector((state) => state.userInfo);
     const token = localStorage.getItem("token");
     const [selectedChatMateUsername, setSelectedChatMateUsername] = useState(""); 
     const [selectedChatMateDisplayname, setSelectedChatMateDisplayname] = useState(""); 
-    const [senderUsername, setSenderUsername] = useState(props.userInfo.username);
+    const [senderUsername, setSenderUsername] = useState(userInfo.username);
     const [senderDisplayname, setSenderDisplayname] = useState(props.userDisplayname);
     
     const handleUserClick = (chatMateDisplayName, chatMateUsername) => {
@@ -60,7 +62,7 @@ function Chat(props) {
           return null;
         }
       // save all users except the current user to a variable called filteredData
-      let filteredData = props.allusers.filter((user) => user.username !== props.userInfo.username);
+      let filteredData = props.allusers.filter((user) => user.username !== userInfo.username);
       // sort the filteredData by firstname
       filteredData.sort((a, b) => (a.firstname > b.firstname) ? 1 : -1);    
       // map the filteredData to display all users except the current user
@@ -116,7 +118,7 @@ function Chat(props) {
 
   return (
     <div>
-      <Topnav userInfo={props.userInfo} userDisplayname={props.userDisplayname} allusers={props.allusers} />
+      <Topnav userDisplayname={props.userDisplayname} allusers={props.allusers} />
       <div className="container-fluid">
         <div className="row justify-content-evenly">
           <div className="col-12 col-lg-3 sidebar">

@@ -9,16 +9,12 @@ import './Profile.css';
 import ChangeProfilePicModal from '../../components/Modal/ChangeProfilePicModal';
 import UpdateProfileSettingsModal from '../../components/Modal/UpdateProfileSettingsModal';
 import Topnav from '../Topnav';
-
-export const UpdateUserInfoInLocalStorage = (updatedData) => {
-    
-    // const updatedUserInfo = { ...userInfo, ...updatedData };
-    // localStorage.setItem("userInfo", JSON.stringify(updatedUserInfo));
-  };
+import { set } from 'draft-js/lib/DefaultDraftBlockRenderMap';
 
 function MyProfile(props) {
   const dispatch = useDispatch();
     const userInfo = useSelector((state) => state.userInfo);
+    console.log("userInfo", userInfo);
 
     // format date of birth to be displayed to dd month yyyy
     const dob = new Date(userInfo.dateOfBirth).toLocaleDateString('en-US', {
@@ -64,7 +60,6 @@ function MyProfile(props) {
           const data = await response.json();
           console.log("data", data);
           dispatch({ type: 'SET_USER', payload: data });
-          // UpdateUserInfoInLocalStorage({ privacy });
         } else {
           throw new Error("Error updating privacy");
         }
@@ -75,7 +70,7 @@ function MyProfile(props) {
   
   return (
     <div>
-        <Topnav userDisplayname={props.userDisplayname} userInfo={userInfo} allusers={props.allusers}/>
+        <Topnav userDisplayname={props.userDisplayname} allusers={props.allusers}/>
         <div className="container-fluid">
             <section className="profileTopnav">
                 <div className="container py-5 h-100">
@@ -149,7 +144,7 @@ function MyProfile(props) {
                     </div>
                 </div>
             </section>
-            <ChangeProfilePicModal userDisplayname={props.userDisplayname} userInfo={userInfo}/>
+            <ChangeProfilePicModal userDisplayname={props.userDisplayname} />
                 <div className="row justify-content-evenly">
                     <div className="col-12 col-lg-3">
                         <div className="d-flex flex-column justify-content-center w-100 mx-auto" id="d-flex-postcontainer-followersbox">

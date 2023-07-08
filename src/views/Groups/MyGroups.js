@@ -7,7 +7,7 @@ import Topnav from '../../views/Topnav'
 function MyGroups(props) {
     return (
         <div>
-             <Topnav userDisplayname={props.userDisplayname} userInfo={props.userInfo} allusers={props.allusers}/>
+             <Topnav userDisplayname={props.userDisplayname}  allusers={props.allusers}/>
             <div className="container-fluid">
                 <div className="row justify-content-evenly">
                     <div className="col-12 col-lg-3">
@@ -16,7 +16,7 @@ function MyGroups(props) {
                     <div className="col col-lg-9 pb-5 p-3">
                         <div className="d-flex flex-column justify-content-center w-100 " id="d-flex-postcontainer-mygroups">
                             <h5><strong>All groups you've joined</strong></h5>
-                            <GroupProfileCard userDisplayname={props.userDisplayname} username={props.username} userInfo={props.userInfo}/>
+                            <GroupProfileCard userDisplayname={props.userDisplayname} username={props.username} />
                         </div>
                     </div>
                 </div>

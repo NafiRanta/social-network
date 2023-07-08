@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import "./Modal.css";
+import { useSelector } from 'react-redux';
 import Avatar from "../Avatar/Avatar";
 import { decodeJwt } from "../Card/PostCard";
 
 function CreatePostModal(props) {
+  const userInfo = useSelector((state) => state.userInfo);
+  console.log("userInfo", userInfo);
   const [selectedImage, setSelectedImage] = useState(null);
   const [fileName, setFileName] = useState("");
   const [includedFriends, setIncludedFriends] = useState("");
@@ -32,7 +35,7 @@ function CreatePostModal(props) {
 
     // Create an object with the required properties
     const postData = {
-      username: props.userInfo.username,
+      username: userInfo.username,
       privacy: postPrivacy,
       IncludedFriends: [],
       content: postContent,
@@ -82,7 +85,7 @@ function CreatePostModal(props) {
               <div className="d-flex flex-column">
                 <div className="d-flex align-items-center">  
                   <div className="p-2">
-                    <Avatar userInfo={props.userInfo} userDisplayname={props.userDisplayname} />
+                    <Avatar userDisplayname={props.userDisplayname} />
                   </div>
                   <div>
                     <p className="m-0 fw-bold">{props.userDisplayname}</p>

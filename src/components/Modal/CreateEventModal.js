@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import "./Modal.css";
 import Avatar from "../Avatar/Avatar";
 
 function CreateEventModal(props) {
+  const userInfo = useSelector((state) => state.userInfo);
   const [selectedNames, setSelectedNames] = useState([]);
   const [selectedName, setSelectedName] = useState('');
   const [eventDate, setEventDate] = useState('');
@@ -49,7 +51,7 @@ function CreateEventModal(props) {
               <div className="d-flex flex-column">
                 <div className="d-flex align-items-center">
                   <div className="p-2">
-                    <Avatar userDisplayname={props.userDisplayname} userInfo={props.userInfo}/>
+                    <Avatar userDisplayname={props.userDisplayname} />
                   </div>
                   <div>
                     <p className="m-0 fw-bold">{props.userDisplayname}</p>

@@ -6,6 +6,7 @@ import Avatar from "../../components/Avatar/Avatar";
 function CreateGroupPostModal(props) {
   const [selectedImage, setSelectedImage] = useState(null);
   const [fileName, setFileName] = useState("");
+  const userInfo = useSelector((state) => state.userInfo);
   const mygroups = useSelector((state) => state.myGroups);
   const [groupID, setGroupID] = useState("");
   console.log("props in create group post modal: ", props);
@@ -38,7 +39,7 @@ function CreateGroupPostModal(props) {
 
   if (url === "http://localhost:3000/groups") {
     groupPostData = {
-      username: props.userInfo.username,
+      username: userInfo.username,
       groupID: postGroupIDSelect,
       content: postContent,
       image: selectedImage,
@@ -47,7 +48,7 @@ function CreateGroupPostModal(props) {
     targetGroupID = postGroupIDSelect;
   } else {
     groupPostData = {
-      username: props.userInfo.username,
+      username: userInfo.username,
       groupID: props.groupID,
       content: postContent,
       image: selectedImage,
@@ -98,7 +99,7 @@ function CreateGroupPostModal(props) {
               <div className="d-flex flex-column">
                 <div className="d-flex align-items-center">
                   <div className="p-2">
-                    <Avatar userDisplayname={props.userDisplayname} userInfo={props.userInfo}/> 
+                    <Avatar userDisplayname={props.userDisplayname}/> 
                   </div>
                   <div>
                     <p className="m-0 fw-bold">{props.userDisplayname}</p>

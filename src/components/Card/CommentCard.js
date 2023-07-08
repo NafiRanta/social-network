@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { decodeJwt } from "./PostCard";
+import { useSelector } from 'react-redux';
 import Avatar from "../Avatar/Avatar";
 import "./Card.css";
 
 function CommentCard(props) {
+  const userInfo = useSelector((state) => state.userInfo);
   const token = localStorage.getItem("token");
   const postId = props.PostID;
 
@@ -60,7 +61,7 @@ function CommentCard(props) {
     const commentData = {
       content: comment,
       createAt: now,
-      userName: props.userInfo.username,
+      userName: userInfo.username,
       postID: postId,
     };
 
@@ -156,10 +157,7 @@ function CommentCard(props) {
                     className="d-flex align-items-center my-1"
                     key={`${comment.commentID}-${index}`}
                   >
-                    <Avatar
-                      username={comment.AuthorID}
-                      userInfo={props.userInfo}
-                    />
+                    <Avatar username={comment.AuthorID}/>
                     <div className="p-3 rounded comment__input w-100">
                       <p className="fw-bold m-0">
                           {comment.authorFirstName} {comment.authorLastName}
@@ -175,7 +173,7 @@ function CommentCard(props) {
                 ))}
               <form className="d-flex my-1" onSubmit={handleCommentSubmit}>
                 <div>
-                  <Avatar userDisplayname={props.userDisplayname} userInfo={props.userInfo} />
+                  <Avatar userDisplayname={props.userDisplayname} />
                 </div>
                 <input
                   type="text"

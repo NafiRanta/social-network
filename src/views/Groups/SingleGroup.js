@@ -6,6 +6,7 @@ import CreateGroupPost from '../../components/CreatePost/CreateGroupPost';
 import AvatarSquare from '../../components/Avatar/AvatarSquare';
 import GroupPostCard from '../../components/Card/GroupPostCard';
 import CreateEventModal from '../../components/Modal/CreateEventModal';
+import EventCard from '../../components/Card/EventCard';
 import '../../views/Profile/Profile.css';
 import '../../components/Card/Card.css';
 import { set } from 'draft-js/lib/DefaultDraftBlockRenderMap';
@@ -13,6 +14,7 @@ import { set } from 'draft-js/lib/DefaultDraftBlockRenderMap';
 
 function SingleGroup(props) {
     console.log("props", props)
+    const userInfo = useSelector((state) => state.userInfo);
     const [group, setGroup] = useState([]);
     const [adminDisplayName, setAdminDisplayName] = useState([]);
     const [membersInfo, setMembersInfo] = useState([]);
@@ -79,7 +81,7 @@ function SingleGroup(props) {
 
     return (
         <div>
-            <Topnav userDisplayname={props.userDisplayname} userInfo={props.userInfo} allusers={props.allusers}/>
+            <Topnav userDisplayname={props.userDisplayname} allusers={props.allusers}/>
             {group.map((groupItem) => (
             <div className="container-fluid">
                 <div className="bg-white p-3 mt-3 rounded border shadow" id="bg-white">
@@ -128,7 +130,7 @@ function SingleGroup(props) {
                 <div className="row justify-content-evenly">
                     <div className="col-12 col-lg-3">
                         <div className="d-flex flex-column justify-content-center w-100 mx-auto" id="d-flex-postcontainer-followersbox">
-                        <div className="bg-white rounded border shadow p-3">
+                            <div className="bg-white rounded border shadow p-3">
                                 <ul >
                                     <li className="dropdown-item p-1 rounded">
                                         <div >
@@ -160,12 +162,15 @@ function SingleGroup(props) {
                                     ))}
                                 </div>
                             </div>
+                            <div className="bg-white rounded border shadow p-3">
+                                <EventCard />
+                            </div>
                         </div>
                     </div>
                     <div className="col-12 col-lg-6 pb-5">
                         <div className="d-flex flex-column justify-content-center w-100 mx-auto" id="d-flex-postcontainer-myprofile">
-                            <CreateGroupPost userDisplayname={props.userDisplayname} userInfo={props.userInfo} groupID={groupID}/>
-                            <GroupPostCard userDisplayname={props.userDisplayname} userInfo={props.userInfo} />
+                            <CreateGroupPost userDisplayname={props.userDisplayname} groupID={groupID}/>
+                            <GroupPostCard userDisplayname={props.userDisplayname}  />
                         </div>
                     </div>
                 </div>

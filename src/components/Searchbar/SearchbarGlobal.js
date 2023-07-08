@@ -1,11 +1,13 @@
 import React, { useRef } from 'react'; 
 import { BsSearch } from 'react-icons/bs';
 import { Dropdown } from 'react-bootstrap';
+import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 
 
 function SearchbarGlobal(props) {
   const navigate = useNavigate();
+  const userInfo = useSelector((state) => state.userInfo);
   const inputRef = useRef(null);
 
   const handleInputClick = (e) => {
@@ -38,7 +40,7 @@ function SearchbarGlobal(props) {
       return null; 
     }
     // return all users except the current user in alphabetical order
-    let filteredData = allusers.filter((user) => user.username !== props.userInfo.username);
+    let filteredData = allusers.filter((user) => user.username !== userInfo.username);
     filteredData.sort((a, b) => (a.firstname > b.firstname) ? 1 : -1);
     return filteredData.map(user => {
       const username = user.firstname + " " + user.lastname;
