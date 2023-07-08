@@ -78,6 +78,8 @@ func Start() error {
 
 	// handle group posts
 	router.HandleFunc("/addgrouppost", gp.AddGroupPostHandler)
+	router.HandleFunc("/getmygroupsposts", gp.GetMyGroupsPostsHandler)
+	router.HandleFunc("/getgroupposts", gp.GetGroupPostsByGroupIDHandler)
 
 	// router.HandleFunc("/websocket", ws)
 	handler := u.CorsMiddleware(router)

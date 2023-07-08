@@ -110,7 +110,7 @@ function CommentCard(props) {
         <div className="me-2">
           <i className="text-primary fas fa-thumbs-up"></i>
         </div>
-        <p className="m-0 text-muted fs-7">Nafi, Gin, Jacob and 3 others</p>
+        {/* <p className="m-0 text-muted fs-7">Nafi, Gin, Jacob and 3 others</p> */}
       </div>
       <div className="accordion" id="accordionExample">
         <div className="accordion-item border-0">

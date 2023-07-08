@@ -39,7 +39,7 @@ func CreateGroupPostsTable(db *sql.DB) {
 		Content TEXT NOT NULL,
 		Image BLOB NULL,
 		CreateAt TIMESTAMP NOT NULL,
-		PRIMARY KEY (GroupID)
+		PRIMARY KEY (GroupPostID)
 	);`
 
 	query, err := db.Prepare(groupPostsTable)
@@ -68,4 +68,75 @@ func AddGroupPost(groupPost *GroupPostResponse) error {
 
 	fmt.Println("GroupPost added successfully")
 	return nil
+}
+
+func GetGroupPostsByGroupID(groupID string) ([]GroupPostResponse, error) {
+	fmt.Println("GetGroupPostsByGroupID")
+	db, err := sql.Open("sqlite3", "./socialnetwork.db")
+	if err != nil {
+		return nil, err
+	}
+	defer db.Close()
+
+	query := `
+		SELECT GroupPostID, GroupID, UserName, Content, Image, CreateAt
+			FROM GroupPosts
+			WHERE GroupID = ?;`
+
+	rows, err := db.Query(query, groupID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var groupPosts []GroupPostResponse
+	for rows.Next() {
+		var groupPost GroupPostResponse
+		err := rows.Scan(&groupPost.GroupPostID, &groupPost.GroupID, &groupPost.UserName, &groupPost.Content, &groupPost.Image, &groupPost.CreateAt)
+		if err != nil {
+			return nil, err
+		}
+		groupPosts = append(groupPosts, groupPost)
+	}
+
+	return groupPosts, nil
+}
+
+func GetUserGroupsPosts(username string) ([]GroupPost, error) {
+	db, err := sql.Open("sqlite3", "./socialnetwork.db")
+	if err != nil {
+		return nil, err
+	}
+	defer db.Close()
+
+	query := `
+		SELECT GroupPosts.GroupPostID, GroupPosts.GroupID, GroupPosts.UserName, GroupPosts.Content, GroupPosts.Image, GroupPosts.CreateAt
+		FROM GroupPosts
+		INNER JOIN Groups ON GroupPosts.GroupID = Groups.GroupID
+		WHERE Groups.Admin = ? OR Groups.MemberUsernames LIKE '%' || ? || '%'
+	`
+	rows, err := db.Query(query, username, username)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var groupPosts []GroupPost
+	for rows.Next() {
+		var groupPost GroupPost
+		err := rows.Scan(
+			&groupPost.GroupPostID,
+			&groupPost.GroupID,
+			&groupPost.UserName,
+			&groupPost.Content,
+			&groupPost.Image,
+			&groupPost.CreateAt,
+		)
+		if err != nil {
+			return nil, err
+		}
+		groupPosts = append(groupPosts, groupPost)
+	}
+
+	return groupPosts, nil
 }
