@@ -2,8 +2,12 @@ package database
 
 import (
 	"database/sql"
+	"encoding/json"
+	"fmt"
 	u "socialnetwork/utils"
 	"time"
+
+	"github.com/google/uuid"
 )
 
 type GroupEvent struct {
@@ -40,8 +44,8 @@ func CreateGroupEventsTable(db *sql.DB) {
 		EventName TEXT NOT NULL,
 		EventDescription TEXT NOT NULL,
 		EventDate TEXT NOT NULL,
-		InvitedUsers TEXT NOT NULL,
-		GoingUsers TEXT NOT NULL,
+		InvitedUsers TEXT,
+		GoingUsers TEXT,
 		CreateAt TIMESTAMP NOT NULL,
 		PRIMARY KEY (GroupEventID)
 	);`
@@ -62,16 +66,23 @@ func AddGroupEvent(groupEvent *GroupEventResponse) error {
 		INSERT INTO groupEvents (GroupEventID, GroupID, UserName, EventName, EventDescription, EventDate, InvitedUsers, GoingUsers, CreateAt)
 			VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);`
 
-	stmt, err := db.Prepare(query)
-	if err != nil {
-		return err
-	}
-	defer stmt.Close()
+	groupEventID := uuid.New().String()
 
-	_, err = stmt.Exec(groupEvent.GroupEventID, groupEvent.GroupID, groupEvent.UserName, groupEvent.EventName, groupEvent.EventDescription, groupEvent.EventDate, groupEvent.InvitedUsers, groupEvent.GoingUsers, groupEvent.CreateAt)
+	invitedJSON, err := json.Marshal(groupEvent.InvitedUsers)
 	if err != nil {
 		return err
 	}
 
+	goingJSON, err := json.Marshal(groupEvent.GoingUsers)
+	if err != nil {
+		return err
+	}
+
+	_, err = db.Exec(query, groupEventID, groupEvent.GroupID, groupEvent.UserName, groupEvent.EventName, groupEvent.EventDescription, groupEvent.EventDate, string(invitedJSON), string(goingJSON), groupEvent.CreateAt)
+	if err != nil {
+		return err
+	}
+
+	fmt.Println("Added group event to database.")
 	return nil
 }

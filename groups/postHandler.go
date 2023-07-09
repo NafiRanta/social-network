@@ -33,6 +33,7 @@ func CreateGroupHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
 		return
 	}
+	fmt.Println("group:", group)
 	user, err := d.GetUserByID(userID)
 	if err != nil {
 		fmt.Println("error from getuserbyid:", err)

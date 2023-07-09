@@ -51,19 +51,24 @@ function CreateGroupModal(props) {
     });
 
     const now = new Date();
+    const groupPostID = []
+    const groupEventID = []
     const groupData = {
       groupName: groupName,
       groupDescription: groupDescription,
       groupAdmin: userInfo.username,
       memberUsernames: selectedUserNames,
+      postIDs: groupPostID,
+      eventIDs: groupEventID,
       createAt: now
     };
 
+    console.log("groupData: ", groupData);
     const headers = new Headers();
     headers.append('Authorization', 'Bearer ' + token);
     headers.append('Content-Type', 'application/json');
 
-    try {
+  try {
       const response = await fetch("http://localhost:8080/creategroup", {
         method: 'POST',
         credentials: 'include',
@@ -81,7 +86,7 @@ function CreateGroupModal(props) {
       window.location.href = `/singlegroup/${groupId}`;
     } catch (error) {
       console.log(error);
-    }
+    } 
   };
 
 

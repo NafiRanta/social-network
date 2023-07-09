@@ -49,6 +49,50 @@ function CreateEventModal(props) {
     setEventTime(event.target.value);
   };
 
+const handleEventSubmit = async (event) => {
+    event.preventDefault();
+    const token = localStorage.getItem('token');
+    const eventName = document.getElementById("eventname").value;
+    const eventDescription = document.getElementById("eventdescription").value;
+    const eventDate = document.getElementById("eventdate").value;
+    const eventTime = document.getElementById("eventtime").value;
+    const selectedUserNames = [];
+    selectedNames.forEach((name) => {
+      const user = myFriends.find((friend) => friend.displayname === name);
+      selectedUserNames.push(user.username);
+    });
+    const invitedFriends  = selectedNames;
+    const now = new Date();
+    const goingFriends = [];
+
+    const eventData = {
+      groupID: props.groupID,
+      userName: userInfo.username,
+      eventName: eventName,
+      eventDescription: eventDescription,
+      eventDate: eventDate,
+      eventTime: eventTime,
+      invitedUsers: invitedFriends,
+      goingUsers: goingFriends,
+      createAt: now,
+    };
+
+    const headers = new Headers();
+    headers.append('Authorization', 'Bearer ' + token);
+    headers.append('Content-Type', 'application/json');
+
+    const response = await fetch('http://localhost:8080/addevent', {
+      method: 'POST',
+      headers: headers,
+      body: JSON.stringify(eventData),
+    });
+    if (!response.ok) {
+      throw new Error('Something went wrong');
+    }
+    alert("Event created successfully");
+    props.closeModal();
+  };
+
 
   return (
     <div className="modal fade" id="createEventModal" tabIndex="-1" aria-labelledby="createModalLabel" aria-hidden="true" data-bs-backdrop="false">
@@ -71,12 +115,12 @@ function CreateEventModal(props) {
                 </div>
                 <div>
                   <form id="createGroupForm">
-                    <input type="text" className="form-control my-3" id="groupname" placeholder="Event Name" />
+                    <input type="text" id="eventname"className="form-control my-3" placeholder="Event Name" />
                     <div>
-                      <textarea cols="30" rows="5" className="form-control my-3 border" placeholder="Event Description"></textarea>
+                      <textarea id="eventdescription" cols="30" rows="5" className="form-control my-3 border" placeholder="Event Description"></textarea>
                     </div>
-                    <input type="date" value={eventDate} onChange={handleEventDateChange} className="form-control my-3" placeholder="Event Date" />
-                    <input type="time" value={eventTime} onChange={handleEventTimeChange} className="form-control my-3" placeholder="Event Time" />
+                    <input type="date" value={eventDate} id="eventdate" onChange={handleEventDateChange} className="form-control my-3" placeholder="Event Date" />
+                    <input type="time" value={eventTime} id="eventtime" onChange={handleEventTimeChange} className="form-control my-3" placeholder="Event Time" />
                     <div>
                       {selectedNames.map((name) => (
                         <div key={name} className="d-flex align-items-center">
@@ -104,7 +148,11 @@ function CreateEventModal(props) {
           <div className="modal-footer">
             <div className="row w-100">
             <div className="col">
-                <button type="button" className="btn btn-primary w-100">
+                <button 
+                  type="button" 
+                  className="btn btn-primary w-100"
+                  onClick={handleEventSubmit}
+                  >
                   Create
                 </button>
               </div>
