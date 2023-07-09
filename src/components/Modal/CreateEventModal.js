@@ -1,18 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import "./Modal.css";
 import Avatar from "../Avatar/Avatar";
 
 function CreateEventModal(props) {
+  console.log("props createevent modal", props)
   const userInfo = useSelector((state) => state.userInfo);
+  const [myFriends, setMyFriends] = useState([]); // [{username: "John", displayname: "John Doe"}, {username: "Jane", displayname: "Jane Doe"}
   const [selectedNames, setSelectedNames] = useState([]);
   const [selectedName, setSelectedName] = useState('');
   const [eventDate, setEventDate] = useState('');
   const [eventTime, setEventTime] = useState('');
+  const names = myFriends.map((friend) => friend.displayname);
 
-  const names = ['John', 'Jane', 'Bob', 'Alice'];
+  useEffect(() => {
+    const allusers = props.allusers;
+    const filteredData = allusers.filter((user) => user.username !== userInfo.username);
+    const updatedFriends = filteredData.map((friend) => ({
+      username: friend.username,
+      displayname: friend.firstname + " " + friend.lastname,
+    }));
+    setMyFriends(updatedFriends);
+  }, [props.allusers, userInfo.username]);
 
   const handleNameChange = (event) => {
+    // get username of the selected name
     setSelectedName(event.target.value);
   };
 

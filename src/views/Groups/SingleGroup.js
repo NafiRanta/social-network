@@ -126,7 +126,7 @@ function SingleGroup(props) {
                         </div>
                     </div>
                 </div>
-                <CreateEventModal userDisplayname={props.userDisplayname} openModal={openModal}/>
+                <CreateEventModal userDisplayname={props.userDisplayname} openModal={openModal} allusers={props.allusers}/>
                 <div className="row justify-content-evenly">
                     <div className="col-12 col-lg-3">
                         <div className="d-flex flex-column justify-content-center w-100 mx-auto" id="d-flex-postcontainer-followersbox">
