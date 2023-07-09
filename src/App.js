@@ -20,7 +20,7 @@ import AllGroups from "./views/Groups/AllGroups";
 import OthersProfile from "./views/Profile/OthersProfile";
 import SingleEvent from "./views/Events/SingleEvent";
 import SearchbarGlobal from "./components/Searchbar/SearchbarGlobal";
-import { set } from "draft-js/lib/DefaultDraftBlockRenderMap";
+//import { set } from "draft-js/lib/DefaultDraftBlockRenderMap";
 
 function App() {
   const dispatch = useDispatch();

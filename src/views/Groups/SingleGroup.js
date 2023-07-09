@@ -9,7 +9,7 @@ import CreateEventModal from '../../components/Modal/CreateEventModal';
 import EventCard from '../../components/Card/EventCard';
 import '../../views/Profile/Profile.css';
 import '../../components/Card/Card.css';
-import { set } from 'draft-js/lib/DefaultDraftBlockRenderMap';
+//import { set } from 'draft-js/lib/DefaultDraftBlockRenderMap';
 //import { set } from 'draft-js/lib/DefaultDraftBlockRenderMap';
 
 function SingleGroup(props) {
