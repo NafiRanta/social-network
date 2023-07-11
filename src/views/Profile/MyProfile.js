@@ -9,7 +9,7 @@ import './Profile.css';
 import ChangeProfilePicModal from '../../components/Modal/ChangeProfilePicModal';
 import UpdateProfileSettingsModal from '../../components/Modal/UpdateProfileSettingsModal';
 import Topnav from '../Topnav';
-import { set } from 'draft-js/lib/DefaultDraftBlockRenderMap';
+//import { set } from 'draft-js/lib/DefaultDraftBlockRenderMap';
 
 function MyProfile(props) {
   const dispatch = useDispatch();

@@ -143,14 +143,14 @@ function Login() {
   };
   return (
     <div>
-      <div className="container mt-5 pt-5 d-flex flex-column flex-lg-row justify-content-evenly">
-        <div className="text-center text-lg-start mt-0 pt-0 mt-lg-5 pt-lg-5">
-          <h1 className="text-primary fw-bold fs-0">ÅlandSocial</h1>
-          <p className="w-75 mx-auto fs-4 mx-lg-0">
-            ÅlandSocial helps you connect and share with the people in Åland.
+      <div className="container mt-5 pt-5 d-flex flex-column flex-lg-row justify-content-evenly" id="containerTop">
+        <div className="text-center text-lg-start mt-0 pt-0 mt-lg-5 pt-lg-5" id="leftText">
+          <h1 className="text-primary fw-bold fs-0" id="mainText">ÅlandSocial</h1>
+          <p className="w-90 mx-auto fs-5 mx-lg-0" id="sloganLogin">
+            Connect and share with the people in Åland.
           </p>
         </div>
-        <div className="login-form">
+        <div className="login-form" id="loginForm">
           <div className="bg-white shadow rounded p-3 input-group-lg">
             <div className="form__input-error-message" id="loginUsernameErrMsg"></div>
             <form id="loginForm" onSubmit={handleLogin}>
