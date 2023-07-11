@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import RegisterModal from "../components/Modal/RegisterModal";
-import { useDispatch } from 'react-redux';
-import "./Login.css"
+import { useDispatch } from "react-redux";
+import "./Login.css";
 
 export const ValidateEmail = (email) => {
   // Regular expression for email format validation forbid swedish letters
@@ -58,52 +58,54 @@ function Login() {
     } else if (name === "password") {
       setPassword(value);
       setValid({ ...valid, password: true }); // Reset the password validation state
-      document.getElementById("loginPasswordErrMsg").innerHTML = ''; // Clear the error message
+      document.getElementById("loginPasswordErrMsg").innerHTML = ""; // Clear the error message
     }
   };
-  
- 
+
   const validLoginForm = () => {
     // Check if email is empty
-    if (email.trim() === '') {
-      console.log('Email is required');
-      document.getElementById("loginUsernameErrMsg").innerHTML = 'Email is required';
+    if (email.trim() === "") {
+      console.log("Email is required");
+      document.getElementById("loginUsernameErrMsg").innerHTML =
+        "Email is required";
       setValid({ ...valid, email: false });
     }
-  
+
     // Check if the email is in the correct format
     if (!ValidateEmail(email)) {
-      console.log('Invalid email format');
-      document.getElementById("loginUsernameErrMsg").innerHTML = 'Invalid email format';
+      console.log("Invalid email format");
+      document.getElementById("loginUsernameErrMsg").innerHTML =
+        "Invalid email format";
       setValid({ ...valid, email: false });
     }
-  
+
     // Check if the password is empty
-    if (password.trim() === '') {
-      console.log('Password is required');
-      document.getElementById("loginPasswordErrMsg").innerHTML = 'Password is required';
-    setValid({ ...valid, password: false });
+    if (password.trim() === "") {
+      console.log("Password is required");
+      document.getElementById("loginPasswordErrMsg").innerHTML =
+        "Password is required";
+      setValid({ ...valid, password: false });
     }
-  
+
     // Check if the password is in the correct format
     if (!ValidatePassword(password)) {
-      console.log('Invalid password format');
-      document.getElementById("loginPasswordErrMsg").innerHTML = 'Invalid password format';
+      console.log("Invalid password format");
+      document.getElementById("loginPasswordErrMsg").innerHTML =
+        "Invalid password format";
       setValid({ ...valid, password: false });
     }
     // All validations passed
-   if (valid.email && valid.password) {
+    if (valid.email && valid.password) {
       return true;
-    } else {  
+    } else {
       return false;
     }
   };
-  
-  
+
   const handleLogin = async (event) => {
     event.preventDefault(); // Prevent form from refreshing the page
     if (!validLoginForm()) {
-      return
+      return;
     }
 
     try {
@@ -119,19 +121,21 @@ function Login() {
         const data = await response.json();
         console.log("Login successful");
         // Save session to local storage
-        dispatch({ type: 'SET_USER', payload: data });
+        dispatch({ type: "SET_USER", payload: data });
         //localStorage.setItem("userInfo", JSON.stringify(data));
-        
-        dispatch({ type: 'SET_AUTH', payload: true });
+
+        dispatch({ type: "SET_AUTH", payload: true });
         //setIsAuthenticated(true);
-        window.location.href="/"; 
+        window.location.href = "/";
       } else {
         // show error message from response
-          console.log(response)
+        console.log(response);
         if (response.status === 401) {
-          document.getElementById("loginUsernameErrMsg").innerHTML = "Incorrect username or password";
+          document.getElementById("loginUsernameErrMsg").innerHTML =
+            "Incorrect username or password";
         } else {
-          document.getElementById("loginUsernameErrMsg").innerHTML = "Something went wrong. Please try again later.";
+          document.getElementById("loginUsernameErrMsg").innerHTML =
+            "Something went wrong. Please try again later.";
         }
         // Login failed, handle error
         console.log("Login failed");
@@ -143,30 +147,44 @@ function Login() {
   };
   return (
     <div>
-      <div className="container mt-5 pt-5 d-flex flex-column flex-lg-row justify-content-evenly" id="containerTop">
-        <div className="text-center text-lg-start mt-0 pt-0 mt-lg-5 pt-lg-5" id="leftText">
-          <h1 className="text-primary fw-bold fs-0" id="mainText">ÅlandSocial</h1>
+      <div
+        className="container mt-5 pt-5 d-flex flex-column flex-lg-row justify-content-evenly"
+        id="containerTop"
+      >
+        <div
+          className="text-center text-lg-start mt-0 pt-0 mt-lg-5 pt-lg-5"
+          id="leftText"
+        >
+          <h1 className="text-primary fw-bold fs-0" id="mainText">
+            ÅlandSocial
+          </h1>
           <p className="w-90 mx-auto fs-5 mx-lg-0" id="sloganLogin">
             Connect and share with the people in Åland.
           </p>
         </div>
         <div className="login-form" id="loginForm">
           <div className="bg-white shadow rounded p-3 input-group-lg">
-            <div className="form__input-error-message" id="loginUsernameErrMsg"></div>
+            <div
+              className="form__input-error-message"
+              id="loginUsernameErrMsg"
+            ></div>
             <form id="loginForm" onSubmit={handleLogin}>
               <input
-              data-testid="loginEmail"
+                data-testid="loginEmail"
                 type="email"
                 className="form-control my-3"
-                placeholder="Email address or phone number"
+                placeholder="Email address"
                 value={email}
                 name="email"
                 onChange={handleInputChange}
               />
               {/* {!valid.username && <div>Username is invalid</div>} */}
-              <div className="form__input-error-message" id="loginPasswordErrMsg"></div>
+              <div
+                className="form__input-error-message"
+                id="loginPasswordErrMsg"
+              ></div>
               <input
-              data-testid="loginPassword"
+                data-testid="loginPassword"
                 type="password"
                 className="form-control my-3"
                 placeholder="Password"

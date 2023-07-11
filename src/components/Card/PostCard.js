@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useSelector } from 'react-redux';
+import { useSelector } from "react-redux";
 import CommentCard from "./CommentCard";
 
 export function decodeJwt(jwt) {
@@ -27,8 +27,7 @@ function PostCard(props) {
   const userId = decodeJwt(token).userID;
 
   useEffect(() => {
-    const GetUserPosts = async (e) => {
-      //e.preventDefault();
+    const GetUserPosts = async () => {
       const headers = new Headers();
       headers.append("Authorization", "Bearer " + token);
       headers.append("Content-Type", "application/json");
@@ -41,7 +40,7 @@ function PostCard(props) {
 
         if (res.ok) {
           const data = await res.json();
-          // get all posts of that matched with userID
+
           const publicPosts = data.publicPosts;
           const privatePosts = data.privatePosts;
           const customPosts = data.customPosts;
@@ -52,31 +51,14 @@ function PostCard(props) {
           console.log("error");
         }
       } catch (error) {
-        // Handle error
         console.log(error);
       }
     };
     GetUserPosts();
   }, []);
 
-  // Combine the three arrays into one including only posts that match post.AuthorID  with userID
-  const allPosts = [
-    ...(customPosts || []),
-    ...(privatePosts || []),
-    ...(publicPosts || []),
-  ];
-  // Sort the combined and filtered array by the "CreateAt" property
-  const sortedPosts = allPosts.sort(
-    (a, b) => new Date(a.CreateAt) - new Date(b.CreateAt)
-  );
-  // store posts that matched with userID in an array
-  const userPosts = sortedPosts.filter((post) => post.UserName === userInfo.username);
-
   const displayAllPosts = () => {
-    // display all posts of that matched with userID
-
     return userPosts.map((post, index) => {
-      // format createAt 2023-06-20T13:13:30.343Z to 20 Jun 2023 13:13
       const date = new Date(post.CreateAt);
       const formattedDate = date.toLocaleDateString("en-GB", {
         day: "numeric",
@@ -85,9 +67,18 @@ function PostCard(props) {
         hour: "numeric",
         minute: "numeric",
       });
+
+      const contentLines = post.Content.replace(/\n/g, "<br>")
+        .split("<br>")
+        .map((line, index) => (
+          <p key={index} style={{ whiteSpace: "pre-line" }}>
+            {line}
+          </p>
+        ));
+
       return (
         <div
-          key=  {`${ post.PostID}-${index}`}
+          key={`${post.PostID}-${index}`}
           className="bg-white p-4 rounded shadow mt-3"
         >
           <div className="d-flex justify-content-between">
@@ -134,8 +125,14 @@ function PostCard(props) {
           </div>
           <div className="mt-3">
             <div>
-              <p>{post.Content}</p>
-              {post.Image && <img src={post.Image} alt="post image" className="img-fluid rounded" />}
+              {contentLines}
+              {post.Image && (
+                <img
+                  src={post.Image}
+                  alt="post image"
+                  className="img-fluid rounded"
+                />
+              )}
             </div>
             <CommentCard
               userDisplayname={props.userDisplayname}
@@ -146,6 +143,20 @@ function PostCard(props) {
       );
     });
   };
+
+  const allPosts = [
+    ...(customPosts || []),
+    ...(privatePosts || []),
+    ...(publicPosts || []),
+  ];
+
+  const sortedPosts = allPosts.sort(
+    (a, b) => new Date(a.CreateAt) - new Date(b.CreateAt)
+  );
+
+  const userPosts = sortedPosts.filter(
+    (post) => post.UserName === userInfo.username
+  );
 
   return <>{displayAllPosts()}</>;
 }
