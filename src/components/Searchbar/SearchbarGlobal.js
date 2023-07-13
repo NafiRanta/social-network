@@ -3,6 +3,7 @@ import { BsSearch } from 'react-icons/bs';
 import { Dropdown } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
+import './SearchBar.css'
 
 
 function SearchbarGlobal(props) {
@@ -62,18 +63,19 @@ function SearchbarGlobal(props) {
 
   return (
     <Dropdown onToggle={handleDropdownToggle}>
-      <Dropdown.Toggle variant="light" id="searchMenu">
+      <Dropdown.Toggle variant="transparent" id="searchMenu">
         <div className="input-group-text bg-gray border-0 rounded-pill" id="input-group-text-pill">
           <i className="fas fa-search me-2 text-muted"></i>
-          <p className="m-0 fs-7 text-muted">Search ÅlandSocial</p>
+          <p className="m-1 fs-6 text-muted" id="searchBar">Search ÅlandSocial</p>
         </div>
       </Dropdown.Toggle>
-      <Dropdown.Menu className="overflow-auto border-0 shadow p-3" aria-labelledby="searchMenu">
+      <Dropdown.Menu className="overflow-auto border-0 shadow p-1" aria-labelledby="searchMenu" id ="searchBarDropdown">
         <Dropdown.Item>
           <input
             type="text"
-            className="rounded-pill border-0 bg-gray dropdown-item"
-            placeholder="Search ÅlandSocial..."
+            className="border-0 bg-gray dropdown-item"
+            id="searchBox"
+            placeholder="Type here to search ..."
             onClick={handleInputClick}
             ref={inputRef}
           />

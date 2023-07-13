@@ -6,6 +6,7 @@ import Avatar from '../components/Avatar/Avatar';
 import CreatePostModal from '../components/Modal/CreatePostModal';
 import SearchbarGlobal from '../components/Searchbar/SearchbarGlobal';
 import CreateGroupModal from '../components/Modal/CreateGroupModal';
+import './TopNav.css'
 
 function Topnav(props) {
   const userInfo = useSelector((state) => state.userInfo);
@@ -28,12 +29,12 @@ function Topnav(props) {
     window.location.href = "/login";
   };
   return (
-    <div className="bg-white d-flex align-items-center fixed-top shadow">
-      <div className="container-fluid">
+    <div className="bg-white d-flex align-items-center fixed-top shadow" >
+      <div className="container-fluid" id="topNavBox">
         <div className="row align-items-center">
           <div className="col d-flex align-items-center" type="button" id="homeMenu"> 
                 <Link to="/" className="text-decoration-none text-dark">
-                  <i className="fab fa-facebook text-primary" ></i>
+                  <i className="fab fa-facebook text-primary" id="isthislogo"></i>
                 </Link>
                 <SearchbarGlobal allusers={props.allusers} />
           </div>
@@ -43,7 +44,7 @@ function Topnav(props) {
                 <Dropdown.Toggle
                   variant="light"
                   id="mainMenu"
-                  className="bg-transparent border-0"
+                  className="rounded-circle bg-gray border-0"
                 >
                   <i className="fas fa-plus"></i>
                 </Dropdown.Toggle>
@@ -54,7 +55,7 @@ function Topnav(props) {
                   <div>
                     <div>
                       <Dropdown.Item as="li" className="p-1 mx-2">
-                        <h2>Create</h2>
+                        <h5>Create</h5>
                       </Dropdown.Item>
                       <Dropdown.Item as="li" className="my-2 p-1">
                         <div 
@@ -106,7 +107,7 @@ function Topnav(props) {
                 <Dropdown.Toggle
                   variant="light"
                   id="notMenu"
-                  className="bg-transparent border-0"
+                  className=" rounded-circle bg-gray border-0"
                 >
                   <i className="fas fa-bell"></i>
                 </Dropdown.Toggle>
@@ -151,7 +152,7 @@ function Topnav(props) {
                 >
                   <Dropdown.Item as="li" className="my-2 p-1">
                     <Link to={`/profile/${props.userDisplayname}`} className="text-decoration-none text-dark d-flex align-items-center">
-                      <div className="rounded-circle d-flex align-items-center justify-content-center mx-2">
+                      <div className="rounded-circle d-flex align-items-center justify-content-center mx-2" id="avatar">
                         <Avatar username={props.userDisplayname} />
                       </div>
                       <p className="m-0">{props.userDisplayname}</p>
