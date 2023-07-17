@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import CommentCard from "./CommentCard";
 
+// Function to decode a JSON Web Token (JWT)
 export function decodeJwt(jwt) {
   if (!jwt) {
     return null; // Or handle the error in an appropriate way
@@ -19,14 +20,16 @@ export function decodeJwt(jwt) {
 }
 
 function PostCard(props) {
-  const userInfo = useSelector((state) => state.userInfo);
-  const [publicPosts, setPublicPosts] = useState([]);
-  const [privatePosts, setPrivatePosts] = useState([]);
-  const [customPosts, setCustomPosts] = useState([]);
-  const token = localStorage.getItem("token");
-  const userId = decodeJwt(token).userID;
+  const userInfo = useSelector((state) => state.userInfo); // Get user information from Redux store
+  const [publicPosts, setPublicPosts] = useState([]); // State for public posts
+  const [privatePosts, setPrivatePosts] = useState([]); // State for private posts
+  const [customPosts, setCustomPosts] = useState([]); // State for custom posts
+  const [expandedPosts, setExpandedPosts] = useState([]); // State for expanded posts
+  const token = localStorage.getItem("token"); // Get the JWT token from local storage
+  const userId = decodeJwt(token).userID; // Decode the JWT token to get the user ID
 
   useEffect(() => {
+    // Fetch user posts when the component mounts
     const GetUserPosts = async () => {
       const headers = new Headers();
       headers.append("Authorization", "Bearer " + token);
@@ -57,7 +60,52 @@ function PostCard(props) {
     GetUserPosts();
   }, []);
 
+  const handleShowMore = (postId) => {
+    // Toggle the expanded state of a post
+    setExpandedPosts((prevExpandedPosts) => {
+      if (prevExpandedPosts.includes(postId)) {
+        return prevExpandedPosts.filter((id) => id !== postId);
+      } else {
+        return [...prevExpandedPosts, postId];
+      }
+    });
+  };
+
+  const isPostExpanded = (postId) => {
+    // Check if a post is expanded
+    return expandedPosts.includes(postId);
+  };
+
+  const truncateContent = (content, maxLength) => {
+    // Truncate the content of a post and add ellipsis if it exceeds maxLength
+    if (content.length <= maxLength) {
+      return content;
+    }
+
+    const truncatedContent = content.slice(0, maxLength);
+    const lastLineBreakIndex = truncatedContent.lastIndexOf("<br>");
+
+    // Find the last complete line before the truncation point
+    const truncatedText = truncatedContent.slice(
+      0,
+      lastLineBreakIndex !== -1 ? lastLineBreakIndex : undefined
+    );
+
+    // Remove trailing <br> tags
+    const trimmedContent = truncatedText.replace(/<br>$/, "");
+
+    const contentLines = trimmedContent.split("<br>").map((line, index) => (
+      <p key={index}>
+        {line}
+        <br />
+      </p>
+    ));
+
+    return <>{contentLines}</>;
+  };
+
   const displayAllPosts = () => {
+    // Render all posts
     return userPosts.map((post, index) => {
       const date = new Date(post.CreateAt);
       const formattedDate = date.toLocaleDateString("en-GB", {
@@ -68,13 +116,18 @@ function PostCard(props) {
         minute: "numeric",
       });
 
-      const contentLines = post.Content.replace(/\n/g, "<br>")
-        .split("<br>")
-        .map((line, index) => (
-          <p key={index} style={{ whiteSpace: "pre-line" }}>
-            {line}
-          </p>
-        ));
+      const content = post.Content;
+      const truncatedContent = truncateContent(content, 300);
+      const shouldShowMoreButton = content.length > 300;
+
+      const contentLines = post.Content.split("<br>").map((line, index) => (
+        <p key={index}>
+          {line}
+          <br />
+        </p>
+      ));
+
+      const isExpanded = isPostExpanded(post.PostID);
 
       return (
         <div
@@ -125,15 +178,23 @@ function PostCard(props) {
           </div>
           <div className="mt-3">
             <div>
-              {contentLines}
-              {post.Image && (
-                <img
-                  src={post.Image}
-                  alt="post image"
-                  className="img-fluid rounded"
-                />
+              {isExpanded ? contentLines : truncatedContent}
+              {shouldShowMoreButton && (
+                <button
+                  onClick={() => handleShowMore(post.PostID)}
+                  className="btn btn-link p-0 ms-1"
+                >
+                  {isExpanded ? "See less" : "See more"}
+                </button>
               )}
             </div>
+            {post.Image && (
+              <img
+                src={post.Image}
+                alt="post image"
+                className="img-fluid rounded"
+              />
+            )}
             <CommentCard
               userDisplayname={props.userDisplayname}
               PostID={post.PostID}
