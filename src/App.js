@@ -66,9 +66,10 @@ function App() {
         if (window["WebSocket"]) {
           console.log("WebSocket is supported by your Browser!");
           // connect to ws
-          const userId = decodeJwt(token);
+          const user = decodeJwt(token);
+          console.log("userId", user.userID);
           conn = new WebSocket(
-            "ws://" + "localhost:8080" + "/ws?otp=" + userId
+            "ws://" + "localhost:8080" + "/ws?otp=" + user.userID
           );
           conn.onopen = function () {
             console.log("Connection opened");

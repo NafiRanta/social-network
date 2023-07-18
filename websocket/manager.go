@@ -13,7 +13,8 @@ import (
 	"time"
 
 	// import Database
-	// d "socialnetwork/database"
+	d "socialnetwork/database"
+
 	"github.com/gorilla/websocket"
 )
 
@@ -30,9 +31,9 @@ var websocketUpgrader = websocket.Upgrader{
 var acknowledgement Acknowledgement
 
 type Manager struct {
-	clients       ClientList              // map of clients
-	sync.RWMutex                          // hav emany ppl connecting to the api, so need to protect it
-	otps          RetentionMap            
+	clients       ClientList // map of clients
+	sync.RWMutex             // hav emany ppl connecting to the api, so need to protect it
+	otps          RetentionMap
 	handlers      map[string]EventHandler // map of event type as key and event handler as value
 	loggedinUsers map[string]string       // map of userId as key and username as value
 	usersConn     map[string]*Client      // map of username as key and client as value
@@ -135,10 +136,8 @@ func SendLoggedinUsers(event Event, c *Client) error {
 	var acknowledgementevent AcknowledgementEvent
 	m := c.manager
 	var users []string
-	// convert m.loggedinUsers map to array
-	fmt.Println("m.usersConn", m.usersConn)
-	for user, _ := range m.usersConn {
-		fmt.Println("user", user)
+	// store usernames from m.usersConn map to array
+	for _, user := range m.loggedinUsers {
 		users = append(users, user)
 	}
 	fmt.Println("users", users)
@@ -147,12 +146,10 @@ func SendLoggedinUsers(event Event, c *Client) error {
 	if err != nil {
 		return fmt.Errorf("failed to marshal online users: %v", err)
 	}
-	fmt.Println("data", data)
 	outgoingEvent := Event{
 		Payload: data,
 		Type:    EventAcknowledgement,
 	}
-	fmt.Println("outgoingEvent", outgoingEvent)
 	for client := range c.manager.clients {
 		client.egress <- outgoingEvent
 	}
@@ -164,16 +161,16 @@ func (m *Manager) ServeWS(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("new websocket connection")
 	_ = m.otps.NewOTP()
 	otp := r.URL.Query().Get("otp")
+	// json stringify otp
 	fmt.Println("userId", otp)
-
-
 	// get username from database according to otp witch is equal to userId
-	// user, err := d.GetUserByID(otp)
-	// if err != nil {
-	// 	fmt.Println("error getting user", err)
-	// }
+	user, err := d.GetUserByID(otp)
+	if err != nil {
+		fmt.Println("error getting user", err)
+	}
 	// add user to loggedinUsers
-	// m.addLoggedInUser(user.UserName, otp)
+	fmt.Println("user.UserName", user.UserName)
+	m.addLoggedInUser(user.UserName, otp)
 	if otp == "" {
 		fmt.Println("no otp")
 		w.WriteHeader(http.StatusUnauthorized)

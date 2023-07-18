@@ -4,6 +4,7 @@ package websocket
 // whenever we have a client connecting to the server, we will create a new client object
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"time"
 
@@ -39,7 +40,14 @@ func (c *Client) readMessages() {
 	// defer all the cleanup code
 	defer func() {
 		// remove client from c.manager.loggedinUsers map
+		// get username from otp
+		username := c.manager.loggedinUsers[c.otp]
+		fmt.Println("username in readmessages", username)
+
+		// print loggedinUsers before and after delete
+		fmt.Println("loggedinUsers before delete", c.manager.loggedinUsers)
 		delete(c.manager.loggedinUsers, c.otp)
+		fmt.Println("loggedinUsers after delete", c.manager.loggedinUsers)
 		var request Event
 		// Extract values from the map to values slice
 		values := make([]string, 0, len(c.manager.loggedinUsers))
@@ -97,11 +105,6 @@ func (c *Client) readMessages() {
 
 // Write messages to the websocket
 func (c *Client) writeMessages() {
-	defer func() {
-		// help clenaup any clients with any issues. cleanup connection
-		c.manager.removeClient(c)
-		c.connection.Close()
-	}()
 
 	ticker := time.NewTicker(pingInterval)
 
