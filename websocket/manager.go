@@ -12,7 +12,6 @@ import (
 	"sync"
 	"time"
 
-	// import Database
 	d "socialnetwork/database"
 
 	"github.com/gorilla/websocket"
@@ -174,13 +173,6 @@ func (m *Manager) ServeWS(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}
-	// if !m.otps.VerifyOTP(otp) {
-	// 	fmt.Println("otp", otp)
-	// 	fmt.Println("invalid otp")
-	// 	w.WriteHeader(http.StatusUnauthorized)
-	// 	return
-	// }
-
 	log.Println("new connection")
 
 	// upgrade regular http connection to a websocket connection
