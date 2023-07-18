@@ -13,7 +13,7 @@ import (
 	"time"
 
 	// import Database
-
+	// d "socialnetwork/database"
 	"github.com/gorilla/websocket"
 )
 
@@ -32,9 +32,9 @@ var acknowledgement Acknowledgement
 type Manager struct {
 	clients       ClientList              // map of clients
 	sync.RWMutex                          // hav emany ppl connecting to the api, so need to protect it
-	otps          RetentionMap            // map of otp as key and username as value
+	otps          RetentionMap            
 	handlers      map[string]EventHandler // map of event type as key and event handler as value
-	loggedinUsers map[string]string       // map of otp as key and username as value
+	loggedinUsers map[string]string       // map of userId as key and username as value
 	usersConn     map[string]*Client      // map of username as key and client as value
 }
 
@@ -56,6 +56,30 @@ func (m *Manager) setupEventHandlers() {
 	m.handlers[EventTyping] = SendTyping
 	m.handlers[EventSendMessage] = SendMessage
 	m.handlers[EventAcknowledgement] = SendLoggedinUsers
+	m.handlers[EventNotification] = SendNotification
+}
+
+// Send a notification to the reciever client
+func SendNotification(event Event, c *Client) error {
+	var notificationevent NotificationEvent
+	// convert event payload from json to struct
+	if err := json.Unmarshal(event.Payload, &notificationevent); err != nil {
+		return fmt.Errorf("bad payload in request: %v", err)
+	}
+	data, err := json.Marshal(notificationevent)
+	if err != nil {
+		return fmt.Errorf("failed to marshal broadcast message: %v", err)
+	}
+	outgoingEvent := Event{
+		Payload: data,
+		Type:    EventNotification,
+	}
+	for client := range c.manager.clients {
+		if c.manager.loggedinUsers[client.otp] == notificationevent.Receiver {
+			client.egress <- outgoingEvent
+		}
+	}
+	return nil
 }
 
 // Send a typing event to the reciever client
@@ -111,18 +135,24 @@ func SendLoggedinUsers(event Event, c *Client) error {
 	var acknowledgementevent AcknowledgementEvent
 	m := c.manager
 	var users []string
-	for _, user := range m.loggedinUsers {
+	// convert m.loggedinUsers map to array
+	fmt.Println("m.usersConn", m.usersConn)
+	for user, _ := range m.usersConn {
+		fmt.Println("user", user)
 		users = append(users, user)
 	}
+	fmt.Println("users", users)
 	acknowledgementevent.LoggedInUsers = users
 	data, err := json.Marshal(acknowledgementevent)
 	if err != nil {
 		return fmt.Errorf("failed to marshal online users: %v", err)
 	}
+	fmt.Println("data", data)
 	outgoingEvent := Event{
 		Payload: data,
 		Type:    EventAcknowledgement,
 	}
+	fmt.Println("outgoingEvent", outgoingEvent)
 	for client := range c.manager.clients {
 		client.egress <- outgoingEvent
 	}
@@ -134,7 +164,16 @@ func (m *Manager) ServeWS(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("new websocket connection")
 	_ = m.otps.NewOTP()
 	otp := r.URL.Query().Get("otp")
+	fmt.Println("userId", otp)
 
+
+	// get username from database according to otp witch is equal to userId
+	// user, err := d.GetUserByID(otp)
+	// if err != nil {
+	// 	fmt.Println("error getting user", err)
+	// }
+	// add user to loggedinUsers
+	// m.addLoggedInUser(user.UserName, otp)
 	if otp == "" {
 		fmt.Println("no otp")
 		w.WriteHeader(http.StatusUnauthorized)
@@ -243,12 +282,12 @@ func (m *Manager) ServeWS(w http.ResponseWriter, r *http.Request) {
 // 	w.WriteHeader(http.StatusUnauthorized)
 // }
 
-// add to loggedinUsers otp as key and username as value
-func (m *Manager) addLoggedInUser(username, otp string) {
+// add to loggedinUsers userId as key and username as value
+func (m *Manager) addLoggedInUser(username, userId string) {
 	m.Lock()
 	defer m.Unlock()
 	// add username to loggedinUsers
-	m.loggedinUsers[otp] = username
+	m.loggedinUsers[userId] = username
 }
 
 // addClient adds the client to the manager

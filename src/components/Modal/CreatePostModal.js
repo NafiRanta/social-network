@@ -6,7 +6,6 @@ import { decodeJwt } from "../Card/PostCard";
 
 function CreatePostModal(props) {
   const userInfo = useSelector((state) => state.userInfo);
-  console.log("userInfo", userInfo);
   const [selectedImage, setSelectedImage] = useState(null);
   const [fileName, setFileName] = useState("");
   const [includedFriends, setIncludedFriends] = useState("");

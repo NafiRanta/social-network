@@ -17,6 +17,7 @@ const (
 	EventNewMessage      = "new_message"
 	EventAcknowledgement = "acknowledgement"
 	EventTyping          = "send_typing"
+	EventNotification    = "notification"
 )
 
 type SendMessageEvent struct {
@@ -37,4 +38,10 @@ type AcknowledgementEvent struct {
 type TypingEvent struct {
 	Sender   string `json:"sender"`
 	Receiver string `json:"receiver"`
+}
+
+type NotificationEvent struct {
+	Type string `json:"notification"`
+	Receiver     string `json:"receiver"`
+	Sender string `json:"sender"`
 }

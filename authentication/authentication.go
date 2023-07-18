@@ -65,12 +65,10 @@ func LogIn(w http.ResponseWriter, r *http.Request) {
 		var storedPassword string
 		user, err := d.GetUserByEmail(email)
 		if err != nil {
-			fmt.Println("user not found")
+			fmt.Println("email", email)
+			fmt.Println("user not found by email")
 			// http.Error(w, "Invalid email or password", http.StatusUnauthorized)
 		}
-		test, _ := d.GetUserByUsername(user.UserName)
-		fmt.Println("getuserbyusername work")
-		fmt.Println(test)
 		// Get the stored password from the database and unhash it
 		storedPassword = user.Password
 		// Compare the stored password with the password received from the front-end
