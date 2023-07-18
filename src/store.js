@@ -8,10 +8,8 @@ let defaultInitialState = {
   allGroups: [],
 };
 let serializedState = localStorage.getItem("reduxState");
-console.log("serializedState:", serializedState);
 
 let initialState = serializedState || defaultInitialState;
-console.log("initialState:", JSON.stringify(initialState));
 
 if (serializedState) {
   initialState = JSON.parse(serializedState);

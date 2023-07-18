@@ -90,6 +90,7 @@ func (c *Client) readMessages() {
 			}
 			break
 		}
+		fmt.Println("payload", payload)
 
 		var request Event
 		if err := json.Unmarshal(payload, &request); err != nil {
