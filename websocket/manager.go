@@ -28,8 +28,6 @@ var websocketUpgrader = websocket.Upgrader{
 	},
 }
 
-var acknowledgement Acknowledgement
-
 type Manager struct {
 	clients       ClientList // map of clients
 	sync.RWMutex             // hav emany ppl connecting to the api, so need to protect it
