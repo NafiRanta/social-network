@@ -13,8 +13,8 @@ function GroupSidenav(props) {
             <h3><strong>Groups</strong></h3>
             <li className="dropdown-item p-1 rounded">
                 <Link to="/groups" className="d-flex align-items-center text-decoration-none text-dark">
-                    <div className="p-2">
-                        <img src="https://static.xx.fbcdn.net/rsrc.php/v3/yo/r/hLkEFzsCyXC.png" alt="from fb" className="rounded-circle"/>
+                    <div className="p-2" id="icon">
+                        <i class="fa fa-rss fa-lg" aria-hidden="true"></i>
                     </div>
                     <div>
                         <p className="m-0">For you</p>
@@ -23,8 +23,8 @@ function GroupSidenav(props) {
             </li>
             <li className="dropdown-item p-1 rounded">
                 <Link to="/allgroups" className="d-flex align-items-center text-decoration-none text-dark">
-                    <div className="p-2">
-                        <img src="https://static.xx.fbcdn.net/rsrc.php/v3/yj/r/Im_0d7HFH4n.png" alt="from fb" className="rounded-circle"/>
+                    <div className="p-2" id="icon">
+                        <i class="fa fa-compass fa-lg" aria-hidden="true"></i>
                     </div>
                     <div>
                         <p className="m-0">Discover</p>
@@ -33,8 +33,8 @@ function GroupSidenav(props) {
             </li>
             <li className="dropdown-item p-1">
                 <Link to="/mygroups" href="#" className="d-flex align-items-center text-decoration-none text-dark">
-                    <div className="p-2">
-                        <img src="https://static.xx.fbcdn.net/rsrc.php/v3/yj/r/tSXYIzZlfrS.png" alt="from fb" className="rounded-circle" />
+                    <div className="p-2" id="icon">
+                        <i class="fa fa-users fa-lg" aria-hidden="true"></i>
                     </div>
                     <div>
                         <p className="m-0">My Groups</p>

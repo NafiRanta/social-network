@@ -2,6 +2,7 @@ import React from 'react';
 import GroupProfileCard from '../../components/Card/GroupProfileCard'
 import GroupSidenav from './GroupSidenav'
 import Topnav from '../../views/Topnav'
+import './Groups.css'
 
 
 function AllGroups(props){

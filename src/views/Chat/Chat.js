@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import "../Chat/Chat.css";
 import Avatar from "../../components/Avatar/Avatar";
-import SearchbarChat from "../../components/Searchbar/SearchbarChat";
 import Topnav from "../Topnav";
 import { decodeJwt } from "../../components/Card/PostCard";
 
@@ -166,10 +165,9 @@ function Chat(props) {
         <div className="row justify-content-evenly">
           <div className="col-12 col-lg-3 sidebar">
             <div className="chat-title">
-              <p className="fs-5 m-0">
+              <p className="fs-4 m-0">
                 <strong>Chats</strong>
               </p>
-              <SearchbarChat />
             </div>
             <div className="users-container">
               <div className="chat-category">

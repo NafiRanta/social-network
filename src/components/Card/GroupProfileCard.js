@@ -66,6 +66,7 @@ function GroupProfileCard(props) {
             return (
                 <button
                 className="btn btn-primary btn-sm d-flex justify-content-center align-items-center"
+                id="joinbutton"
                 onClick={() => handleJoinGroup(group.GroupID)}
               >
                 Join
@@ -85,16 +86,18 @@ function GroupProfileCard(props) {
       }; 
     
       return (
-        <div className="row1">
+        <div className="row1"  >
          {groupsToDisplay.map((group, index) => ( 
             <div className="cols col-lg-3" key={group.GroupID + index} >
-              <div className="card shadow d-flex justify-content-center align-items-center">
+              <div className="card shadow d-flex justify-content-center align-items-center"  id="card">
                 <div className="card-body">
-                  <h3 className="card-title">
+                  <div className="card-title">
                     <strong>{group.GroupName}</strong>
-                  </h3>
+                  </div>
                   <p className="card-text"> {group.GroupDescription}</p>
-                 {renderGroupActions(group)}
+                </div>
+                <div id="viewbutton">
+                  {renderGroupActions(group)}
                 </div>
               </div>
             </div>

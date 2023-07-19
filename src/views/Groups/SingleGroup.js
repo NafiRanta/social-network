@@ -9,6 +9,7 @@ import CreateEventModal from '../../components/Modal/CreateEventModal';
 import EventCard from '../../components/Card/EventCard';
 import '../../views/Profile/Profile.css';
 import '../../components/Card/Card.css';
+import './Groups.css'
 //import { set } from 'draft-js/lib/DefaultDraftBlockRenderMap';
 //import { set } from 'draft-js/lib/DefaultDraftBlockRenderMap';
 
@@ -88,7 +89,7 @@ function SingleGroup(props) {
                     <div className="panel-group profile-cover p-4" style={{ position: 'relative', zIndex: 1 }}>
                         <div className="profile-cover__info">
                             <h2><strong>{groupItem.GroupName}</strong></h2>
-                            <p className="card-text">{groupItem.GroupDescription}</p>
+                            <p className="card-description">{groupItem.GroupDescription}</p>
                             <div className="profile-cover__action">
                                 <button className="btn btn-primary btn-sm d-flex justify-content-center align-items-center ">
                                     <i className="fa fa-plus"> </i>
@@ -103,6 +104,7 @@ function SingleGroup(props) {
                                     {isMenuOpen && (
                                         <div
                                             className="dropdown-menu show"
+                                            id="groupdropdown"
                                             style={{
                                                 position: 'absolute',
                                                 top: '84%',

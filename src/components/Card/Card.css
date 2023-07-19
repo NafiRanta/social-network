@@ -36,4 +36,37 @@
     z-index: 5;
 }
 
+#card {
+    margin-top: 20px;
+    width: 100%;
+    height: 100%;
+}
+
+.card-body {
+    width: 100% !important;
+    overflow: scroll;
+
+}
+.card-text {
+    width: 100% !important;
+    margin-top: 10px;
+    overflow: scroll;
+    font-size: 15px !important;
+}
+
+
+#viewbutton {
+    width: 85%;
+    margin-bottom: 20px;
+    margin-left: 10px !important;
+    margin-right: 10px !important;
+}
+
+#joinbutton {
+    width: 100%;
+    margin-bottom: 0px;
+    margin-left: 0px !important;
+    margin-right: 0px !important;
+}
+
 
