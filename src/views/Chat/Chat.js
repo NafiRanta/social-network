@@ -177,12 +177,18 @@ function Chat(props) {
       receiverUsername: selectedChatMateUsername,
       sentAt: sentAt,
     };
-    // send messageNotification to receiver through websocket. messageNotification is an object with the following properties: senderUsername, receiverUsername, type: "messageNotification"
-    const messageNotification = {
+    // send message_notification to receiver through websocket. message_notification is an object with the following properties: senderUsername, receiverUsername, type: "message_notification"
+    const payload = {
       senderUsername: senderUsername,
       receiverUsername: selectedChatMateUsername,
-      type: "messageNotification",
     };
+    const messageNotification = {
+      type: "message_notification",
+      payload: payload,
+    };
+    
+    // send message_notification to receiver through websocket
+    props.socket.send(JSON.stringify(messageNotification));
 
     try {
       const response = await fetch("http://localhost:8080/sendmessage", {

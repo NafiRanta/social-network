@@ -55,6 +55,7 @@ func (m *Manager) setupEventHandlers() {
 	m.handlers[EventSendMessage] = SendMessage
 	m.handlers[EventAcknowledgement] = SendLoggedinUsers
 	m.handlers[EventNotification] = SendNotification
+	m.handlers[messageNotification] = SendMessageNotification
 }
 
 // Send a notification to the reciever client
@@ -71,6 +72,28 @@ func SendNotification(event Event, c *Client) error {
 	outgoingEvent := Event{
 		Payload: data,
 		Type:    EventNotification,
+	}
+	for client := range c.manager.clients {
+		if c.manager.loggedinUsers[client.otp] == notificationevent.Receiver {
+			client.egress <- outgoingEvent
+		}
+	}
+	return nil
+}
+
+func SendMessageNotification(event Event, c *Client) error {
+	var notificationevent NotificationEvent
+	// convert event payload from json to struct
+	if err := json.Unmarshal(event.Payload, &notificationevent); err != nil {
+		return fmt.Errorf("bad payload in request: %v", err)
+	}
+	data, err := json.Marshal(notificationevent)
+	if err != nil {
+		return fmt.Errorf("failed to marshal broadcast message: %v", err)
+	}
+	outgoingEvent := Event{
+		Payload: data,
+		Type:    messageNotification,
 	}
 	for client := range c.manager.clients {
 		if c.manager.loggedinUsers[client.otp] == notificationevent.Receiver {

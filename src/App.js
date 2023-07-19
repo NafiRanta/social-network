@@ -24,6 +24,41 @@ import SearchbarGlobal from "./components/Searchbar/SearchbarGlobal";
 //import { set } from "draft-js/lib/DefaultDraftBlockRenderMap";
 
 function App() {
+  const routeEvent = (event) => {
+    switch (event.type) {
+      case "message_notification"
+        : {
+          // if the user is in the chat page, then update the chat page
+          console.log("message_notification");
+          if (window.location.pathname === "/chat") {
+              // if chosen user is the same as the user that sent the message
+            if (event.data) {
+              if (event.data.senderUsername === event.data.chosenUser && event.data.senderUsername > 0) {
+                // update the chat page
+                console.log("update the chat page");
+                
+              } else {
+                // show the notification on the chat icon
+                console.log("show the notification on the sender icon");
+              }
+            }
+                const chat = document.getElementById("chat");
+            } else {
+              // show the notification on the chat icon
+              console.log("show the notification on the chat icon");
+              // if the user is not in the chat page, then update the chat icon
+              const chatIcon = document.getElementById("chatIcon");
+          break;
+        }
+      }
+      case "acknowledgement"
+        : {
+
+          console.log("acknowledgement");
+          break;
+        }
+      }
+  }
   const decodeJwt = (jwt) => {
     if (!jwt) {
       return null; // Or handle the error in an appropriate way
@@ -50,7 +85,7 @@ function App() {
   const [allusers, setAllUsers] = useState([]);
   const [myGroups, setMyGroups] = useState([]);
   const [allGroups, setAllGroups] = useState([]);
-
+  const [ws, setConn] = useState(null);
   useEffect(() => {
     if (isAuth) {
       const userDisplayname = userInfo.firstname + " " + userInfo.lastname;
@@ -71,6 +106,7 @@ function App() {
           conn = new WebSocket(
             "ws://" + "localhost:8080" + "/ws?otp=" + user.userID
           );
+          setConn(conn);
           conn.onopen = function () {
             console.log("Connection opened");
           };
@@ -82,8 +118,11 @@ function App() {
           conn.onmessage = function (evt) {
             const eventData = JSON.parse(evt.data);
             console.log("eventData", eventData);
-            // const event = Object.assign(new Event, eventData);
-            //routeEvent(event);
+            console.log("eventData.type", eventData.type);
+            console.log("type of eventData.type", typeof eventData.type);
+            // const event = Object.assign(new Event(eventData.type, eventData) );
+            const event = new Event(eventData.type, eventData);
+            routeEvent(event);
           };
         } else {
           alert("WebSocket is not supported by your Browser!");
@@ -226,6 +265,7 @@ function App() {
               username={username}
               userDisplayname={userDisplayname}
               allusers={allusers}
+              socket={ws}
             />
           </div>
         }

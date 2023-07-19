@@ -81,8 +81,7 @@ func (c *Client) readMessages() {
 	c.connection.SetPongHandler(c.pongHandler)
 
 	for {
-		// loop tt runs forever read message from the connection
-		// messageType = 1, is textMessage type
+		// loop runs forever and listens to messages from the connection
 		_, payload, err := c.connection.ReadMessage()
 		if err != nil { // when conn is (unexpectedly) closed
 			if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway, websocket.CloseAbnormalClosure) {
@@ -90,7 +89,7 @@ func (c *Client) readMessages() {
 			}
 			break
 		}
-		fmt.Println("payload", payload)
+		fmt.Println("payload", string(payload))
 
 		var request Event
 		if err := json.Unmarshal(payload, &request); err != nil {
@@ -130,7 +129,7 @@ func (c *Client) writeMessages() {
 			if err := c.connection.WriteMessage(websocket.TextMessage, data); err != nil {
 				log.Printf("failed to send message: %v", err)
 			}
-			log.Println("message sent")
+			log.Println("message sent", string(message.Payload))
 
 		case <-ticker.C:
 			log.Println("ping")
