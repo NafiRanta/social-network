@@ -23,35 +23,42 @@ function SingleGroup(props) {
     const [modalOpen, setModalOpen] = useState(false);
     const dispatch = useDispatch();
     const allgroups = useSelector((state) => state.allGroups);
+    console.log("allgroups", allgroups)
     const groupID = window.location.pathname.split('/')[2];
+    console.log("groupID", groupID);
 
     // get information about the group from allgroups
     useEffect(() => {
         const group = allgroups.filter((group) => group.GroupID === groupID);
-        console.log("group", group)
-        //if not null then set the state
-        if (group.length > 0) {
-            const adminUsername = group[0].Admin;
-            //const adminInfo = props.allusers.filter((user) => user.username === adminUsername);
-           // const adminDisplayName = adminInfo[0].firstname + " " + adminInfo[0].lastname;
-            // make membersUsernames an array
-            const membersUsernames = JSON.parse(group[0].MemberUsernames);
-             const membersInfo = membersUsernames.map((username) => {
+        console.log("group", group);
+      
+        // Check if group exists and has MemberUsernames property
+        if (group.length > 0 && group[0].MemberUsernames) {
+          const membersUsernames = JSON.parse(group[0].MemberUsernames);
+          const adminUsername = group[0].Admin;
+          console.log("adminUsername", adminUsername);
+      
+          // Proceed with mapping only if membersUsernames is an array
+          if (Array.isArray(membersUsernames)) {
+            const membersInfo = membersUsernames.map((username) => {
+                // Find the member and admin in allusers 
                 const member = props.allusers.find((user) => user.username === username);
-                const displayName = member.firstname + ' ' + member.lastname;
+                const admin = props.allusers.find((user) => user.username === adminUsername);
+                console.log("member", member);
+                console.log("admin", admin);
                 return {
                     username: username,
-                    displayName: displayName,
+                    displayName: member.firstname + " " + member.lastname,
                     avatar: member.avatar,
-                    privacy: member.privacy
                 };
             });
             setGroup(group);
-           // setAdminDisplayName(adminDisplayName);
             setMembersInfo(membersInfo);
+            console.log("membersInfo", membersInfo)
+          }
         }
-    }, [allgroups, props.allusers, groupID]);
-
+      }, [allgroups, props.allusers, groupID]);
+      
 
     const openModal = () => {
         setModalOpen(true);
@@ -83,7 +90,7 @@ function SingleGroup(props) {
         <div>
             <Topnav userDisplayname={props.userDisplayname} allusers={props.allusers}/>
             {group.map((groupItem) => (
-            <div className="container-fluid">
+            <div className="container-fluid" key={groupItem.GroupID}>
                 <div className="bg-white p-3 mt-3 rounded border shadow" id="bg-white">
                     <div className="panel-group profile-cover p-4" style={{ position: 'relative', zIndex: 1 }}>
                         <div className="profile-cover__info">

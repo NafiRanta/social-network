@@ -57,7 +57,10 @@ function CreateGroupModal(props) {
       groupName: groupName,
       groupDescription: groupDescription,
       groupAdmin: userInfo.username,
-      memberUsernames: selectedUserNames,
+      adminInvitedUsernames: selectedUserNames,
+      memberInvitedUsernames: [],
+      memberUsernames: [],
+      requestUsernames: [],
       postIDs: groupPostID,
       eventIDs: groupEventID,
       createAt: now

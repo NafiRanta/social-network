@@ -76,6 +76,7 @@ func Start() error {
 	router.HandleFunc("/getmygroups", g.GetMyGroupsHandler)
 	router.HandleFunc("/getsinglegroup", g.GetSingleGroupHandler)
 	router.HandleFunc("/joingroup", g.AddUserToGroupHandler)
+	router.HandleFunc("/invitesbyadmin", g.GetAdminGroupInvitesHandler)
 
 	// handle group posts
 	router.HandleFunc("/addgrouppost", gp.AddGroupPostHandler)

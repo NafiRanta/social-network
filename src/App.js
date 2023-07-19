@@ -108,6 +108,7 @@ function App() {
             // setAllUsers to include users that are not the current user
             const filteredData = data.filter((user) => user.email !== email);
             setAllUsers(filteredData);
+            dispatch({ type: "SET_ALLUSERS", payload: filteredData });
           } else {
             console.log("error");
           }
@@ -126,6 +127,7 @@ function App() {
   useEffect(() => {
     if (isAuth) {
       const token = localStorage.getItem("token");
+      console.log("token", token);
       const headers = new Headers();
       headers.append("Authorization", "Bearer " + token);
       headers.append("Content-Type", "application/json");
@@ -137,6 +139,7 @@ function App() {
           });
           if (res.ok) {
             const data = await res.json();
+            console.log("get my group data", data)
             // add userMemberGroups and adminGroups to one object
             const mygroups = [
               ...(data.userMemberGroups || []),
@@ -157,6 +160,36 @@ function App() {
       };
       if (isAuth) {
         fetchGroups();
+      }
+    }
+  }, [isAuth]);
+
+  useEffect(() => {
+    if (isAuth) {
+      const token = localStorage.getItem("token");
+      const headers = new Headers();
+      headers.append("Authorization", "Bearer " + token);
+      headers.append("Content-Type", "application/json");
+      const fetchInvitesByAdmin = async () => {
+        try {
+          const res = await fetch("http://localhost:8080/invitesbyadmin", {
+            method: "GET",
+            headers: headers,
+          });
+          if (res.ok) {
+            const data = await res.json();
+            console.log("invites by admin", data);
+            dispatch({ type: "SET_INVITESBYADMIN", payload: data });
+          } else {
+            console.log("error");
+          }
+        } catch (error) {
+          // Handle error
+          console.log(error);
+        }
+      };
+      if (isAuth) {
+        fetchInvitesByAdmin();
       }
     }
   }, [isAuth]);

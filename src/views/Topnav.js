@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { Dropdown } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -10,6 +10,75 @@ import './TopNav.css'
 
 function Topnav(props) {
   const userInfo = useSelector((state) => state.userInfo);
+  const invitesbyadmin = useSelector((state) => state.invitesByAdmin);
+ 
+  console.log("invitesbyadmin",  invitesbyadmin)
+  const [groupInvitesByAdmin, setgroupInvitesByAdmin] = useState([]);
+  const allusers = useSelector((state) => state.allUsers);
+  console.log("allusers", allusers)
+  let Notifications = []
+  let groupInvitesByAdminRender = []
+ 
+  // get all necessary info for each notification including admin avatar, admin displayname, groupname, groupid
+  useEffect(() => {
+  if (Array.isArray(invitesbyadmin.groups)) {
+    const updatedInvites = invitesbyadmin.groups.map((invite) => {
+      const adminInfo = allusers.find((user) => user.username === invite.Admin);
+      console.log("adminInfo", adminInfo)
+      // Add a check to handle the potential undefined value
+      const adminAvatar = adminInfo?.avatar;
+      const adminDisplayname = adminInfo?.firstname + " " + adminInfo?.lastname;
+      console.log("adminDisplayname", adminDisplayname);
+
+      return {
+        adminAvatar: adminAvatar,
+        adminDisplayname: adminDisplayname,
+        groupName: invite.GroupName,
+        groupID: invite.GroupID,
+      };
+    });
+    setgroupInvitesByAdmin(updatedInvites);
+  } else {
+    console.log("groups array in invitesbyadmin is not an array");
+  }
+}, [invitesbyadmin, allusers]);
+
+console.log("hello world", groupInvitesByAdmin);
+//append groupInvitesByAdmin to Notifications array
+if (groupInvitesByAdmin.length > 0) {
+   groupInvitesByAdminRender = groupInvitesByAdmin.map((invite) => {
+    console.log("invite avatar", invite.adminAvatar)
+    return (
+      <Dropdown.Item as="li" className="my-2 p-1">
+        <div className="d-flex justify-content-between">
+          <div className="d-flex align-items-center">
+            <div className="rounded-circle d-flex align-items-center justify-content-center mx-2" id="avatar">
+             
+              <img src={invite.adminAvatar} alt="avatar" className="rounded-circle me-2" />
+            </div>
+            <div>
+
+              <p className="m-0">{invite.adminDisplayname} invited you to join {invite.groupName}</p>
+            </div>
+          </div>
+          <div>
+            <Link
+              to={`/singlegroup/${invite.groupID}`}
+              className="btn btn-primary btn-sm d-flex justify-content-center align-items-center"
+            >
+              View
+            </Link>
+          </div>
+        </div>
+      </Dropdown.Item>
+    );
+  });
+}
+// push groupInvitesByAdminRender to Notifications array
+if (groupInvitesByAdminRender) {
+  Notifications.push(groupInvitesByAdminRender);
+}
+
   //handle logout
   const handleLogout = () => {
     localStorage.removeItem("reduxState");
@@ -120,20 +189,7 @@ function Topnav(props) {
                       <h2>Notifications</h2>
                     </div>
                   </Dropdown.Item>
-                  <Dropdown.Item as="li" className="my-2 p-1">
-                    <a href="#" className="text-decoration-none text-dark d-flex align-items-center">
-                      <div className="d-flex align-items-center justify-content-evenly">
-                        <div className="p-2">
-                          <Avatar userDisplayname={props.userDisplayname} />
-                        </div>
-                        <div>
-                          <p className="fs-7 m-0">Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum unde amet at nulla quae porro.</p>
-                          <span className="fs-7 text-primary">about an hour ago</span>
-                        </div>
-                      </div>
-                      <i className="fas fa-circle fs-7 text-primary"></i>
-                    </a>
-                  </Dropdown.Item>
+               {Notifications}
                 </Dropdown.Menu>
               </Dropdown>
             </div>

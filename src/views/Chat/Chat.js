@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector } from 'react-redux';
 import "../Chat/Chat.css";
 import Avatar from "../../components/Avatar/Avatar";
 import SearchbarChat from "../../components/Searchbar/SearchbarChat";
@@ -63,6 +63,8 @@ function Chat(props) {
   const [senderDisplayname, setSenderDisplayname] = useState(
     props.userDisplayname
   );
+  const mygroups = useSelector((state) => state.myGroups);
+  console.log("mygroups in chat", mygroups);
 
   const handleUserClick = (chatMateDisplayName, chatMateUsername) => {
     const chatMate = props.allusers.find(
@@ -113,6 +115,53 @@ function Chat(props) {
       );
     });
   };
+
+  const displayGroupChats = () => {
+    if (!mygroups) {
+      return null;
+    }
+    // save GroupName and GroupID to a variable called filteredData
+    let filteredData = mygroups.map((group) => {
+      return {
+        GroupName: group.GroupName,
+        GroupID: group.GroupID,
+      };
+    });
+    // sort the filteredData by GroupName
+    filteredData.sort((a, b) => (a.GroupName > b.GroupName ? 1 : -1));
+    // map the filteredData to display all groups
+    return filteredData.map((group) => {
+      const chatMatedisplayName = group.GroupName;
+      const chatMateusername = group.GroupID;
+      return (
+        <div key={chatMateusername}>
+          <ul className="users">
+            <li
+              className="person"
+              data-chat="person1"
+              onClick={() =>
+                handleUserClick(chatMatedisplayName, chatMateusername)
+              }
+            >
+              <div className="user">
+              <img
+                src={process.env.PUBLIC_URL + '/defaultImg/default-avatar.jpeg'}
+                alt="avatar"
+                className="rounded-circle me-2"
+                />
+
+                <span className="status busy"></span>
+              </div>
+              <p className="name-time">
+                <span className="name">{chatMatedisplayName}</span>
+              </p>
+            </li>
+          </ul>
+        </div>
+      );
+    });
+  };
+  
 
   const handleMessageSubmit = async (e) => {
     e.preventDefault();
@@ -223,35 +272,7 @@ function Chat(props) {
                     aria-labelledby="pills-communities-tab"
                   >
                     <div className="container" id="chatUsers">
-                      <ul className="users">
-                        <li className="person" data-chat="person1">
-                          <div className="user">
-                            <Avatar />
-                            <span className="status busy"></span>
-                          </div>
-                          <p className="name-time">
-                            <span className="name">Russel Lee</span>
-                          </p>
-                        </li>
-                        <li className="person" data-chat="person1">
-                          <div className="user">
-                            <Avatar />
-                            <span className="status offline"></span>
-                          </div>
-                          <p className="name-time">
-                            <span className="name">Joyce Tan</span>
-                          </p>
-                        </li>
-                        <li className="person active-user" data-chat="person2">
-                          <div className="user">
-                            <Avatar />
-                            <span className="status away"></span>
-                          </div>
-                          <p className="name-time">
-                            <span className="name">Adam Ranta</span>
-                          </p>
-                        </li>
-                      </ul>
+                      {displayGroupChats()}
                     </div>
                   </div>
                 </div>

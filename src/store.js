@@ -45,8 +45,20 @@ function rootReducer(state = initialState, action) {
         ...state,
         allGroups: action.payload,
       };
+    
+    case "SET_INVITESBYADMIN":
+      return {
+        ...state,
+        invitesByAdmin: action.payload,
+      };
+    
+    case "SET_ALLUSERS":
+      return {
+        ...state,
+        allUsers: action.payload,
+      };
     default:
-      return state;
+      return state; 
   }
 }
 

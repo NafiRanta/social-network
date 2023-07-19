@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import './Card.css';
 import { Link } from 'react-router-dom';
 //import { set } from "draft-js/lib/DefaultDraftBlockRenderMap";
 function GroupProfileCard(props) {
+    const dispatch = useDispatch();
     const [groupsToDisplay, setGroupsToDisplay] = useState([]);
     const currentPath = window.location.pathname;
     const allgroups = useSelector((state) => state.allGroups);
@@ -38,6 +40,7 @@ function GroupProfileCard(props) {
                   : group
               )
             );
+           
           } else {
             throw new Error("Failed to join the group.");
           }
@@ -46,12 +49,14 @@ function GroupProfileCard(props) {
         }
       };
 
-    const renderGroupActions = (group) => {
+      const renderGroupActions = (group) => {
         if (window.location.pathname === "/allgroups") {
-          console.log("group rendergroupactions", group )
-          console.log("props", props)
-          const memberUsernames = JSON.parse(group.MemberUsernames);
+          console.log("group rendergroupactions", group);
+          console.log("props", props);
+
+          const memberUsernames = group.MemberUsernames || [];
           const isMember = memberUsernames.includes(props.username);
+          console.log("isMember", isMember)
           const isAdmin = props.username && group.Admin === props.username;
           if (isMember || isAdmin) {
             return (
@@ -64,7 +69,7 @@ function GroupProfileCard(props) {
             );
           } else {
             return (
-                <button
+              <button
                 className="btn btn-primary btn-sm d-flex justify-content-center align-items-center"
                 onClick={() => handleJoinGroup(group.GroupID)}
               >
@@ -82,7 +87,8 @@ function GroupProfileCard(props) {
             </Link>
           );
         }
-      }; 
+      };
+      
     
       return (
         <div className="row1">

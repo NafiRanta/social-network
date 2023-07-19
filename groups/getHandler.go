@@ -12,6 +12,7 @@ func GetMyGroupsHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("getUserGroupsHandler")
 	authHeader := r.Header.Get("Authorization")
 	if authHeader == "" {
+		fmt.Println("error from authheader:")
 		http.Error(w, "Missing Authorization header", http.StatusUnauthorized)
 		return
 	}
@@ -107,5 +108,56 @@ func GetSingleGroupHandler(w http.ResponseWriter, r *http.Request) {
 	// Set the Content-Type header to application/json
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(responseJSON)
+
+}
+
+func GetAdminGroupInvitesHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("getAdminGroupInvitesHandler")
+	authHeader := r.Header.Get("Authorization")
+	if authHeader == "" {
+		fmt.Println("error from authheader:")
+		http.Error(w, "Missing Authorization header", http.StatusUnauthorized)
+		return
+	}
+
+	userID, err := a.ExtractUserIDFromAuthHeader(authHeader)
+	if err != nil {
+		fmt.Println("error from extractuserid:", err)
+		http.Error(w, err.Error(), http.StatusUnauthorized)
+		return
+	}
+
+	user, err := d.GetUserByID(userID)
+	if err != nil {
+		fmt.Println("error from extractuserid:", err)
+		http.Error(w, err.Error(), http.StatusUnauthorized)
+		return
+	}
+
+	username := user.UserName
+
+	// get all groups where username is included in adminInvitedUsernames
+	groups, err := d.GetGroupsByAdminInvitedUsername(username)
+	if err != nil {
+		fmt.Println("error getting groups")
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	response := map[string]interface{}{
+		"groups": groups,
+	}
+
+	// Convert the response to JSON
+	responseJSON, err := json.Marshal(response)
+	if err != nil {
+		http.Error(w, "Failed to marshal response", http.StatusInternalServerError)
+		return
+	}
+
+	// Set the Content-Type header to application/json
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(responseJSON)
+	fmt.Println("groups retrieved successfully")
 
 }

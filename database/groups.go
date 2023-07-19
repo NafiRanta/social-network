@@ -11,25 +11,31 @@ import (
 )
 
 type Group struct {
-	GroupID          string
-	GroupName        string
-	GroupDescription string
-	Admin            string
-	MemberUsernames  string
-	PostIDs          string
-	EventIDs         string
-	CreateAt         time.Time
+	GroupID                string
+	GroupName              string
+	GroupDescription       string
+	Admin                  string
+	AdminInvitedUsernames  string
+	MemberInvitedUsernames string
+	RequestUsernames       string
+	MemberUsernames        string
+	PostIDs                string
+	EventIDs               string
+	CreateAt               time.Time
 }
 
 type GroupResponse struct {
-	GroupID          string    `json:"groupID"`
-	GroupName        string    `json:"groupName"`
-	GroupDescription string    `json:"groupDescription"`
-	Admin            string    `json:"adminID"`
-	MemberUsernames  []string  `json:"memberUsernames"`
-	PostIDs          []string  `json:"postIDs"`
-	EventIDs         []string  `json:"eventIDs"`
-	CreateAt         time.Time `json:"createAt"`
+	GroupID                string    `json:"groupID"`
+	GroupName              string    `json:"groupName"`
+	GroupDescription       string    `json:"groupDescription"`
+	Admin                  string    `json:"adminID"`
+	AdminInvitedUsernames  []string  `json:"adminInvitedUsernames"`
+	MemberInvitedUsernames []string  `json:"memberInvitedUsernames"`
+	RequestUsernames       []string  `json:"requestUsernames"`
+	MemberUsernames        []string  `json:"memberUsernames"`
+	PostIDs                []string  `json:"postIDs"`
+	EventIDs               []string  `json:"eventIDs"`
+	CreateAt               time.Time `json:"createAt"`
 }
 
 func CreateGroupsTable(db *sql.DB) {
@@ -39,6 +45,9 @@ func CreateGroupsTable(db *sql.DB) {
 		GroupName TEXT NOT NULL,
 		GroupDescription TEXT NOT NULL,
 		Admin TEXT NOT NULL,
+		AdminInvitedUsernames TEXT,
+		MemberInvitedUsernames TEXT,
+		RequestUsernames TEXT,
 		MemberUsernames TEXT,
 		PostIDs TEXT,
 		EventIDs TEXT,
@@ -58,10 +67,22 @@ func AddGroup(group *GroupResponse) error {
 	}
 	defer db.Close()
 	query := `
-	INSERT INTO Groups (GroupID, GroupName, GroupDescription, Admin, MemberUsernames, PostIDs, EventIDs, CreateAt)
-	VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
+	INSERT INTO Groups (GroupID, GroupName, GroupDescription, Admin, AdminInvitedUsernames, MemberInvitedUsernames, RequestUsernames, MemberUsernames, PostIDs, EventIDs, CreateAt)
+	VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
 
 	group.GroupID = uuid.New().String()
+	adminInvitedJSON, err := json.Marshal(group.AdminInvitedUsernames)
+	if err != nil {
+		return err
+	}
+	memberInvitedJSON, err := json.Marshal(group.MemberInvitedUsernames)
+	if err != nil {
+		return err
+	}
+	requestJSON, err := json.Marshal(group.RequestUsernames)
+	if err != nil {
+		return err
+	}
 
 	membersJSON, err := json.Marshal(group.MemberUsernames)
 	if err != nil {
@@ -87,6 +108,9 @@ func AddGroup(group *GroupResponse) error {
 		group.GroupName,
 		group.GroupDescription,
 		group.Admin,
+		string(adminInvitedJSON),
+		string(memberInvitedJSON),
+		string(requestJSON),
 		string(membersJSON),
 		string(postIDsJSON),
 		string(eventIDsJSON),
@@ -118,6 +142,9 @@ func GetGroupsByAdminUsername(username string) ([]Group, error) {
 			&group.GroupName,
 			&group.GroupDescription,
 			&group.Admin,
+			&group.AdminInvitedUsernames,
+			&group.MemberInvitedUsernames,
+			&group.RequestUsernames,
 			&group.MemberUsernames,
 			&group.PostIDs,
 			&group.EventIDs,
@@ -154,6 +181,9 @@ func GetGroupsByMembersUsername(username string) ([]Group, error) {
 			&group.GroupName,
 			&group.GroupDescription,
 			&group.Admin,
+			&group.AdminInvitedUsernames,
+			&group.MemberInvitedUsernames,
+			&group.RequestUsernames,
 			&group.MemberUsernames,
 			&group.PostIDs,
 			&group.EventIDs,
@@ -187,6 +217,9 @@ func GetAllGroups() ([]Group, error) {
 			&group.GroupName,
 			&group.GroupDescription,
 			&group.Admin,
+			&group.AdminInvitedUsernames,
+			&group.MemberInvitedUsernames,
+			&group.RequestUsernames,
 			&group.MemberUsernames,
 			&group.PostIDs,
 			&group.EventIDs,
@@ -218,6 +251,9 @@ func GetGroupByID(groupID string) ([]GroupResponse, error) {
 	for rows.Next() {
 		var group GroupResponse
 		var memberUsernames string
+		var adminInvitedUsernames string
+		var memberInvitedUsernames string
+		var requestUsernames string
 		var postIDs string
 		var eventIDs string
 		err := rows.Scan(
@@ -225,6 +261,9 @@ func GetGroupByID(groupID string) ([]GroupResponse, error) {
 			&group.GroupName,
 			&group.GroupDescription,
 			&group.Admin,
+			&adminInvitedUsernames,
+			&memberInvitedUsernames,
+			&requestUsernames,
 			&memberUsernames,
 			&postIDs,
 			&eventIDs,
@@ -236,6 +275,25 @@ func GetGroupByID(groupID string) ([]GroupResponse, error) {
 		}
 		// Convert the MemberUsernames string to a slice of strings
 		err = json.Unmarshal([]byte(memberUsernames), &group.MemberUsernames)
+		if err != nil {
+			fmt.Println("unmarshal error", err)
+			return nil, err
+		}
+
+		// convert the InvitedUsernames string to a slice of strings
+		err = json.Unmarshal([]byte(adminInvitedUsernames), &group.AdminInvitedUsernames)
+		if err != nil {
+			fmt.Println("unmarshal error", err)
+			return nil, err
+		}
+		// Convert the MemberInvitedUsernames string to a slice of strings
+		err = json.Unmarshal([]byte(memberInvitedUsernames), &group.MemberInvitedUsernames)
+		if err != nil {
+			fmt.Println("unmarshal error", err)
+			return nil, err
+		}
+		// Convert the RequestUsernames string to a slice of strings
+		err = json.Unmarshal([]byte(requestUsernames), &group.RequestUsernames)
 		if err != nil {
 			fmt.Println("unmarshal error", err)
 			return nil, err
@@ -280,4 +338,45 @@ func AddUserToGroup(groupID string, username string) error {
 		return err
 	}
 	return nil
+}
+
+func GetGroupsByAdminInvitedUsername(username string) ([]Group, error) {
+	fmt.Println("username in getgroupsbyadmininvitedusername", username)
+	db, err := sql.Open("sqlite3", "./socialnetwork.db")
+	if err != nil {
+		fmt.Println("open error", err)
+		return nil, err
+	}
+	defer db.Close()
+	query := `SELECT * FROM Groups WHERE AdminInvitedUsernames LIKE '%' || ? || '%'`
+	rows, err := db.Query(query, username)
+	if err != nil {
+		fmt.Print("query error", err)
+		return nil, err
+	}
+	defer rows.Close()
+	var groups []Group
+	for rows.Next() {
+		var group Group
+		err := rows.Scan(
+			&group.GroupID,
+			&group.GroupName,
+			&group.GroupDescription,
+			&group.Admin,
+			&group.AdminInvitedUsernames,
+			&group.MemberInvitedUsernames,
+			&group.RequestUsernames,
+			&group.MemberUsernames,
+			&group.PostIDs,
+			&group.EventIDs,
+			&group.CreateAt,
+		)
+		if err != nil {
+			fmt.Println("scan error", err)
+			return nil, err
+		}
+		groups = append(groups, group)
+	}
+	return groups, nil
+
 }
