@@ -9,6 +9,7 @@ import CreateEventModal from '../../components/Modal/CreateEventModal';
 import EventCard from '../../components/Card/EventCard';
 import '../../views/Profile/Profile.css';
 import '../../components/Card/Card.css';
+import './Groups.css'
 //import { set } from 'draft-js/lib/DefaultDraftBlockRenderMap';
 //import { set } from 'draft-js/lib/DefaultDraftBlockRenderMap';
 
@@ -91,11 +92,11 @@ function SingleGroup(props) {
             <Topnav userDisplayname={props.userDisplayname} allusers={props.allusers}/>
             {group.map((groupItem) => (
             <div className="container-fluid" key={groupItem.GroupID}>
-                <div className="bg-white p-3 mt-3 rounded border shadow" id="bg-white">
-                    <div className="panel-group profile-cover p-4" style={{ position: 'relative', zIndex: 1 }}>
-                        <div className="profile-cover__info">
+                <div className="bg-white p-5" >
+                    <div className="panel-group profile-cover p-5" >
+                        <div className="profile-cover__info" id="coverContent">
                             <h2><strong>{groupItem.GroupName}</strong></h2>
-                            <p className="card-text">{groupItem.GroupDescription}</p>
+                            <p className="card-description">{groupItem.GroupDescription}</p>
                             <div className="profile-cover__action">
                                 <button className="btn btn-primary btn-sm d-flex justify-content-center align-items-center ">
                                     <i className="fa fa-plus"> </i>
@@ -110,6 +111,7 @@ function SingleGroup(props) {
                                     {isMenuOpen && (
                                         <div
                                             className="dropdown-menu show"
+                                            id="groupdropdown"
                                             style={{
                                                 position: 'absolute',
                                                 top: '84%',
@@ -144,11 +146,11 @@ function SingleGroup(props) {
                                             <p className="m-0"><strong>Intro</strong></p>
                                         </div>
                                     </li>
-                                    <li className="dropdown-item p-1 rounded">
-                                        <span><i className="fas fa-user"> Admin: </i> <span className="name">{/* {adminDisplayName} */}</span></span>
+                                    <li className="dropdown-item p-1 rounded" >
+                                        <div id="introText"> <i className="fas fa-user"> </i> Admin: <span className="name">{/* {adminDisplayName} */}</span> </div>
                                     </li>
                                     <li className="dropdown-item p-1 rounded">
-                                        <span><i className="fas fa-birthday-cake"> Created: </i> <span className="name">{new Date(groupItem.CreateAt).toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' })}</span></span>
+                                        <div id="introText"> <i className="fas fa-birthday-cake"> </i> Created:  <span className="name">{new Date(groupItem.CreateAt).toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' })}</span></div>
                                     </li>
                                 </ul>
                             </div>
@@ -177,7 +179,7 @@ function SingleGroup(props) {
                     <div className="col-12 col-lg-6 pb-5">
                         <div className="d-flex flex-column justify-content-center w-100 mx-auto" id="d-flex-postcontainer-myprofile">
                             <CreateGroupPost userDisplayname={props.userDisplayname} groupID={groupID}/>
-                            <GroupPostCard userDisplayname={props.userDisplayname}  />
+                            <GroupPostCard userDisplayname={props.userDisplayname}/>
                         </div>
                     </div>
                 </div>

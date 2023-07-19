@@ -54,10 +54,6 @@ function SingleEvent(props) {
                                 <span> Going</span>
                             </button>
                             <button className="btn btn-outline-primary btn-sm d-flex justify-content-center align-items-center">
-                                <i className="fa fa-question"></i>
-                                <span> Maybe</span>
-                            </button>
-                            <button className="btn btn-outline-primary btn-sm d-flex justify-content-center align-items-center">
                                 <i className="fa fa-times"></i>
                                 <span> Can't go</span>
                             </button>
