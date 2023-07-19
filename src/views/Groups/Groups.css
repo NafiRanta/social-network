@@ -5,4 +5,19 @@
 
 #groupdropdown {
     position: absolute !important;
+    z-index: 3 !important;
+}
+
+#box {
+  width: 100% !important;
+}
+
+#coverContent {
+    align-content: center;
+    margin-right: 165px;
+}
+
+#introText {
+    font-family: 'Poppins' !important;
+    font-size: 90%;
 }
