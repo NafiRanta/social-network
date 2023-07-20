@@ -25,7 +25,6 @@ import (
 var Database *sql.DB
 
 func init() {
-	fmt.Println("Server init")
 	Database = d.GetDB()
 }
 
@@ -46,7 +45,6 @@ func Start() error {
 	// websocket
 	ctx := context.Background()
 	manager := ws.NewManager(ctx)
-	fmt.Println("Manager created", manager)
 	router := http.NewServeMux()
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 	})
@@ -94,9 +92,6 @@ func Start() error {
 
 	// router.HandleFunc("/websocket", ws)
 	handler := u.CorsMiddleware(router)
-	//fire up the server
-	fmt.Println("Listening on :8080...")
-	// create an error to try out the log file
 	err = http.ListenAndServe(":8080", handler)
 	// create an error to try out the log file
 	return err
