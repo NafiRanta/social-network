@@ -6,6 +6,7 @@ import (
 	"net/http"
 	a "socialnetwork/authentication"
 	d "socialnetwork/database"
+	u "socialnetwork/utils"
 )
 
 // getMessagesHandler handles the get messages request
@@ -26,7 +27,7 @@ func GetMessagesHandler(w http.ResponseWriter, r *http.Request) {
 	// get userID
 	userID, err := a.ExtractUserIDFromAuthHeader(authHeader)
 	if err != nil && userID == "" {
-		fmt.Println("Invalid token")
+		u.CheckErr(err)
 		http.Error(w, err.Error(), http.StatusUnauthorized)
 		return
 	}
@@ -34,21 +35,21 @@ func GetMessagesHandler(w http.ResponseWriter, r *http.Request) {
 	// get userEmail by email
 	user, err := d.GetUserByUsername(username)
 	if err != nil {
-		fmt.Println("Error getting usrename")
+		u.CheckErr(err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 	// get message by userEmail
 	messages, err := d.GetMessagesByUserID(user.UserID)
 	if err != nil {
-		fmt.Println("Error getting messages")
+		u.CheckErr(err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 	// mark messages as seen
 	err = d.MarkMessagesByUsernameAsSeen(user.UserName)
 	if err != nil {
-		fmt.Println("error marking messages as seen")
+		u.CheckErr(err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
@@ -56,15 +57,11 @@ func GetMessagesHandler(w http.ResponseWriter, r *http.Request) {
 	// return messages
 	responseJSON, err := json.Marshal(messages)
 	if err != nil {
-		fmt.Println("error encoding messages")
+		u.CheckErr(err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	// Set the Content-Type header to application/json
 	w.Header().Set("Content-Type", "application/json")
-
-	// Write the JSON response to the HTTP response writer
 	w.Write(responseJSON)
-	//fmt.Println("messages returned")
 }
