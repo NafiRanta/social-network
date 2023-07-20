@@ -110,9 +110,11 @@ function App() {
           console.log("WebSocket is supported by your Browser!");
           // connect to ws
           const user = decodeJwt(token);
-          conn = new WebSocket(
-            "ws://" + "localhost:8080" + "/ws?otp=" + user.userID
-          );
+          if (user) {
+            conn = new WebSocket(
+              "ws://" + "localhost:8080" + "/ws?otp=" + user.userID
+            );
+          }
           setConn(conn);
           conn.onopen = function () {
             console.log("Connection opened");
