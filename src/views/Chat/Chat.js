@@ -228,7 +228,12 @@ function Chat(props) {
   const chatMateUser = allusers.filter(
     (user) => user.username == selectedChatMateUsername
   );
-  const chatMateAvatar = chatMateUser[0].avatar;
+  let chatMateAvatar = process.env.PUBLIC_URL + '/defaultImg/default-avatar.jpeg';
+  if (chatMateUser) {
+    if (chatMateUser[0]) {
+      chatMateAvatar = chatMateUser[0].avatar;
+    }
+  }
 
   return (
     <div>

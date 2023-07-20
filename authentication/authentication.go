@@ -11,6 +11,7 @@ import (
 	"math/rand"
 	"net/http"
 	d "socialnetwork/database"
+	u "socialnetwork/utils"
 	"strconv"
 	"time"
 
@@ -55,6 +56,7 @@ func LogIn(w http.ResponseWriter, r *http.Request) {
 		var data map[string]string
 		err := decoder.Decode(&data)
 		if err != nil {
+			u.CheckErr(err)
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
@@ -65,9 +67,8 @@ func LogIn(w http.ResponseWriter, r *http.Request) {
 		var storedPassword string
 		user, err := d.GetUserByEmail(email)
 		if err != nil {
-			fmt.Println("email", email)
+			u.CheckErr(err)
 			fmt.Println("user not found by email")
-			// http.Error(w, "Invalid email or password", http.StatusUnauthorized)
 		}
 		// Get the stored password from the database and unhash it
 		storedPassword = user.Password
@@ -79,11 +80,13 @@ func LogIn(w http.ResponseWriter, r *http.Request) {
 		if user != nil && password == storedPassword {
 			// Generate a new UUID
 			if err != nil {
+				u.CheckErr(err)
 				http.Error(w, "Failed to generate session ID", http.StatusInternalServerError)
 				return
 			}
 			token, err := GenerateJWT(user.UserID)
 			if err != nil {
+				u.CheckErr(err)
 				http.Error(w, "Failed to generate JWT", http.StatusInternalServerError)
 				return
 			}
@@ -120,10 +123,12 @@ func LogIn(w http.ResponseWriter, r *http.Request) {
 			}
 			userJSON, err := json.Marshal(userResponse)
 			if err != nil {
+				u.CheckErr(err)
 				http.Error(w, "Failed to encode user", http.StatusInternalServerError)
 				return
 			}
 			if err != nil {
+				u.CheckErr(err)
 				http.Error(w, err.Error(), http.StatusInternalServerError)
 				return
 			}
@@ -159,6 +164,7 @@ func Register(w http.ResponseWriter, r *http.Request) {
 	// Read the request body
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
+		u.CheckErr(err)
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
