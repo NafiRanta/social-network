@@ -39,15 +39,8 @@ func NewClient(conn *websocket.Conn, manager *Manager, otp string) *Client {
 func (c *Client) readMessages() {
 	// defer all the cleanup code
 	defer func() {
-		// remove client from c.manager.loggedinUsers map
-		// get username from otp
-		username := c.manager.loggedinUsers[c.otp]
-		fmt.Println("username in readmessages", username)
-
 		// print loggedinUsers before and after delete
-		fmt.Println("loggedinUsers before delete", c.manager.loggedinUsers)
 		delete(c.manager.loggedinUsers, c.otp)
-		fmt.Println("loggedinUsers after delete", c.manager.loggedinUsers)
 		var request Event
 		// Extract values from the map to values slice
 		values := make([]string, 0, len(c.manager.loggedinUsers))
@@ -129,7 +122,7 @@ func (c *Client) writeMessages() {
 			if err := c.connection.WriteMessage(websocket.TextMessage, data); err != nil {
 				log.Printf("failed to send message: %v", err)
 			}
-			log.Println("message sent", string(message.Payload))
+			fmt.Println("message sent", string(message.Payload))
 
 		case <-ticker.C:
 			fmt.Println("ping")
