@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import { Dropdown } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Avatar from '../components/Avatar/Avatar';
 import CreatePostModal from '../components/Modal/CreatePostModal';
@@ -11,6 +11,8 @@ import './TopNav.css'
 
 function Topnav(props) {
   const dispatch = useDispatch();
+  const location = useLocation();
+  const navigate = useNavigate();
   const allusers = useSelector((state) => state.allUsers);
   const userInfo = useSelector((state) => state.userInfo);
   const invitesbyadmin = useSelector((state) => state.invitesByAdmin);
@@ -65,27 +67,27 @@ const groupInvitesByAdminRender = Array.isArray(groupInvitesByAdmin) ? (
     return (
       <div key={invite.groupID}>
           <Dropdown.Item as="li" className="my-2 p-1">
-    <div className="d-flex justify-content-between">
-      <div className="d-flex align-items-center">
-        <div className="rounded-circle d-flex align-items-center justify-content-center mx-2" id="avatar">
-         
-          <img src={invite.adminAvatar} alt="avatar" className="rounded-circle me-2" />
-        </div>
-        <div>
+            <div className="d-flex justify-content-between">
+              <div className="d-flex align-items-center">
+                <div className="rounded-circle d-flex align-items-center justify-content-center mx-2" id="avatar">
+                
+                  <img src={invite.adminAvatar} alt="avatar" className="rounded-circle me-2" />
+                </div>
+                <div>
 
-          <p className="m-0">{invite.adminDisplayname} invited you to join {invite.groupName}</p>
-        </div>
-      </div>
-      <div>
-        <Link
-          to={`/singlegroup/${invite.groupID}`}
-          className="btn btn-primary btn-sm d-flex justify-content-center align-items-center"
-        >
-          View
-        </Link>
-      </div>
-    </div>
-  </Dropdown.Item>
+                  <p className="m-0">{invite.adminDisplayname} invited you to join {invite.groupName}</p>
+                </div>
+              </div>
+              <div>
+                <Link
+                  to={`/singlegroup/${invite.groupID}`}
+                  className="btn btn-primary btn-sm d-flex justify-content-center align-items-center"
+                >
+                  View
+                </Link>
+              </div>
+            </div>
+          </Dropdown.Item>
       </div>
     );
   })

@@ -24,13 +24,24 @@ function SingleGroup(props) {
     const [adminDisplayName, setAdminDisplayName] = useState([]);
     const [membersInfo, setMembersInfo] = useState([]);
     const groupID = window.location.pathname.split('/')[2];
+    console.log("groupID", groupID);
     // menu
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const dropdownRef = useRef(null);
     const [modalOpen, setModalOpen] = useState(false);
-   
 
-    // get information about the group from allgroups
+    // check if user is a member of the group 
+    const isUserGroupMember = group.length > 0 && Array.isArray(group[0].MemberUsernames)
+    ? group[0].MemberUsernames.includes(userInfo.username)
+    : false;
+   
+    // check if user is the admin of the group
+    const isUserGroupAdmin = group.length > 0 && group[0].Admin === userInfo.username;
+
+    // check if user is invited by admin
+    const adminInvitedUsers = JSON.parse(group?.[0]?.AdminInvitedUsernames ?? "[]");
+    const isInvitedByAdmin = Array.isArray(adminInvitedUsers) && adminInvitedUsers.includes(userInfo.username);
+
     useEffect(() => {
         const group = allgroups.filter((group) => group.GroupID === groupID);
       
@@ -38,7 +49,6 @@ function SingleGroup(props) {
         if (group.length > 0 && group[0].MemberUsernames) {
           const membersUsernames = JSON.parse(group[0].MemberUsernames);
           const adminUsername = group[0].Admin;
-
           // get admin display name from allusers
             const admin = allusers.find((user) => user.username === adminUsername);
             setAdminDisplayName(admin.firstname + " " + admin.lastname);
@@ -97,40 +107,55 @@ function SingleGroup(props) {
                             <h2><strong>{groupItem.GroupName}</strong></h2>
                             <p className="card-description">{groupItem.GroupDescription}</p>
                             <div className="profile-cover__action">
-                                <button className="btn btn-primary btn-sm d-flex justify-content-center align-items-center ">
-                                    <i className="fa fa-plus"> </i>
-                                    <span> Invite</span>
-                                </button>
-                                <div
-                                    className="btn btn-primary btn-sm d-flex justify-content-center align-items-center"
-                                    onClick={toggleMenu}
-                                    ref={dropdownRef}
-                                >
-                                    <i className="fa fa-bars"> </i>
-                                    {isMenuOpen && (
+                                {(isUserGroupAdmin || isUserGroupMember) && (
+                                    <>
+                                        <button className="btn btn-primary btn-sm d-flex justify-content-center align-items-center ">
+                                            <i className="fa fa-plus"> </i>
+                                            <span> Invite</span>
+                                        </button>
                                         <div
-                                            className="dropdown-menu show"
-                                            id="groupdropdown"
-                                            style={{
-                                                position: 'absolute',
-                                                top: '84%',
-                                                left: '55%',
-                                            }}
+                                            className="btn btn-primary btn-sm d-flex justify-content-center align-items-center"
+                                            onClick={toggleMenu}
+                                            ref={dropdownRef}
                                         >
-                                            <button className="dropdown-item" type="button">
-                                            Leave
-                                            </button>
-                                            <button className="dropdown-item" type="button"  data-bs-toggle="modal"
-                                            data-bs-target="#createEventModal">
-                                            Create Event
-                                            </button>
-                                            <button className="dropdown-item" type="button">
-                                            Create Chat
-                                            </button>
+                                            <i className="fa fa-bars"> </i>
+                                            {isMenuOpen && (
+                                                <div
+                                                    className="dropdown-menu show"
+                                                    id="groupdropdown"
+                                                    style={{
+                                                        position: 'absolute',
+                                                        top: '84%',
+                                                        left: '55%',
+                                                    }}
+                                                >
+                                                    <button className="dropdown-item" type="button">
+                                                    Leave
+                                                    </button>
+                                                    <button className="dropdown-item" type="button"  data-bs-toggle="modal"
+                                                    data-bs-target="#createEventModal">
+                                                    Create Event
+                                                    </button>
+                                                    <button className="dropdown-item" type="button">
+                                                    Create Chat
+                                                    </button>
+                                                </div>
+                                            )}
                                         </div>
-                                    )}
-                                </div>
+                                    </>
+                                )}
                             </div>
+                            {isInvitedByAdmin && (
+                                <div className="alert alert-warning" role="alert">
+                                    <strong>Invited by admin</strong>
+                                    <button className="btn btn-success mx-2" /*onClick={handleAcceptInvite}*/>
+                                    Accept
+                                    </button>
+                                    <button className="btn btn-danger" /*onClick={handleDeclineInvite}*/>
+                                    Decline
+                                    </button>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -170,16 +195,20 @@ function SingleGroup(props) {
                                     ))}
                                 </div>
                             </div>
-                            <div className="bg-white rounded border shadow p-3">
-                                <EventCard />
-                            </div>
+                            {(isUserGroupAdmin || isUserGroupMember) && (
+                                <div className="bg-white rounded border shadow p-3">
+                                    <EventCard />
+                                </div>
+                            )}
                         </div>
                     </div>
                     <div className="col-12 col-lg-6 pb-5">
-                        <div className="d-flex flex-column justify-content-center w-100 mx-auto" id="d-flex-postcontainer-myprofile">
-                            <CreateGroupPost userDisplayname={props.userDisplayname} groupID={groupID}/>
-                            <GroupPostCard userDisplayname={props.userDisplayname}/>
-                        </div>
+                        {(isUserGroupAdmin || isUserGroupMember) && (
+                            <div className="d-flex flex-column justify-content-center w-100 mx-auto" id="d-flex-postcontainer-myprofile">
+                                <CreateGroupPost userDisplayname={props.userDisplayname} groupID={groupID}/>
+                                <GroupPostCard userDisplayname={props.userDisplayname}/>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
