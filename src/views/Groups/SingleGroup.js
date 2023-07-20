@@ -24,16 +24,14 @@ function SingleGroup(props) {
     const [adminDisplayName, setAdminDisplayName] = useState([]);
     const [membersInfo, setMembersInfo] = useState([]);
     const groupID = window.location.pathname.split('/')[2];
-    console.log("groupID", groupID);
     // menu
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const dropdownRef = useRef(null);
     const [modalOpen, setModalOpen] = useState(false);
 
     // check if user is a member of the group 
-    const isUserGroupMember = group.length > 0 && Array.isArray(group[0].MemberUsernames)
-    ? group[0].MemberUsernames.includes(userInfo.username)
-    : false;
+    const groupmembers = JSON.parse(group?.[0]?.MemberUsernames ?? "[]");
+    const isUserGroupMember = Array.isArray(groupmembers) && groupmembers.includes(userInfo.username);
    
     // check if user is the admin of the group
     const isUserGroupAdmin = group.length > 0 && group[0].Admin === userInfo.username;
@@ -96,6 +94,29 @@ function SingleGroup(props) {
       };
     }, []);
 
+    const handleAcceptInvite = async() => {
+        try {
+            const token = localStorage.getItem('token');
+            const headers = new Headers();
+            headers.append('Authorization', 'Bearer ' + token);
+            headers.append('Content-Type', 'application/json');
+            const url = `http://localhost:8080/addusertogroup?groupID=${groupID}`;
+            const res = await fetch(url, {
+                method: 'POST',
+                headers: headers,
+            });
+            if (!res.ok) {
+                throw new Error('Failed to accept invite.');
+            } else {
+                alert('You have joined the group.');
+                window.location.reload();
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+
     return (
         <div>
             <Topnav userDisplayname={props.userDisplayname} allusers={props.allusers}/>
@@ -136,19 +157,16 @@ function SingleGroup(props) {
                                                     data-bs-target="#createEventModal">
                                                     Create Event
                                                     </button>
-                                                    <button className="dropdown-item" type="button">
-                                                    Create Chat
-                                                    </button>
                                                 </div>
                                             )}
                                         </div>
                                     </>
                                 )}
                             </div>
-                            {isInvitedByAdmin && (
+                            {(isInvitedByAdmin && !isUserGroupAdmin && !isUserGroupMember) &&  (
                                 <div className="alert alert-warning" role="alert">
                                     <strong>Invited by admin</strong>
-                                    <button className="btn btn-success mx-2" /*onClick={handleAcceptInvite}*/>
+                                    <button className="btn btn-success mx-2" onClick={handleAcceptInvite}>
                                     Accept
                                     </button>
                                     <button className="btn btn-danger" /*onClick={handleDeclineInvite}*/>

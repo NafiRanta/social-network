@@ -174,12 +174,13 @@ function App() {
       headers.append("Content-Type", "application/json");
       const fetchGroups = async () => {
         try {
-          const res = await fetch("http://localhost:8080/getmygroups", {
+          const res = await fetch("http://localhost:8080/getgroups", {
             method: "GET",
             headers: headers,
           });
           if (res.ok) {
             const data = await res.json();
+            console.log("data of groups", data);
             // add userMemberGroups and adminGroups to one object
             const mygroups = [
               ...(data.userMemberGroups || []),

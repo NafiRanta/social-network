@@ -8,7 +8,7 @@ import (
 	d "socialnetwork/database"
 )
 
-func GetMyGroupsHandler(w http.ResponseWriter, r *http.Request) {
+func GetGroupsHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("getUserGroupsHandler")
 	authHeader := r.Header.Get("Authorization")
 	if authHeader == "" {
