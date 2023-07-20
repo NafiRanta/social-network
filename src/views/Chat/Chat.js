@@ -54,7 +54,6 @@ function useChatMessages(
 }
 
 function Chat(props) {
-  const chatMateUsername = useSelector((state) => state.chatMateUsername);
   const dispatch = useDispatch();
   const userInfo = useSelector((state) => state.userInfo);
   const allusers = useSelector((state) => state.allUsers);
@@ -224,11 +223,15 @@ function Chat(props) {
     token,
     handleMessageSubmit
   );
-  
-  const chatMateUser = allusers.filter(
-    (user) => user.username == chatMateUsername
-  );
-  const chatMateAvatar = chatMateUser[0].avatar
+  const chatMateUsername = useSelector((state) => state.chatMateUsername);
+    // console.log("chatMateUsername", chatMateUsername);
+  // get chatMate avatar
+  // const chatMateUser = allusers.find(
+  //   (user) => user.username == chatMateUsername
+  // );
+  // console.log("chatMateUser", chatMateUser)
+  // const chatMateAvatar = chatMateUser.avatar;
+  //   console.log("chatMateAvatar", chatMateAvatar);
 
   return (
     <div>
@@ -352,7 +355,8 @@ function Chat(props) {
                       >
                         <li className="chat-left">
                           <div className="chat-avatar">
-                            <img src={chatMateAvatar} alt="avatar" className="rounded-circle me-2" id="avatar"/>
+                            {/* display chatMate avatar */}
+                            {/* <img src={chatMateAvatar} alt="avatar" className="rounded-circle me-2" id="avatar"/> */}
                             <div className="chat-name">
                               {selectedChatMateDisplayname}
                             </div>

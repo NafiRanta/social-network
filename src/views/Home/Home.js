@@ -12,7 +12,7 @@ function Home(props) {
     const loggedinUsers = useSelector((state) => state.loggedinUsers);
     const dispatch = useDispatch();
     const userInfo = useSelector((state) => state.userInfo);
-    const allusers = useSelector((state) => state.allUsers);
+    const allusers = useSelector((state) => state.allUsers); 
 
     const displayChatUsers = () => {
         if (!allusers) {
@@ -46,8 +46,9 @@ function Home(props) {
             );
         });
     };
-
+    
     return (
+        
         <div>
             <Topnav userDisplayname={props.userDisplayname} allusers={props.allusers}/>
             <div className="container-fluid">
@@ -72,7 +73,7 @@ function Home(props) {
                                     </div>
                                     <hr />
                                     <p className="text-muted fs-5 m-0">Contacts</p>
-                                    <span className={`status ${isUserLoggedIn ? 'online' : 'offline'}`}></span>
+                                    {/* <span className={`status ${isUserOnline ? 'online' : 'offline'}`}></span> */}
                                     {displayChatUsers()}
                                 </div>
                             </div>

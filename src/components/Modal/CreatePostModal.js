@@ -5,10 +5,8 @@ import Avatar from "../Avatar/Avatar";
 import { decodeJwt } from "../Card/PostCard";
 
 function CreatePostModal(props) {
-  console.log("props in createPostmodal", props)
   const userInfo = useSelector((state) => state.userInfo);
   const allusers = useSelector ((state) => state.allUsers)
-  console.log("allUsers redux", allusers)
   const [selectedImage, setSelectedImage] = useState(null);
   const [fileName, setFileName] = useState("");
   // const [includedFriends, setIncludedFriends] = useState("");
