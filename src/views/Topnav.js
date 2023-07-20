@@ -70,7 +70,6 @@ const groupInvitesByAdminRender = Array.isArray(groupInvitesByAdmin) ? (
             <div className="d-flex justify-content-between">
               <div className="d-flex align-items-center">
                 <div className="rounded-circle d-flex align-items-center justify-content-center mx-2" id="avatar">
-                
                   <img src={invite.adminAvatar} alt="avatar" className="rounded-circle me-2" />
                 </div>
                 <div>

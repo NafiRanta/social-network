@@ -72,10 +72,10 @@ func UpdateBioOfUser(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("userID", userID)
 	// Parse the request body
 	var requestBody struct {
-		Nickname string `json:"nickname"`
-		AboutMe  string `json:"about"`
-		DOB      string `json:"dob"`
-		Gender   string `json:"gender"`
+		Nickname    string `json:"nickname"`
+		AboutMe     string `json:"about"`
+		DateOfBirth string `json:"dateOfBirth"`
+		Gender      string `json:"gender"`
 	}
 
 	err = json.NewDecoder(r.Body).Decode(&requestBody)
@@ -85,8 +85,8 @@ func UpdateBioOfUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Update the user fields if new values are provided
-	if requestBody.DOB == "" {
-		user.DateOfBirth = requestBody.DOB
+	if requestBody.DateOfBirth == "" {
+		user.DateOfBirth = requestBody.DateOfBirth
 	}
 	if requestBody.Gender != "" {
 		user.Gender = requestBody.Gender
