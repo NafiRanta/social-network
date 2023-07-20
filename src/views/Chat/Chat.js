@@ -77,6 +77,12 @@ function Chat(props) {
     dispatch ({ type: "SET_CHATMATEUSERNAME", payload: chatMate.username });
   };
 
+  const handleGroupClick = (chatMateDisplayName, chatMateUsername) => {
+    setSelectedChatMateDisplayname(chatMateDisplayName);
+    setSelectedChatMateUsername(chatMateUsername);
+    dispatch ({ type: "SET_CHATMATEUSERNAME", payload: chatMateUsername });
+  };
+
   const displayAllUsers = () => {
     if (!allusers) {
       return null;
@@ -147,7 +153,7 @@ function Chat(props) {
               className="person"
               data-chat="person1"
               onClick={() =>
-                handleUserClick(chatMatedisplayName, chatMateusername)
+                handleGroupClick(chatMatedisplayName, chatMateusername)
               }
             >
               <div className="user">
