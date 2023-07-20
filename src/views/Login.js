@@ -42,9 +42,9 @@ export const ValidatePassword = (password) => {
 
 function Login() {
   const dispatch = useDispatch();
-  const [Email, setEmail] = useState("");
+  const [email , setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [valid, setValid] = useState({ Email: true, password: true });
+  const [valid, setValid] = useState({ email: true, password: true });
   const [modalOpen, setModalOpen] = useState(false);
   const openModal = () => {
     console.log("open modal");
@@ -64,7 +64,7 @@ function Login() {
 
   const validLoginForm = () => {
     // Check if email is empty
-    if (Email.trim() === "") {
+    if (email.trim() === "") {
       console.log("Email is required");
       document.getElementById("loginUsernameErrMsg").innerHTML =
         "Email is required";
@@ -72,11 +72,11 @@ function Login() {
     }
 
     // Check if the email is in the correct format
-    if (!ValidateEmail(Email)) {
+    if (!ValidateEmail(email)) {
       console.log("Invalid email format");
       document.getElementById("loginUsernameErrMsg").innerHTML =
         "Invalid email format";
-      setValid({ ...valid, Email: false });
+      setValid({ ...valid, email: false });
     }
 
     // Check if the password is empty
@@ -95,7 +95,7 @@ function Login() {
       setValid({ ...valid, password: false });
     }
     // All validations passed
-    if (valid.Email && valid.password) {
+    if (valid.email && valid.password) {
       return true;
     } else {
       return false;
@@ -115,7 +115,7 @@ function Login() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ Email, password }),
+        body: JSON.stringify({ email, password }),
       });
       if (response.ok) {
         const data = await response.json();
@@ -174,7 +174,7 @@ function Login() {
                 type="email"
                 className="form-control my-3"
                 placeholder="Email address"
-                value={Email}
+                value={email}
                 name="email"
                 onChange={handleInputChange}
               />
