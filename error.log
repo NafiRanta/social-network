@@ -157,3 +157,62 @@
 2023/07/20 18:22:36 pong
 2023/07/20 18:22:45 ping
 2023/07/20 18:22:45 pong
+2023/07/20 18:48:38 new connection
+2023/07/20 18:48:38 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 18:48:47 ping
+2023/07/20 18:48:47 pong
+2023/07/20 18:48:56 ping
+2023/07/20 18:48:56 pong
+2023/07/20 18:48:59 new connection
+2023/07/20 18:48:59 message sent {"loggedInUsers":["Nafi-Rantasalmi-25","Anton-Wiklund-1"]}
+2023/07/20 18:48:59 message sent {"loggedInUsers":["Nafi-Rantasalmi-25","Anton-Wiklund-1"]}
+2023/07/20 18:49:05 ping
+2023/07/20 18:49:05 pong
+2023/07/20 18:49:08 ping
+2023/07/20 18:49:08 pong
+2023/07/20 18:49:14 ping
+2023/07/20 18:49:14 pong
+2023/07/20 18:49:17 ping
+2023/07/20 18:49:17 pong
+2023/07/20 18:49:23 ping
+2023/07/20 18:49:23 pong
+2023/07/20 18:49:26 ping
+2023/07/20 18:49:26 pong
+2023/07/20 18:49:32 ping
+2023/07/20 18:49:32 pong
+2023/07/20 18:49:35 ping
+2023/07/20 18:49:35 pong
+2023/07/20 18:49:36 failed to send message: websocket: close sent
+2023/07/20 18:49:36 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 18:49:36 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 18:49:37 new connection
+2023/07/20 18:49:37 message sent {"loggedInUsers":["Nafi-Rantasalmi-25","Anton-Wiklund-1"]}
+2023/07/20 18:49:37 message sent {"loggedInUsers":["Nafi-Rantasalmi-25","Anton-Wiklund-1"]}
+2023/07/20 18:49:41 ping
+2023/07/20 18:49:41 pong
+2023/07/20 18:49:44 ping
+2023/07/20 18:49:44 writemsg error websocket: close sent
+2023/07/20 18:49:46 ping
+2023/07/20 18:49:46 pong
+2023/07/20 18:49:50 ping
+2023/07/20 18:49:50 pong
+2023/07/20 18:49:55 ping
+2023/07/20 18:49:55 pong
+2023/07/20 18:49:58 failed to send message: websocket: close sent
+2023/07/20 18:49:58 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 18:49:58 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 18:49:58 new connection
+2023/07/20 18:49:58 message sent {"loggedInUsers":["Nafi-Rantasalmi-25","Anton-Wiklund-1"]}
+2023/07/20 18:49:58 message sent {"loggedInUsers":["Nafi-Rantasalmi-25","Anton-Wiklund-1"]}
+2023/07/20 18:49:59 ping
+2023/07/20 18:49:59 pong
+2023/07/20 18:50:04 ping
+2023/07/20 18:50:04 writemsg error websocket: close sent
+2023/07/20 18:50:07 ping
+2023/07/20 18:50:07 pong
+2023/07/20 18:50:08 ping
+2023/07/20 18:50:08 pong
+2023/07/20 18:50:16 ping
+2023/07/20 18:50:16 pong
+2023/07/20 18:50:17 ping
+2023/07/20 18:50:17 pong
