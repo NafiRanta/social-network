@@ -196,7 +196,7 @@ func (m *Manager) ServeWS(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}
-	log.Println("new connection")
+	fmt.Println("new connection")
 
 	// upgrade regular http connection to a websocket connection
 	conn, err := websocketUpgrader.Upgrade(w, r, nil)
