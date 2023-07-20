@@ -110,6 +110,9 @@ func closeServer() {
 	if input == "x" {
 		printcolor("Server closed", "red")
 		os.Exit(0)
+	} else if input == "testerror" {
+		u.CheckErr(fmt.Errorf("Test error"))
+		closeServer()
 	} else {
 		closeServer()
 	}
