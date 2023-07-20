@@ -42,6 +42,7 @@ function App() {
                 if (event.payload.senderUsername == chatMateusername) {
                   // update the chat page
                   console.log("update the chat page");
+                  Location.reload();
                   
                 } else {
                   // show the notification on the sender icon
@@ -132,6 +133,11 @@ function App() {
               const eventData = JSON.parse(evt.data);
               routeEvent(eventData);
             };
+          } else {
+            // Clear memory and logout
+            localStorage.removeItem("token");
+            sessionStorage.clear();
+            window.location.href = "/login";
           }
         } else {
           alert("WebSocket is not supported by your Browser!");

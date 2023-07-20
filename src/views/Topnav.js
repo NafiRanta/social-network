@@ -99,9 +99,10 @@ if (groupInvitesByAdminRender) {
 
   //handle logout
   const handleLogout = () => {
-    // clear local storage and session storage and cookies
-    localStorage.clear();
-    sessionStorage.clear();
+    // clear redux and user info and token from local storage and session storage
+    localStorage.removeItem("reduxState");
+    sessionStorage.removeItem("userInfo");
+    localStorage.removeItem("token");
 
     // clear all cookies for this site
     const cookies = document.cookie.split(";");

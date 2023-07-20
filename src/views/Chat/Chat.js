@@ -359,7 +359,6 @@ function Chat(props) {
                       >
                         <li className="chat-left">
                           <div className="chat-avatar">
-                            {/* display chatMate avatar */}
                             <img src={chatMateAvatar} alt="avatar" className="rounded-circle me-2" id="avatar"/>
                             <div className="chat-name">
                               {selectedChatMateDisplayname}
