@@ -215,7 +215,8 @@ function SingleGroup(props) {
                             </div>
                             {(isUserGroupAdmin || isUserGroupMember) && (
                                 <div className="bg-white rounded border shadow p-3">
-                                    <EventCard />
+                                    <p className="m-0"><strong>Events</strong></p>
+                                    <EventCard groupID={groupID}/>
                                 </div>
                             )}
                         </div>

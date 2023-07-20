@@ -17,6 +17,7 @@ type GroupEvent struct {
 	EventName        string
 	EventDescription string
 	EventDate        string
+	EventTime        string
 	InvitedUsers     string
 	GoingUsers       string
 	CreateAt         time.Time
@@ -44,6 +45,7 @@ func CreateGroupEventsTable(db *sql.DB) {
 		EventName TEXT NOT NULL,
 		EventDescription TEXT NOT NULL,
 		EventDate TEXT NOT NULL,
+		EventTime TEXT NOT NULL,
 		InvitedUsers TEXT,
 		GoingUsers TEXT,
 		CreateAt TIMESTAMP NOT NULL,
@@ -63,8 +65,8 @@ func AddGroupEvent(groupEvent *GroupEventResponse) error {
 	defer db.Close()
 
 	query := `
-		INSERT INTO groupEvents (GroupEventID, GroupID, UserName, EventName, EventDescription, EventDate, InvitedUsers, GoingUsers, CreateAt)
-			VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);`
+		INSERT INTO GroupEvents (GroupEventID, GroupID, UserName, EventName, EventDescription, EventDate, EventTime, InvitedUsers, GoingUsers, CreateAt)
+			VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`
 
 	groupEventID := uuid.New().String()
 
@@ -78,11 +80,51 @@ func AddGroupEvent(groupEvent *GroupEventResponse) error {
 		return err
 	}
 
-	_, err = db.Exec(query, groupEventID, groupEvent.GroupID, groupEvent.UserName, groupEvent.EventName, groupEvent.EventDescription, groupEvent.EventDate, string(invitedJSON), string(goingJSON), groupEvent.CreateAt)
+	_, err = db.Exec(query, groupEventID, groupEvent.GroupID, groupEvent.UserName, groupEvent.EventName, groupEvent.EventDescription, groupEvent.EventDate, groupEvent.EventTime, string(invitedJSON), string(goingJSON), groupEvent.CreateAt)
 	if err != nil {
 		return err
 	}
 
 	fmt.Println("Added group event to database.")
 	return nil
+}
+
+func GetGroupEvent(groupID string) ([]GroupEvent, error) {
+	fmt.Println("groupID:", groupID)
+	db, err := sql.Open("sqlite3", "./socialnetwork.db")
+	if err != nil {
+		return nil, err
+	}
+	defer db.Close()
+
+	query := `SELECT * FROM GroupEvents WHERE GroupID = ?`
+
+	rows, err := db.Query(query, groupID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var groupEvents []GroupEvent
+	for rows.Next() {
+		var groupEvent GroupEvent
+		err := rows.Scan(
+			&groupEvent.GroupEventID,
+			&groupEvent.GroupID,
+			&groupEvent.UserName,
+			&groupEvent.EventName,
+			&groupEvent.EventDescription,
+			&groupEvent.EventDate,
+			&groupEvent.EventTime,
+			&groupEvent.InvitedUsers,
+			&groupEvent.GoingUsers,
+			&groupEvent.CreateAt,
+		)
+		if err != nil {
+			return nil, err
+		}
+		groupEvents = append(groupEvents, groupEvent)
+	}
+
+	return groupEvents, nil
+
 }

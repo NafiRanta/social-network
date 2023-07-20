@@ -89,6 +89,7 @@ func Start() error {
 
 	// handle group events
 	router.HandleFunc("/addevent", ge.AddGroupEventHandler)
+	router.HandleFunc("/getevent", ge.GetGroupEventHandler)
 
 	// router.HandleFunc("/websocket", ws)
 	handler := u.CorsMiddleware(router)

@@ -203,8 +203,8 @@ func GetAllGroups() ([]Group, error) {
 		return nil, err
 	}
 	defer db.Close()
-	quey := `SELECT * FROM Groups`
-	rows, err := db.Query(quey)
+	query := `SELECT * FROM Groups`
+	rows, err := db.Query(query)
 	if err != nil {
 		return nil, err
 	}

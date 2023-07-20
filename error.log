@@ -1260,3 +1260,220 @@
 2023/07/20 20:10:08 pong
 2023/07/20 20:10:17 ping
 2023/07/20 20:10:17 pong
+2023/07/20 21:47:47 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 21:47:52 failed to send message: websocket: close sent
+2023/07/20 21:47:52 message sent {"loggedInUsers":null}
+2023/07/20 21:47:52 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 21:47:56 writemsg error websocket: close sent
+2023/07/20 21:48:21 failed to send message: websocket: close sent
+2023/07/20 21:48:21 message sent {"loggedInUsers":null}
+2023/07/20 21:48:22 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 21:48:28 writemsg error websocket: close sent
+2023/07/20 21:49:51 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 21:51:58 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 21:58:08 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 21:59:26 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:06:35 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:06:35 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:12:23 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:12:23 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:12:23 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:12:28 message sent {"loggedInUsers":null}
+2023/07/20 22:12:28 message sent {"loggedInUsers":null}
+2023/07/20 22:12:28 failed to send message: websocket: close sent
+2023/07/20 22:12:28 message sent {"loggedInUsers":null}
+2023/07/20 22:12:28 failed to send message: websocket: close sent
+2023/07/20 22:12:28 message sent {"loggedInUsers":null}
+2023/07/20 22:12:28 message sent {"loggedInUsers":null}
+2023/07/20 22:12:28 failed to send message: websocket: close sent
+2023/07/20 22:12:28 message sent {"loggedInUsers":null}
+2023/07/20 22:12:28 writemsg error websocket: close sent
+2023/07/20 22:12:29 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:12:32 writemsg error websocket: close sent
+2023/07/20 22:12:34 writemsg error websocket: close sent
+2023/07/20 22:12:47 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:12:47 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:12:54 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:12:54 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:12:54 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:13:21 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:13:21 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:13:21 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:13:21 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:18:40 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:18:40 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:18:40 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:18:40 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:18:40 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:19:34 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:19:34 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:19:34 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:19:34 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:19:34 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:19:34 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:19:42 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:19:42 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:19:42 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:19:42 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:19:42 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:19:42 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:19:42 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:19:55 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:19:55 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:19:55 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:19:55 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:19:55 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:19:55 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:19:55 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:19:55 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:20:48 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:20:48 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:20:48 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:20:48 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:20:48 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:20:48 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:20:48 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:20:48 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:20:48 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:21:11 message sent {"loggedInUsers":null}
+2023/07/20 22:21:11 message sent {"loggedInUsers":null}
+2023/07/20 22:21:11 message sent {"loggedInUsers":null}
+2023/07/20 22:21:11 failed to send message: websocket: close sent
+2023/07/20 22:21:11 message sent {"loggedInUsers":null}
+2023/07/20 22:21:11 message sent {"loggedInUsers":null}
+2023/07/20 22:21:11 message sent {"loggedInUsers":null}
+2023/07/20 22:21:11 message sent {"loggedInUsers":null}
+2023/07/20 22:21:11 message sent {"loggedInUsers":null}
+2023/07/20 22:21:11 message sent {"loggedInUsers":null}
+2023/07/20 22:21:11 failed to send message: websocket: close sent
+2023/07/20 22:21:11 message sent {"loggedInUsers":null}
+2023/07/20 22:21:11 message sent {"loggedInUsers":null}
+2023/07/20 22:21:11 message sent {"loggedInUsers":null}
+2023/07/20 22:21:11 message sent {"loggedInUsers":null}
+2023/07/20 22:21:11 message sent {"loggedInUsers":null}
+2023/07/20 22:21:11 message sent {"loggedInUsers":null}
+2023/07/20 22:21:11 message sent {"loggedInUsers":null}
+2023/07/20 22:21:11 message sent {"loggedInUsers":null}
+2023/07/20 22:21:11 message sent {"loggedInUsers":null}
+2023/07/20 22:21:11 message sent {"loggedInUsers":null}
+2023/07/20 22:21:11 message sent {"loggedInUsers":null}
+2023/07/20 22:21:11 message sent {"loggedInUsers":null}
+2023/07/20 22:21:11 failed to send message: websocket: close sent
+2023/07/20 22:21:11 message sent {"loggedInUsers":null}
+2023/07/20 22:21:11 message sent {"loggedInUsers":null}
+2023/07/20 22:21:11 message sent {"loggedInUsers":null}
+2023/07/20 22:21:11 message sent {"loggedInUsers":null}
+2023/07/20 22:21:11 message sent {"loggedInUsers":null}
+2023/07/20 22:21:11 failed to send message: websocket: close sent
+2023/07/20 22:21:11 message sent {"loggedInUsers":null}
+2023/07/20 22:21:11 message sent {"loggedInUsers":null}
+2023/07/20 22:21:11 message sent {"loggedInUsers":null}
+2023/07/20 22:21:11 message sent {"loggedInUsers":null}
+2023/07/20 22:21:11 message sent {"loggedInUsers":null}
+2023/07/20 22:21:11 failed to send message: websocket: close sent
+2023/07/20 22:21:11 message sent {"loggedInUsers":null}
+2023/07/20 22:21:11 message sent {"loggedInUsers":null}
+2023/07/20 22:21:11 message sent {"loggedInUsers":null}
+2023/07/20 22:21:11 message sent {"loggedInUsers":null}
+2023/07/20 22:21:11 failed to send message: websocket: close sent
+2023/07/20 22:21:11 message sent {"loggedInUsers":null}
+2023/07/20 22:21:11 message sent {"loggedInUsers":null}
+2023/07/20 22:21:11 message sent {"loggedInUsers":null}
+2023/07/20 22:21:11 message sent {"loggedInUsers":null}
+2023/07/20 22:21:11 failed to send message: websocket: close sent
+2023/07/20 22:21:11 message sent {"loggedInUsers":null}
+2023/07/20 22:21:11 message sent {"loggedInUsers":null}
+2023/07/20 22:21:11 message sent {"loggedInUsers":null}
+2023/07/20 22:21:11 message sent {"loggedInUsers":null}
+2023/07/20 22:21:11 failed to send message: websocket: close sent
+2023/07/20 22:21:11 message sent {"loggedInUsers":null}
+2023/07/20 22:21:11 failed to send message: websocket: close sent
+2023/07/20 22:21:11 message sent {"loggedInUsers":null}
+2023/07/20 22:21:12 writemsg error websocket: close sent
+2023/07/20 22:21:12 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:21:13 writemsg error websocket: close sent
+2023/07/20 22:21:13 writemsg error websocket: close sent
+2023/07/20 22:21:15 writemsg error websocket: close sent
+2023/07/20 22:21:16 writemsg error websocket: close sent
+2023/07/20 22:21:18 writemsg error websocket: close sent
+2023/07/20 22:21:18 writemsg error websocket: close sent
+2023/07/20 22:21:20 writemsg error websocket: close sent
+2023/07/20 22:21:20 writemsg error websocket: close sent
+2023/07/20 22:21:58 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:21:58 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:25:33 message sent {"loggedInUsers":null}
+2023/07/20 22:25:33 failed to send message: websocket: close sent
+2023/07/20 22:25:33 message sent {"loggedInUsers":null}
+2023/07/20 22:25:33 failed to send message: websocket: close sent
+2023/07/20 22:25:33 message sent {"loggedInUsers":null}
+2023/07/20 22:25:33 writemsg error websocket: close sent
+2023/07/20 22:25:34 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:25:34 writemsg error websocket: close sent
+2023/07/20 22:28:03 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:35:18 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:36:51 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:39:43 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:39:43 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:39:55 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:39:55 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:39:55 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:40:42 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:40:42 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:40:42 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:40:42 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:42:39 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:42:39 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:42:39 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:42:39 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:42:39 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:47:26 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:47:29 failed to send message: websocket: close sent
+2023/07/20 22:47:29 message sent {"loggedInUsers":null}
+2023/07/20 22:47:30 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:47:35 writemsg error websocket: close sent
+2023/07/20 22:49:15 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:49:15 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:49:51 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:49:51 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:49:51 message sent {"loggedInUsers":["Nafi-Rantasalmi-25"]}
+2023/07/20 22:53:25 message sent {"loggedInUsers":["Nafi-Rantasalmi-22"]}
+2023/07/20 22:53:47 failed to send message: websocket: close sent
+2023/07/20 22:53:47 message sent {"loggedInUsers":null}
+2023/07/20 22:53:48 message sent {"loggedInUsers":["Nafi-Rantasalmi-22"]}
+2023/07/20 22:53:52 writemsg error websocket: close sent
+2023/07/20 22:54:10 failed to send message: websocket: close sent
+2023/07/20 22:54:10 message sent {"loggedInUsers":null}
+2023/07/20 22:54:10 message sent {"loggedInUsers":["Nafi-Rantasalmi-22"]}
+2023/07/20 22:54:12 failed to send message: websocket: close sent
+2023/07/20 22:54:12 message sent {"loggedInUsers":null}
+2023/07/20 22:54:15 writemsg error websocket: close sent
+2023/07/20 22:54:19 writemsg error websocket: close sent
+2023/07/20 22:54:20 message sent {"loggedInUsers":["Jacob-Pesämaa-72"]}
+2023/07/20 22:54:26 failed to send message: websocket: close sent
+2023/07/20 22:54:26 message sent {"loggedInUsers":null}
+2023/07/20 22:54:27 message sent {"loggedInUsers":["Jacob-Pesämaa-72"]}
+2023/07/20 22:54:29 writemsg error websocket: close sent
+2023/07/20 22:54:45 failed to send message: websocket: close sent
+2023/07/20 22:54:45 message sent {"loggedInUsers":null}
+2023/07/20 22:54:46 message sent {"loggedInUsers":["Jacob-Pesämaa-72"]}
+2023/07/20 22:54:48 failed to send message: websocket: close sent
+2023/07/20 22:54:48 message sent {"loggedInUsers":null}
+2023/07/20 22:54:54 message sent {"loggedInUsers":["Gin-Thy-26"]}
+2023/07/20 22:54:54 writemsg error websocket: close sent
+2023/07/20 22:54:55 writemsg error websocket: close sent
+2023/07/20 22:54:59 failed to send message: websocket: close sent
+2023/07/20 22:54:59 message sent {"loggedInUsers":null}
+2023/07/20 22:55:00 message sent {"loggedInUsers":["Gin-Thy-26"]}
+2023/07/20 22:55:03 writemsg error websocket: close sent
+2023/07/20 22:55:04 failed to send message: websocket: close sent
+2023/07/20 22:55:04 message sent {"loggedInUsers":null}
+2023/07/20 22:55:09 writemsg error websocket: close sent
+2023/07/20 22:55:09 message sent {"loggedInUsers":["Nafi-Rantasalmi-22"]}
+2023/07/20 22:55:58 failed to send message: websocket: close sent
+2023/07/20 22:55:58 message sent {"loggedInUsers":null}
+2023/07/20 22:55:58 message sent {"loggedInUsers":["Nafi-Rantasalmi-22"]}
+2023/07/20 22:56:03 writemsg error websocket: close sent
+2023/07/20 22:57:27 failed to send message: websocket: close sent
+2023/07/20 22:57:27 message sent {"loggedInUsers":null}
+2023/07/20 22:57:28 message sent {"loggedInUsers":["Nafi-Rantasalmi-22"]}
+2023/07/20 22:57:28 writemsg error websocket: close sent
