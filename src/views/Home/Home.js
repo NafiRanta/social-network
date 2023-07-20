@@ -8,36 +8,45 @@ import './Home.css'
 import Topnav from '../Topnav';
 
 function Home(props) {
+    // use selector for logged in users
+    const loggedinUsers = useSelector((state) => state.loggedinUsers);
     const dispatch = useDispatch();
     const userInfo = useSelector((state) => state.userInfo);
     const allusers = useSelector((state) => state.allUsers);
 
-    // show allusers under Contacts
     const displayChatUsers = () => {
         if (!allusers) {
-          return null; 
+            return null;
         }
-        // show all users except the logged in user
-        return allusers.filter(user => user.username !== userInfo.username).map((user, index) => {
-          return (
-            <div key= {`${ user.username}-${index}`}>
-                <ul className="list-group">
-                    <li className="dropdown-item rounded my-2 px-0" type="button">
-                        <div className="d-flex align-items-center mx-2 chat-avatar">
-                            <div className="position-relative">
-                            <   img src={user.avatar} alt="avatar" className="rounded-circle me-2"/>
-                                <span className="position-absolute bottom-0 translate-middle border border-light rounded-circle-sm bg-success p-1" >
-                                    <span className="visually-hidden"></span>
-                                </span>
+
+        return allusers
+            .filter((user) => user.username !== userInfo.username)
+            .map((user, index) => {
+                let isUserOnline = false
+                if (loggedinUsers) {
+                    isUserOnline = loggedinUsers.includes(user.username);
+                }
+                const statusClass = isUserOnline ? "bg-success" : "bg-secondary";
+                console.log("user is online", user.username, isUserOnline);
+            return (
+                <div key={`${user.username}-${index}`}>
+                    <ul className="list-group">
+                        <li className={`dropdown-item rounded my-2 px-0 ${statusClass}`} type="button">
+                            <div className="d-flex align-items-center mx-2 chat-avatar">
+                                <div className="position-relative">
+                                    <img src={user.avatar} alt="avatar" className="rounded-circle me-2" />
+                                    <span className={`position-absolute bottom-0 translate-middle border border-light rounded-circle-sm p-1 ${statusClass}`}>
+                                        <span className="visually-hidden"></span>
+                                    </span>
+                                </div>
+                                <p className="m-0">{user.firstname + " " + user.lastname}</p>
                             </div>
-                            <p className="m-0">{user.firstname + " " + user.lastname}</p>
-                        </div>
-                    </li>
-                </ul>
-            </div>  
-          );
+                        </li>
+                    </ul>
+                </div>
+            );
         });
-      };
+    };
 
     return (
         <div>
