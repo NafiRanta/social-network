@@ -5,35 +5,35 @@ import Avatar from "../Avatar/Avatar";
 import { decodeJwt } from "../Card/PostCard";
 
 function CreatePostModal(props) {
+  console.log("props in createPostmodal", props)
   const userInfo = useSelector((state) => state.userInfo);
+  const allusers = useSelector ((state) => state.allUsers)
+  console.log("allUsers redux", allusers)
   const [selectedImage, setSelectedImage] = useState(null);
   const [fileName, setFileName] = useState("");
   // const [includedFriends, setIncludedFriends] = useState("");
-  const [privacy, setPrivacy] = useState('custom'); // Initialize the selected privacy option state
-  const [followers, setFollowers] = useState([]);
-  const [allusers, setAllUsers] = useState([]);
-
-  const fetchAllUsers = async () => {
-    try {
-      const response = await fetch("http://localhost:8080/users")
-      const data = await response.json();
-      setAllUsers(data); // Update the state with the fetched data
-      //console.log("where", data)
-    } catch (error) {
-      console.error("Error fetching allusers:", error);
-    }
-  };
+  const [privacy, setPrivacy] = useState(''); // Initialize the selected privacy option state
+  const [selectedUsers, setSelectedUsers] = useState([]);
 
   const handlePrivacyChange = (event) => {
     setPrivacy(event.target.value); // Update the selected privacy option
   };
 
-  useEffect(() => {
-    if (privacy === 'custom') {
-      // Fetch followers from the database when the privacy is set to 'custom'
-      fetchAllUsers() //change this into followers
+  const handleUserSelect = (event) => {
+    const selectedValue = event.target.value;
+    // Check if the user is already selected
+    const alreadySelected = selectedUsers.includes(selectedValue);
+
+    if (alreadySelected) {
+      // If the user is already selected, remove it from the selectedUsers array
+      setSelectedUsers((prevSelected) =>
+        prevSelected.filter((user) => user !== selectedValue)
+      );
+    } else {
+      // If the user is not already selected, add it to the selectedUsers array
+      setSelectedUsers((prevSelected) => [...prevSelected, selectedValue]);
     }
-  }, [props.allusers, privacy]);
+  };
  
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
@@ -140,13 +140,16 @@ function CreatePostModal(props) {
                     </select>
                     {/* When custome is selected */}
                     {privacy === 'custom' && (
-                      <select
+                      <select multiple
                       className="form-select border-0 bg-gray w-100 fs-7"
                       id="customOptions"
+                      size={3}
+                      value={selectedUsers} 
+                      onChange={handleUserSelect}
                       >
                         {allusers.map((user) => (
                           <option id="allusers" key={user.id} value={user.id}>
-                            {user.email}
+                            {user.firstname}
                           </option>
                         ))}
                       </select>

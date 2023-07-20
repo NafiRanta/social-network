@@ -72,6 +72,7 @@ function Home(props) {
                                     </div>
                                     <hr />
                                     <p className="text-muted fs-5 m-0">Contacts</p>
+                                    <span className={`status ${isUserLoggedIn ? 'online' : 'offline'}`}></span>
                                     {displayChatUsers()}
                                 </div>
                             </div>
