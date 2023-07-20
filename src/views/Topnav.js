@@ -148,7 +148,7 @@ if (groupInvitesByAdminRender) {
                           type="button" 
                           className="text-decoration-none text-dark d-flex align-items-center"  
                           data-bs-toggle="modal" 
-                          data-bs-target="#createPostModal" 
+                          data-bs-target="#createPostModal"
                         >
                           <div className="rounded-circle bg-gray p-1 d-flex align-items-center justify-content-center me-3">
                             <i className="fas fa-edit"></i>

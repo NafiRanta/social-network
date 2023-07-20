@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Modal.css";
 import { useSelector } from "react-redux";
 import Avatar from "../Avatar/Avatar";
@@ -8,8 +8,33 @@ function CreatePostModal(props) {
   const userInfo = useSelector((state) => state.userInfo);
   const [selectedImage, setSelectedImage] = useState(null);
   const [fileName, setFileName] = useState("");
-  const [includedFriends, setIncludedFriends] = useState("");
+  // const [includedFriends, setIncludedFriends] = useState("");
+  const [privacy, setPrivacy] = useState('custom'); // Initialize the selected privacy option state
+  const [followers, setFollowers] = useState([]);
+  const [allusers, setAllUsers] = useState([]);
 
+  const fetchAllUsers = async () => {
+    try {
+      const response = await fetch("http://localhost:8080/users")
+      const data = await response.json();
+      setAllUsers(data); // Update the state with the fetched data
+      //console.log("where", data)
+    } catch (error) {
+      console.error("Error fetching allusers:", error);
+    }
+  };
+
+  const handlePrivacyChange = (event) => {
+    setPrivacy(event.target.value); // Update the selected privacy option
+  };
+
+  useEffect(() => {
+    if (privacy === 'custom') {
+      // Fetch followers from the database when the privacy is set to 'custom'
+      fetchAllUsers() //change this into followers
+    }
+  }, [props.allusers, privacy]);
+ 
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
     const reader = new FileReader();
@@ -94,8 +119,7 @@ function CreatePostModal(props) {
           <div className="modal-body">
             <div className="my-1 p-1">
               <div className="d-flex flex-column">
-                <div className="d-flex align-items-center">
-                    
+                <div className="d-flex align-items-baseline">
                   <div className="p-2">
                     <Avatar userDisplayname={props.userDisplayname} />
                   </div>
@@ -103,8 +127,10 @@ function CreatePostModal(props) {
                     <p className="m-0 fw-bold">{props.userDisplayname}</p>
                     <select
                       id="postPrivacy"
-                      className="form-select border-0 bg-gray w-75 fs-7"
+                      className="form-select border-0 bg-gray w-100 fs-7"
                       aria-label="Default select example"
+                      value={privacy}
+                      onChange={handlePrivacyChange}
                     >
                       <optgroup label="Choose privacy">
                         <option value="public">Public</option>
@@ -112,6 +138,19 @@ function CreatePostModal(props) {
                         <option value="custom">Custom</option>
                       </optgroup>
                     </select>
+                    {/* When custome is selected */}
+                    {privacy === 'custom' && (
+                      <select
+                      className="form-select border-0 bg-gray w-100 fs-7"
+                      id="customOptions"
+                      >
+                        {allusers.map((user) => (
+                          <option id="allusers" key={user.id} value={user.id}>
+                            {user.email}
+                          </option>
+                        ))}
+                      </select>
+                    )}
                   </div>
                 </div>
                 {selectedImage && (

@@ -108,10 +108,6 @@ function CommentCard(props) {
         className="d-flex align-items-center top-0 start-0 position-absolute"
         id="d-flex-comments"
       >
-        <div className="me-2">
-          <i className="text-primary fas fa-thumbs-up"></i>
-        </div>
-        {/* <p className="m-0 text-muted fs-7">Nafi, Gin, Jacob and 3 others</p> */}
       </div>
       <div className="accordion" id="accordionExample">
         <div className="accordion-item border-0">
@@ -128,10 +124,6 @@ function CommentCard(props) {
           </h2>
           <hr />
           <div className="d-flex justify-content-around">
-            <div className="dropdown-item rounded d-flex justify-content-center align-items-center pointer text-muted p-1">
-              <i className="fas fa-thumbs-up me-3"></i>
-              <p className="m-0">Like</p>
-            </div>
             <div
               className=" dropdown-item rounded d-flex justify-content-center align-items-center pointer text-muted p-1"
               data-bs-toggle="collapse"

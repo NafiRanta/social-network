@@ -19,8 +19,14 @@ function CreatePost(props) {
               </div>
               <CreatePostModal userDisplayname={props.userDisplayname} />
               <hr />
+              {/* Create Post Button */}
               <div className="d-flex flex-column flex-lg-row mt-3">
-                <div className="dropdown-item rounded d-flex align-items-center justify-content-center" type="button">
+                <div 
+                className="dropdown-item rounded d-flex align-items-center justify-content-center" 
+                type="button"
+                data-bs-toggle="modal" 
+                data-bs-target="#createPostModal" 
+                >
                   <p className="m-0 text-muted">Create Post</p>
                 </div>
               </div>

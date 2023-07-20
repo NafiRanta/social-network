@@ -147,34 +147,6 @@ function PostCard(props) {
                 <span>{post.PostID}</span>
               </div>
             </div>
-            <i
-              className="fas fa-ellipsis-h"
-              type="button"
-              id="post1Menu"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-            ></i>
-            <ul
-              className="dropdown-menu border-0 shadow"
-              aria-labelledby="post1Menu"
-            >
-              <li className="d-flex align-items-center">
-                <a
-                  className="dropdown-item d-flex justify-content-around align-items-center fs-7"
-                  href="#"
-                >
-                  Edit Post
-                </a>
-              </li>
-              <li className="d-flex align-items-center">
-                <a
-                  className="dropdown-item d-flex justify-content-around align-items-center fs-7"
-                  href="#"
-                >
-                  Delete Post
-                </a>
-              </li>
-            </ul>
           </div>
           <div className="mt-3">
             <div>

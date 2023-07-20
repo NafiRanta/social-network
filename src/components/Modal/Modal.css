@@ -120,3 +120,16 @@
     margin-top: -49px;
 }
 
+#customOptions {
+	margin-top: 10px;
+	width: 100%;
+}
+
+select#customOptions option#allusers {
+	color: black !important;
+  }
+
+#postPrivacy {
+	position: relative;
+	margin-top: 5px;
+}
