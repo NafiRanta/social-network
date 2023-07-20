@@ -36,8 +36,6 @@ function App() {
       case "message_notification"
         : {
           // if the user is in the chat page, then update the chat page
-          console.log("event.payload", event.payload);
-
           if (window.location.pathname === "/chat") {
               // if chosen user is the same as the user that sent the message
               if (event.payload) {
@@ -53,15 +51,19 @@ function App() {
             } else {
               // show the notification on the chat bubble icon
               console.log("show the notification on the chat icon");
-          break;
-        }
+              
+              break;
+            }
       }
       case "acknowledgement"
         : {
           // dispatch event.data.loggedinUsers to redux store
           if (event) {
-            const loggedinUsers = event.payload.loggedInUsers;
-            dispatch({ type: "SET_LOGGEDINUSERS", payload: loggedinUsers });
+            if (event.payload.loggedInUsers) {
+              let loggedinUsers = event.payload.loggedInUsers;
+              dispatch({ type: "SET_LOGGEDINUSERS", payload: loggedinUsers });
+              console.log("loggedinUsers", loggedinUsers);
+            }
           }
           break;
         }
