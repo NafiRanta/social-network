@@ -160,7 +160,6 @@ function PostCard(props) {
               <div>
                 <p className="m-0 fw-bold">{props.userDisplayname}</p>
                 <span className="text-muted fs-7">{formattedDate}</span>
-                <span>{post.PostID}</span>
               </div>
             </div>
           </div>
