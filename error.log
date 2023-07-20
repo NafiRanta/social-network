@@ -1,1 +1,159 @@
 2023/07/20 17:39:12 [2023-07-20 17:39:12] ERROR: testing error handling
+2023/07/20 18:15:33 new connection
+2023/07/20 18:15:33 message sent {"loggedInUsers":["Anton-Wiklund-1"]}
+2023/07/20 18:15:42 ping
+2023/07/20 18:15:42 pong
+2023/07/20 18:15:46 new connection
+2023/07/20 18:15:46 message sent {"loggedInUsers":["Anton-Wiklund-1","Gin-Thy-73"]}
+2023/07/20 18:15:46 message sent {"loggedInUsers":["Anton-Wiklund-1","Gin-Thy-73"]}
+2023/07/20 18:15:51 ping
+2023/07/20 18:15:51 pong
+2023/07/20 18:15:55 ping
+2023/07/20 18:15:55 pong
+2023/07/20 18:15:58 failed to send message: websocket: close sent
+2023/07/20 18:15:58 message sent {"loggedInUsers":["Anton-Wiklund-1"]}
+2023/07/20 18:15:58 message sent {"loggedInUsers":["Anton-Wiklund-1"]}
+2023/07/20 18:15:59 new connection
+2023/07/20 18:15:59 message sent {"loggedInUsers":["Anton-Wiklund-1","Gin-Thy-73"]}
+2023/07/20 18:15:59 message sent {"loggedInUsers":["Anton-Wiklund-1","Gin-Thy-73"]}
+2023/07/20 18:16:00 ping
+2023/07/20 18:16:00 pong
+2023/07/20 18:16:04 ping
+2023/07/20 18:16:04 writemsg error websocket: close sent
+2023/07/20 18:16:05 failed to send message: websocket: close sent
+2023/07/20 18:16:05 message sent {"loggedInUsers":["Anton-Wiklund-1"]}
+2023/07/20 18:16:05 message sent {"loggedInUsers":["Anton-Wiklund-1"]}
+2023/07/20 18:16:05 new connection
+2023/07/20 18:16:06 message sent {"loggedInUsers":["Anton-Wiklund-1","Gin-Thy-73"]}
+2023/07/20 18:16:06 message sent {"loggedInUsers":["Anton-Wiklund-1","Gin-Thy-73"]}
+2023/07/20 18:16:08 ping
+2023/07/20 18:16:08 writemsg error websocket: close sent
+2023/07/20 18:16:09 ping
+2023/07/20 18:16:09 pong
+2023/07/20 18:16:14 ping
+2023/07/20 18:16:14 pong
+2023/07/20 18:16:18 ping
+2023/07/20 18:16:18 pong
+2023/07/20 18:16:20 failed to send message: websocket: close sent
+2023/07/20 18:16:20 message sent {"loggedInUsers":["Anton-Wiklund-1"]}
+2023/07/20 18:16:20 message sent {"loggedInUsers":["Anton-Wiklund-1"]}
+2023/07/20 18:16:21 new connection
+2023/07/20 18:16:21 message sent {"loggedInUsers":["Anton-Wiklund-1","Gin-Thy-73"]}
+2023/07/20 18:16:21 message sent {"loggedInUsers":["Anton-Wiklund-1","Gin-Thy-73"]}
+2023/07/20 18:16:23 ping
+2023/07/20 18:16:23 writemsg error websocket: close sent
+2023/07/20 18:16:27 ping
+2023/07/20 18:16:27 pong
+2023/07/20 18:16:30 ping
+2023/07/20 18:16:30 pong
+2023/07/20 18:16:36 ping
+2023/07/20 18:16:36 pong
+2023/07/20 18:16:39 ping
+2023/07/20 18:16:39 pong
+2023/07/20 18:16:45 ping
+2023/07/20 18:16:45 pong
+2023/07/20 18:16:48 ping
+2023/07/20 18:16:48 pong
+2023/07/20 18:16:54 ping
+2023/07/20 18:16:54 pong
+2023/07/20 18:16:57 ping
+2023/07/20 18:16:57 pong
+2023/07/20 18:17:03 ping
+2023/07/20 18:17:03 pong
+2023/07/20 18:17:06 ping
+2023/07/20 18:17:06 pong
+2023/07/20 18:17:12 ping
+2023/07/20 18:17:12 pong
+2023/07/20 18:17:15 ping
+2023/07/20 18:17:15 pong
+2023/07/20 18:17:21 ping
+2023/07/20 18:17:21 pong
+2023/07/20 18:17:24 ping
+2023/07/20 18:17:24 pong
+2023/07/20 18:17:30 ping
+2023/07/20 18:17:30 pong
+2023/07/20 18:17:33 ping
+2023/07/20 18:17:33 pong
+2023/07/20 18:17:39 ping
+2023/07/20 18:17:39 pong
+2023/07/20 18:17:41 message sent {"senderUsername":"Anton-Wiklund-1","receiverUsername":"Gin-Thy-73"}
+2023/07/20 18:17:42 ping
+2023/07/20 18:17:42 pong
+2023/07/20 18:17:44 message sent {"senderUsername":"Anton-Wiklund-1","receiverUsername":"Gin-Thy-73"}
+2023/07/20 18:17:48 ping
+2023/07/20 18:17:48 pong
+2023/07/20 18:17:51 ping
+2023/07/20 18:17:51 pong
+2023/07/20 18:17:57 ping
+2023/07/20 18:17:57 pong
+2023/07/20 18:18:00 ping
+2023/07/20 18:18:00 pong
+2023/07/20 18:18:05 failed to send message: websocket: close sent
+2023/07/20 18:18:05 message sent {"loggedInUsers":["Anton-Wiklund-1"]}
+2023/07/20 18:18:05 message sent {"loggedInUsers":["Anton-Wiklund-1"]}
+2023/07/20 18:18:06 ping
+2023/07/20 18:18:06 pong
+2023/07/20 18:18:09 ping
+2023/07/20 18:18:09 writemsg error websocket: close sent
+2023/07/20 18:18:15 ping
+2023/07/20 18:18:15 pong
+2023/07/20 18:18:24 ping
+2023/07/20 18:18:24 pong
+2023/07/20 18:18:33 ping
+2023/07/20 18:18:33 pong
+2023/07/20 18:18:42 ping
+2023/07/20 18:18:42 pong
+2023/07/20 18:18:51 ping
+2023/07/20 18:18:51 pong
+2023/07/20 18:19:00 ping
+2023/07/20 18:19:00 pong
+2023/07/20 18:19:09 ping
+2023/07/20 18:19:09 pong
+2023/07/20 18:19:18 ping
+2023/07/20 18:19:18 pong
+2023/07/20 18:19:27 ping
+2023/07/20 18:19:27 pong
+2023/07/20 18:19:36 ping
+2023/07/20 18:19:36 pong
+2023/07/20 18:19:45 ping
+2023/07/20 18:19:45 pong
+2023/07/20 18:19:54 ping
+2023/07/20 18:19:54 pong
+2023/07/20 18:20:03 ping
+2023/07/20 18:20:03 pong
+2023/07/20 18:20:12 ping
+2023/07/20 18:20:12 pong
+2023/07/20 18:20:21 ping
+2023/07/20 18:20:21 pong
+2023/07/20 18:20:30 ping
+2023/07/20 18:20:30 pong
+2023/07/20 18:20:39 ping
+2023/07/20 18:20:39 pong
+2023/07/20 18:20:48 ping
+2023/07/20 18:20:48 pong
+2023/07/20 18:20:57 ping
+2023/07/20 18:20:57 pong
+2023/07/20 18:21:06 ping
+2023/07/20 18:21:06 pong
+2023/07/20 18:21:15 ping
+2023/07/20 18:21:15 pong
+2023/07/20 18:21:24 ping
+2023/07/20 18:21:24 pong
+2023/07/20 18:21:33 ping
+2023/07/20 18:21:33 pong
+2023/07/20 18:21:42 ping
+2023/07/20 18:21:42 pong
+2023/07/20 18:21:51 ping
+2023/07/20 18:21:51 pong
+2023/07/20 18:22:00 ping
+2023/07/20 18:22:00 pong
+2023/07/20 18:22:09 ping
+2023/07/20 18:22:09 pong
+2023/07/20 18:22:18 ping
+2023/07/20 18:22:18 pong
+2023/07/20 18:22:27 ping
+2023/07/20 18:22:27 pong
+2023/07/20 18:22:36 ping
+2023/07/20 18:22:36 pong
+2023/07/20 18:22:45 ping
+2023/07/20 18:22:45 pong

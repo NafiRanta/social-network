@@ -1,409 +1,368 @@
+import "./App.css";
 import React, { useState, useEffect } from "react";
-import { useSelector } from 'react-redux';
-import "../Chat/Chat.css";
-import Avatar from "../../components/Avatar/Avatar";
-import Topnav from "../Topnav";
-import { decodeJwt } from "../../components/Card/PostCard";
 import { useDispatch } from "react-redux";
+import { Routes, Route, Navigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import Login from "./views/Login";
+import Home from "./views/Home/Home";
+import CreatePost from "./components/CreatePost/CreatePost";
+import CreatePostModal from "./components/Modal/CreatePostModal";
+import Topnav from "./views/Topnav";
+import MyProfile from "./views/Profile/MyProfile";
+import MyGroups from "./views/Groups/MyGroups";
+import HomeGroup from "./views/Groups/HomeGroup";
+import Chat from "./views/Chat/Chat";
+import SingleGroup from "./views/Groups/SingleGroup";
+import Error from "./views/Error/Error";
+import SingleGroupNonMember from "./views/Groups/SingleGroupNonMember";
+import GroupSidenav from "./views/Groups/GroupSidenav";
+import AllGroups from "./views/Groups/AllGroups";
+import OthersProfile from "./views/Profile/OthersProfile";
+import SingleEvent from "./views/Events/SingleEvent";
+import SearchbarGlobal from "./components/Searchbar/SearchbarGlobal";
+import { click } from "@testing-library/user-event/dist/click";
 
-function useChatMessages(
-  selectedChatMateUsername,
-  senderUsername,
-  token,
-  handleMessageSubmit
-) {
-  const [chatMessages, setChatMessages] = useState([]);
+//import { set } from "draft-js/lib/DefaultDraftBlockRenderMap";
+const eventStruct = {
+  type: '',
+  payload: null,
+};
+
+
+function App() {
+  const chatMateusername = useSelector((state) => state.chatMateUsername);
+  const routeEvent = (event) => {
+    switch (event.type) {
+      case "message_notification"
+        : {
+          // if the user is in the chat page, then update the chat page
+          console.log("event.payload", event.payload);
+
+          if (window.location.pathname === "/chat") {
+              // if chosen user is the same as the user that sent the message
+              if (event.payload) {
+                if (event.payload.senderUsername == chatMateusername) {
+                  // update the chat page
+                  console.log("update the chat page");
+                  
+                } else {
+                  // show the notification on the sender icon
+                  console.log("show the notification on the sender icon");
+                }
+              }
+            } else {
+              // show the notification on the chat bubble icon
+              console.log("show the notification on the chat icon");
+          break;
+        }
+      }
+      case "acknowledgement"
+        : {
+          // dispatch event.data.loggedinUsers to redux store
+          if (event) {
+            const loggedinUsers = event.payload.loggedInUsers;
+            dispatch({ type: "SET_LOGGEDINUSERS", payload: loggedinUsers });
+          }
+          break;
+        }
+      }
+  }
+  const decodeJwt = (jwt) => {
+    if (!jwt) {
+      return null; // Or handle the error in an appropriate way
+    }
+
+    const base64Url = jwt.split(".")[1];
+    if (!base64Url) {
+      return null; // Or handle the error in an appropriate way
+    }
+
+    const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+    const decoded = atob(base64);
+    const result = JSON.parse(decoded);
+    return result;
+  };
+
+  const dispatch = useDispatch();
+  const isAuth = useSelector((state) => state.isAuth);
+  let conn;
+  const userInfo = useSelector((state) => state.userInfo);
+  const [userDisplayname, setUserDisplayname] = useState("");
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [allusers, setAllUsers] = useState([]);
+  const [myGroups, setMyGroups] = useState([]);
+  const [allGroups, setAllGroups] = useState([]);
+  const [ws, setConn] = useState(null);
   useEffect(() => {
-    const fetchChatMessages = async () => {
+    if (isAuth) {
+      const userDisplayname = userInfo.firstname + " " + userInfo.lastname;
+      const username = userInfo.username;
+      setUsername(username);
+      const cookieString = document.cookie; // session-name-0b19be69-f99d-4ce4-ab80-5f053208f212=MTY4NzE3MjEyM3xEdi1CQkFFQ180SUFBUkFCRUFBQUpmLUNBQUVHYzNSeWFXNW5EQThBRFdGMWRHaGxiblJwWTJGMFpXUUVZbTl2YkFJQ0FBRT18gCtLiTcvz5Bk5CId1ybd3bJJUpE7jgHP3JBNtVnO_30=
+      const token = cookieString.split("session-name-")[1].split("=")[0];
+      localStorage.setItem("token", token);
+      setUserDisplayname(userDisplayname);
+
+      setTimeout(() => {
+        // all browsers have window object, to check if the browser supports websockets
+        if (window["WebSocket"]) {
+          console.log("WebSocket is supported by your Browser!");
+          // connect to ws
+          const user = decodeJwt(token);
+          console.log("userId", user.userID);
+          conn = new WebSocket(
+            "ws://" + "localhost:8080" + "/ws?otp=" + user.userID
+          );
+          setConn(conn);
+          conn.onopen = function () {
+            console.log("Connection opened");
+          };
+
+          conn.onclose = function (evt) {
+            console.log("Connected to WebSocket: false");
+          };
+
+          conn.onmessage = function (evt) {
+            const eventData = JSON.parse(evt.data);
+            console.log("eventData", eventData);
+            // const event = Object.assign(new Event(eventData.type, eventData) );
+            // const event = new Event(eventData.type, eventData.payload);
+            eventStruct.type = eventData.type;
+            eventStruct.payload = eventData.payload;
+            console.log("event at onmessage", eventStruct);
+            routeEvent(eventStruct);
+          };
+        } else {
+          alert("WebSocket is not supported by your Browser!");
+        }
+      }, 500);
+    }
+  }, [isAuth]);
+
+  useEffect(() => {
+    if (isAuth) {
+      const fetchUsers = async () => {
+        try {
+          const res = await fetch("http://localhost:8080/users", {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+
+          if (res.ok) {
+            const data = await res.json();
+            // setAllUsers to include users that are not the current user
+            const filteredData = data.filter((user) => user.email !== email);
+            setAllUsers(filteredData);
+            dispatch({ type: "SET_ALLUSERS", payload: filteredData });
+          } else {
+            console.log("error");
+          }
+        } catch (error) {
+          // Handle error
+          console.log(error);
+        }
+      };
+      if (isAuth) {
+        fetchUsers();
+      }
+    }
+  }, [isAuth, email]);
+
+  // get all groups that the user is a member of or admin from /getmygroups
+  useEffect(() => {
+    if (isAuth) {
+      const token = localStorage.getItem("token");
+      console.log("token", token);
       const headers = new Headers();
       headers.append("Authorization", "Bearer " + token);
       headers.append("Content-Type", "application/json");
-      try {
-        const response = await fetch(
-          `http://localhost:8080/messages?username=${senderUsername}`,
-          {
+      const fetchGroups = async () => {
+        try {
+          const res = await fetch("http://localhost:8080/getmygroups", {
             method: "GET",
             headers: headers,
+          });
+          if (res.ok) {
+            const data = await res.json();
+            console.log("get my group data", data)
+            // add userMemberGroups and adminGroups to one object
+            const mygroups = [
+              ...(data.userMemberGroups || []),
+              ...(data.userAdminGroups || []),
+            ];
+            setMyGroups(mygroups);
+            setAllGroups(data.allGroups || []);
+            dispatch({ type: "SET_MYGROUPS", payload: mygroups });
+            dispatch({ type: "SET_ALLGROUPS", payload: data.allGroups || [] });
+          } else {
+            console.log("error");
           }
-        );
-
-        if (response.ok) {
-          const data = await response.json();
-          if (!data) {
-            return null;
-          }
-          const filteredData = data.filter(
-            (message) =>
-              (message.senderUsername === senderUsername &&
-                message.receiverUsername === selectedChatMateUsername) ||
-              (message.senderUsername === selectedChatMateUsername &&
-                message.receiverUsername === senderUsername)
-          );
-          filteredData.sort((a, b) => (a.sentAt > b.sentAt ? 1 : -1));
-          setChatMessages(filteredData);
+        } catch (error) {
+          // Handle error
+          console.log(error);
         }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    fetchChatMessages();
-  }, [selectedChatMateUsername, senderUsername, token, handleMessageSubmit]);
-
-  return chatMessages;
-}
-
-function Chat(props) {
-  const dispatch = useDispatch();
-  const userInfo = useSelector((state) => state.userInfo);
-  const allusers = useSelector((state) => state.allUsers);
-  const loggedinUsers = useSelector((state) => state.loggedinUsers);
-  const token = localStorage.getItem("token");
-  const [selectedChatMateUsername, setSelectedChatMateUsername] = useState("");
-  const [selectedChatMateDisplayname, setSelectedChatMateDisplayname] =
-    useState("");
-  const [senderUsername, setSenderUsername] = useState(userInfo.username);
-  const [senderDisplayname, setSenderDisplayname] = useState(
-    props.userDisplayname
-  );
-  const mygroups = useSelector((state) => state.myGroups);
-
-  const handleUserClick = (chatMateDisplayName, chatMateUsername) => {
-    const chatMate = allusers.find(
-      (chatMate) => chatMate.username === chatMateUsername
-    );
-    setSelectedChatMateDisplayname(chatMateDisplayName);
-    setSelectedChatMateUsername(chatMate.username);
-    dispatch ({ type: "SET_CHATMATEUSERNAME", payload: chatMate.username });
-  };
-
-  const handleGroupClick = (chatMateDisplayName, chatMateUsername) => {
-    setSelectedChatMateDisplayname(chatMateDisplayName);
-    setSelectedChatMateUsername(chatMateUsername);
-    dispatch ({ type: "SET_CHATMATEUSERNAME", payload: chatMateUsername });
-  };
-
-  const displayAllUsers = () => {
-    if (!allusers) {
-      return null;
-    }
-    // save all users except the current user to a variable called filteredData
-    let filteredData = allusers.filter(
-      (user) => user.username !== userInfo.username
-    );
-    // sort the filteredData by firstname
-    filteredData.sort((a, b) => (a.firstname > b.firstname ? 1 : -1));
-    // map the filteredData to display all users except the current user
-    return filteredData.map((user) => {
-      const chatMatedisplayName = user.firstname + " " + user.lastname;
-      const chatMateusername = user.username;
-      const isUserLoggedIn = loggedinUsers.includes(chatMateusername);
-
-      return (
-
-        <div key={chatMateusername}>
-          <ul className="users">
-            <li
-              className="person"
-              data-chat="person1"
-              onClick={() =>
-                handleUserClick(chatMatedisplayName, chatMateusername)
-              }
-            >
-              <div className="user">
-                <img
-                  src={user.avatar}
-                  alt="avatar"
-                  className="rounded-circle me-2"
-                />
-                <span className={`status ${isUserLoggedIn ? 'online' : 'offline'}`}></span>
-              </div>
-              <p className="name-time">
-                <span className="name">{chatMatedisplayName}</span>
-              </p>
-            </li>
-          </ul>
-        </div>
-      );
-    });
-  };
-
-  const displayGroupChats = () => {
-    if (!mygroups) {
-      return null;
-    }
-    // save GroupName and GroupID to a variable called filteredData
-    let filteredData = mygroups.map((group) => {
-      return {
-        GroupName: group.GroupName,
-        GroupID: group.GroupID,
       };
-    });
-    // sort the filteredData by GroupName
-    filteredData.sort((a, b) => (a.GroupName > b.GroupName ? 1 : -1));
-    // map the filteredData to display all groups
-    return filteredData.map((group) => {
-      const chatMatedisplayName = group.GroupName;
-      const chatMateusername = group.GroupID;
-      dispatch ({ type: "SET_CHATMATEUSERNAME", payload: chatMateusername });
-      return (
-        <div key={chatMateusername}>
-          <ul className="users">
-            <li
-              className="person"
-              data-chat="person1"
-              onClick={() =>
-                handleGroupClick(chatMatedisplayName, chatMateusername)
-              }
-            >
-              <div className="user">
-              <img
-                src={process.env.PUBLIC_URL + '/defaultImg/default-avatar.jpeg'}
-                alt="avatar"
-                className="rounded-circle me-2"
-                />
-
-                <span className="status busy"></span>
-              </div>
-              <p className="name-time">
-                <span className="name">{chatMatedisplayName}</span>
-              </p>
-            </li>
-          </ul>
-        </div>
-      );
-    });
-  };
-  
-
-  const handleMessageSubmit = async (e) => {
-    e.preventDefault();
-    const content = document.getElementById(
-      `submitMessageBtn${selectedChatMateUsername}`
-    ).value;
-    const sentAt = new Date();
-    const headers = new Headers();
-    headers.append("Authorization", "Bearer " + token);
-    headers.append("Content-Type", "application/json");
-    const messagedata = {
-      content: content,
-      senderUsername: senderUsername,
-      receiverUsername: selectedChatMateUsername,
-      sentAt: sentAt,
-    };
-    // send message_notification to receiver through websocket. message_notification is an object with the following properties: senderUsername, receiverUsername, type: "message_notification"
-    const payload = {
-      senderUsername: senderUsername,
-      receiverUsername: selectedChatMateUsername,
-    };
-    const messageNotification = {
-      type: "message_notification",
-      payload: payload,
-    };
-    
-    // send message_notification to receiver through websocket
-    props.socket.send(JSON.stringify(messageNotification));
-
-    try {
-      const response = await fetch("http://localhost:8080/sendmessage", {
-        method: "POST",
-        headers: headers,
-        body: JSON.stringify(messagedata),
-      });
-      if (!response.ok) {
-        throw new Error("Error occurred while sending message ");
+      if (isAuth) {
+        fetchGroups();
       }
-    } catch (error) {
-      console.log(error);
     }
-  };
-  const chatMessages = useChatMessages(
-    selectedChatMateUsername,
-    senderUsername,
-    token,
-    handleMessageSubmit
-  );
-  const chatMateUsername = useSelector((state) => state.chatMateUsername);
-    // console.log("chatMateUsername", chatMateUsername);
-  // get chatMate avatar
-  // const chatMateUser = allusers.find(
-  //   (user) => user.username == chatMateUsername
-  // );
-  // console.log("chatMateUser", chatMateUser)
-  // const chatMateAvatar = chatMateUser.avatar;
-  //   console.log("chatMateAvatar", chatMateAvatar);
+  }, [isAuth]);
+
+  useEffect(() => {
+    if (isAuth) {
+      const token = localStorage.getItem("token");
+      const headers = new Headers();
+      headers.append("Authorization", "Bearer " + token);
+      headers.append("Content-Type", "application/json");
+      const fetchInvitesByAdmin = async () => {
+        try {
+          const res = await fetch("http://localhost:8080/invitesbyadmin", {
+            method: "GET",
+            headers: headers,
+          });
+          if (res.ok) {
+            const data = await res.json();
+            console.log("invites by admin", data);
+            dispatch({ type: "SET_INVITESBYADMIN", payload: data });
+          } else {
+            console.log("error");
+          }
+        } catch (error) {
+          // Handle error
+          console.log(error);
+        }
+      };
+      if (isAuth) {
+        fetchInvitesByAdmin();
+      }
+    }
+  }, [isAuth]);
 
   return (
-    <div>
-      <Topnav
-        userDisplayname={props.userDisplayname}
-        allusers={props.allusers}
+    <Routes>
+      {isAuth ? (
+        <Route
+          path="/"
+          element={
+            <div>
+              <Home
+                userInfo={userInfo}
+                userDisplayname={userDisplayname}
+                allusers={allusers}
+              />
+            </div>
+          }
+        />
+      ) : (
+        <Route path="/" element={<Navigate replace to="/login" />} />
+      )}
+      {!isAuth ? (
+        <Route path="/login" element={<Login />} />
+      ) : (
+        <Route path="/login" element={<Navigate replace to="/" />} />
+      )}
+      <Route
+        path="/chat"
+        element={
+          <div>
+            <Chat
+              userInfo={userInfo}
+              username={username}
+              userDisplayname={userDisplayname}
+              allusers={allusers}
+              socket={ws}
+            />
+          </div>
+        }
       />
-      <div className="container-fluid">
-        <div className="row justify-content-evenly">
-          <div className="col-12 col-lg-3 sidebar">
-            <div className="chat-title">
-              <p className="fs-4 m-0">
-                <strong>Chats</strong>
-              </p>
-            </div>
-            <div className="users-container">
-              <div className="chat-category">
-                <ul
-                  className="nav nav-pills nav-fill mb-3"
-                  id="pills-tab"
-                  role="tablist"
-                >
-                  <li className="nav-item" role="presentation">
-                    <a
-                      className="nav-link"
-                      id="pills-inbox-tab"
-                      data-toggle="pill"
-                      href="#pills-inbox"
-                      role="tab"
-                      aria-controls="pills-inbox"
-                      aria-selected="false"
-                    >
-                      Inbox
-                    </a>
-                  </li>
-                  <li className="nav-item" role="presentation">
-                    <a
-                      className="nav-link"
-                      id="pills-communities-tab"
-                      data-toggle="pill"
-                      href="#pills-communities"
-                      role="tab"
-                      aria-controls="pills-communities"
-                      aria-selected="false"
-                    >
-                      Communities
-                    </a>
-                  </li>
-                </ul>
-                <div className="tab-content" id="pills-tabContent">
-                  <div
-                    className="tab-pane fade"
-                    id="pills-inbox"
-                    role="tabpanel"
-                    aria-labelledby="pills-inbox-tab"
-                  >
-                    <div className="container" id="chatUsers">
-                      {displayAllUsers()}
-                    </div>
-                  </div>
-                  <div
-                    className="tab-pane fade"
-                    id="pills-communities"
-                    role="tabpanel"
-                    aria-labelledby="pills-communities-tab"
-                  >
-                    <div className="container" id="chatUsers">
-                      {displayGroupChats()}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+      <Route
+        path="/groups"
+        element={
+          <div>
+            <HomeGroup
+              userInfo={userInfo}
+              username={username}
+              userDisplayname={userDisplayname}
+              allusers={allusers}
+            />
           </div>
-          <div className="col-12 col-lg-6 pb-5 p-3">
-            <div className="d-flex flex-column justify-content-center w-100">
-              <div className="selected-user">
-                <span>
-                  To:{" "}
-                  <span className="name" id="chatUsernameTitle">
-                    {selectedChatMateDisplayname}
-                  </span>
-                </span>
-              </div>
-              <div className="chat-container" id="chatArea">
-                {chatMessages.map((message) => {
-                  const sentAt = new Date(message.sentAt).toLocaleString(
-                    "en-US",
-                    {
-                      day: "numeric",
-                      month: "short",
-                      year: "numeric",
-                      hour: "numeric",
-                      minute: "numeric",
-                    }
-                  );
-                  if (message.senderUsername === senderUsername) {
-                    return (
-                      <ul
-                        className="chatview-box chatContainerScroll"
-                        id="chatmessagesSelectedChatMate"
-                      >
-                        <li className="chat-right">
-                          <div className="chat-avatar">
-                            <Avatar />
-                            <div className="chat-name">{senderDisplayname}</div>
-                          </div>
-                          <div className="chat-text">{message.content}</div>
-                          <div className="chat-hour">
-                            {sentAt}{" "}
-                            <span className="fa fa-check-circle"></span>
-                          </div>
-                        </li>
-                      </ul>
-                    );
-                  } else {
-                    return (
-                      <ul
-                        className="chatview-box chatContainerScroll"
-                        id="chatmessagesSelectedChatMate"
-                      >
-                        <li className="chat-left">
-                          <div className="chat-avatar">
-                            {/* display chatMate avatar */}
-                            {/* <img src={chatMateAvatar} alt="avatar" className="rounded-circle me-2" id="avatar"/> */}
-                            <div className="chat-name">
-                              {selectedChatMateDisplayname}
-                            </div>
-                          </div>
-                          <div className="chat-text">{message.content}</div>
-                          <div className="chat-hour">
-                            {sentAt}{" "}
-                            <span className="fa fa-check-circle"></span>
-                          </div>
-                        </li>
-                      </ul>
-                    );
-                  }
-                })}
-              </div>
-              <div className="form-group mt-3 mb-0" id="chatroomMessageArea">
-                <form
-                  className="chatroom-message"
-                  id={`chatroom-message${selectedChatMateUsername}`}
-                >
-                  <div className="row">
-                    <div className="col-10">
-                      <textarea
-                        className="form-control"
-                        rows="3"
-                        id={`submitMessageBtn${selectedChatMateUsername}`}
-                        placeholder={`Message @${selectedChatMateDisplayname}`}
-                      ></textarea>
-                    </div>
-                    <div className="col-2 col-sm-2 d-flex align-items-center justify-content-center">
-                      <button 
-                        type="submit"
-                        className="btn btn-primary"
-                        onSubmit={handleMessageSubmit}
-                        >
-                        Send
-                      </button>
-                    </div>
-                  </div>
-                </form>
-              </div>
-            </div>
+        }
+      />
+      <Route
+        path="/allgroups"
+        element={
+          <div>
+            <AllGroups
+              userInfo={userInfo}
+              username={username}
+              userDisplayname={userDisplayname}
+              allusers={allusers}
+            />
           </div>
-        </div>
-      </div>
+        }
+      />
+      <Route
+        path="/mygroups"
+        element={
+          <div>
+            <MyGroups
+              userInfo={userInfo}
+              username={username}
+              userDisplayname={userDisplayname}
+              allusers={allusers}
+            />
+          </div>
+        }
+      />
+      <Route
+        path="/profile/:userDisplayname"
+        element={
+          <div>
+            <MyProfile
+              userDisplayname={userDisplayname}
+              username={username}
+              allusers={allusers}
+            />
+          </div>
+        }
+      />
+      <Route
+        path="/singlegroup/:groupid"
+        element={
+          <div>
+            <SingleGroup
+              userInfo={userInfo}
+              username={username}
+              userDisplayname={userDisplayname}
+              allusers={allusers}
+            />
+          </div>
+        }
+      />
+      {/* <Route
+        path="/othersprofile/:username"
+        // pass :username to othersprofile
+        element={
+          <div>
+            <OthersProfile userInfo={userInfo} userDisplayname={userDisplayname} allusers={allusers}/>
+          </div>
+       } 
+      /> */}
+    </Routes>
+  );
+}
+
+export default App;
+
+//TODO: Add a 404 page
+function NoMatch() {
+  return (
+    <div style={{ padding: 20 }}>
+      <h2>404: Page Not Found</h2>
+      <p>Lorem ipsum dolor sit amet, consectetur adip.</p>
     </div>
   );
 }
-
-export default Chat;
