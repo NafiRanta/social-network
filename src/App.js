@@ -20,41 +20,49 @@ import AllGroups from "./views/Groups/AllGroups";
 import OthersProfile from "./views/Profile/OthersProfile";
 import SingleEvent from "./views/Events/SingleEvent";
 import SearchbarGlobal from "./components/Searchbar/SearchbarGlobal";
+import { click } from "@testing-library/user-event/dist/click";
 
 //import { set } from "draft-js/lib/DefaultDraftBlockRenderMap";
+const eventStruct = {
+  type: '',
+  payload: null,
+};
+
 
 function App() {
+  const chatMateusername = useSelector((state) => state.chatMateUsername);
   const routeEvent = (event) => {
     switch (event.type) {
       case "message_notification"
         : {
           // if the user is in the chat page, then update the chat page
-          console.log("message_notification");
+          console.log("event.payload", event.payload);
+
           if (window.location.pathname === "/chat") {
               // if chosen user is the same as the user that sent the message
-            if (event.data) {
-              if (event.data.senderUsername === event.data.chosenUser && event.data.senderUsername > 0) {
-                // update the chat page
-                console.log("update the chat page");
-                
-              } else {
-                // show the notification on the chat icon
-                console.log("show the notification on the sender icon");
+              if (event.payload) {
+                if (event.payload.senderUsername == chatMateusername) {
+                  // update the chat page
+                  console.log("update the chat page");
+                  
+                } else {
+                  // show the notification on the sender icon
+                  console.log("show the notification on the sender icon");
+                }
               }
-            }
-                const chat = document.getElementById("chat");
             } else {
-              // show the notification on the chat icon
+              // show the notification on the chat bubble icon
               console.log("show the notification on the chat icon");
-              // if the user is not in the chat page, then update the chat icon
-              const chatIcon = document.getElementById("chatIcon");
           break;
         }
       }
       case "acknowledgement"
         : {
-
-          console.log("acknowledgement");
+          // dispatch event.data.loggedinUsers to redux store
+          if (event) {
+            const loggedinUsers = event.payload.loggedInUsers;
+            dispatch({ type: "SET_LOGGEDINUSERS", payload: loggedinUsers });
+          }
           break;
         }
       }
@@ -118,11 +126,12 @@ function App() {
           conn.onmessage = function (evt) {
             const eventData = JSON.parse(evt.data);
             console.log("eventData", eventData);
-            console.log("eventData.type", eventData.type);
-            console.log("type of eventData.type", typeof eventData.type);
             // const event = Object.assign(new Event(eventData.type, eventData) );
-            const event = new Event(eventData.type, eventData);
-            routeEvent(event);
+            // const event = new Event(eventData.type, eventData.payload);
+            eventStruct.type = eventData.type;
+            eventStruct.payload = eventData.payload;
+            console.log("event at onmessage", eventStruct);
+            routeEvent(eventStruct);
           };
         } else {
           alert("WebSocket is not supported by your Browser!");
@@ -185,7 +194,6 @@ function App() {
               ...(data.userAdminGroups || []),
             ];
             setMyGroups(mygroups);
-            console.log("mygroups in apps", mygroups);
             setAllGroups(data.allGroups || []);
             dispatch({ type: "SET_MYGROUPS", payload: mygroups });
             dispatch({ type: "SET_ALLGROUPS", payload: data.allGroups || [] });

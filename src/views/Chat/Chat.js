@@ -4,6 +4,7 @@ import "../Chat/Chat.css";
 import Avatar from "../../components/Avatar/Avatar";
 import Topnav from "../Topnav";
 import { decodeJwt } from "../../components/Card/PostCard";
+import { useDispatch } from "react-redux";
 
 function useChatMessages(
   selectedChatMateUsername,
@@ -53,7 +54,9 @@ function useChatMessages(
 }
 
 function Chat(props) {
+  const dispatch = useDispatch();
   const userInfo = useSelector((state) => state.userInfo);
+  const loggedinUsers = useSelector((state) => state.loggedinUsers);
   const token = localStorage.getItem("token");
   const [selectedChatMateUsername, setSelectedChatMateUsername] = useState("");
   const [selectedChatMateDisplayname, setSelectedChatMateDisplayname] =
@@ -63,7 +66,6 @@ function Chat(props) {
     props.userDisplayname
   );
   const mygroups = useSelector((state) => state.myGroups);
-  console.log("mygroups in chat", mygroups);
 
   const handleUserClick = (chatMateDisplayName, chatMateUsername) => {
     const chatMate = props.allusers.find(
@@ -71,6 +73,7 @@ function Chat(props) {
     );
     setSelectedChatMateDisplayname(chatMateDisplayName);
     setSelectedChatMateUsername(chatMate.username);
+    dispatch ({ type: "SET_CHATMATEUSERNAME", payload: chatMate.username });
   };
 
   const displayAllUsers = () => {
@@ -87,7 +90,10 @@ function Chat(props) {
     return filteredData.map((user) => {
       const chatMatedisplayName = user.firstname + " " + user.lastname;
       const chatMateusername = user.username;
+      const isUserLoggedIn = loggedinUsers.includes(chatMateusername);
+
       return (
+
         <div key={chatMateusername}>
           <ul className="users">
             <li
@@ -103,7 +109,7 @@ function Chat(props) {
                   alt="avatar"
                   className="rounded-circle me-2"
                 />
-                <span className="status busy"></span>
+                <span className={`status ${isUserLoggedIn ? 'online' : 'offline'}`}></span>
               </div>
               <p className="name-time">
                 <span className="name">{chatMatedisplayName}</span>
@@ -132,6 +138,7 @@ function Chat(props) {
     return filteredData.map((group) => {
       const chatMatedisplayName = group.GroupName;
       const chatMateusername = group.GroupID;
+      dispatch ({ type: "SET_CHATMATEUSERNAME", payload: chatMateusername });
       return (
         <div key={chatMateusername}>
           <ul className="users">

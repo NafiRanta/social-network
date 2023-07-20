@@ -6,6 +6,8 @@ let defaultInitialState = {
   userInfo: {},
   myGroups: [],
   allGroups: [],
+  chatMateUsername: "",
+  loggedinUsers: [],
 };
 let serializedState = localStorage.getItem("reduxState");
 
@@ -56,6 +58,16 @@ function rootReducer(state = initialState, action) {
       return {
         ...state,
         allUsers: action.payload,
+      };
+    case "SET_CHATMATEUSERNAME":
+      return {
+        ...state,
+        chatMateUsername: action.payload,
+      };
+    case "SET_LOGGEDINUSERS":
+      return {
+        ...state,
+        loggedinUsers: action.payload,
       };
     default:
       return state; 

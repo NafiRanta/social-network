@@ -12,10 +12,8 @@ function Topnav(props) {
   const userInfo = useSelector((state) => state.userInfo);
   const invitesbyadmin = useSelector((state) => state.invitesByAdmin);
  
-  console.log("invitesbyadmin",  invitesbyadmin)
   const [groupInvitesByAdmin, setGroupInvitesByAdmin] = useState([]);
   const allusers = useSelector((state) => state.allUsers);
-  console.log("allusers", allusers)
   let Notifications = []
  
   // get all necessary info for each notification including admin avatar, admin displayname, groupname, groupid
@@ -38,8 +36,6 @@ function Topnav(props) {
     }
   }, [invitesbyadmin, allusers]);
 
-
-console.log("hello world", groupInvitesByAdmin);
 //append groupInvitesByAdmin to Notifications array
 const groupInvitesByAdminRender = Array.isArray(groupInvitesByAdmin) ? (
   groupInvitesByAdmin.map((invite) => {
