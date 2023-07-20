@@ -1,5 +1,6 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import CreatePost from '../../components/CreatePost/CreatePost'
 import PostCard from '../../components/Card/PostCard';
 import Avatar from '../../components/Avatar/Avatar';
@@ -7,12 +8,12 @@ import './Home.css'
 import Topnav from '../Topnav';
 
 function Home(props) {
+    const dispatch = useDispatch();
     const userInfo = useSelector((state) => state.userInfo);
+    const allusers = useSelector((state) => state.allUsers);
+
     // show allusers under Contacts
     const displayChatUsers = () => {
-        const allusers = props.allusers;
-        //get all users profilepicture
-        
         if (!allusers) {
           return null; 
         }

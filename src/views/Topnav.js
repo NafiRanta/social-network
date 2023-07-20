@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import { Dropdown } from 'react-bootstrap';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Avatar from '../components/Avatar/Avatar';
@@ -9,19 +10,42 @@ import CreateGroupModal from '../components/Modal/CreateGroupModal';
 import './TopNav.css'
 
 function Topnav(props) {
+  const dispatch = useDispatch();
+  const allusers = useSelector((state) => state.allUsers);
   const userInfo = useSelector((state) => state.userInfo);
   const invitesbyadmin = useSelector((state) => state.invitesByAdmin);
- 
   const [groupInvitesByAdmin, setGroupInvitesByAdmin] = useState([]);
-  const allusers = useSelector((state) => state.allUsers);
   let Notifications = []
- 
-  // get all necessary info for each notification including admin avatar, admin displayname, groupname, groupid
+  console.log("allusers in topnav", allusers)
+
+  // fetch all users from redux
+  useEffect(() => {
+    const fetchAllUsers = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const headers = new Headers();
+        headers.append("Authorization", "Bearer " + token);
+        const url = "http://localhost:8080/users";
+        const res = await fetch(url, {
+          method: "GET",
+          headers: headers,
+        });
+        const data = await res.json();
+        dispatch({ type: "FETCH_ALLUSERS", payload: data });
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchAllUsers();
+  }, [dispatch]);
+
+
+  // get group invites by admin getting admin Avatar, admin Displayname, groupName, groupID 
+  // set these variables to setGroupInvitesByAdmin
   useEffect(() => {
     if (Array.isArray(invitesbyadmin?.groups) && Array.isArray(allusers)) {
       const updatedInvites = invitesbyadmin.groups.map((invite) => {
         const adminInfo = allusers.find((user) => user.username === invite.Admin);
-        // Add a check to handle the potential undefined value
         const adminAvatar = adminInfo?.avatar;
         const adminDisplayname = adminInfo?.firstname + " " + adminInfo?.lastname;
 
@@ -39,7 +63,6 @@ function Topnav(props) {
 //append groupInvitesByAdmin to Notifications array
 const groupInvitesByAdminRender = Array.isArray(groupInvitesByAdmin) ? (
   groupInvitesByAdmin.map((invite) => {
-    // Rest of the rendering code for each invite object
     return (
       <div key={invite.groupID}>
           <Dropdown.Item as="li" className="my-2 p-1">
@@ -68,6 +91,7 @@ const groupInvitesByAdminRender = Array.isArray(groupInvitesByAdmin) ? (
     );
   })
 ) : null;
+
 // push groupInvitesByAdminRender to Notifications array
 if (groupInvitesByAdminRender) {
   Notifications.push(groupInvitesByAdminRender);

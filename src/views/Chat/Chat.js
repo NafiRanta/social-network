@@ -56,6 +56,7 @@ function useChatMessages(
 function Chat(props) {
   const dispatch = useDispatch();
   const userInfo = useSelector((state) => state.userInfo);
+  const allusers = useSelector((state) => state.allUsers);
   const loggedinUsers = useSelector((state) => state.loggedinUsers);
   const token = localStorage.getItem("token");
   const [selectedChatMateUsername, setSelectedChatMateUsername] = useState("");
@@ -68,7 +69,7 @@ function Chat(props) {
   const mygroups = useSelector((state) => state.myGroups);
 
   const handleUserClick = (chatMateDisplayName, chatMateUsername) => {
-    const chatMate = props.allusers.find(
+    const chatMate = allusers.find(
       (chatMate) => chatMate.username === chatMateUsername
     );
     setSelectedChatMateDisplayname(chatMateDisplayName);
@@ -77,11 +78,11 @@ function Chat(props) {
   };
 
   const displayAllUsers = () => {
-    if (!props.allusers) {
+    if (!allusers) {
       return null;
     }
     // save all users except the current user to a variable called filteredData
-    let filteredData = props.allusers.filter(
+    let filteredData = allusers.filter(
       (user) => user.username !== userInfo.username
     );
     // sort the filteredData by firstname

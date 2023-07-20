@@ -6,6 +6,7 @@ let defaultInitialState = {
   userInfo: {},
   myGroups: [],
   allGroups: [],
+  allUsers: [],
   chatMateUsername: "",
   loggedinUsers: [],
 };
@@ -54,7 +55,7 @@ function rootReducer(state = initialState, action) {
         invitesByAdmin: action.payload,
       };
     
-    case "SET_ALLUSERS":
+    case "FETCH_ALLUSERS":
       return {
         ...state,
         allUsers: action.payload,
@@ -84,6 +85,7 @@ const store = configureStore({
 store.subscribe(() => {
   const state = store.getState();
   localStorage.setItem("reduxState", JSON.stringify(state));
+  console.log("State before serialization:", state); // Add this line
 });
 
 export default store;

@@ -14,24 +14,25 @@ import './Groups.css'
 //import { set } from 'draft-js/lib/DefaultDraftBlockRenderMap';
 
 function SingleGroup(props) {
-    console.log("props", props)
-    const userInfo = useSelector((state) => state.userInfo);
+     // from redux store
+     const dispatch = useDispatch();
+     const allgroups = useSelector((state) => state.allGroups);
+     const userInfo = useSelector((state) => state.userInfo);
+    // group
     const [group, setGroup] = useState([]);
     const [adminDisplayName, setAdminDisplayName] = useState([]);
     const [membersInfo, setMembersInfo] = useState([]);
+    const groupID = window.location.pathname.split('/')[2];
+    // menu
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const dropdownRef = useRef(null);
     const [modalOpen, setModalOpen] = useState(false);
-    const dispatch = useDispatch();
-    const allgroups = useSelector((state) => state.allGroups);
-    console.log("allgroups", allgroups)
-    const groupID = window.location.pathname.split('/')[2];
-    console.log("groupID", groupID);
+   
 
     // get information about the group from allgroups
     useEffect(() => {
         const group = allgroups.filter((group) => group.GroupID === groupID);
-        console.log("group", group);
+        console.log("group in singlegroup", group);
       
         // Check if group exists and has MemberUsernames property
         if (group.length > 0 && group[0].MemberUsernames) {

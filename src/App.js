@@ -142,34 +142,35 @@ function App() {
 
   useEffect(() => {
     if (isAuth) {
-      const fetchUsers = async () => {
-        try {
-          const res = await fetch("http://localhost:8080/users", {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          });
+        const fetchUsers = async () => {
+          try {
+            const res = await fetch("http://localhost:8080/users", {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+              },
+            });
 
-          if (res.ok) {
-            const data = await res.json();
-            // setAllUsers to include users that are not the current user
-            const filteredData = data.filter((user) => user.email !== email);
-            setAllUsers(filteredData);
-            dispatch({ type: "SET_ALLUSERS", payload: filteredData });
-          } else {
-            console.log("error");
+            if (res.ok) {
+              const data = await res.json();
+              // setAllUsers to include users that are not the current user
+              const filteredData = data.filter((user) => user.email !== email);
+              setAllUsers(filteredData);
+              console.log("allusers", filteredData);
+              dispatch({ type: "FETCH_ALLUSERS", payload: filteredData });
+            } else {
+              console.log("error");
+            }
+          } catch (error) {
+            // Handle error
+            console.log(error);
           }
-        } catch (error) {
-          // Handle error
-          console.log(error);
+        };
+        if (isAuth) {
+          fetchUsers();
         }
-      };
-      if (isAuth) {
-        fetchUsers();
-      }
     }
-  }, [isAuth, email]);
+  }, [isAuth]);
 
   // get all groups that the user is a member of or admin from /getmygroups
   useEffect(() => {

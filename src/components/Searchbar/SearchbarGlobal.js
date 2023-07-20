@@ -1,4 +1,5 @@
-import React, { useRef } from 'react'; 
+import React, { useEffect, useRef } from 'react'; 
+import { useDispatch } from 'react-redux';
 import { BsSearch } from 'react-icons/bs';
 import { Dropdown } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
@@ -7,8 +8,12 @@ import './SearchBar.css'
 
 
 function SearchbarGlobal(props) {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const userInfo = useSelector((state) => state.userInfo);
+  //const allusers = useSelector((state) => state.allUsers);
+  const allusers = props.allusers;
+  console.log("allusers in searchbar", allusers)
   const inputRef = useRef(null);
 
   const handleInputClick = (e) => {
@@ -36,7 +41,6 @@ function SearchbarGlobal(props) {
   };
 
   const displayAllUsers = () => {
-    const allusers = props.allusers;
     if (!allusers) {
       return null; 
     }
