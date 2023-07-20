@@ -36,6 +36,12 @@ func main() {
 
 func Start() error {
 	go closeServer()
+	// setup log file
+	logFile, err := setupLogFile()
+	if err != nil {
+		log.Fatal("Error creating log file:", err)
+	}
+	defer logFile.Close()
 
 	// websocket
 	ctx := context.Background()
@@ -89,10 +95,11 @@ func Start() error {
 	// router.HandleFunc("/websocket", ws)
 	handler := u.CorsMiddleware(router)
 	//fire up the server
-	log.Print("Listening on :8080...")
-	err := http.ListenAndServe(":8080", handler)
-	u.CheckErr(err)
-	return nil
+	fmt.Println("Listening on :8080...")
+	// create an error to try out the log file
+	err = http.ListenAndServe(":8080", handler)
+	// create an error to try out the log file
+	return err
 }
 
 func closeServer() {
@@ -117,5 +124,17 @@ func printcolor(text string, color string) {
 		fmt.Println("\033[31m" + text + "\033[0m")
 	case "yellow":
 		fmt.Println("\033[33m" + text + "\033[0m")
+	default:
+		fmt.Println(text)
 	}
+}
+
+func setupLogFile() (*os.File, error) {
+	filename := "error.log"
+	file, err := os.OpenFile(filename, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
+	if err != nil {
+		return nil, err
+	}
+	log.SetOutput(file)
+	return file, nil
 }

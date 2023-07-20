@@ -1,13 +1,18 @@
 package utils
 
-import "fmt"
+import (
+	"log"
+	"time"
+)
 
-//TODO: Log errors to file with date and time
-
-// If error logFatal
+// CheckErr checks if there is an error and logs it
 func CheckErr(err error) {
 	if err != nil {
-		fmt.Println("error: ", err)
-		return
+		LogError(err)
 	}
+}
+
+// Log errors to file with date and time
+func LogError(err error) {
+	log.Printf("[%s] ERROR: %v\n", time.Now().Format("2006-01-02 15:04:05"), err)
 }
