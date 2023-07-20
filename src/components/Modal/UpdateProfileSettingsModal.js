@@ -5,10 +5,10 @@ import { Link, useNavigate } from 'react-router-dom';
 import "./Modal.css";
 
 function UpdateProfileSettingsModal(props) {
-  console.log("UpdateProfileSettingsModal.js: props: ", props)
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const userInfo = useSelector((state) => state.userInfo);
+  const userInfo = props.userInfo
+  console.log("userInfo update", userInfo)
   
     // format date of birth to be displayed to dd month yyyy
     const dateOfBirth = new Date(userInfo.dateOfBirth).toLocaleDateString('en-US', {
@@ -210,8 +210,9 @@ const handleRemoveAbout = () => {
       if (res.ok) {
         const data = await res.json();
           console.log("data update user response data", data);
-          dispatch({ type: 'SET_USER', payload: data });
-        alert("Profile updated");
+          //dispatch({ type: 'SET_USER', payload: data });
+          alert("Profile updated");
+          window.location.href = `/profile/${userInfo.username}`;
 
       } else {
         console.log("Error:", res.status);

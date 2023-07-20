@@ -3,7 +3,7 @@ import { configureStore } from "@reduxjs/toolkit";
 
 let defaultInitialState = {
   isAuth: false,
-  userInfo: {},
+  userInfo: [],
   myGroups: [],
   allGroups: [],
   allUsers: [],
@@ -85,7 +85,7 @@ const store = configureStore({
 store.subscribe(() => {
   const state = store.getState();
   localStorage.setItem("reduxState", JSON.stringify(state));
-  //console.log("State before serialization:", state); // Add this line
+  console.log("State before serialization:", state); // Add this line
 });
 
 export default store;

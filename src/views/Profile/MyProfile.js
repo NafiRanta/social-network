@@ -14,6 +14,7 @@ import Topnav from "../Topnav";
 function MyProfile(props) {
   const dispatch = useDispatch();
   const userInfo = useSelector((state) => state.userInfo);
+  console.log("userInfo myprofile", userInfo)
 
   // format date of birth to be displayed to dd month yyyy
   const dob = new Date(userInfo.dateOfBirth).toLocaleDateString("en-US", {

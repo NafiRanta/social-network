@@ -92,8 +92,6 @@ function CreateGroupModal(props) {
     } 
   };
 
-
-
   return (
     <div className="modal fade" id="createGroupModal" tabIndex="-1" aria-labelledby="createModalLabel" aria-hidden="true" data-bs-backdrop="false">
       <div className="modal-dialog modal-dialog-centered">

@@ -89,7 +89,7 @@ const handleEventSubmit = async (event) => {
       throw new Error('Something went wrong');
     }
     alert("Event created successfully");
-    props.closeModal();
+    window.location.href = `/singlegroup/${props.groupID}`;
   };
 
 
