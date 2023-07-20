@@ -97,8 +97,10 @@ function Chat(props) {
     return filteredData.map((user) => {
       const chatMatedisplayName = user.firstname + " " + user.lastname;
       const chatMateusername = user.username;
-      const isUserLoggedIn = loggedinUsers.includes(chatMateusername);
-
+      let isUserLoggedIn
+      if (loggedinUsers) {
+       isUserLoggedIn = loggedinUsers.includes(chatMateusername);
+      }
       return (
 
         <div key={chatMateusername}>
