@@ -48,5 +48,4 @@ func GetPostsHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Write the JSON response to the HTTP response writer
 	w.Write(responseJSON)
-	fmt.Println("post retrieved successfully")
 }

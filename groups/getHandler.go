@@ -74,8 +74,6 @@ func GetGroupsHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Write the JSON response to the HTTP response writer
 	w.Write(responseJSON)
-	fmt.Println("groups retrieved successfully")
-
 }
 
 func GetSingleGroupHandler(w http.ResponseWriter, r *http.Request) {
@@ -158,6 +156,4 @@ func GetAdminGroupInvitesHandler(w http.ResponseWriter, r *http.Request) {
 	// Set the Content-Type header to application/json
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(responseJSON)
-	fmt.Println("groups retrieved successfully")
-
 }

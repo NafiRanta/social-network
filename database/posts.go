@@ -110,7 +110,6 @@ func GetPublicPosts() ([]Post, error) {
 		return nil, err
 	}
 	defer rows.Close()
-	fmt.Println("rows in pub: ", rows)
 	var posts []Post
 
 	for rows.Next() {
