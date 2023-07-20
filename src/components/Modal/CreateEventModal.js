@@ -4,7 +4,6 @@ import "./Modal.css";
 import Avatar from "../Avatar/Avatar";
 
 function CreateEventModal(props) {
-  console.log("props createevent modal", props)
   const userInfo = useSelector((state) => state.userInfo);
   const [myFriends, setMyFriends] = useState([]); // [{username: "John", displayname: "John Doe"}, {username: "Jane", displayname: "Jane Doe"}
   const [selectedNames, setSelectedNames] = useState([]);

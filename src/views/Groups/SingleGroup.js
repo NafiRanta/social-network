@@ -18,6 +18,7 @@ function SingleGroup(props) {
      const dispatch = useDispatch();
      const allgroups = useSelector((state) => state.allGroups);
      const userInfo = useSelector((state) => state.userInfo);
+     const allusers = useSelector((state) => state.allUsers);
     // group
     const [group, setGroup] = useState([]);
     const [adminDisplayName, setAdminDisplayName] = useState([]);
@@ -32,22 +33,20 @@ function SingleGroup(props) {
     // get information about the group from allgroups
     useEffect(() => {
         const group = allgroups.filter((group) => group.GroupID === groupID);
-        console.log("group in singlegroup", group);
       
         // Check if group exists and has MemberUsernames property
         if (group.length > 0 && group[0].MemberUsernames) {
           const membersUsernames = JSON.parse(group[0].MemberUsernames);
           const adminUsername = group[0].Admin;
-          console.log("adminUsername", adminUsername);
+
+          // get admin display name from allusers
+            const admin = allusers.find((user) => user.username === adminUsername);
+            setAdminDisplayName(admin.firstname + " " + admin.lastname);
       
           // Proceed with mapping only if membersUsernames is an array
-          if (Array.isArray(membersUsernames)) {
+          if (Array.isArray(membersUsernames) && Array.isArray(allusers)) {
             const membersInfo = membersUsernames.map((username) => {
-                // Find the member and admin in allusers 
-                const member = props.allusers.find((user) => user.username === username);
-                const admin = props.allusers.find((user) => user.username === adminUsername);
-                console.log("member", member);
-                console.log("admin", admin);
+                const member = allusers.find((user) => user.username === username);
                 return {
                     username: username,
                     displayName: member.firstname + " " + member.lastname,
@@ -56,10 +55,9 @@ function SingleGroup(props) {
             });
             setGroup(group);
             setMembersInfo(membersInfo);
-            console.log("membersInfo", membersInfo)
           }
         }
-      }, [allgroups, props.allusers, groupID]);
+      }, [allgroups, groupID]);
       
 
     const openModal = () => {
@@ -148,7 +146,7 @@ function SingleGroup(props) {
                                         </div>
                                     </li>
                                     <li className="dropdown-item p-1 rounded" >
-                                        <div id="introText"> <i className="fas fa-user"> </i> Admin: <span className="name">{/* {adminDisplayName} */}</span> </div>
+                                        <div id="introText"> <i className="fas fa-user"> </i> Admin: <span className="name">{adminDisplayName}</span> </div>
                                     </li>
                                     <li className="dropdown-item p-1 rounded">
                                         <div id="introText"> <i className="fas fa-birthday-cake"> </i> Created:  <span className="name">{new Date(groupItem.CreateAt).toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' })}</span></div>

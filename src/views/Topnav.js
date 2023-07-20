@@ -16,7 +16,6 @@ function Topnav(props) {
   const invitesbyadmin = useSelector((state) => state.invitesByAdmin);
   const [groupInvitesByAdmin, setGroupInvitesByAdmin] = useState([]);
   let Notifications = []
-  console.log("allusers in topnav", allusers)
 
   // fetch all users from redux
   useEffect(() => {

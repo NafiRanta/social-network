@@ -110,7 +110,6 @@ function App() {
           console.log("WebSocket is supported by your Browser!");
           // connect to ws
           const user = decodeJwt(token);
-          console.log("userId", user.userID);
           conn = new WebSocket(
             "ws://" + "localhost:8080" + "/ws?otp=" + user.userID
           );
@@ -176,7 +175,6 @@ function App() {
   useEffect(() => {
     if (isAuth) {
       const token = localStorage.getItem("token");
-      console.log("token", token);
       const headers = new Headers();
       headers.append("Authorization", "Bearer " + token);
       headers.append("Content-Type", "application/json");
@@ -188,7 +186,6 @@ function App() {
           });
           if (res.ok) {
             const data = await res.json();
-            console.log("get my group data", data)
             // add userMemberGroups and adminGroups to one object
             const mygroups = [
               ...(data.userMemberGroups || []),
@@ -226,7 +223,6 @@ function App() {
           });
           if (res.ok) {
             const data = await res.json();
-            console.log("invites by admin", data);
             dispatch({ type: "SET_INVITESBYADMIN", payload: data });
           } else {
             console.log("error");

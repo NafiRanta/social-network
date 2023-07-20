@@ -11,9 +11,7 @@ function SearchbarGlobal(props) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const userInfo = useSelector((state) => state.userInfo);
-  //const allusers = useSelector((state) => state.allUsers);
   const allusers = props.allusers;
-  console.log("allusers in searchbar", allusers)
   const inputRef = useRef(null);
 
   const handleInputClick = (e) => {
