@@ -392,7 +392,7 @@ function Chat(props) {
                       <button 
                         type="submit"
                         className="btn btn-primary"
-                        onSubmit={handleMessageSubmit}
+                        onClick={handleMessageSubmit}
                         >
                         Send
                       </button>
