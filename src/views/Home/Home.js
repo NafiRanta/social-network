@@ -27,7 +27,6 @@ function Home(props) {
                     isUserOnline = loggedinUsers.includes(user.username);
                 }
                 const statusClass = isUserOnline ? "bg-success" : "bg-secondary";
-                console.log("user is online", user.username, isUserOnline);
             return (
                 <div key={`${user.username}-${index}`}>
                     <ul className="list-group">

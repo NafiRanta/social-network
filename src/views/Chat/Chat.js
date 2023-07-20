@@ -223,6 +223,15 @@ function Chat(props) {
     token,
     handleMessageSubmit
   );
+  const chatMateUsername = useSelector((state) => state.chatMateUsername);
+    // console.log("chatMateUsername", chatMateUsername);
+  // get chatMate avatar
+  // const chatMateUser = allusers.find(
+  //   (user) => user.username == chatMateUsername
+  // );
+  // console.log("chatMateUser", chatMateUser)
+  // const chatMateAvatar = chatMateUser.avatar;
+  //   console.log("chatMateAvatar", chatMateAvatar);
 
   return (
     <div>
@@ -346,7 +355,8 @@ function Chat(props) {
                       >
                         <li className="chat-left">
                           <div className="chat-avatar">
-                            <Avatar />
+                            {/* display chatMate avatar */}
+                            {/* <img src={chatMateAvatar} alt="avatar" className="rounded-circle me-2" id="avatar"/> */}
                             <div className="chat-name">
                               {selectedChatMateDisplayname}
                             </div>
@@ -377,11 +387,11 @@ function Chat(props) {
                       ></textarea>
                     </div>
                     <div className="col-2 col-sm-2 d-flex align-items-center justify-content-center">
-                      <button
+                      <button 
                         type="submit"
                         className="btn btn-primary"
-                        onClick={handleMessageSubmit}
-                      >
+                        onSubmit={handleMessageSubmit}
+                        >
                         Send
                       </button>
                     </div>

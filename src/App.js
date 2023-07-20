@@ -24,8 +24,8 @@ import { click } from "@testing-library/user-event/dist/click";
 
 //import { set } from "draft-js/lib/DefaultDraftBlockRenderMap";
 const eventStruct = {
-  type: '',
-  payload: null,
+  type: String,
+  payload: Object,
 };
 
 
@@ -124,13 +124,7 @@ function App() {
 
           conn.onmessage = function (evt) {
             const eventData = JSON.parse(evt.data);
-            console.log("eventData", eventData);
-            // const event = Object.assign(new Event(eventData.type, eventData) );
-            // const event = new Event(eventData.type, eventData.payload);
-            eventStruct.type = eventData.type;
-            eventStruct.payload = eventData.payload;
-            console.log("event at onmessage", eventStruct);
-            routeEvent(eventStruct);
+            routeEvent(eventData);
           };
         } else {
           alert("WebSocket is not supported by your Browser!");
