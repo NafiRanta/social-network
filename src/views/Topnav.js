@@ -13,67 +13,65 @@ function Topnav(props) {
   const invitesbyadmin = useSelector((state) => state.invitesByAdmin);
  
   console.log("invitesbyadmin",  invitesbyadmin)
-  const [groupInvitesByAdmin, setgroupInvitesByAdmin] = useState([]);
+  const [groupInvitesByAdmin, setGroupInvitesByAdmin] = useState([]);
   const allusers = useSelector((state) => state.allUsers);
   console.log("allusers", allusers)
   let Notifications = []
-  let groupInvitesByAdminRender = []
  
   // get all necessary info for each notification including admin avatar, admin displayname, groupname, groupid
   useEffect(() => {
-  if (Array.isArray(invitesbyadmin.groups)) {
-    const updatedInvites = invitesbyadmin.groups.map((invite) => {
-      const adminInfo = allusers.find((user) => user.username === invite.Admin);
-      console.log("adminInfo", adminInfo)
-      // Add a check to handle the potential undefined value
-      const adminAvatar = adminInfo?.avatar;
-      const adminDisplayname = adminInfo?.firstname + " " + adminInfo?.lastname;
-      console.log("adminDisplayname", adminDisplayname);
+    if (Array.isArray(invitesbyadmin?.groups) && Array.isArray(allusers)) {
+      const updatedInvites = invitesbyadmin.groups.map((invite) => {
+        const adminInfo = allusers.find((user) => user.username === invite.Admin);
+        // Add a check to handle the potential undefined value
+        const adminAvatar = adminInfo?.avatar;
+        const adminDisplayname = adminInfo?.firstname + " " + adminInfo?.lastname;
 
-      return {
-        adminAvatar: adminAvatar,
-        adminDisplayname: adminDisplayname,
-        groupName: invite.GroupName,
-        groupID: invite.GroupID,
-      };
-    });
-    setgroupInvitesByAdmin(updatedInvites);
-  } else {
-    console.log("groups array in invitesbyadmin is not an array");
-  }
-}, [invitesbyadmin, allusers]);
+        return {
+          adminAvatar: adminAvatar,
+          adminDisplayname: adminDisplayname,
+          groupName: invite.GroupName,
+          groupID: invite.GroupID,
+        };
+      });
+      setGroupInvitesByAdmin(updatedInvites);
+    }
+  }, [invitesbyadmin, allusers]);
+
 
 console.log("hello world", groupInvitesByAdmin);
 //append groupInvitesByAdmin to Notifications array
-if (groupInvitesByAdmin.length > 0) {
-   groupInvitesByAdminRender = groupInvitesByAdmin.map((invite) => {
-    console.log("invite avatar", invite.adminAvatar)
+const groupInvitesByAdminRender = Array.isArray(groupInvitesByAdmin) ? (
+  groupInvitesByAdmin.map((invite) => {
+    // Rest of the rendering code for each invite object
     return (
-      <Dropdown.Item as="li" className="my-2 p-1">
-        <div className="d-flex justify-content-between">
-          <div className="d-flex align-items-center">
-            <div className="rounded-circle d-flex align-items-center justify-content-center mx-2" id="avatar">
-             
-              <img src={invite.adminAvatar} alt="avatar" className="rounded-circle me-2" />
-            </div>
-            <div>
-
-              <p className="m-0">{invite.adminDisplayname} invited you to join {invite.groupName}</p>
-            </div>
-          </div>
-          <div>
-            <Link
-              to={`/singlegroup/${invite.groupID}`}
-              className="btn btn-primary btn-sm d-flex justify-content-center align-items-center"
-            >
-              View
-            </Link>
-          </div>
+      <div key={invite.groupID}>
+          <Dropdown.Item as="li" className="my-2 p-1">
+    <div className="d-flex justify-content-between">
+      <div className="d-flex align-items-center">
+        <div className="rounded-circle d-flex align-items-center justify-content-center mx-2" id="avatar">
+         
+          <img src={invite.adminAvatar} alt="avatar" className="rounded-circle me-2" />
         </div>
-      </Dropdown.Item>
+        <div>
+
+          <p className="m-0">{invite.adminDisplayname} invited you to join {invite.groupName}</p>
+        </div>
+      </div>
+      <div>
+        <Link
+          to={`/singlegroup/${invite.groupID}`}
+          className="btn btn-primary btn-sm d-flex justify-content-center align-items-center"
+        >
+          View
+        </Link>
+      </div>
+    </div>
+  </Dropdown.Item>
+      </div>
     );
-  });
-}
+  })
+) : null;
 // push groupInvitesByAdminRender to Notifications array
 if (groupInvitesByAdminRender) {
   Notifications.push(groupInvitesByAdminRender);
