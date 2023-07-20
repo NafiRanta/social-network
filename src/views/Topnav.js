@@ -99,9 +99,10 @@ if (groupInvitesByAdminRender) {
 
   //handle logout
   const handleLogout = () => {
-    localStorage.removeItem("reduxState");
-    sessionStorage.removeItem("userInfo");
-    localStorage.removeItem("token");
+    // clear local storage and session storage and cookies
+    localStorage.clear();
+    sessionStorage.clear();
+
     // clear all cookies for this site
     const cookies = document.cookie.split(";");
     for (let i = 0; i < cookies.length; i++) {
@@ -111,8 +112,6 @@ if (groupInvitesByAdminRender) {
       document.cookie =
         name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; domain=localhost";
     }
-
-
     window.location.href = "/login";
   };
   return (

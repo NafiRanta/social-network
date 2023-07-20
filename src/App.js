@@ -100,7 +100,10 @@ function App() {
       const username = userInfo.username;
       setUsername(username);
       const cookieString = document.cookie; // session-name-0b19be69-f99d-4ce4-ab80-5f053208f212=MTY4NzE3MjEyM3xEdi1CQkFFQ180SUFBUkFCRUFBQUpmLUNBQUVHYzNSeWFXNW5EQThBRFdGMWRHaGxiblJwWTJGMFpXUUVZbTl2YkFJQ0FBRT18gCtLiTcvz5Bk5CId1ybd3bJJUpE7jgHP3JBNtVnO_30=
-      const token = cookieString.split("session-name-")[1].split("=")[0];
+      let token 
+      if (cookieString.split("session-name-")[1]) {
+        token = cookieString.split("session-name-")[1].split("=")[0];
+      }
       localStorage.setItem("token", token);
       setUserDisplayname(userDisplayname);
 
@@ -114,20 +117,20 @@ function App() {
             conn = new WebSocket(
               "ws://" + "localhost:8080" + "/ws?otp=" + user.userID
             );
+            setConn(conn);
+            conn.onopen = function () {
+              console.log("Connection opened");
+            };
+            
+            conn.onclose = function (evt) {
+              console.log("Connected to WebSocket: false");
+            };
+            
+            conn.onmessage = function (evt) {
+              const eventData = JSON.parse(evt.data);
+              routeEvent(eventData);
+            };
           }
-          setConn(conn);
-          conn.onopen = function () {
-            console.log("Connection opened");
-          };
-
-          conn.onclose = function (evt) {
-            console.log("Connected to WebSocket: false");
-          };
-
-          conn.onmessage = function (evt) {
-            const eventData = JSON.parse(evt.data);
-            routeEvent(eventData);
-          };
         } else {
           alert("WebSocket is not supported by your Browser!");
         }

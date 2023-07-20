@@ -26,8 +26,10 @@ function PostCard(props) {
   const [customPosts, setCustomPosts] = useState([]); // State for custom posts
   const [expandedPosts, setExpandedPosts] = useState([]); // State for expanded posts
   const token = localStorage.getItem("token"); // Get the JWT token from local storage
-  const userId = decodeJwt(token).userID; // Decode the JWT token to get the user ID
-
+  let userId = null;
+  if (decodeJwt(token)) {
+    userId = decodeJwt(token).userID; // Decode the JWT token to get the user ID
+  }
   useEffect(() => {
     // Fetch user posts when the component mounts
     const GetUserPosts = async () => {
@@ -51,6 +53,20 @@ function PostCard(props) {
           setPrivatePosts(privatePosts);
           setCustomPosts(customPosts);
         } else {
+           // clear local storage and session storage and cookies
+          localStorage.clear();
+          sessionStorage.clear();
+
+          // clear all cookies for this site
+          const cookies = document.cookie.split(";");
+          for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i];
+            const eqPos = cookie.indexOf("=");
+            const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+            document.cookie =
+              name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; domain=localhost";
+          }
+          window.location.href = "/login";
           console.log("error");
         }
       } catch (error) {
