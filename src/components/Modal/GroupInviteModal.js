@@ -5,15 +5,27 @@ import Avatar from "../Avatar/Avatar";
 
 function GroupInviteModal(props) {
   const userInfo = useSelector((state) => state.userInfo);
-  const [myFriends, setMyFriends] = useState([]); // [{username: "John", displayname: "John Doe"}, {username: "Jane", displayname: "Jane Doe"}
+  const allGroups = useSelector((state) => state.allGroups);
+  console.log("props.isGroupAdmin: ", props.isUserGroupAdmin)
+  console.log("props.isGroupMember: ", props.isUserGroupMember)
+  // find props.groupID from allGroups
+  const group = allGroups.find((group) => group.GroupID === props.groupID);
+  const groupAdmin = group.Admin;
+  const MemberInvitedUsernames = group.MemberInvitedUsernames
+  const AdminInvitedUsernames = group.AdminInvitedUsernames
+  const MemberUsernames = group.MemberUsernames
+  const [myFriends, setMyFriends] = useState([]); 
   const [selectedNames, setSelectedNames] = useState([]);
   const [selectedName, setSelectedName] = useState('');
   const names = myFriends.map((friend) => friend.displayname);
 
   useEffect(() => {
     const allusers = props.allusers;
-    console.log("allusers", allusers)
-    const filteredData = allusers.filter((user) => user.UserName !== userInfo.UserName);
+    let filteredData = allusers.filter((user) => user.UserName !== userInfo.UserName);
+    filteredData = filteredData.filter((user) => user.UserName !== groupAdmin);
+    filteredData = filteredData.filter((user) => !MemberInvitedUsernames.includes(user.UserName));
+    filteredData = filteredData.filter((user) => !AdminInvitedUsernames.includes(user.UserName));
+    filteredData = filteredData.filter((user) => !MemberUsernames.includes(user.UserName));
     const updatedFriends = filteredData.map((friend) => ({
       username: friend.UserName,
       displayname: friend.FirstName + " " + friend.LastName,
@@ -49,7 +61,7 @@ function GroupInviteModal(props) {
       <div className="modal-dialog modal-dialog-centered">
         <div className="modal-content">
           <div className="modal-header align-items-center">
-            <h5 className="text-dark text-center w-100 m-0" id="exampleModalLabel">Create Group</h5>
+            <h5 className="text-dark text-center w-100 m-0" id="exampleModalLabel">Invite Friends to Group</h5>
             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={props.closeModal}></button>
           </div>
           <div className="modal-body">

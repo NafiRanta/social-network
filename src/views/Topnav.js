@@ -46,9 +46,9 @@ function Topnav(props) {
   useEffect(() => {
     if (Array.isArray(invitesbyadmin?.groups) && Array.isArray(allusers)) {
       const updatedInvites = invitesbyadmin.groups.map((invite) => {
-        const adminInfo = allusers.find((user) => user.username === invite.Admin);
-        const adminAvatar = adminInfo?.avatar;
-        const adminDisplayname = adminInfo?.firstname + " " + adminInfo?.lastname;
+        const adminInfo = allusers.find((user) => user.UserName === invite.Admin);
+        const adminAvatar = adminInfo?.Avatar;
+        const adminDisplayname = adminInfo?.FirstName + " " + adminInfo?.LastName;
 
         return {
           adminAvatar: adminAvatar,

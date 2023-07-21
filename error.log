@@ -69,3 +69,17 @@
 2023/07/21 11:28:05 writemsg error websocket: close sent
 2023/07/21 11:35:33 failed to send message: websocket: close sent
 2023/07/21 11:35:37 writemsg error websocket: close sent
+2023/07/21 11:50:34 failed to send message: websocket: close sent
+2023/07/21 11:50:42 writemsg error websocket: close sent
+2023/07/21 11:53:16 failed to send message: websocket: close sent
+2023/07/21 11:53:16 failed to send message: websocket: close sent
+2023/07/21 11:53:16 failed to send message: websocket: close sent
+2023/07/21 11:53:16 writemsg error websocket: close sent
+2023/07/21 11:53:17 writemsg error websocket: close sent
+2023/07/21 11:53:22 writemsg error websocket: close sent
+2023/07/21 11:54:18 failed to send message: websocket: close sent
+2023/07/21 11:54:26 writemsg error websocket: close sent
+2023/07/21 11:54:30 failed to send message: websocket: close sent
+2023/07/21 11:54:37 writemsg error websocket: close sent
+2023/07/21 11:55:52 failed to send message: websocket: close sent
+2023/07/21 11:55:58 writemsg error websocket: close sent

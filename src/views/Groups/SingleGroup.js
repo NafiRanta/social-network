@@ -49,17 +49,17 @@ function SingleGroup(props) {
           const membersUsernames = JSON.parse(group[0].MemberUsernames);
           const adminUsername = group[0].Admin;
           // get admin display name from allusers
-            const admin = allusers.find((user) => user.username === adminUsername);
-            setAdminDisplayName(admin.firstname + " " + admin.lastname);
+            const admin = allusers.find((user) => user.UserName === adminUsername);
+            setAdminDisplayName(admin.FirstName + " " + admin.LastName);
       
           // Proceed with mapping only if membersUsernames is an array
           if (Array.isArray(membersUsernames) && Array.isArray(allusers)) {
             const membersInfo = membersUsernames.map((username) => {
-                const member = allusers.find((user) => user.username === username);
+                const member = allusers.find((user) => user.UserName === username);
                 return {
                     username: username,
-                    displayName: member.firstname + " " + member.lastname,
-                    avatar: member.avatar,
+                    displayName: member.FirstName + " " + member.LastName,
+                    avatar: member.Avatar,
                 };
             });
             setGroup(group);
@@ -182,7 +182,7 @@ function SingleGroup(props) {
                         </div>
                     </div>
                 </div>
-                <GroupInviteModal userDisplayname={props.userDisplayname} openModal={openModal} allusers={props.allusers} groupID={groupID}></GroupInviteModal>
+                <GroupInviteModal userDisplayname={props.userDisplayname} openModal={openModal} allusers={props.allusers} groupID={groupID} isUserGroupAdmin={isUserGroupAdmin} isUserGroupMember={isUserGroupMember}></GroupInviteModal>
                 <CreateEventModal userDisplayname={props.userDisplayname} openModal={openModal} allusers={props.allusers} groupID={groupID}/>
                 <div className="row justify-content-evenly">
                     <div className="col-12 col-lg-3">
