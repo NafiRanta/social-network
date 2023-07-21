@@ -147,7 +147,7 @@ function CreatePostModal(props) {
                       >
                         {allusers.map((user) => (
                           <option id="allusers" key={user.id} value={user.id}>
-                            {user.firstname}
+                            {user.FirstName}
                           </option>
                         ))}
                       </select>
