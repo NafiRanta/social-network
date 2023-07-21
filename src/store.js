@@ -9,6 +9,8 @@ let defaultInitialState = {
   allUsers: [],
   chatMateUsername: "",
   loggedinUsers: [],
+  invitesByAdmin: [],
+  invitesByMember: [],
 };
 let serializedState = localStorage.getItem("reduxState");
 
@@ -53,6 +55,11 @@ function rootReducer(state = initialState, action) {
       return {
         ...state,
         invitesByAdmin: action.payload,
+      };
+    case "SET_INVITESBYMEMBER":
+      return {
+        ...state,
+        invitesByMember: action.payload,
       };
     
     case "FETCH_ALLUSERS":

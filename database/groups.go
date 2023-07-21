@@ -25,17 +25,28 @@ type Group struct {
 }
 
 type GroupResponse struct {
-	GroupID                string    `json:"groupID"`
-	GroupName              string    `json:"groupName"`
-	GroupDescription       string    `json:"groupDescription"`
-	Admin                  string    `json:"adminID"`
-	AdminInvitedUsernames  []string  `json:"adminInvitedUsernames"`
-	MemberInvitedUsernames []string  `json:"memberInvitedUsernames"`
-	RequestUsernames       []string  `json:"requestUsernames"`
-	MemberUsernames        []string  `json:"memberUsernames"`
-	PostIDs                []string  `json:"postIDs"`
-	EventIDs               []string  `json:"eventIDs"`
-	CreateAt               time.Time `json:"createAt"`
+	GroupID                string            `json:"groupID"`
+	GroupName              string            `json:"groupName"`
+	GroupDescription       string            `json:"groupDescription"`
+	Admin                  string            `json:"adminID"`
+	AdminInvitedUsernames  []string          `json:"adminInvitedUsernames"`
+	MemberInvitedUsernames []InvitesByMember `json:"memberInvitedUsernames"` // map with invited as key and member as value
+	RequestUsernames       []string          `json:"requestUsernames"`
+	MemberUsernames        []string          `json:"memberUsernames"`
+	PostIDs                []string          `json:"postIDs"`
+	EventIDs               []string          `json:"eventIDs"`
+	CreateAt               time.Time         `json:"createAt"`
+}
+
+type InvitesByMember struct {
+	InvitedUsernames []string
+	Member           string
+}
+
+type InvitesByMemberResponse struct {
+	MemberUsername   string   `json:"memberUsername"`
+	GroupID          string   `json:"groupID"`
+	InvitedUsernames []string `json:"memberInvitedUsernames"`
 }
 
 func CreateGroupsTable(db *sql.DB) {
@@ -286,12 +297,13 @@ func GetGroupByID(groupID string) ([]GroupResponse, error) {
 			fmt.Println("unmarshal error", err)
 			return nil, err
 		}
-		// Convert the MemberInvitedUsernames string to a slice of strings
+		// Convert the MemberInvitedUsernames string to a []InvitesByMember with username of invited as key and username of inviter as value
 		err = json.Unmarshal([]byte(memberInvitedUsernames), &group.MemberInvitedUsernames)
 		if err != nil {
 			fmt.Println("unmarshal error", err)
 			return nil, err
 		}
+
 		// Convert the RequestUsernames string to a slice of strings
 		err = json.Unmarshal([]byte(requestUsernames), &group.RequestUsernames)
 		if err != nil {
@@ -444,5 +456,66 @@ func DeleteUserFromAdminInvite(groupID string, username string) error {
 	}
 
 	fmt.Println("Deleted user from admin invite")
+	return nil
+}
+
+func AddUserToMemberInvite(groupID string, memberUsername string, invitedUsernames []string) error {
+	db, err := sql.Open("sqlite3", "./socialnetwork.db")
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+
+	// Get the current JSON array
+	query := "SELECT MemberInvitedUsernames FROM Groups WHERE GroupID = ?"
+	stmt, err := db.Prepare(query)
+	if err != nil {
+		return err
+	}
+	row := stmt.QueryRow(groupID)
+
+	var memberInvitedUsernames string
+	err = row.Scan(&memberInvitedUsernames)
+	if err != nil {
+		return err
+	}
+
+	// Parse the JSON array into a slice of InvitesByMember
+	var invites []InvitesByMember
+	err = json.Unmarshal([]byte(memberInvitedUsernames), &invites)
+	if err != nil {
+		return err
+	}
+
+	fmt.Println("invitedUsernames", invitedUsernames)
+
+	// Append the new invited user to the existing slice
+	invite := InvitesByMember{
+		InvitedUsernames: invitedUsernames,
+		Member:           memberUsername,
+	}
+
+	fmt.Println("invite", invite)
+
+	invites = append(invites, invite)
+
+	// Convert the slice back to a JSON array
+	newMemberInvitedUsernames, err := json.Marshal(invites)
+	if err != nil {
+		return err
+	}
+
+	// Update the Groups table with the new JSON array
+	updateQuery := "UPDATE Groups SET MemberInvitedUsernames = ? WHERE GroupID = ?"
+	updateStmt, err := db.Prepare(updateQuery)
+	if err != nil {
+		return err
+	}
+	fmt.Println("string(newMemberInvitedUsernames)", string(newMemberInvitedUsernames))
+	_, err = updateStmt.Exec(string(newMemberInvitedUsernames), groupID)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }

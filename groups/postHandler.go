@@ -141,3 +141,68 @@ func AddUserToGroupHandler(w http.ResponseWriter, r *http.Request) {
 	w.Write(jsonData)
 	fmt.Println("user added to group successfully")
 }
+
+// add users to group MemberInvitedUsernames
+func AddUsersToMemberInvited(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("AddUsersToMemberInvited")
+	authHeader := r.Header.Get("Authorization")
+	if authHeader == "" {
+		fmt.Println("error from authheader:")
+		http.Error(w, "Missing Authorization header", http.StatusUnauthorized)
+		return
+	}
+
+	userID, err := a.ExtractUserIDFromAuthHeader(authHeader)
+	if err != nil {
+		fmt.Println("error from extractuserid:", err)
+		http.Error(w, err.Error(), http.StatusUnauthorized)
+		return
+	}
+
+	user, err := d.GetUserByID(userID)
+	if err != nil {
+		fmt.Println("error from extractuserid:", err)
+		http.Error(w, err.Error(), http.StatusUnauthorized)
+		return
+	}
+
+	memberUsername := user.UserName
+
+	groupID := r.URL.Query().Get("groupID")
+
+	// get response from the r.body
+	var response d.InvitesByMemberResponse
+	err = json.NewDecoder(r.Body).Decode(&response)
+	if err != nil {
+		fmt.Println("error from decode:", err)
+		http.Error(w, "Invalid request body", http.StatusBadRequest)
+		return
+	}
+	fmt.Println("response:", response)
+	// get invitedUsernames from response
+	invitedUsernames := response.InvitedUsernames
+	// Convert the response to JSON
+	fmt.Println("invitedUsernames:", invitedUsernames)
+	responseJSON, err := json.Marshal(response)
+	if err != nil {
+		fmt.Println("error from json.Marshal:", err)
+		http.Error(w, "Failed to marshal response", http.StatusInternalServerError)
+		return
+	}
+	fmt.Println("responseJSON:", responseJSON)
+
+	err = d.AddUserToMemberInvite(groupID, memberUsername, invitedUsernames)
+	if err != nil {
+		fmt.Println("error from addgroup:", err)
+		http.Error(w, "Failed to add group", http.StatusInternalServerError)
+		return
+	}
+	// Set the Content-Type header to application/json
+	// 200
+	w.WriteHeader(http.StatusOK)
+	w.Header().Set("Content-Type", "application/json")
+
+	w.Write(responseJSON)
+
+	fmt.Println("users added to group successfully")
+}

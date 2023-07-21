@@ -16,7 +16,13 @@ function Topnav(props) {
   const allusers = useSelector((state) => state.allUsers);
   const userInfo = useSelector((state) => state.userInfo);
   const invitesbyadmin = useSelector((state) => state.invitesByAdmin);
+  const invitesbymember = useSelector((state) => state.invitesByMember);
   const [groupInvitesByAdmin, setGroupInvitesByAdmin] = useState([]);
+  const [groupInvitesByMember, setGroupInvitesByMember] = useState([]);
+
+  console.log("invites by admin: ", invitesbyadmin)
+  console.log("invites by member: ", invitesbymember)
+  
   let Notifications = []
 
   // fetch all users from redux
@@ -60,43 +66,32 @@ function Topnav(props) {
       setGroupInvitesByAdmin(updatedInvites);
     }
   }, [invitesbyadmin, allusers]);
+   // get group invites by member getting member Avatar, member Displayname, groupName, groupID 
+  // set these variables to setGroupInvitesByMember
+  useEffect(() => {
+    if (Array.isArray(invitesbymember?.groups) && Array.isArray(allusers)) {
+      const updatedInvites = invitesbymember.groups.map((invite) => {
+        const memberInfo = allusers.find((user) => user.UserName === invite.Member);
+        const memberAvatar = memberInfo?.Avatar;
+        const memberDisplayname = memberInfo?.FirstName + " " + memberInfo?.LastName;
 
-//append groupInvitesByAdmin to Notifications array
-const groupInvitesByAdminRender = Array.isArray(groupInvitesByAdmin) ? (
-  groupInvitesByAdmin.map((invite) => {
-    return (
-      <div key={invite.groupID}>
-          <Dropdown.Item as="li" className="my-2 p-1">
-            <div className="d-flex justify-content-between">
-              <div className="d-flex align-items-center">
-                <div className="rounded-circle d-flex align-items-center justify-content-center mx-2" id="avatar">
-                  <img src={invite.adminAvatar} alt="avatar" className="rounded-circle me-2" />
-                </div>
-                <div>
+        return {
+          memberAvatar: memberAvatar,
+          memberDisplayname: memberDisplayname,
+          groupName: invite.GroupName,
+          groupID: invite.GroupID,
+        };
+      });
+      setGroupInvitesByMember(updatedInvites);
+    }
+  }, [invitesbymember, allusers]);
 
-                  <p className="m-0">{invite.adminDisplayname} invited you to join {invite.groupName}</p>
-                </div>
-              </div>
-              <div>
-                <Link
-                  to={`/singlegroup/${invite.groupID}`}
-                  className="btn btn-primary btn-sm d-flex justify-content-center align-items-center"
-                >
-                  View
-                </Link>
-              </div>
-            </div>
-          </Dropdown.Item>
-      </div>
-    );
-  })
-) : null;
+Notifications = [
+  ...groupInvitesByAdmin || [],
+  ...groupInvitesByMember || [],
+]
 
-// push groupInvitesByAdminRender to Notifications array
-if (groupInvitesByAdminRender) {
-  Notifications.push(groupInvitesByAdminRender);
-}
-
+console.log("Notifications: ", Notifications)
   //handle logout
   const handleLogout = () => {
     // clear redux and user info and token from local storage and session storage
@@ -115,6 +110,8 @@ if (groupInvitesByAdminRender) {
     }
     window.location.href = "/login";
   };
+
+  console.log("Notifications: ", Notifications)
   return (
     <div className="bg-white d-flex align-items-center fixed-top shadow" >
       <div className="container-fluid" id="topNavBox">
@@ -202,12 +199,38 @@ if (groupInvitesByAdminRender) {
                   className="dropdown-menu border-0 shadow p-3"
                   aria-labelledby="notMenu"
                 >
-                  <Dropdown.Item as="li" className="p-1">
-                    <div className="d-flex justify-content-between">
-                      <h2>Notifications</h2>
+                <Dropdown.Item as="li" className="p-1">
+                  <div className="d-flex justify-content-between">
+                    <h2>Notifications</h2>
                     </div>
-                  </Dropdown.Item>
-               {Notifications}
+                </Dropdown.Item>
+                <div className="overflow-auto" style={{ maxHeight: "300px" }}>
+                  {Notifications.map((invite) => ( // Add parentheses here to return JSX
+                    <div key={invite.groupID}>
+                      <Dropdown.Item as="li" className="my-2 p-1">
+                        <div className="d-flex justify-content-between">
+                          <div className="d-flex align-items-center">
+                            <div className="rounded-circle d-flex align-items-center justify-content-center mx-2" id="avatar">
+                              <img src={invite.adminAvatar} alt="avatar" className="rounded-circle me-2" />
+                            </div>
+                            <div>
+                              <p className="m-0">{invite.adminDisplayname} invited you to join {invite.groupName}</p>
+                            </div>
+                          </div>
+                          <div>
+                            <Link
+                              to={`/singlegroup/${invite.groupID}`}
+                              className="btn btn-primary btn-sm d-flex justify-content-center align-items-center"
+                            >
+                              View
+                            </Link>
+                          </div>
+                        </div>
+                      </Dropdown.Item>
+                    </div>
+                  ))}
+                </div>
+                
                 </Dropdown.Menu>
               </Dropdown>
             </div>

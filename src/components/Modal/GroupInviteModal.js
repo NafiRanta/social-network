@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import "./Modal.css";
 import Avatar from "../Avatar/Avatar";
+import { useDispatch } from 'react-redux';
 
 function GroupInviteModal(props) {
+  const dispatch = useDispatch();
   const userInfo = useSelector((state) => state.userInfo);
   const allGroups = useSelector((state) => state.allGroups);
   console.log("props.isGroupAdmin: ", props.isUserGroupAdmin)
@@ -52,9 +54,49 @@ function GroupInviteModal(props) {
   };
 
   // Handle Invite Submit: handleInviteSubmit
-
-  // const handleGroupSubmit = async (event) => {
-
+  const handleMemberInviteSubmit = async (event) => {
+    console.log("handleMemberInviteSubmit")
+    event.preventDefault();
+    const token = localStorage.getItem('token');
+    const headers = new Headers();
+    headers.append('Authorization', 'Bearer ' + token);
+    headers.append('Content-Type', 'application/json');
+    const groupID = props.groupID;
+    const selectedUserNames = [];
+    const url = "http://localhost:8080/invitesbymember?groupID=" + groupID;
+    selectedNames.forEach((name) => {
+      const user = myFriends.find((friend) => friend.displayname === name);
+      selectedUserNames.push(user.username);
+    });
+    const now = new Date();
+    const groupData = {
+      groupID: groupID,
+      memberInvitedUsernames: selectedUserNames,
+      memberUsername : userInfo.UserName,
+    };
+    console.log("groupData: ", groupData);
+    console.log("selectedUserNames: ", selectedUserNames)
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: headers,
+        body: JSON.stringify(groupData)
+      });
+      const data = await response.json();
+      const status = response.status;
+      console.log("data: ", data);
+      dispatch({ type: "SET_INVITESBYMEMBER", payload: data });
+      console.log("status: ", status);
+      if ( status === 200) {
+        alert("Invite Sent!");
+        window.location.href = `/singlegroup/${groupID}`;
+      } else {
+        alert("Invite Failed!");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <div className="modal fade" id="groupInviteModal" tabIndex="-1" aria-labelledby="createModalLabel" aria-hidden="true" data-bs-backdrop="false">
@@ -105,7 +147,7 @@ function GroupInviteModal(props) {
                 <button 
                   type="button" 
                   className="btn btn-primary w-100"
-                  //onClick={handleInviteSubmit}
+                  onClick={handleMemberInviteSubmit}
                   >
                   Invite
                 </button>
