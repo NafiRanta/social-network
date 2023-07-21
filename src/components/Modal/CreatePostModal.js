@@ -154,6 +154,14 @@ function CreatePostModal(props) {
                     )}
                   </div>
                 </div>
+                <div>
+                  <textarea
+                    cols="30"
+                    rows="5"
+                    className="form-control my-3 border"
+                    id="postContent"
+                  ></textarea>
+                </div>
                 {selectedImage && (
                   <div className="mt-3">
                     <img
@@ -163,14 +171,6 @@ function CreatePostModal(props) {
                     />
                   </div>
                 )}
-                <div>
-                  <textarea
-                    cols="30"
-                    rows="5"
-                    className="form-control my-3 border"
-                    id="postContent"
-                  ></textarea>
-                </div>
                 {selectedImage && (
                   <div className="mt-3">
                     <button
