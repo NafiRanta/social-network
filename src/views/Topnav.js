@@ -106,9 +106,9 @@ Notifications = [
         name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; domain=localhost";
     }
     // alert("You have been logged out");
-    setTimeout(() => {
+    // setTimeout(() => {
       window.location.href = "/login";
-    }, 5);
+    // }, 5);
   };
 
   return (
