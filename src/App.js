@@ -37,24 +37,15 @@ function App() {
         : {
           // if the user is in the chat page, then update the chat page
           if (window.location.pathname === "/chat") {
-              // if chosen user is the same as the user that sent the message
-              if (event.payload) {
-                if (event.payload.senderUsername == chatMateusername) {
-                  // update the chat page
-                  console.log("update the chat page");
-                  Location.reload();
-                  
-                } else {
-                  // show the notification on the sender icon
-                  console.log("show the notification on the sender icon");
-                }
-              }
-            } else {
-              // show the notification on the chat bubble icon
-              console.log("show the notification on the chat icon");
-              
-              break;
-            }
+              // update the chat page
+              console.log("update the chat page");
+              // Location.reload();
+              window.location.reload();
+          } else {
+            // show the notification on the chat bubble icon
+            console.log("show the notification on the chat icon");
+            break;
+          }
       }
       case "acknowledgement"
         : {

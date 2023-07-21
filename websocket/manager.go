@@ -99,6 +99,9 @@ func SendMessageNotification(event Event, c *Client) error {
 		if c.manager.loggedinUsers[client.otp] == notificationevent.Receiver {
 			client.egress <- outgoingEvent
 		}
+		if c.manager.loggedinUsers[client.otp] == notificationevent.Sender {
+			client.egress <- outgoingEvent
+		}
 	}
 	return nil
 }
