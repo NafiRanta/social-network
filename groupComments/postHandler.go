@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	a "socialnetwork/authentication"
 	d "socialnetwork/database"
 )
 
@@ -26,30 +25,16 @@ func AddGroupCommentPostHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// get userID from token
-	userID, err := a.ExtractUserIDFromAuthHeader(r.Header.Get("Authorization"))
-	if err != nil {
-		fmt.Println("error from getUserIDFromToken:", err)
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-	// get user by userID
-	user, err := d.GetUserByID(userID)
-	if err != nil {
-		fmt.Println("error from getUserByUserID:", err)
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-	groupComment.UserName = user.UserName
-
+	// add group comment to database
 	err = d.AddGroupComment(&groupComment)
 	if err != nil {
-		fmt.Println("error from addgroupComment:", err)
-		http.Error(w, "Failed to add groupComment", http.StatusInternalServerError)
+		fmt.Println("error from addgroupcomment:", err)
+		http.Error(w, "Failed to add group comment", http.StatusInternalServerError)
 		return
 	}
 
 	// Return a success response
 	w.WriteHeader(http.StatusCreated)
-	fmt.Println("GroupComment added successfully")
+	fmt.Println("Group comment added successfully")
+
 }

@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import Avatar from "../Avatar/Avatar";
 import "./Card.css";
 
+
 function GroupCommentCard(props) {
     const userInfo = useSelector((state) => state.userInfo);
     const token = localStorage.getItem("token");
@@ -77,6 +78,7 @@ const handleGroupCommentSubmit = async (e) => {
         const res = await fetch("http://localhost:8080/addgroupcomment", {
             method: "POST",
             headers: headers,
+            credentials: "include",
             body: JSON.stringify(groupCommentData),
         });
         if (res.ok) {
@@ -160,18 +162,17 @@ return (
                     </div>
                   </div>
                 ))}
-    <form className="d-flex my-1" onSubmit={handleGroupCommentSubmit}>
-                <div>
-                  <Avatar userDisplayname={props.userDisplayname} />
-                </div>
-                <input
-                  type="text"
-                  className="form-control border-0 rounded-pill bg-gray"
-                  placeholder="Write a comment"
-                  value={groupCommentInput}
-                  onChange={handleInputChange}
-                />
-
+                <form className="d-flex my-1" onSubmit={handleGroupCommentSubmit}>
+                  <div>
+                    <Avatar userDisplayname={props.userDisplayname} />
+                  </div>
+                  <input
+                    type="text"
+                    className="form-control border-0 rounded-pill bg-gray"
+                    placeholder="Write a comment"
+                    value={groupCommentInput}
+                    onChange={handleInputChange}
+                  />
                 </form>
             </div>
           </div>

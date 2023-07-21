@@ -18,11 +18,13 @@ type GroupComment struct {
 }
 
 type GroupCommentResponse struct {
-	GroupCommentID string    `json:"groupCommentID"`
-	GroupID        string    `json:"groupID"`
-	UserName       string    `json:"userName"`
-	Comment        string    `json:"comment"`
-	CreateAt       time.Time `json:"createAt"`
+	GroupCommentID  string    `json:"groupCommentID"`
+	GroupID         string    `json:"groupID"`
+	UserName        string    `json:"userName"`
+	Comment         string    `json:"comment"`
+	CreateAt        time.Time `json:"createAt"`
+	AuthorFirstName string    `json:"authorFirstName"`
+	AuthorLastName  string    `json:"authorLastName"`
 }
 
 func CreateGroupCommentsTable(db *sql.DB) {

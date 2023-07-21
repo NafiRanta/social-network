@@ -10,6 +10,7 @@ import (
 	a "socialnetwork/authentication"
 	c "socialnetwork/comments"
 	d "socialnetwork/database"
+	gc "socialnetwork/groupcomments"
 	ge "socialnetwork/groupevents"
 	gp "socialnetwork/groupposts"
 	g "socialnetwork/groups"
@@ -89,8 +90,8 @@ func Start() error {
 	router.HandleFunc("/getgroupposts", gp.GetGroupPostsByGroupIDHandler)
 
 	//handle group comments
-	// router.HandleFunc("/addgroupcomment", gc.AddGroupCommentPostHandler)
-	// router.HandleFunc("/getgroupcomments", gc.GetGroupCommentsHandler)
+	router.HandleFunc("/addgroupcomment", gc.AddGroupCommentPostHandler)
+	router.HandleFunc("/getgroupcomments", gc.GetGroupCommentsHandler)
 
 	// handle group events
 	router.HandleFunc("/addevent", ge.AddGroupEventHandler)
