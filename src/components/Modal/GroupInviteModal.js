@@ -39,61 +39,10 @@ function GroupInviteModal(props) {
     setSelectedNames(updatedNames);
   };
 
-  // Handle Invite Button
+  // Handle Invite Submit: handleInviteSubmit
 
   // const handleGroupSubmit = async (event) => {
-  //   event.preventDefault();
-  //   const token = localStorage.getItem('token');
-  //   const groupName = document.getElementById("groupname").value;
-  //   const groupDescription = document.getElementById("groupdescription").value;
-  //  // get usernames of the selected names
-  //   const selectedUserNames = [];
-  //   selectedNames.forEach((name) => {
-  //     const user = myFriends.find((friend) => friend.displayname === name);
-  //     selectedUserNames.push(user.username);
-  //   });
 
-  //   const now = new Date();
-  //   const groupPostID = []
-  //   const groupEventID = []
-  //   const groupData = {
-  //     groupName: groupName,
-  //     groupDescription: groupDescription,
-  //     groupAdmin: userInfo.username,
-  //     adminInvitedUsernames: selectedUserNames,
-  //     memberInvitedUsernames: [],
-  //     memberUsernames: [],
-  //     requestUsernames: [],
-  //     postIDs: groupPostID,
-  //     eventIDs: groupEventID,
-  //     createAt: now
-  //   };
-
-  //   console.log("groupData: ", groupData);
-  //   const headers = new Headers();
-  //   headers.append('Authorization', 'Bearer ' + token);
-  //   headers.append('Content-Type', 'application/json');
-
-  // try {
-  //     const response = await fetch("http://localhost:8080/creategroup", {
-  //       method: 'POST',
-  //       credentials: 'include',
-  //       headers: headers,
-  //       body: JSON.stringify(groupData) // Stringify the entire object
-  //     });
-  //     if (!response.ok) {
-  //       throw new Error('Error occurred while creating the group');
-  //     }
-
-  //     // fetch the group id
-  //     const group = await response.json();
-  //     const groupId = group.groupID;
-  //     alert("Group created");
-  //     window.location.href = `/singlegroup/${groupId}`;
-  //   } catch (error) {
-  //     console.log(error);
-  //   } 
-  // };
 
   return (
     <div className="modal fade" id="groupInviteModal" tabIndex="-1" aria-labelledby="createModalLabel" aria-hidden="true" data-bs-backdrop="false">
@@ -125,7 +74,7 @@ function GroupInviteModal(props) {
                     </div>
                     <select value={selectedName} onChange={handleNameChange} className="form-select form-control my-3">
                       <option disabled value="">
-                        Add Friends (optional)
+                        Invite Friends
                       </option>
                       {names.filter((name) => !selectedNames.includes(name)).map((name) => (
                         <option key={name} value={name}>
@@ -144,8 +93,9 @@ function GroupInviteModal(props) {
                 <button 
                   type="button" 
                   className="btn btn-primary w-100"
+                  //onClick={handleInviteSubmit}
                   >
-                  Create
+                  Invite
                 </button>
               </div>
               <div className="col">

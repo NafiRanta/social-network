@@ -136,7 +136,7 @@ function CreatePostModal(props) {
                         <option value="custom">Custom</option>
                       </optgroup>
                     </select>
-                    {/* When custome is selected */}
+                    {/* When custom is selected */}
                     {privacy === 'custom' && (
                       <select multiple
                       className="form-select border-0 bg-gray w-100 fs-7"
@@ -171,6 +171,17 @@ function CreatePostModal(props) {
                     id="postContent"
                   ></textarea>
                 </div>
+                {selectedImage && (
+                  <div className="mt-3">
+                    <button
+                      type="button"
+                      className="btn btn-secondary w-100"
+                      onClick={() => setSelectedImage(null)} // Set selectedImage to null on button click
+                    >
+                      Remove Picture
+                    </button>
+                  </div>
+                )}
                 <div className="d-flex justify-content-between border border-1 border-light rounded p-3 mt-3">
                   <p className="m-0">Add image to your post</p>
                   <div>
