@@ -87,6 +87,10 @@ func Start() error {
 	router.HandleFunc("/getmygroupsposts", gp.GetMyGroupsPostsHandler)
 	router.HandleFunc("/getgroupposts", gp.GetGroupPostsByGroupIDHandler)
 
+	//handle group comments
+	// router.HandleFunc("/addgroupcomment", gc.AddGroupCommentPostHandler)
+	// router.HandleFunc("/getgroupcomments", gc.GetGroupCommentsHandler)
+
 	// handle group events
 	router.HandleFunc("/addevent", ge.AddGroupEventHandler)
 	router.HandleFunc("/getevent", ge.GetGroupEventHandler)

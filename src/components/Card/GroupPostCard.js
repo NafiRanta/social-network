@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import CommentCard from "./CommentCard";
+// import CommentCard from "./CommentCard";
+import GroupCommentCard from "./groupCommentCard";
 
 // Function to decode a JSON Web Token (JWT)
 export function decodeJwt(jwt) {
@@ -148,7 +149,7 @@ function GroupPostCard(props) {
                 />
               )}
             </div>
-            <CommentCard userDisplayname={props.userDisplayname} />
+            <GroupCommentCard userDisplayname={props.userDisplayname} />
           </div>
         </div>
       );

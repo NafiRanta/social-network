@@ -83,3 +83,47 @@
 2023/07/21 11:54:37 writemsg error websocket: close sent
 2023/07/21 11:55:52 failed to send message: websocket: close sent
 2023/07/21 11:55:58 writemsg error websocket: close sent
+2023/07/21 17:16:22 http: panic serving [::1]:58943: runtime error: invalid memory address or nil pointer dereference
+goroutine 8 [running]:
+net/http.(*conn).serve.func1()
+	/usr/local/go/src/net/http/server.go:1854 +0xb0
+panic({0x104d0cf40, 0x104f89310})
+	/usr/local/go/src/runtime/panic.go:890 +0x258
+socialnetwork/groupposts.GetMyGroupsPostsHandler({0x104d69610, 0x1400017e0e0}, 0x14000192200)
+	/Users/anton.wiklund/social_network/social-network/groupposts/getHandler.go:34 +0x1cc
+net/http.HandlerFunc.ServeHTTP(0x140001840f0?, {0x104d69610?, 0x1400017e0e0?}, 0x104a8e6ec?)
+	/usr/local/go/src/net/http/server.go:2122 +0x38
+net/http.(*ServeMux).ServeHTTP(0x104d3b440?, {0x104d69610, 0x1400017e0e0}, 0x14000192200)
+	/usr/local/go/src/net/http/server.go:2500 +0x140
+socialnetwork/utils.CorsMiddleware.func1({0x104d69610, 0x1400017e0e0}, 0x14000192200)
+	/Users/anton.wiklund/social_network/social-network/utils/cors.go:23 +0x32c
+net/http.HandlerFunc.ServeHTTP(0x0?, {0x104d69610?, 0x1400017e0e0?}, 0x104a5d558?)
+	/usr/local/go/src/net/http/server.go:2122 +0x38
+net/http.serverHandler.ServeHTTP({0x1400007f080?}, {0x104d69610, 0x1400017e0e0}, 0x14000192200)
+	/usr/local/go/src/net/http/server.go:2936 +0x2d8
+net/http.(*conn).serve(0x14000150630, {0x104d697d8, 0x1400007fad0})
+	/usr/local/go/src/net/http/server.go:1995 +0x560
+created by net/http.(*Server).Serve
+	/usr/local/go/src/net/http/server.go:3089 +0x520
+2023/07/21 17:16:22 http: panic serving [::1]:58945: runtime error: invalid memory address or nil pointer dereference
+goroutine 38 [running]:
+net/http.(*conn).serve.func1()
+	/usr/local/go/src/net/http/server.go:1854 +0xb0
+panic({0x104d0cf40, 0x104f89310})
+	/usr/local/go/src/runtime/panic.go:890 +0x258
+socialnetwork/groupposts.GetMyGroupsPostsHandler({0x104d69610, 0x1400024a000}, 0x1400023e000)
+	/Users/anton.wiklund/social_network/social-network/groupposts/getHandler.go:34 +0x1cc
+net/http.HandlerFunc.ServeHTTP(0x14000090060?, {0x104d69610?, 0x1400024a000?}, 0x104a8e6ec?)
+	/usr/local/go/src/net/http/server.go:2122 +0x38
+net/http.(*ServeMux).ServeHTTP(0x104d3b440?, {0x104d69610, 0x1400024a000}, 0x1400023e000)
+	/usr/local/go/src/net/http/server.go:2500 +0x140
+socialnetwork/utils.CorsMiddleware.func1({0x104d69610, 0x1400024a000}, 0x1400023e000)
+	/Users/anton.wiklund/social_network/social-network/utils/cors.go:23 +0x32c
+net/http.HandlerFunc.ServeHTTP(0x0?, {0x104d69610?, 0x1400024a000?}, 0x104a5d558?)
+	/usr/local/go/src/net/http/server.go:2122 +0x38
+net/http.serverHandler.ServeHTTP({0x140002040f0?}, {0x104d69610, 0x1400024a000}, 0x1400023e000)
+	/usr/local/go/src/net/http/server.go:2936 +0x2d8
+net/http.(*conn).serve(0x14000208090, {0x104d697d8, 0x1400007fad0})
+	/usr/local/go/src/net/http/server.go:1995 +0x560
+created by net/http.(*Server).Serve
+	/usr/local/go/src/net/http/server.go:3089 +0x520

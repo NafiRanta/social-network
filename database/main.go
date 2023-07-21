@@ -17,7 +17,7 @@ func GetDB() *sql.DB {
 	CreateGroupsTable(database)
 	CreateGroupPostsTable(database)
 	CreateGroupEventsTable(database)
-
+	CreateGroupCommentsTable(database)
 	u.CheckErr(err)
 	return database
 }
