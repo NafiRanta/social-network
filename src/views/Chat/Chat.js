@@ -84,6 +84,8 @@ function Chat(props) {
   };
 
   const displayAllUsers = () => {
+    // set chatNotification to false
+    dispatch ({ type: "SET_CHATNOTIFICATION", payload: false });
     if (!allusers) {
       return null;
     }

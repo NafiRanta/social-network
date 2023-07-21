@@ -10,6 +10,7 @@ import CreateGroupModal from '../components/Modal/CreateGroupModal';
 import './TopNav.css'
 
 function Topnav(props) {
+  const chatNotification = useSelector((state) => state.chatNotification);
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
@@ -19,9 +20,6 @@ function Topnav(props) {
   const invitesbymember = useSelector((state) => state.invitesByMember);
   const [groupInvitesByAdmin, setGroupInvitesByAdmin] = useState([]);
   const [groupInvitesByMember, setGroupInvitesByMember] = useState([]);
-
-  console.log("invites by admin: ", invitesbyadmin)
-  console.log("invites by member: ", invitesbymember)
   
   let Notifications = []
 
@@ -91,7 +89,6 @@ Notifications = [
   ...groupInvitesByMember || [],
 ]
 
-console.log("Notifications: ", Notifications)
   //handle logout
   const handleLogout = () => {
     // clear redux and user info and token from local storage and session storage
@@ -111,7 +108,6 @@ console.log("Notifications: ", Notifications)
     window.location.href = "/login";
   };
 
-  console.log("Notifications: ", Notifications)
   return (
     <div className="bg-white d-flex align-items-center fixed-top shadow" >
       <div className="container-fluid" id="topNavBox">
@@ -119,7 +115,7 @@ console.log("Notifications: ", Notifications)
           <div className="col d-flex align-items-center" type="button" id="homeMenu"> 
                 <Link to="/" className="text-decoration-none text-dark">
                   <i className="fab fa-facebook text-primary" id="isthislogo"></i>
-                </Link>
+                </Link>                
                 <SearchbarGlobal allusers={props.allusers} />
           </div>
           <div className="col d-flex align-items-center justify-content-end">
@@ -181,10 +177,11 @@ console.log("Notifications: ", Notifications)
                 <i className="fas fa-users"></i>
               </Link>
             </div>
-            <div className="rounded-circle p-1 bg-gray d-flex align-items-center justify-content-center mx-2" type="button" id="chatMenu">
-                <Link to="/chat" className="text-decoration-none text-dark">
-                  <i className="fas fa-comment"></i>
-                </Link>
+            {/* set to bg-gray by default and to bg-red if chatNotification*/}
+            <div className={`rounded-circle p-1 ${chatNotification ? "bg-red" : "bg-gray"} d-flex align-items-center justify-content-center mx-2`} type="button" id="chatMenu">              
+              <Link to="/chat" className="text-decoration-none text-dark">
+                <i className="fas fa-comment"></i>
+              </Link>
             </div>
             <div className="mx-2">
               <Dropdown>

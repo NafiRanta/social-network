@@ -11,6 +11,7 @@ let defaultInitialState = {
   loggedinUsers: [],
   invitesByAdmin: [],
   invitesByMember: [],
+  chatNotification : false,
 };
 let serializedState = localStorage.getItem("reduxState");
 
@@ -77,6 +78,11 @@ function rootReducer(state = initialState, action) {
         ...state,
         loggedinUsers: action.payload,
       };
+    case "SET_CHATNOTIFICATION":
+      return {
+        ...state,
+        chatNotification: action.payload,
+      };
     default:
       return state; 
   }
@@ -92,7 +98,6 @@ const store = configureStore({
 store.subscribe(() => {
   const state = store.getState();
   localStorage.setItem("reduxState", JSON.stringify(state));
-  console.log("state after dispatch: ", store.getState());
 });
 
 export default store;

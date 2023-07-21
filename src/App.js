@@ -37,11 +37,10 @@ function App() {
         : {
           // if the user is in the chat page, then update the chat page
           if (window.location.pathname === "/chat") {
-              // update the chat page
-              console.log("update the chat page");
-              // Location.reload();
               window.location.reload();
           } else {
+            // set chatNotification to true
+            dispatch({ type: "SET_CHATNOTIFICATION", payload: true });
             // show the notification on the chat bubble icon
             console.log("show the notification on the chat icon");
             break;
