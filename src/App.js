@@ -179,6 +179,12 @@ function App() {
         };
         if (isAuth) {
           fetchUsers();
+        } else {
+          console.log("not authenticated");
+          // clear redux and user info and token from local storage and session storage
+          localStorage.removeItem("reduxState");
+          sessionStorage.removeItem("userInfo");
+          localStorage.removeItem("token");
         }
     }
   }, [isAuth]);
@@ -218,6 +224,10 @@ function App() {
       };
       if (isAuth) {
         fetchGroups();
+      } else {
+        localStorage.removeItem("reduxState");
+        sessionStorage.removeItem("userInfo");
+        localStorage.removeItem("token");
       }
     }
   }, [isAuth]);
@@ -247,6 +257,10 @@ function App() {
       };
       if (isAuth) {
         fetchInvitesByAdmin();
+      } else {
+        localStorage.removeItem("reduxState");
+        sessionStorage.removeItem("userInfo");
+        localStorage.removeItem("token");
       }
     }
   }, [isAuth]);

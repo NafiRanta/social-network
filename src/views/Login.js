@@ -125,7 +125,6 @@ function Login() {
         //localStorage.setItem("userInfo", JSON.stringify(data));
 
         dispatch({ type: "SET_AUTH", payload: true });
-        //setIsAuthenticated(true);
         window.location.href = "/";
       } else {
         // show error message from response

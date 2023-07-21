@@ -3462,3 +3462,16 @@ net/http.(*conn).serve(0x140001a41b0, {0x101551e38, 0x1400009dad0})
 	/opt/homebrew/Cellar/go/1.20.6/libexec/src/net/http/server.go:1995 +0x560
 created by net/http.(*Server).Serve
 	/opt/homebrew/Cellar/go/1.20.6/libexec/src/net/http/server.go:3089 +0x520
+2023/07/22 02:33:49 [2023-07-22 02:33:49] ERROR: invalid token
+2023/07/22 02:33:50 failed to send message: websocket: close sent
+2023/07/22 02:33:57 writemsg error websocket: close sent
+2023/07/22 02:34:19 [2023-07-22 02:34:19] ERROR: invalid token
+2023/07/22 02:34:19 failed to send message: websocket: close sent
+2023/07/22 02:34:27 writemsg error websocket: close sent
+2023/07/22 02:37:51 failed to send message: websocket: close sent
+2023/07/22 02:37:59 writemsg error websocket: close sent
+2023/07/22 02:38:06 failed to send message: websocket: close sent
+2023/07/22 02:38:14 writemsg error websocket: close sent
+2023/07/22 02:40:42 [2023-07-22 02:40:42] ERROR: invalid token
+2023/07/22 02:40:42 failed to send message: websocket: close sent
+2023/07/22 02:40:49 writemsg error websocket: close sent
