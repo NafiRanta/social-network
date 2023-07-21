@@ -2,7 +2,7 @@ package messages
 
 import (
 	"encoding/json"
-	"fmt"
+	//"fmt"
 	"net/http"
 	d "socialnetwork/database"
 )
@@ -32,5 +32,5 @@ func AddMessagesHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	// Return a 200 status code
 	w.WriteHeader(http.StatusOK)
-	fmt.Println("message added")
+	//fmt.Println("message added")
 }

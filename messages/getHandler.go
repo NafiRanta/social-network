@@ -13,14 +13,14 @@ import (
 func GetMessagesHandler(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method != http.MethodGet {
-		fmt.Println("method not allowed")
+		//fmt.Println("method not allowed")
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		fmt.Fprint(w, "Method not allowed")
 		return
 	}
 	authHeader := r.Header.Get("Authorization")
 	if authHeader == "" {
-		fmt.Println("Missing Authorization header")
+		//fmt.Println("Missing Authorization header")
 		http.Error(w, "Missing Authorization header", http.StatusUnauthorized)
 		return
 	}

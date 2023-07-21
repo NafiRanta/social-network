@@ -9,7 +9,7 @@ import (
 )
 
 func CreateGroupHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("AddGroupHandler")
+	//fmt.Println("AddGroupHandler")
 	// Check if the request method is POST
 	if r.Method != http.MethodPost {
 		w.WriteHeader(http.StatusMethodNotAllowed)
@@ -29,21 +29,21 @@ func CreateGroupHandler(w http.ResponseWriter, r *http.Request) {
 	var group d.GroupResponse
 	err = json.NewDecoder(r.Body).Decode(&group)
 	if err != nil {
-		fmt.Println("error from decode:", err)
+		//fmt.Println("error from decode:", err)
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
 		return
 	}
-	fmt.Println("group:", group)
+	//fmt.Println("group:", group)
 	user, err := d.GetUserByID(userID)
 	if err != nil {
-		fmt.Println("error from getuserbyid:", err)
+		//fmt.Println("error from getuserbyid:", err)
 		http.Error(w, "Failed to get user", http.StatusInternalServerError)
 		return
 	}
 	group.Admin = user.UserName
 	err = d.AddGroup(&group)
 	if err != nil {
-		fmt.Println("error from addgroup:", err)
+		//fmt.Println("error from addgroup:", err)
 		http.Error(w, "Failed to add group", http.StatusInternalServerError)
 		return
 	}
@@ -58,7 +58,7 @@ func CreateGroupHandler(w http.ResponseWriter, r *http.Request) {
 	// Convert the response object to JSON
 	jsonData, err := json.Marshal(response)
 	if err != nil {
-		fmt.Println("error from json.Marshal:", err)
+		//fmt.Println("error from json.Marshal:", err)
 		http.Error(w, "Failed to marshal response", http.StatusInternalServerError)
 		return
 	}
@@ -67,12 +67,12 @@ func CreateGroupHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)
 	w.Write(jsonData)
-	fmt.Println("Group added successfully")
+	//fmt.Println("Group added successfully")
 }
 
 // add user to group memberUsernames
 func AddUserToGroupHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("AddUserToGroupHandler")
+	//fmt.Println("AddUserToGroupHandler")
 	// Check if the request method is POST
 	if r.Method != http.MethodPost {
 		w.WriteHeader(http.StatusMethodNotAllowed)
@@ -96,7 +96,7 @@ func AddUserToGroupHandler(w http.ResponseWriter, r *http.Request) {
 
 	user, err := d.GetUserByID(userID)
 	if err != nil {
-		fmt.Println("error from getuserbyid:", err)
+		//fmt.Println("error from getuserbyid:", err)
 		http.Error(w, "Failed to get user", http.StatusInternalServerError)
 		return
 	}
@@ -104,21 +104,21 @@ func AddUserToGroupHandler(w http.ResponseWriter, r *http.Request) {
 	// find username in group adminInvitedUsernames and delete it
 	err = d.DeleteUserFromAdminInvite(groupID, username)
 	if err != nil {
-		fmt.Println("error from delete:", err)
+		//fmt.Println("error from delete:", err)
 		http.Error(w, "Failed to delete group", http.StatusInternalServerError)
 		return
 	}
 	// add username to group memberUsernames
 	err = d.AddUserToGroup(groupID, username)
 	if err != nil {
-		fmt.Println("error from addgroup:", err)
+		//fmt.Println("error from addgroup:", err)
 		http.Error(w, "Failed to add group", http.StatusInternalServerError)
 		return
 	}
 
 	group, err := d.GetGroupByID(groupID)
 	if err != nil {
-		fmt.Println("error getting group")
+		//fmt.Println("error getting group")
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
@@ -130,7 +130,7 @@ func AddUserToGroupHandler(w http.ResponseWriter, r *http.Request) {
 	// Convert the response object to JSON
 	jsonData, err := json.Marshal(response)
 	if err != nil {
-		fmt.Println("error from json.Marshal:", err)
+		//fmt.Println("error from json.Marshal:", err)
 		http.Error(w, "Failed to marshal response", http.StatusInternalServerError)
 		return
 	}
@@ -139,29 +139,29 @@ func AddUserToGroupHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)
 	w.Write(jsonData)
-	fmt.Println("user added to group successfully")
+	//fmt.Println("user added to group successfully")
 }
 
 // add users to group MemberInvitedUsernames
 func AddUsersToMemberInvited(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("AddUsersToMemberInvited")
+	//fmt.Println("AddUsersToMemberInvited")
 	authHeader := r.Header.Get("Authorization")
 	if authHeader == "" {
-		fmt.Println("error from authheader:")
+		//fmt.Println("error from authheader:")
 		http.Error(w, "Missing Authorization header", http.StatusUnauthorized)
 		return
 	}
 
 	userID, err := a.ExtractUserIDFromAuthHeader(authHeader)
 	if err != nil {
-		fmt.Println("error from extractuserid:", err)
+		//fmt.Println("error from extractuserid:", err)
 		http.Error(w, err.Error(), http.StatusUnauthorized)
 		return
 	}
 
 	user, err := d.GetUserByID(userID)
 	if err != nil {
-		fmt.Println("error from extractuserid:", err)
+		//fmt.Println("error from extractuserid:", err)
 		http.Error(w, err.Error(), http.StatusUnauthorized)
 		return
 	}
@@ -174,26 +174,26 @@ func AddUsersToMemberInvited(w http.ResponseWriter, r *http.Request) {
 	var response d.InvitesByMemberResponse
 	err = json.NewDecoder(r.Body).Decode(&response)
 	if err != nil {
-		fmt.Println("error from decode:", err)
+		//fmt.Println("error from decode:", err)
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
 		return
 	}
-	fmt.Println("response:", response)
+	//fmt.Println("response:", response)
 	// get invitedUsernames from response
 	invitedUsernames := response.InvitedUsernames
 	// Convert the response to JSON
-	fmt.Println("invitedUsernames:", invitedUsernames)
+	//fmt.Println("invitedUsernames:", invitedUsernames)
 	responseJSON, err := json.Marshal(response)
 	if err != nil {
-		fmt.Println("error from json.Marshal:", err)
+		//fmt.Println("error from json.Marshal:", err)
 		http.Error(w, "Failed to marshal response", http.StatusInternalServerError)
 		return
 	}
-	fmt.Println("responseJSON:", responseJSON)
+	//fmt.Println("responseJSON:", responseJSON)
 
 	err = d.AddUserToMemberInvite(groupID, memberUsername, invitedUsernames)
 	if err != nil {
-		fmt.Println("error from addgroup:", err)
+		//fmt.Println("error from addgroup:", err)
 		http.Error(w, "Failed to add group", http.StatusInternalServerError)
 		return
 	}
@@ -204,5 +204,5 @@ func AddUsersToMemberInvited(w http.ResponseWriter, r *http.Request) {
 
 	w.Write(responseJSON)
 
-	fmt.Println("users added to group successfully")
+	//fmt.Println("users added to group successfully")
 }

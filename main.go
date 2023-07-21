@@ -64,6 +64,9 @@ func Start() error {
 	router.HandleFunc("/updatebio", user.UpdateBioOfUser)
 	router.HandleFunc("/updateavatar", user.UpdateAvatarOfUser)
 
+	// add friend
+	router.HandleFunc("/sendfollowreq", user.SendFollowRequest)
+
 	//handle post
 	router.HandleFunc("/posts", p.GetPostsHandler)
 	router.HandleFunc("/createpost", p.AddPostHandler)
@@ -124,13 +127,13 @@ func closeServer() {
 func printcolor(text string, color string) {
 	switch color {
 	case "green":
-		fmt.Println("\033[32m" + text + "\033[0m")
+		//fmt.Println("\033[32m" + text + "\033[0m")
 	case "red":
-		fmt.Println("\033[31m" + text + "\033[0m")
+		//fmt.Println("\033[31m" + text + "\033[0m")
 	case "yellow":
-		fmt.Println("\033[33m" + text + "\033[0m")
+		//fmt.Println("\033[33m" + text + "\033[0m")
 	default:
-		fmt.Println(text)
+		//fmt.Println(text)
 	}
 }
 

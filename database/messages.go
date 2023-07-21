@@ -2,7 +2,7 @@ package database
 
 import (
 	"database/sql"
-	"fmt"
+	//"fmt"
 	u "socialnetwork/utils"
 	"time"
 
@@ -78,7 +78,7 @@ func AddMessage(message *MessageResponse) error {
 }
 
 func GetMessagesByUserID(userID string) ([]MessageResponse, error) {
-	//fmt.Println("userID in get messagesbyuserid", userID)
+	////fmt.Println("userID in get messagesbyuserid", userID)
 	db, err := sql.Open("sqlite3", "./socialnetwork.db")
 	if err != nil {
 		return nil, err
@@ -92,12 +92,12 @@ func GetMessagesByUserID(userID string) ([]MessageResponse, error) {
 		WHERE SenderUsername = ? OR ReceiverUsername = ?;`
 	user, err := GetUserByID(userID)
 	if err != nil {
-		fmt.Println("error getting user")
+		//fmt.Println("error getting user")
 		return nil, err
 	}
 	rows, err := db.Query(query, user.UserName, user.UserName)
 	if err != nil {
-		fmt.Println("error in get messages by user id", err)
+		//fmt.Println("error in get messages by user id", err)
 		return nil, err
 	}
 	defer rows.Close()

@@ -3,7 +3,7 @@ package database
 import (
 	"database/sql"
 	"encoding/json"
-	"fmt"
+	//"fmt"
 	u "socialnetwork/utils"
 	"time"
 
@@ -85,12 +85,12 @@ func AddGroupEvent(groupEvent *GroupEventResponse) error {
 		return err
 	}
 
-	fmt.Println("Added group event to database.")
+	//fmt.Println("Added group event to database.")
 	return nil
 }
 
 func GetGroupEvent(groupID string) ([]GroupEvent, error) {
-	fmt.Println("groupID:", groupID)
+	//fmt.Println("groupID:", groupID)
 	db, err := sql.Open("sqlite3", "./socialnetwork.db")
 	if err != nil {
 		return nil, err

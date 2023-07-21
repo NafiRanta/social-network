@@ -2,7 +2,7 @@ package database
 
 import (
 	"database/sql"
-	"fmt"
+	//"fmt"
 	u "socialnetwork/utils"
 	"time"
 
@@ -60,7 +60,7 @@ func AddGroupComment(groupComment *GroupCommentResponse) error {
 
 	_, err = db.Exec(query, groupComment.GroupCommentID, groupComment.GroupID, groupComment.UserName, groupComment.Comment, groupComment.CreateAt)
 	if err != nil {
-		fmt.Println("error from addGroupComment:", err)
+		//fmt.Println("error from addGroupComment:", err)
 		return err
 	}
 

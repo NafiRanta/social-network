@@ -2,31 +2,31 @@ package groups
 
 import (
 	"encoding/json"
-	"fmt"
+	//"fmt"
 	"net/http"
 	a "socialnetwork/authentication"
 	d "socialnetwork/database"
 )
 
 func GetGroupsHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("getUserGroupsHandler")
+	//fmt.Println("getUserGroupsHandler")
 	authHeader := r.Header.Get("Authorization")
 	if authHeader == "" {
-		fmt.Println("error from authheader:")
+		//fmt.Println("error from authheader:")
 		http.Error(w, "Missing Authorization header", http.StatusUnauthorized)
 		return
 	}
 
 	userID, err := a.ExtractUserIDFromAuthHeader(authHeader)
 	if err != nil {
-		fmt.Println("error from extractuserid:", err)
+		//fmt.Println("error from extractuserid:", err)
 		http.Error(w, err.Error(), http.StatusUnauthorized)
 		return
 	}
 
 	user, err := d.GetUserByID(userID)
 	if err != nil {
-		fmt.Println("error from extractuserid:", err)
+		//fmt.Println("error from extractuserid:", err)
 		http.Error(w, err.Error(), http.StatusUnauthorized)
 		return
 	}
@@ -35,7 +35,7 @@ func GetGroupsHandler(w http.ResponseWriter, r *http.Request) {
 	// get groups by username
 	userAdminGroups, err := d.GetGroupsByAdminUsername(username)
 	if err != nil {
-		fmt.Println("error getting groups useradmin")
+		//fmt.Println("error getting groups useradmin")
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
@@ -43,7 +43,7 @@ func GetGroupsHandler(w http.ResponseWriter, r *http.Request) {
 	// get groups user is a member of
 	userMemberGroups, err := d.GetGroupsByMembersUsername(username)
 	if err != nil {
-		fmt.Println("error getting groups userinvited")
+		//fmt.Println("error getting groups userinvited")
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
@@ -51,7 +51,7 @@ func GetGroupsHandler(w http.ResponseWriter, r *http.Request) {
 	// get all groups
 	allGroups, err := d.GetAllGroups()
 	if err != nil {
-		fmt.Println("error getting all groups")
+		//fmt.Println("error getting all groups")
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
@@ -77,7 +77,7 @@ func GetGroupsHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetSingleGroupHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("getSingleGroupHandler")
+	//fmt.Println("getSingleGroupHandler")
 
 	groupID := r.URL.Query().Get("groupID")
 	if groupID == "" {
@@ -87,7 +87,7 @@ func GetSingleGroupHandler(w http.ResponseWriter, r *http.Request) {
 
 	group, err := d.GetGroupByID(groupID)
 	if err != nil {
-		fmt.Println("error getting group")
+		//fmt.Println("error getting group")
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
@@ -110,24 +110,24 @@ func GetSingleGroupHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetAdminGroupInvitesHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("getAdminGroupInvitesHandler")
+	//fmt.Println("getAdminGroupInvitesHandler")
 	authHeader := r.Header.Get("Authorization")
 	if authHeader == "" {
-		fmt.Println("error from authheader:")
+		//fmt.Println("error from authheader:")
 		http.Error(w, "Missing Authorization header", http.StatusUnauthorized)
 		return
 	}
 
 	userID, err := a.ExtractUserIDFromAuthHeader(authHeader)
 	if err != nil {
-		fmt.Println("error from extractuserid:", err)
+		//fmt.Println("error from extractuserid:", err)
 		http.Error(w, err.Error(), http.StatusUnauthorized)
 		return
 	}
 
 	user, err := d.GetUserByID(userID)
 	if err != nil {
-		fmt.Println("error from extractuserid:", err)
+		//fmt.Println("error from extractuserid:", err)
 		http.Error(w, err.Error(), http.StatusUnauthorized)
 		return
 	}
@@ -137,7 +137,7 @@ func GetAdminGroupInvitesHandler(w http.ResponseWriter, r *http.Request) {
 	// get all groups where username is included in adminInvitedUsernames
 	groups, err := d.GetGroupsByAdminInvitedUsername(username)
 	if err != nil {
-		fmt.Println("error getting groups")
+		//fmt.Println("error getting groups")
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}

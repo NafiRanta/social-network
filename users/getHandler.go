@@ -99,8 +99,9 @@ func GetUserByUsernameHandler(w http.ResponseWriter, r *http.Request) {
 		Avatar:         user.Avatar,
 		Nickname:       user.Nickname,
 		AboutMe:        user.AboutMe,
-		FollowerIDs:    user.FollowerIDs,
-		OnFollowingIDs: user.OnFollowingIDs,
+		FollowerUsernames:    user.FollowerUsernames,
+		FollowerUsernamesSent: user.FollowerUsernamesSent,
+		FollowerUsernamesReceived: user.FollowerUsernamesReceived,
 	}
 	userJSON, err := json.Marshal(userResponse)
 	if err != nil {

@@ -31,8 +31,9 @@ type UserResponse struct {
 	Avatar         string `json:"Avatar"`
 	Nickname       string `json:"Nickname"`
 	AboutMe        string `json:"AboutMe"`
-	FollowerIDs    string `json:"FollowerIDs"`
-	OnFollowingIDs string `json:"OnFollowingIDs"`
+	FollowerUsernames    string `json:"FollowerUsernames"`
+	FollowerUsernamesSent string `json:"FollowerUsernamesSent"`
+	FollowerUsernamesReceived string `json:"FollowerUsernamesReceived"`
 }
 
 type UserProfile struct {
@@ -46,7 +47,6 @@ type UserProfile struct {
 //user repsonse after login should not have password, the followers should have name, email, pic
 
 func LogIn(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("Login")
 	if r.Method != "POST" {
 		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
 		return
@@ -118,8 +118,9 @@ func LogIn(w http.ResponseWriter, r *http.Request) {
 				Avatar:         user.Avatar,
 				Nickname:       user.Nickname,
 				AboutMe:        user.AboutMe,
-				FollowerIDs:    user.FollowerIDs,
-				OnFollowingIDs: user.OnFollowingIDs,
+				FollowerUsernames:    user.FollowerUsernames,
+				FollowerUsernamesSent: user.FollowerUsernamesSent,
+				FollowerUsernamesReceived: user.FollowerUsernamesReceived,
 			}
 			userJSON, err := json.Marshal(userResponse)
 			if err != nil {
@@ -141,11 +142,11 @@ func LogIn(w http.ResponseWriter, r *http.Request) {
 }
 
 func LogOut(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("logout")
+	//fmt.Println("logout")
 }
 
 func Register(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("Register")
+
 	var user d.User
 
 	if r.Method != "POST" {
@@ -158,8 +159,8 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	fmt.Println("Request Body:", r.Body)
-	fmt.Println(&user) */
+	//fmt.Println("Request Body:", r.Body)
+	//fmt.Println(&user) */
 
 	// Read the request body
 	body, err := ioutil.ReadAll(r.Body)
@@ -178,20 +179,16 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	fmt.Println("Request Body:", string(body))
-	fmt.Println(&user)
 
 	// Check if email already exists in the database
 	_, err = d.GetUserByEmail(user.Email)
 	if err == nil {
 		errMsg := "You already have an account"
-		fmt.Println("User already exists:", errMsg)
 		http.Error(w, errMsg, http.StatusConflict)
 		return
 	} else {
 		// Insert user in the database
 		if err == sql.ErrNoRows {
-			fmt.Println("User does not exist")
 			if user.Avatar == "" {
 				user.Avatar = "data:image/jpeg;base64," + base64.StdEncoding.EncodeToString(SetDefaultImg("defaultImg/default-avatar.jpeg"))
 				//fmt.Println(user.Avatar)
@@ -215,7 +212,8 @@ func Register(w http.ResponseWriter, r *http.Request) {
 	// Set the hashed password in the user struct
 	user.Password = hashedPassword */
 	w.WriteHeader(http.StatusOK)
-	fmt.Println("User added successfully")
+	w.Write([]byte("Register successfully"))
+
 
 }
 

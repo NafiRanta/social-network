@@ -160,7 +160,7 @@ func SendLoggedinUsers(event Event, c *Client) error {
 	for _, user := range m.loggedinUsers {
 		users = append(users, user)
 	}
-	fmt.Println("users", users)
+	//fmt.Println("users", users)
 	acknowledgementevent.LoggedInUsers = users
 	data, err := json.Marshal(acknowledgementevent)
 	if err != nil {
@@ -178,25 +178,25 @@ func SendLoggedinUsers(event Event, c *Client) error {
 
 // serveWS will updgrade to the websocket connection
 func (m *Manager) ServeWS(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("new websocket connection")
+	//fmt.Println("new websocket connection")
 	_ = m.otps.NewOTP()
 	otp := r.URL.Query().Get("otp")
 	// json stringify otp
-	fmt.Println("userId", otp)
+	//fmt.Println("userId", otp)
 	// get username from database according to otp witch is equal to userId
 	user, err := d.GetUserByID(otp)
 	if err != nil {
-		fmt.Println("error getting user", err)
+		//fmt.Println("error getting user", err)
 	}
 	// add user to loggedinUsers
-	fmt.Println("user.UserName", user.UserName)
+	//fmt.Println("user.UserName", user.UserName)
 	m.addLoggedInUser(user.UserName, otp)
 	if otp == "" {
-		fmt.Println("no otp")
+		//fmt.Println("no otp")
 		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}
-	fmt.Println("new connection")
+	//fmt.Println("new connection")
 
 	// upgrade regular http connection to a websocket connection
 	conn, err := websocketUpgrader.Upgrade(w, r, nil)
@@ -324,7 +324,7 @@ func (m *Manager) routeEvent(event Event, c *Client) error {
 	// check if the event type is in the map
 	if handler, ok := m.handlers[event.Type]; ok {
 		if err := handler(event, c); err != nil {
-			fmt.Println("error handler", err)
+			//fmt.Println("error handler", err)
 			return err
 		}
 		return nil

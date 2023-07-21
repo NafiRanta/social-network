@@ -2,7 +2,7 @@ package database
 
 import (
 	"database/sql"
-	"fmt"
+	//"fmt"
 	u "socialnetwork/utils"
 	"time"
 
@@ -106,10 +106,10 @@ func GetCommentsByPostID(postID string) ([]CommentResponse, error) {
 		}
 
 		// Fetch the user information based on the UserName
-		fmt.Println("comment", comment)
+		//fmt.Println("comment", comment)
 		author, err := GetUserByUsername(comment.UserName)
 		if err != nil {
-			fmt.Println("Error fetching user information for comment author.")
+			//fmt.Println("Error fetching user information for comment author.")
 			return nil, err
 		}
 

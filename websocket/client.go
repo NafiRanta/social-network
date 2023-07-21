@@ -4,7 +4,7 @@ package websocket
 // whenever we have a client connecting to the server, we will create a new client object
 import (
 	"encoding/json"
-	"fmt"
+	//"fmt"
 	"log"
 	"time"
 
@@ -82,7 +82,7 @@ func (c *Client) readMessages() {
 			}
 			break
 		}
-		fmt.Println("payload", string(payload))
+		//fmt.Println("payload", string(payload))
 
 		var request Event
 		if err := json.Unmarshal(payload, &request); err != nil {
@@ -122,10 +122,10 @@ func (c *Client) writeMessages() {
 			if err := c.connection.WriteMessage(websocket.TextMessage, data); err != nil {
 				log.Printf("failed to send message: %v", err)
 			}
-			fmt.Println("message sent", string(message.Payload))
+			//fmt.Println("message sent", string(message.Payload))
 
 		case <-ticker.C:
-			fmt.Println("ping")
+			//fmt.Println("ping")
 			// send a ping to the client
 			if err := c.connection.WriteMessage(websocket.PingMessage, []byte(``)); err != nil {
 				log.Println("writemsg error", err)
@@ -137,6 +137,6 @@ func (c *Client) writeMessages() {
 
 // Handles the pong message from the client
 func (c *Client) pongHandler(string) error {
-	fmt.Println("pong")
+	//fmt.Println("pong")
 	return c.connection.SetReadDeadline(time.Now().Add(pongWait))
 }

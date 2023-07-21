@@ -2,14 +2,14 @@ package posts
 
 import (
 	"encoding/json"
-	"fmt"
+	//"fmt"
 	"net/http"
 	a "socialnetwork/authentication"
 	d "socialnetwork/database"
 )
 
 func GetPostsHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("GetPostsHandler")
+	//fmt.Println("GetPostsHandler")
 	authHeader := r.Header.Get("Authorization")
 	if authHeader == "" {
 		http.Error(w, "Missing Authorization header", http.StatusUnauthorized)
@@ -17,7 +17,7 @@ func GetPostsHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	userID, err := a.ExtractUserIDFromAuthHeader(authHeader)
 	if err != nil {
-		fmt.Println("error from extractuserid:", err)
+		//fmt.Println("error from extractuserid:", err)
 		http.Error(w, err.Error(), http.StatusUnauthorized)
 		return
 	}

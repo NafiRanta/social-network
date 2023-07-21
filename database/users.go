@@ -3,7 +3,7 @@ package database
 //TODO: update the user table to include a profile picture and a cover photo => fit with requirements
 import (
 	"database/sql"
-	"fmt"
+	//"fmt"
 	u "socialnetwork/utils"
 
 	"github.com/gofrs/uuid"
@@ -23,11 +23,13 @@ type User struct {
 	Avatar         string
 	Nickname       string
 	AboutMe        string
-	FollowerIDs    string
-	OnFollowingIDs string
+	FollowerUsernames string
+	FollowerUsernamesReceived string
+	FollowerUsernamesSent string
 }
 
 // create users table
+//16 column
 func CreateUsersTable(db *sql.DB) {
 	usersTable := `CREATE TABLE IF NOT EXISTS Users (
 		UserID CHAR(36) NOT NULL PRIMARY KEY,
@@ -43,9 +45,13 @@ func CreateUsersTable(db *sql.DB) {
 		Avatar BLOB,
 		Nickname TEXT,
 		AboutMe TEXT,
-		Follower_IDs TEXT,
-		OnFollowing_IDs TEXT
+		FollowerUsernames TEXT,
+		FollowerUsernamesReceived TEXT,
+		FollowerUsernamesSent TEXT
+		
 	);`
+	//FollowerIDsReceived TEXT, -- Column containing the string of user IDs that sent follow requests to you
+	//FollowerIDsSent TEXT, -- Column containing the string of user IDs that you sent follow requests to
 	query, err := db.Prepare(usersTable)
 	u.CheckErr(err)
 	query.Exec()
@@ -53,8 +59,8 @@ func CreateUsersTable(db *sql.DB) {
 
 // add users to users table
 func AddUser(db *sql.DB, FirstName string, LastName string, UserName string, Email string, Password string, Dob string, Gender string, NickName string, Avatar string, About string) error {
-	records := `INSERT INTO Users (UserID, FirstName, LastName, UserName, Email, Password, Privacy, Online, DateOfBirth, Gender, Avatar, Nickname, AboutMe, Follower_IDs, OnFollowing_IDs)
-	            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+	records := `INSERT INTO Users (UserID, FirstName, LastName, UserName, Email, Password, Privacy, Online, DateOfBirth, Gender, Avatar, Nickname, AboutMe, FollowerUsernames, FollowerUsernamesReceived, FollowerUsernamesSent)
+	            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)`
 	query, err := db.Prepare(records)
 	if err != nil {
 		return err
@@ -63,7 +69,7 @@ func AddUser(db *sql.DB, FirstName string, LastName string, UserName string, Ema
 	// Generate a unique UserID using UUID
 	userID, _ := uuid.NewV4()
 
-	_, err = query.Exec(userID, FirstName, LastName, UserName, Email, Password, "public", 0, Dob, Gender, Avatar, NickName, About, "", "")
+	_, err = query.Exec(userID, FirstName, LastName, UserName, Email, Password, "public", 0, Dob, Gender, Avatar, NickName, About, "", "", "")
 	if err != nil {
 		return err
 	}
@@ -71,7 +77,7 @@ func AddUser(db *sql.DB, FirstName string, LastName string, UserName string, Ema
 }
 
 func GetUserByEmail(email string) (*User, error) {
-	fmt.Println("GetUserByEmail")
+	//fmt.Println("GetUserByEmail")
 	db, err := sql.Open("sqlite3", "./socialnetwork.db")
 	if err != nil {
 		return nil, err
@@ -80,19 +86,36 @@ func GetUserByEmail(email string) (*User, error) {
 
 	stmt, err := db.Prepare("SELECT * FROM Users WHERE email = ?")
 	if err != nil {
-		fmt.Println("err from stmt: ", err)
+		//fmt.Println("err from stmt: ", err)
 		return nil, err
 	}
 	defer stmt.Close()
 
 	var user User
-	err = stmt.QueryRow(email).Scan(&user.UserID, &user.FirstName, &user.LastName, &user.UserName, &user.Email, &user.Password, &user.Privacy, &user.Online, &user.DateOfBirth, &user.Gender, &user.Avatar, &user.Nickname, &user.AboutMe, &user.FollowerIDs, &user.OnFollowingIDs)
+	err = stmt.QueryRow(email).Scan(
+		&user.UserID, 
+		&user.FirstName, 
+		&user.LastName, 
+		&user.UserName, 
+		&user.Email, 
+		&user.Password, 
+		&user.Privacy, 
+		&user.Online, 
+		&user.DateOfBirth, 
+		&user.Gender, 
+		&user.Avatar, 
+		&user.Nickname, 
+		&user.AboutMe, 
+		&user.FollowerUsernames, 
+		&user.FollowerUsernamesReceived, 
+		&user.FollowerUsernamesSent,
+	)
 	if err != nil {
 		if err == sql.ErrNoRows {
-			fmt.Println("user not found")
+			//fmt.Println("user not found")
 			return &user, err // user not found
 		} else {
-			fmt.Println("sth else error:", err)
+			//fmt.Println("sth else error:", err)
 			return nil, err
 		}
 	}
@@ -108,19 +131,36 @@ func GetUserByUsername(username string) (*User, error) {
 
 	stmt, err := db.Prepare("SELECT * FROM Users WHERE UserName = ?")
 	if err != nil {
-		fmt.Println("err from stmt: ", err)
+		//fmt.Println("err from stmt: ", err)
 		return nil, err
 	}
 	defer stmt.Close()
 
 	var user User
-	err = stmt.QueryRow(username).Scan(&user.UserID, &user.FirstName, &user.LastName, &user.UserName, &user.Email, &user.Password, &user.Privacy, &user.Online, &user.DateOfBirth, &user.Gender, &user.Avatar, &user.Nickname, &user.AboutMe, &user.FollowerIDs, &user.OnFollowingIDs)
+	err = stmt.QueryRow(username).Scan(
+		&user.UserID, 
+		&user.FirstName, 
+		&user.LastName, 
+		&user.UserName, 
+		&user.Email, 
+		&user.Password, 
+		&user.Privacy, 
+		&user.Online, 
+		&user.DateOfBirth, 
+		&user.Gender, 
+		&user.Avatar, 
+		&user.Nickname, 
+		&user.AboutMe, 
+		&user.FollowerUsernames, 
+		&user.FollowerUsernamesReceived, 
+		&user.FollowerUsernamesSent,
+	)
 	if err != nil {
 		if err == sql.ErrNoRows {
-			fmt.Println("user not found")
+			//fmt.Println("user not found")
 			return &user, err // user not found
 		} else {
-			fmt.Println("sth else error:", err)
+			//fmt.Println("sth else error:", err)
 			return nil, err
 		}
 	}
@@ -137,20 +177,37 @@ func GetUserByID(userID string) (*User, error) {
 
 	stmt, err := db.Prepare("SELECT * FROM Users WHERE UserID = ?")
 	if err != nil {
-		fmt.Println("error from stmt:", err)
+		//fmt.Println("error from stmt:", err)
 		return nil, err
 	}
 	defer stmt.Close()
 
 	var user User
 
-	err = stmt.QueryRow(userID).Scan(&user.UserID, &user.FirstName, &user.LastName, &user.UserName, &user.Email, &user.Password, &user.Privacy, &user.Online, &user.DateOfBirth, &user.Gender, &user.Avatar, &user.Nickname, &user.AboutMe, &user.FollowerIDs, &user.OnFollowingIDs)
+	err = stmt.QueryRow(userID).Scan(
+		&user.UserID, 
+		&user.FirstName, 
+		&user.LastName, 
+		&user.UserName, 
+		&user.Email, 
+		&user.Password, 
+		&user.Privacy, 
+		&user.Online, 
+		&user.DateOfBirth, 
+		&user.Gender, 
+		&user.Avatar, 
+		&user.Nickname, 
+		&user.AboutMe, 
+		&user.FollowerUsernames, 
+		&user.FollowerUsernamesReceived, 
+		&user.FollowerUsernamesSent,
+	)
 	if err != nil {
 		if err == sql.ErrNoRows {
-			fmt.Println("user not found")
+			//fmt.Println("user not found")
 			return nil, nil // User not found
 		} else {
-			fmt.Println("something else error:", err)
+			//fmt.Println("something else error:", err)
 			return nil, err
 		}
 	}
@@ -179,21 +236,22 @@ func GetAllPublicUsers() ([]*User, error) {
 	for rows.Next() {
 		user := &User{}
 		err := rows.Scan(
-			&user.UserID,
-			&user.FirstName,
-			&user.LastName,
-			&user.UserName,
-			&user.Email,
-			&user.Password,
-			&user.Privacy,
-			&user.Online,
-			&user.DateOfBirth,
-			&user.Gender,
-			&user.Avatar,
-			&user.Nickname,
-			&user.AboutMe,
-			&user.FollowerIDs,
-			&user.OnFollowingIDs,
+			&user.UserID, 
+			&user.FirstName, 
+			&user.LastName, 
+			&user.UserName, 
+			&user.Email, 
+			&user.Password, 
+			&user.Privacy, 
+			&user.Online, 
+			&user.DateOfBirth, 
+			&user.Gender, 
+			&user.Avatar, 
+			&user.Nickname, 
+			&user.AboutMe, 
+			&user.FollowerUsernames, 
+			&user.FollowerUsernamesReceived, 
+			&user.FollowerUsernamesSent,
 		)
 		if err != nil {
 			return nil, err
@@ -230,21 +288,22 @@ func GetAllPrivateUsers() ([]*User, error) {
 	for rows.Next() {
 		user := &User{}
 		err := rows.Scan(
-			&user.UserID,
-			&user.FirstName,
-			&user.LastName,
-			&user.UserName,
-			&user.Email,
-			&user.Password,
-			&user.Privacy,
-			&user.Online,
-			&user.DateOfBirth,
-			&user.Gender,
-			&user.Avatar,
-			&user.Nickname,
-			&user.AboutMe,
-			&user.FollowerIDs,
-			&user.OnFollowingIDs,
+			&user.UserID, 
+			&user.FirstName, 
+			&user.LastName, 
+			&user.UserName, 
+			&user.Email, 
+			&user.Password, 
+			&user.Privacy, 
+			&user.Online, 
+			&user.DateOfBirth, 
+			&user.Gender, 
+			&user.Avatar, 
+			&user.Nickname, 
+			&user.AboutMe, 
+			&user.FollowerUsernames, 
+			&user.FollowerUsernamesReceived, 
+			&user.FollowerUsernamesSent,
 		)
 		if err != nil {
 			return nil, err
@@ -290,14 +349,14 @@ func UpdateUserInfo(user *User) error {
 
 	stmt, err := db.Prepare("UPDATE Users SET DateOfBirth = ?, Gender = ?, Nickname = ?, AboutMe = ? WHERE userID = ?")
 	if err != nil {
-		fmt.Println("error from stmt:", err)
+		//fmt.Println("error from stmt:", err)
 		return err
 	}
 	defer stmt.Close()
 
 	_, err = stmt.Exec(user.DateOfBirth, user.Gender, user.Nickname, user.AboutMe, user.UserID)
 	if err != nil {
-		fmt.Println("error from exec:", err)
+		//fmt.Println("error from exec:", err)
 		return err
 	}
 
@@ -313,14 +372,87 @@ func UpdateUserAvatar(user *User) error {
 
 	stmt, err := db.Prepare("UPDATE Users SET Avatar = ? WHERE userID = ?")
 	if err != nil {
-		fmt.Println("error from stmt:", err)
+		//fmt.Println("error from stmt:", err)
 		return err
 	}
 	defer stmt.Close()
 
 	_, err = stmt.Exec(user.Avatar, user.UserID)
 	if err != nil {
-		fmt.Println("error from exec:", err)
+		//fmt.Println("error from exec:", err)
+		return err
+	}
+
+	return nil
+}
+
+func AddFollower(userA *User, userB *User) error {
+	db, err := sql.Open("sqlite3", "./socialnetwork.db")
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+	
+	if userA.FollowerUsernames == "" {
+		userA.FollowerUsernames = userB.UserName
+	} else {
+		userA.FollowerUsernames = userA.FollowerUsernames + "," + userB.UserName
+	}
+
+	stmt, err := db.Prepare("UPDATE Users SET FollowerUsernames = ? WHERE UserID = ?")
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
+
+	_, err = stmt.Exec(userA.FollowerUsernames, userA.UserID)
+	if err != nil {
+		return err
+	}
+
+	return nil
+
+}
+
+func SentFollowerRequest(sender *User, receiver *User) error {
+	db, err := sql.Open("sqlite3", "./socialnetwork.db")
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+	// Add receiver's username to sender's FollowerUsernamesSent
+	if sender.FollowerUsernamesSent == "" {
+		sender.FollowerUsernamesSent = receiver.UserName
+	} else {
+		sender.FollowerUsernamesSent = sender.FollowerUsernamesSent + "," + receiver.UserName
+	}
+
+	// Add sender's username to receiver's FollowerUsernamesReceived
+	if receiver.FollowerUsernamesReceived == "" {
+		receiver.FollowerUsernamesReceived = sender.UserName
+	} else {
+		receiver.FollowerUsernamesReceived = receiver.FollowerUsernamesReceived + "," + sender.UserName
+	}
+	// Prepare and execute the update queries
+	stmtSender, err := db.Prepare("UPDATE Users SET FollowerUsernamesSent = ? WHERE UserID = ?")
+	if err != nil {
+		return err
+	}
+	defer stmtSender.Close()
+
+	stmtReceiver, err := db.Prepare("UPDATE Users SET FollowerUsernamesReceived = ? WHERE UserID = ?")
+	if err != nil {
+		return err
+	}
+	defer stmtReceiver.Close()
+
+	_, err = stmtSender.Exec(sender.FollowerUsernamesSent, sender.UserID)
+	if err != nil {
+		return err
+	}
+
+	_, err = stmtReceiver.Exec(receiver.FollowerUsernamesReceived, receiver.UserID)
+	if err != nil {
 		return err
 	}
 

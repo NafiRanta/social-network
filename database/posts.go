@@ -3,7 +3,7 @@ package database
 import (
 	"database/sql"
 	"encoding/json"
-	"fmt"
+	//"fmt"
 	u "socialnetwork/utils"
 	"sort"
 	"time"
@@ -211,7 +211,7 @@ func GetCustomPosts(userID string) ([]Post, error) {
 	defer rows.Close()
 	var posts []Post
 	for rows.Next() {
-		fmt.Println("this is inside rows")
+		//fmt.Println("this is inside rows")
 		var post Post
 		err := rows.Scan(
 			&post.PostID,
@@ -228,23 +228,23 @@ func GetCustomPosts(userID string) ([]Post, error) {
 		var includedFriends []string
 		test := json.Unmarshal([]byte(post.IncludedFriends), &includedFriends)
 		if test != nil {
-			fmt.Println("Error:", err)
+			//fmt.Println("Error:", err)
 		}
-		fmt.Println(includedFriends)
+		//fmt.Println(includedFriends)
 		sort.Strings(includedFriends)
 
 		index := sort.SearchStrings(includedFriends, userEmail)
 
 		if index < len(includedFriends) && includedFriends[index] == userEmail {
-			fmt.Println("Found")
+			//fmt.Println("Found")
 			posts = append(posts, post)
 		} else {
-			fmt.Println("Not found")
+			//fmt.Println("Not found")
 			continue
 		}
 
 	}
-	// fmt.Println("posts: ", posts)
+	// //fmt.Println("posts: ", posts)
 	if err := rows.Err(); err != nil {
 		return nil, err
 	}
