@@ -39,7 +39,7 @@ function CreateGroupPostModal(props) {
 
     if (url === "http://localhost:3000/groups") {
       groupPostData = {
-        username: userInfo.username,
+        username: userInfo.UserName,
         groupID: postGroupIDSelect,
         content: formattedContent,
         image: selectedImage,
@@ -48,7 +48,7 @@ function CreateGroupPostModal(props) {
       targetGroupID = postGroupIDSelect;
     } else {
       groupPostData = {
-        username: userInfo.username,
+        username: userInfo.UserName,
         groupID: props.groupID,
         content: formattedContent,
         image: selectedImage,

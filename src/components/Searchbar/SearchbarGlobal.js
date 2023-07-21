@@ -43,19 +43,19 @@ function SearchbarGlobal(props) {
       return null; 
     }
     // return all users except the current user in alphabetical order
-    let filteredData = allusers.filter((user) => user.username !== userInfo.username);
-    filteredData.sort((a, b) => (a.firstname > b.firstname) ? 1 : -1);
+    let filteredData = allusers.filter((user) => user.UserName !== userInfo.UserName);
+    filteredData.sort((a, b) => (a.FirstName > b.FirstName) ? 1 : -1);
     return filteredData.map(user => {
-      const username = user.firstname + " " + user.lastname;
+      const username = user.FirstName + " " + user.LastName;
       return (
         <div 
-          key={user.username} 
+          key={user.UserName} 
           className="alert fade show p-1 m-0 d-flex align-items-center justify-content-between" 
           role="alert" 
           onClick={(e) => handleButtonClick(e, user.email, username)}
         >
           <div className="d-flex align-items-center">
-            <p className="m-0">{user.firstname + " " + user.lastname}</p>
+            <p className="m-0">{user.FirstName + " " + user.LastName}</p>
           </div>
             <BsSearch />
         </div>  

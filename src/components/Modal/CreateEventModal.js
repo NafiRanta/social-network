@@ -11,16 +11,17 @@ function CreateEventModal(props) {
   const [eventDate, setEventDate] = useState('');
   const [eventTime, setEventTime] = useState('');
   const names = myFriends.map((friend) => friend.displayname);
+  console.log("myFriends: ", myFriends);
 
   useEffect(() => {
     const allusers = props.allusers;
-    const filteredData = allusers.filter((user) => user.username !== userInfo.username);
+    const filteredData = allusers.filter((user) => user.UserName !== userInfo.UserName);
     const updatedFriends = filteredData.map((friend) => ({
-      username: friend.username,
-      displayname: friend.firstname + " " + friend.lastname,
+      username: friend.UserName,
+      displayname: friend.FirstName + " " + friend.LastName,
     }));
     setMyFriends(updatedFriends);
-  }, [props.allusers, userInfo.username]);
+  }, [props.allusers, userInfo.UserName]);
 
   const handleNameChange = (event) => {
     // get username of the selected name
@@ -66,7 +67,7 @@ const handleEventSubmit = async (event) => {
 
     const eventData = {
       groupID: props.groupID,
-      userName: userInfo.username,
+      userName: userInfo.UserName,
       eventName: eventName,
       eventDescription: eventDescription,
       eventDate: eventDate,

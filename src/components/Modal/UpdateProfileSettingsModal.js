@@ -295,7 +295,7 @@ const handleRemoveAbout = () => {
                             {!isNicknameEditMode && (
                               <i className="fas fa-pen" onClick={handleNicknameEditToggle}></i>
                             )}
-                             {(!isNicknameEditMode && nicknameLabel !== "Add a nickname" && nicknameLabel.innerHTML !== userInfo.nickname) && (
+                             {(!isNicknameEditMode && nicknameLabel !== "Add a nickname" && nicknameLabel.innerHTML !== userInfo.Nickname) && (
                               <i className="fas fa-times" onClick={handleRemoveNickname}></i>
                             )}
                           </div>

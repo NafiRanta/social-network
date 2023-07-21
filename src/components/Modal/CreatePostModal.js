@@ -59,14 +59,14 @@ function CreatePostModal(props) {
 
     // Create an object with the required properties
     const postData = {
-      username: userInfo.username,
+      username: userInfo.UserName,
       privacy: postPrivacy,
       IncludedFriends: [],
       content: formattedContent,
       image: selectedImage,
       createAt: now,
     };
-    console.log(postData);
+    console.log("postData: ", postData);
 
     const headers = new Headers();
     headers.append("Authorization", "Bearer " + token);

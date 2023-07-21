@@ -32,14 +32,14 @@ function SingleGroup(props) {
 
     // check if user is a member of the group 
     const groupmembers = JSON.parse(group?.[0]?.MemberUsernames ?? "[]");
-    const isUserGroupMember = Array.isArray(groupmembers) && groupmembers.includes(userInfo.username);
+    const isUserGroupMember = Array.isArray(groupmembers) && groupmembers.includes(userInfo.UserName);
    
     // check if user is the admin of the group
-    const isUserGroupAdmin = group.length > 0 && group[0].Admin === userInfo.username;
+    const isUserGroupAdmin = group.length > 0 && group[0].Admin === userInfo.UserName;
 
     // check if user is invited by admin
     const adminInvitedUsers = JSON.parse(group?.[0]?.AdminInvitedUsernames ?? "[]");
-    const isInvitedByAdmin = Array.isArray(adminInvitedUsers) && adminInvitedUsers.includes(userInfo.username);
+    const isInvitedByAdmin = Array.isArray(adminInvitedUsers) && adminInvitedUsers.includes(userInfo.UserName);
 
     useEffect(() => {
         const group = allgroups.filter((group) => group.GroupID === groupID);

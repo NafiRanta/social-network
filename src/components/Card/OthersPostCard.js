@@ -85,7 +85,7 @@ function OthersPostCard(props) {
         <div key={`${post.Privacy + post.PostID}`} className="bg-white p-4 rounded shadow mt-3">
           <div className="d-flex justify-content-between">
             <div className="d-flex">
-              <img src={userInfo.avatar} alt="avatar" className="rounded-circle me-2"/>
+              <img src={userInfo.Avatar} alt="avatar" className="rounded-circle me-2"/>
               <div>
                 <p className="m-0 fw-bold">{props.username}</p>
                 <span className="text-muted fs-7">{formattedDate}</span>

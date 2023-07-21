@@ -99,7 +99,7 @@ function MyProfile(props) {
                           <h2 className="mb-0 mr-2">
                             <strong>{props.userDisplayname}</strong>
                           </h2>
-                          {userInfo.nickname && (
+                          {userInfo.Nickname && (
                             <span className="nickname-text">
                               <small className="text-muted">
                                 {userInfo.Nickname}

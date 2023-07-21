@@ -153,7 +153,7 @@ function PostCard(props) {
           <div className="d-flex justify-content-between">
             <div className="d-flex">
               <img
-                src={userInfo.avatar}
+                src={userInfo.Avatar}
                 alt="avatar"
                 className="rounded-circle me-2"
               />
@@ -203,7 +203,7 @@ function PostCard(props) {
   );
 
   const userPosts = sortedPosts.filter(
-    (post) => post.UserName === userInfo.username
+    (post) => post.UserName === userInfo.UserName
   );
 
   return <>{displayAllPosts()}</>;

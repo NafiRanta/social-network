@@ -13,13 +13,13 @@ function GroupInviteModal(props) {
   useEffect(() => {
     const allusers = props.allusers;
     console.log("allusers", allusers)
-    const filteredData = allusers.filter((user) => user.username !== userInfo.username);
+    const filteredData = allusers.filter((user) => user.UserName !== userInfo.UserName);
     const updatedFriends = filteredData.map((friend) => ({
-      username: friend.username,
-      displayname: friend.firstname + " " + friend.lastname,
+      username: friend.UserName,
+      displayname: friend.FirstName + " " + friend.LastName,
     }));
     setMyFriends(updatedFriends);
-  }, [props.allusers, userInfo.username]);
+  }, [props.allusers, userInfo.UserName]);
   
   const handleNameChange = (event) => {
     // get username of the selected name

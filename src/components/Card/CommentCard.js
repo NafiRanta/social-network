@@ -61,7 +61,7 @@ function CommentCard(props) {
     const commentData = {
       content: comment,
       createAt: now,
-      userName: userInfo.username,
+      userName: userInfo.UserName,
       postID: postId,
     };
 

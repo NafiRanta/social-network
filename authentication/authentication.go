@@ -27,7 +27,7 @@ type UserResponse struct {
 	Email          string `json:"Email"`
 	Privacy        string `json:"Privacy"`
 	DateOfBirth    string `json:"DateOfBirth"`
-	Gender         string `json:"gender"`
+	Gender         string `json:"Gender"`
 	Avatar         string `json:"Avatar"`
 	Nickname       string `json:"Nickname"`
 	AboutMe        string `json:"AboutMe"`
