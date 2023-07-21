@@ -37,7 +37,7 @@ function App() {
         : {
           // if the user is in the chat page, then update the chat page
           if (window.location.pathname === "/chat") {
-              window.location.reload();
+              // window.location.reload();
           } else {
             // set chatNotification to true
             dispatch({ type: "SET_CHATNOTIFICATION", payload: true });
@@ -124,10 +124,25 @@ function App() {
               routeEvent(eventData);
             };
           } else {
-            // Clear memory and logout
+            console.log("user is null");
+             // clear redux and user info and token from local storage and session storage
+            localStorage.removeItem("reduxState");
+            sessionStorage.removeItem("userInfo");
             localStorage.removeItem("token");
-            sessionStorage.clear();
-            window.location.href = "/login";
+
+            // clear all cookies for this site
+            const cookies = document.cookie.split(";");
+            // for (let i = 0; i < cookies.length; i++) {
+            //   const cookie = cookies[i];
+            //   const eqPos = cookie.indexOf("=");
+            //   const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+            //   document.cookie =
+            //     name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; domain=localhost";
+            // }
+            alert("You have been logged out");
+            // setTimeout(() => {
+              window.location.href = "/login";
+            // }, 1000);
           }
         } else {
           alert("WebSocket is not supported by your Browser!");

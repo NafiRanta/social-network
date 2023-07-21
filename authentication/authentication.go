@@ -21,18 +21,18 @@ import (
 var store = sessions.NewCookieStore([]byte("social-network-2023"))
 
 type UserResponse struct {
-	FirstName      string `json:"FirstName"`
-	LastName       string `json:"LastName"`
-	UserName       string `json:"UserName"`
-	Email          string `json:"Email"`
-	Privacy        string `json:"Privacy"`
-	DateOfBirth    string `json:"DateOfBirth"`
-	Gender         string `json:"Gender"`
-	Avatar         string `json:"Avatar"`
-	Nickname       string `json:"Nickname"`
-	AboutMe        string `json:"AboutMe"`
-	FollowerUsernames    string `json:"FollowerUsernames"`
-	FollowerUsernamesSent string `json:"FollowerUsernamesSent"`
+	FirstName                 string `json:"FirstName"`
+	LastName                  string `json:"LastName"`
+	UserName                  string `json:"UserName"`
+	Email                     string `json:"Email"`
+	Privacy                   string `json:"Privacy"`
+	DateOfBirth               string `json:"DateOfBirth"`
+	Gender                    string `json:"Gender"`
+	Avatar                    string `json:"Avatar"`
+	Nickname                  string `json:"Nickname"`
+	AboutMe                   string `json:"AboutMe"`
+	FollowerUsernames         string `json:"FollowerUsernames"`
+	FollowerUsernamesSent     string `json:"FollowerUsernamesSent"`
 	FollowerUsernamesReceived string `json:"FollowerUsernamesReceived"`
 }
 
@@ -108,18 +108,18 @@ func LogIn(w http.ResponseWriter, r *http.Request) {
 			// Encode the user as JSON
 			//convert user to userResponse
 			userResponse := UserResponse{
-				FirstName:      user.FirstName,
-				LastName:       user.LastName,
-				UserName:       user.UserName,
-				Email:          user.Email,
-				Privacy:        user.Privacy,
-				DateOfBirth:    user.DateOfBirth,
-				Gender:         user.Gender,
-				Avatar:         user.Avatar,
-				Nickname:       user.Nickname,
-				AboutMe:        user.AboutMe,
-				FollowerUsernames:    user.FollowerUsernames,
-				FollowerUsernamesSent: user.FollowerUsernamesSent,
+				FirstName:                 user.FirstName,
+				LastName:                  user.LastName,
+				UserName:                  user.UserName,
+				Email:                     user.Email,
+				Privacy:                   user.Privacy,
+				DateOfBirth:               user.DateOfBirth,
+				Gender:                    user.Gender,
+				Avatar:                    user.Avatar,
+				Nickname:                  user.Nickname,
+				AboutMe:                   user.AboutMe,
+				FollowerUsernames:         user.FollowerUsernames,
+				FollowerUsernamesSent:     user.FollowerUsernamesSent,
 				FollowerUsernamesReceived: user.FollowerUsernamesReceived,
 			}
 			userJSON, err := json.Marshal(userResponse)
@@ -142,7 +142,17 @@ func LogIn(w http.ResponseWriter, r *http.Request) {
 }
 
 func LogOut(w http.ResponseWriter, r *http.Request) {
-	//fmt.Println("logout")
+	fmt.Println("logout")
+	// Get the session name from the request
+	sessionName := r.Header.Get("session-name")
+	// Get the session from the store
+	session, _ := store.Get(r, sessionName)
+	// Revoke users authentication
+	session.Values["authenticated"] = false
+	// Save the session
+	session.Save(r, w)
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte("Logged out successfully"))
 }
 
 func Register(w http.ResponseWriter, r *http.Request) {
@@ -213,7 +223,6 @@ func Register(w http.ResponseWriter, r *http.Request) {
 	user.Password = hashedPassword */
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte("Register successfully"))
-
 
 }
 

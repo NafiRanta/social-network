@@ -105,7 +105,10 @@ Notifications = [
       document.cookie =
         name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; domain=localhost";
     }
-    window.location.href = "/login";
+    // alert("You have been logged out");
+    setTimeout(() => {
+      window.location.href = "/login";
+    }, 5);
   };
 
   return (

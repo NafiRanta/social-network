@@ -21,7 +21,7 @@ func GetMyGroupsPostsHandler(w http.ResponseWriter, r *http.Request) {
 	userID, err := a.ExtractUserIDFromAuthHeader(authHeader)
 	if err != nil {
 		//fmt.Println("error from getUserIDFromToken:", err)
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		http.Error(w, err.Error(), http.StatusUnauthorized)
 		return
 	}
 	// get user by userID

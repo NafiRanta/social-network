@@ -39,6 +39,7 @@ function HomeGroup(props) {
           setMyGroupsPosts(updatedData);
         } else {
           console.log("error");
+          // alert("Something went wrong. Please try again later.");
         }
       } catch (error) {
         // Handle error
