@@ -6,6 +6,7 @@ import CreateGroupPost from '../../components/CreatePost/CreateGroupPost';
 import AvatarSquare from '../../components/Avatar/AvatarSquare';
 import GroupPostCard from '../../components/Card/GroupPostCard';
 import CreateEventModal from '../../components/Modal/CreateEventModal';
+import GroupInviteModal from '../../components/Modal/GroupInviteModal';
 import EventCard from '../../components/Card/EventCard';
 import '../../views/Profile/Profile.css';
 import '../../components/Card/Card.css';
@@ -130,9 +131,13 @@ function SingleGroup(props) {
                             <div className="profile-cover__action">
                                 {(isUserGroupAdmin || isUserGroupMember) && (
                                     <>
-                                        <button className="btn btn-primary btn-sm d-flex justify-content-center align-items-center ">
-                                            <i className="fa fa-plus"> </i>
-                                            <span> Invite</span>
+                                        <button 
+                                        href="#" 
+                                        className="btn btn-primary btn-sm d-flex justify-content-center align-items-center" 
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#groupInviteModal"
+                                        >
+                                            + Invite
                                         </button>
                                         <div
                                             className="btn btn-primary btn-sm d-flex justify-content-center align-items-center"
@@ -177,6 +182,7 @@ function SingleGroup(props) {
                         </div>
                     </div>
                 </div>
+                <GroupInviteModal userDisplayname={props.userDisplayname} openModal={openModal} allusers={props.allusers} groupID={groupID}></GroupInviteModal>
                 <CreateEventModal userDisplayname={props.userDisplayname} openModal={openModal} allusers={props.allusers} groupID={groupID}/>
                 <div className="row justify-content-evenly">
                     <div className="col-12 col-lg-3">
