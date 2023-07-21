@@ -21,26 +21,26 @@ import (
 var store = sessions.NewCookieStore([]byte("social-network-2023"))
 
 type UserResponse struct {
-	FirstName      string `json:"firstname"`
-	LastName       string `json:"lastname"`
-	UserName       string `json:"username"`
-	Email          string `json:"email"`
-	Privacy        string `json:"privacy"`
-	DateOfBirth    string `json:"dateOfBirth"`
+	FirstName      string `json:"FirstName"`
+	LastName       string `json:"LastName"`
+	UserName       string `json:"UserName"`
+	Email          string `json:"Email"`
+	Privacy        string `json:"Privacy"`
+	DateOfBirth    string `json:"DateOfBirth"`
 	Gender         string `json:"gender"`
-	Avatar         string `json:"avatar"`
-	Nickname       string `json:"nickname"`
-	AboutMe        string `json:"about"`
-	FollowerIDs    string `json:"Follower_IDs"`
-	OnFollowingIDs string `json:"OnFollowing_IDs"`
+	Avatar         string `json:"Avatar"`
+	Nickname       string `json:"Nickname"`
+	AboutMe        string `json:"AboutMe"`
+	FollowerIDs    string `json:"FollowerIDs"`
+	OnFollowingIDs string `json:"OnFollowingIDs"`
 }
 
 type UserProfile struct {
-	FirstName string `json:"firstname"`
-	LastName  string `json:"lastname"`
-	UserName  string `json:"username"`
-	Privacy   string `json:"privacy"`
-	Avatar    string `json:"avatar"`
+	FirstName string `json:"FirstName"`
+	LastName  string `json:"LastName"`
+	UserName  string `json:"UserName"`
+	Privacy   string `json:"Privacy"`
+	Avatar    string `json:"Avatar"`
 }
 
 //user repsonse after login should not have password, the followers should have name, email, pic

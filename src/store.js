@@ -85,6 +85,7 @@ const store = configureStore({
 store.subscribe(() => {
   const state = store.getState();
   localStorage.setItem("reduxState", JSON.stringify(state));
+  console.log("state after dispatch: ", store.getState());
 });
 
 export default store;

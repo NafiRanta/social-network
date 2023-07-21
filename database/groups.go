@@ -380,3 +380,69 @@ func GetGroupsByAdminInvitedUsername(username string) ([]Group, error) {
 	return groups, nil
 
 }
+
+func DeleteUserFromAdminInvite(groupID string, username string) error {
+	fmt.Println("groupID in deleteuserfromadmininvite", groupID)
+	fmt.Println("username in deleteuserfromadmininvite", username)
+	db, err := sql.Open("sqlite3", "./socialnetwork.db")
+	if err != nil {
+		fmt.Println("open error", err)
+		return err
+	}
+	defer db.Close()
+
+	// Get the current JSON array
+	query := "SELECT AdminInvitedUsernames FROM Groups WHERE GroupID = ?"
+	stmt, err := db.Prepare(query)
+	if err != nil {
+		fmt.Println("prepare error", err)
+		return err
+	}
+	row := stmt.QueryRow(groupID)
+
+	var adminInvitedUsernames string
+	err = row.Scan(&adminInvitedUsernames)
+	if err != nil {
+		fmt.Println("scan error", err)
+		return err
+	}
+
+	// Parse the JSON array into a slice
+	var usernames []string
+	err = json.Unmarshal([]byte(adminInvitedUsernames), &usernames)
+	if err != nil {
+		fmt.Println("unmarshal error", err)
+		return err
+	}
+
+	// Find and remove the specified username from the slice
+	for i, u := range usernames {
+		if u == username {
+			usernames = append(usernames[:i], usernames[i+1:]...)
+			break
+		}
+	}
+
+	// Convert the slice back to a JSON array
+	newAdminInvitedUsernames, err := json.Marshal(usernames)
+	if err != nil {
+		fmt.Println("marshal error", err)
+		return err
+	}
+
+	// Update the Groups table with the new JSON array
+	updateQuery := "UPDATE Groups SET AdminInvitedUsernames = ? WHERE GroupID = ?"
+	updateStmt, err := db.Prepare(updateQuery)
+	if err != nil {
+		fmt.Println("prepare error", err)
+		return err
+	}
+	_, err = updateStmt.Exec(string(newAdminInvitedUsernames), groupID)
+	if err != nil {
+		fmt.Println("exec error", err)
+		return err
+	}
+
+	fmt.Println("Deleted user from admin invite")
+	return nil
+}

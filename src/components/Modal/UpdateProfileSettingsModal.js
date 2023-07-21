@@ -11,7 +11,7 @@ function UpdateProfileSettingsModal(props) {
   console.log("userInfo update", userInfo)
   
     // format date of birth to be displayed to dd month yyyy
-    const dateOfBirth = new Date(userInfo.dateOfBirth).toLocaleDateString('en-US', {
+    const dateOfBirth = new Date(userInfo.DateOfBirth).toLocaleDateString('en-US', {
       day: 'numeric',
       month: 'long',
       year: 'numeric',
@@ -26,12 +26,12 @@ function UpdateProfileSettingsModal(props) {
   const [isGenderEditMode, setGenderEditMode] = useState(false);
   const [isNicknameEditMode, setNicknameEditMode] = useState(false);
   const [isAboutEditMode, setAboutEditMode] = useState(false);
-  const [nickname, setNickname] = useState(userInfo.nickname);
+  const [nickname, setNickname] = useState(userInfo.Nickname);
   const [nicknameLabel, setNicknameLabel] = useState("");
-  const [about, setAbout] = useState(userInfo.about);
+  const [about, setAbout] = useState(userInfo.AboutMe);
   const [aboutLabel, setAboutLabel] = useState("");
-  const [gender, setGender] = useState(userInfo.gender)
-  const [genderLabel, setGenderLabel] = useState(userInfo.gender);
+  const [gender, setGender] = useState(userInfo.Gender)
+  const [genderLabel, setGenderLabel] = useState(userInfo.Gender);
   const [dob, setDob] = useState(formattedDOB);
   const [dobLabel, setDobLabel] = useState(formattedDOB);
 
@@ -210,9 +210,9 @@ const handleRemoveAbout = () => {
       if (res.ok) {
         const data = await res.json();
           console.log("data update user response data", data);
-          //dispatch({ type: 'SET_USER', payload: data });
+          dispatch({ type: 'SET_USER', payload: data });
           alert("Profile updated");
-          window.location.href = `/profile/${userInfo.username}`;
+          window.location.href = `/profile/${userInfo.UserName}`;
 
       } else {
         console.log("Error:", res.status);

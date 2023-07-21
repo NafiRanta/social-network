@@ -62,7 +62,7 @@ function Chat(props) {
   const [selectedChatMateUsername, setSelectedChatMateUsername] = useState("");
   const [selectedChatMateDisplayname, setSelectedChatMateDisplayname] =
     useState("");
-  const [senderUsername, setSenderUsername] = useState(userInfo.username);
+  const [senderUsername, setSenderUsername] = useState(userInfo.UserName);
   const [senderDisplayname, setSenderDisplayname] = useState(
     props.userDisplayname
   );
@@ -70,11 +70,11 @@ function Chat(props) {
 
   const handleUserClick = (chatMateDisplayName, chatMateUsername) => {
     const chatMate = allusers.find(
-      (chatMate) => chatMate.username === chatMateUsername
+      (chatMate) => chatMate.UserName === chatMateUsername
     );
     setSelectedChatMateDisplayname(chatMateDisplayName);
-    setSelectedChatMateUsername(chatMate.username);
-    dispatch ({ type: "SET_CHATMATEUSERNAME", payload: chatMate.username });
+    setSelectedChatMateUsername(chatMate.UserName);
+    dispatch ({ type: "SET_CHATMATEUSERNAME", payload: chatMate.UserName });
   };
 
   const handleGroupClick = (chatMateDisplayName, chatMateUsername) => {
@@ -89,14 +89,14 @@ function Chat(props) {
     }
     // save all users except the current user to a variable called filteredData
     let filteredData = allusers.filter(
-      (user) => user.username !== userInfo.username
+      (user) => user.UserName !== userInfo.UserName
     );
     // sort the filteredData by firstname
-    filteredData.sort((a, b) => (a.firstname > b.firstname ? 1 : -1));
+    filteredData.sort((a, b) => (a.FirstName > b.FirstName ? 1 : -1));
     // map the filteredData to display all users except the current user
     return filteredData.map((user) => {
-      const chatMatedisplayName = user.firstname + " " + user.lastname;
-      const chatMateusername = user.username;
+      const chatMatedisplayName = user.FirstName + " " + user.LastName;
+      const chatMateusername = user.UserName;
       let isUserLoggedIn
       if (loggedinUsers) {
        isUserLoggedIn = loggedinUsers.includes(chatMateusername);
@@ -114,7 +114,7 @@ function Chat(props) {
             >
               <div className="user">
                 <img
-                  src={user.avatar}
+                  src={user.Avatar}
                   alt="avatar"
                   className="rounded-circle me-2"
                 />
@@ -228,12 +228,12 @@ function Chat(props) {
     
   // get chatMate avatar
   const chatMateUser = allusers.filter(
-    (user) => user.username == selectedChatMateUsername
+    (user) => user.UserName == selectedChatMateUsername
   );
   let chatMateAvatar = process.env.PUBLIC_URL + '/defaultImg/default-avatar.jpeg';
   if (chatMateUser) {
     if (chatMateUser[0]) {
-      chatMateAvatar = chatMateUser[0].avatar;
+      chatMateAvatar = chatMateUser[0].Avatar;
     }
   }
 

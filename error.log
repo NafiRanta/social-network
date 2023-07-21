@@ -13,3 +13,55 @@
 2023/07/20 23:23:48 writemsg error write tcp [::1]:8080->[::1]:55226: write: broken pipe
 2023/07/20 23:23:48 writemsg error write tcp [::1]:8080->[::1]:55165: write: broken pipe
 2023/07/20 23:23:51 writemsg error write tcp [::1]:8080->[::1]:53763: write: broken pipe
+2023/07/21 09:56:57 failed to send message: websocket: close sent
+2023/07/21 09:57:05 writemsg error websocket: close sent
+2023/07/21 10:05:41 failed to send message: websocket: close sent
+2023/07/21 10:05:43 writemsg error websocket: close sent
+2023/07/21 10:09:57 failed to send message: websocket: close sent
+2023/07/21 10:10:01 writemsg error websocket: close sent
+2023/07/21 10:11:20 failed to send message: websocket: close sent
+2023/07/21 10:11:22 writemsg error websocket: close sent
+2023/07/21 10:17:02 failed to send message: websocket: close sent
+2023/07/21 10:17:03 writemsg error websocket: close sent
+2023/07/21 10:19:08 failed to send message: websocket: close sent
+2023/07/21 10:19:14 writemsg error websocket: close sent
+2023/07/21 10:19:47 failed to send message: websocket: close sent
+2023/07/21 10:19:53 writemsg error websocket: close sent
+2023/07/21 10:23:02 failed to send message: websocket: close sent
+2023/07/21 10:23:05 writemsg error websocket: close sent
+2023/07/21 10:36:27 failed to send message: websocket: close sent
+2023/07/21 10:36:28 writemsg error websocket: close sent
+2023/07/21 10:37:04 failed to send message: websocket: close sent
+2023/07/21 10:37:11 writemsg error websocket: close sent
+2023/07/21 10:45:55 failed to send message: websocket: close sent
+2023/07/21 10:45:56 writemsg error websocket: close sent
+2023/07/21 10:58:13 failed to send message: websocket: close sent
+2023/07/21 10:58:20 writemsg error websocket: close sent
+2023/07/21 10:59:08 failed to send message: websocket: close sent
+2023/07/21 10:59:17 writemsg error websocket: close sent
+2023/07/21 11:10:20 [2023-07-21 11:10:20] ERROR: sql: no rows in result set
+2023/07/21 11:10:21 [2023-07-21 11:10:21] ERROR: sql: no rows in result set
+2023/07/21 11:11:47 [2023-07-21 11:11:47] ERROR: sql: no rows in result set
+2023/07/21 11:11:47 [2023-07-21 11:11:47] ERROR: sql: no rows in result set
+2023/07/21 11:21:19 failed to send message: websocket: close sent
+2023/07/21 11:21:19 failed to send message: websocket: close sent
+2023/07/21 11:21:20 writemsg error websocket: close sent
+2023/07/21 11:21:22 writemsg error websocket: close sent
+2023/07/21 11:21:56 failed to send message: websocket: close sent
+2023/07/21 11:21:56 writemsg error websocket: close sent
+2023/07/21 11:23:11 failed to send message: websocket: close sent
+2023/07/21 11:23:18 writemsg error websocket: close sent
+2023/07/21 11:23:56 failed to send message: websocket: close sent
+2023/07/21 11:24:02 writemsg error websocket: close sent
+2023/07/21 11:24:26 failed to send message: websocket: close sent
+2023/07/21 11:24:33 writemsg error websocket: close sent
+2023/07/21 11:24:53 failed to send message: websocket: close sent
+2023/07/21 11:24:54 writemsg error websocket: close sent
+2023/07/21 11:25:08 failed to send message: websocket: close sent
+2023/07/21 11:25:08 writemsg error websocket: close sent
+2023/07/21 11:25:11 failed to send message: websocket: close sent
+2023/07/21 11:25:17 writemsg error websocket: close sent
+2023/07/21 11:25:27 failed to send message: websocket: close sent
+2023/07/21 11:25:34 writemsg error websocket: close sent
+2023/07/21 11:25:41 failed to send message: websocket: close sent
+2023/07/21 11:25:43 writemsg error websocket: close sent

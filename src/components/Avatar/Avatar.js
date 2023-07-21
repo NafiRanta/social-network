@@ -9,7 +9,7 @@ function Avatar(props) {
     }
 
     return(
-        <img src={userInfo.avatar} alt="avatar" className="rounded-circle me-2" id="avatar"/>
+        <img src={userInfo.Avatar} alt="avatar" className="rounded-circle me-2" id="avatar"/>
     )
 }
 

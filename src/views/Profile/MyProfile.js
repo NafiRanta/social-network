@@ -17,7 +17,7 @@ function MyProfile(props) {
   console.log("userInfo myprofile", userInfo)
 
   // format date of birth to be displayed to dd month yyyy
-  const dob = new Date(userInfo.dateOfBirth).toLocaleDateString("en-US", {
+  const dob = new Date(userInfo.DateOfBirth).toLocaleDateString("en-US", {
     day: "numeric",
     month: "long",
     year: "numeric",
@@ -27,7 +27,7 @@ function MyProfile(props) {
   const year = dob.split(" ")[2];
   const formattedDOB = `${day} ${month} ${year}`.replace(/,/g, ""); // remove comma from date
 
-  const [privacy, setPrivacy] = useState(userInfo.privacy);
+  const [privacy, setPrivacy] = useState(userInfo.Privacy);
   useEffect(() => {
     if (userInfo) {
       setPrivacy(privacy);
@@ -84,7 +84,7 @@ function MyProfile(props) {
                     <div className="d-flex text-black">
                       <div className="flex-shrink-0">
                         <img
-                          src={userInfo.avatar}
+                          src={userInfo.Avatar}
                           alt="Generic placeholder image"
                           className="img-fluid"
                         />
@@ -102,7 +102,7 @@ function MyProfile(props) {
                           {userInfo.nickname && (
                             <span className="nickname-text">
                               <small className="text-muted">
-                                {userInfo.nickname}
+                                {userInfo.Nickname}
                               </small>
                             </span>
                           )}
@@ -175,21 +175,21 @@ function MyProfile(props) {
                       </p>
                     </div>
                   </li>
-                  {userInfo.about && (
+                  {userInfo.AboutMe && (
                     <li className="dropdown-item p-1 rounded text-center">
-                      <p className="text-center">{userInfo.about}</p>
+                      <p className="text-center">{userInfo.AboutMe}</p>
                     </li>
                   )}
                   <li className="dropdown-item p-1 rounded">
                     <span>
                       <i className="fas fa-user"></i>{" "}
-                      <span className="name">{userInfo.nickname}</span>
+                      <span className="name">{userInfo.Nickname}</span>
                     </span>
                   </li>
                   <li className="my-2 p-1">
                     <span>
                       <i className="fas fa-edit"></i>{" "}
-                      <span className="name">{userInfo.email}</span>
+                      <span className="name">{userInfo.Email}</span>
                     </span>
                   </li>
                   <li className="dropdown-item p-1 rounded">

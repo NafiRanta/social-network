@@ -99,8 +99,8 @@ function App() {
   const [ws, setConn] = useState(null);
   useEffect(() => {
     if (isAuth) {
-      const userDisplayname = userInfo.firstname + " " + userInfo.lastname;
-      const username = userInfo.username;
+      const userDisplayname = userInfo.FirstName + " " + userInfo.LastName;
+      const username = userInfo.UserName;
       setUsername(username);
       const cookieString = document.cookie; // session-name-0b19be69-f99d-4ce4-ab80-5f053208f212=MTY4NzE3MjEyM3xEdi1CQkFFQ180SUFBUkFCRUFBQUpmLUNBQUVHYzNSeWFXNW5EQThBRFdGMWRHaGxiblJwWTJGMFpXUUVZbTl2YkFJQ0FBRT18gCtLiTcvz5Bk5CId1ybd3bJJUpE7jgHP3JBNtVnO_30=
       let token 

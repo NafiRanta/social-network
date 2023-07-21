@@ -12,7 +12,8 @@ function Home(props) {
     const loggedinUsers = useSelector((state) => state.loggedinUsers);
     const dispatch = useDispatch();
     const userInfo = useSelector((state) => state.userInfo);
-    const allusers = useSelector((state) => state.allUsers); 
+    const allusers = useSelector((state) => state.allUsers);
+    console.log("allusers: ", allusers); 
 
     const displayChatUsers = () => {
         if (!allusers) {
@@ -20,25 +21,25 @@ function Home(props) {
         }
 
         return allusers
-            .filter((user) => user.username !== userInfo.username)
+            .filter((user) => user.UserName !== userInfo.UserName)
             .map((user, index) => {
                 let isUserOnline = false
                 if (loggedinUsers) {
-                    isUserOnline = loggedinUsers.includes(user.username);
+                    isUserOnline = loggedinUsers.includes(user.UserName);
                 }
                 const statusClass = isUserOnline ? "bg-success" : "";
             return (
-                <div key={`${user.username}-${index}`}>
+                <div key={`${user.UserName}-${index}`}>
                     <ul className="list-group">
                         <li className={`dropdown-item rounded my-2 px-0 ${statusClass}`} type="button">
                             <div className="d-flex align-items-center mx-2 chat-avatar">
                                 <div className="position-relative">
-                                    <img src={user.avatar} alt="avatar" className="rounded-circle me-2" />
+                                    <img src={user.Avatar} alt="avatar" className="rounded-circle me-2" />
                                     <span className={`position-absolute bottom-0 translate-middle border border-light rounded-circle-sm p-1 ${statusClass}`}>
                                         <span className="visually-hidden"></span>
                                     </span>
                                 </div>
-                                <p className="m-0">{user.firstname + " " + user.lastname}</p>
+                                <p className="m-0">{user.FirstName + " " + user.LastName}</p>
                             </div>
                         </li>
                     </ul>

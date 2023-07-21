@@ -101,6 +101,14 @@ func AddUserToGroupHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	username := user.UserName
+	// find username in group adminInvitedUsernames and delete it
+	err = d.DeleteUserFromAdminInvite(groupID, username)
+	if err != nil {
+		fmt.Println("error from delete:", err)
+		http.Error(w, "Failed to delete group", http.StatusInternalServerError)
+		return
+	}
+	// add username to group memberUsernames
 	err = d.AddUserToGroup(groupID, username)
 	if err != nil {
 		fmt.Println("error from addgroup:", err)
