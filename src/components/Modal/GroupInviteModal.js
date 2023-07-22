@@ -6,10 +6,10 @@ import { useDispatch } from 'react-redux';
 
 function GroupInviteModal(props) {
   const dispatch = useDispatch();
+  // define websocket connection from redux store websocket
+  const websocket = useSelector((state) => state.websocket);
   const userInfo = useSelector((state) => state.userInfo);
   const allGroups = useSelector((state) => state.allGroups);
-  console.log("props.isGroupAdmin: ", props.isUserGroupAdmin)
-  console.log("props.isGroupMember: ", props.isUserGroupMember)
   // find props.groupID from allGroups
   const group = allGroups.find((group) => group.GroupID === props.groupID);
   const groupAdmin = group.Admin;
@@ -74,8 +74,24 @@ function GroupInviteModal(props) {
       memberInvitedUsernames: selectedUserNames,
       memberUsername : userInfo.UserName,
     };
-    console.log("groupData: ", groupData);
-    console.log("selectedUserNames: ", selectedUserNames)
+    // loop through selectedUserNames and send notification to each user through ws
+    selectedUserNames.forEach((username) => {
+      const notification = {
+        type : "notification",
+        payload : {
+          sender : userInfo.UserName,
+          receiver : username,
+        }
+      }
+      console.log("props", props)
+      console.log("props.socket: ", props.socket)
+      if (props.socket) {
+        console.log("sending notification through ws: ", props.socket, notification)
+        props.socket.send(JSON.stringify(notification));
+      }
+    });
+
+
     try {
       const response = await fetch(url, {
         method: 'POST',

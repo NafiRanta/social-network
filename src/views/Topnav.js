@@ -10,8 +10,9 @@ import CreateGroupModal from '../components/Modal/CreateGroupModal';
 import './TopNav.css'
 
 function Topnav(props) {
-  const chatNotification = useSelector((state) => state.chatNotification);
   const dispatch = useDispatch();
+  const chatNotification = useSelector((state) => state.chatNotification);
+  const notification = useSelector((state) => state.notification);
   const location = useLocation();
   const navigate = useNavigate();
   const allusers = useSelector((state) => state.allUsers);
@@ -191,8 +192,10 @@ Notifications = [
                 <Dropdown.Toggle
                   variant="light"
                   id="notMenu"
-                  className=" rounded-circle bg-gray border-0"
-                >
+                  // if notification is true, set to bg-red, else bg-gray dont change color if hover dispatch notification to false onclick and open dropdown
+                  className={`rounded-circle ${notification ? "bg-red" : "bg-gray"} border-0`}
+                  onKeyDown={() => dispatch({ type: "SET_NOTIFICATION", payload: false }) }
+                  >
                   <i className="fas fa-bell"></i>
                 </Dropdown.Toggle>
                 <Dropdown.Menu

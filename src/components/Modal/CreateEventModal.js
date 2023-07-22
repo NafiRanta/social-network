@@ -11,7 +11,6 @@ function CreateEventModal(props) {
   const [eventDate, setEventDate] = useState('');
   const [eventTime, setEventTime] = useState('');
   const names = myFriends.map((friend) => friend.displayname);
-  console.log("myFriends: ", myFriends);
 
   useEffect(() => {
     const allusers = props.allusers;

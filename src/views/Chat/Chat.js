@@ -381,6 +381,24 @@ function Chat(props) {
                 <form
                   className="chatroom-message"
                   id={`chatroom-message${selectedChatMateUsername}`}
+                  // empty the textarea after submitting the message and scrolldown to the bottom of the chat
+                  onSubmit={((e) => {
+                    e.preventDefault();
+                    handleMessageSubmit(e);
+                    document.getElementById(
+                      `submitMessageBtn${selectedChatMateUsername}`
+                    ).value = "";
+                  }
+                  )}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      handleMessageSubmit(e);
+                      document.getElementById(
+                        `submitMessageBtn${selectedChatMateUsername}`
+                      ).value = "";
+                    }
+                  }}
                 >
                   <div className="row">
                     <div className="col-10">
@@ -395,7 +413,7 @@ function Chat(props) {
                       <button 
                         type="submit"
                         className="btn btn-primary"
-                        onClick={handleMessageSubmit}
+                        
                         >
                         Send
                       </button>

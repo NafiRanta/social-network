@@ -30,6 +30,7 @@ const eventStruct = {
 
 
 function App() {
+  const dispatch = useDispatch();
   const chatMateusername = useSelector((state) => state.chatMateUsername);
   const routeEvent = (event) => {
     switch (event.type) {
@@ -58,6 +59,19 @@ function App() {
           }
           break;
         }
+        case "notification"
+        : {
+          // is event.payload, then if event.payload.receiver is the current user, then dispatch notification to redux store to true
+          if (event) {
+            if (event.payload) {
+              if (event.payload.receiver === userInfo.UserName) {
+                console.log("notification received");
+                alert("You have a new notification");
+                dispatch({ type: "SET_NOTIFICATION", payload: true });
+              }
+            }
+          }
+        }
       }
   }
   const decodeJwt = (jwt) => {
@@ -76,7 +90,6 @@ function App() {
     return result;
   };
 
-  const dispatch = useDispatch();
   const isAuth = useSelector((state) => state.isAuth);
   let conn;
   const userInfo = useSelector((state) => state.userInfo);
@@ -110,7 +123,9 @@ function App() {
             conn = new WebSocket(
               "ws://" + "localhost:8080" + "/ws?otp=" + user.userID
             );
+            console.log("setting ws to conn", conn);
             setConn(conn);
+
             conn.onopen = function () {
               console.log("Connection opened");
             };
@@ -311,6 +326,7 @@ function App() {
               username={username}
               userDisplayname={userDisplayname}
               allusers={allusers}
+              socket={ws}
             />
           </div>
         }
@@ -324,6 +340,7 @@ function App() {
               username={username}
               userDisplayname={userDisplayname}
               allusers={allusers}
+              socket={ws}
             />
           </div>
         }
@@ -337,6 +354,7 @@ function App() {
               username={username}
               userDisplayname={userDisplayname}
               allusers={allusers}
+              socket={ws}
             />
           </div>
         }
@@ -349,6 +367,7 @@ function App() {
               userDisplayname={userDisplayname}
               username={username}
               allusers={allusers}
+              socket={ws}
             />
           </div>
         }
@@ -362,6 +381,7 @@ function App() {
               username={username}
               userDisplayname={userDisplayname}
               allusers={allusers}
+              socket={ws}
             />
           </div>
         }

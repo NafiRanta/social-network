@@ -91,10 +91,7 @@ func LogIn(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 
-			// add token to m.otps map
-			fmt.Println("token generated:", token)
 			// Combine the UUID with the session name using a delimiter
-			//sessionName := "session-name-" + id.String()
 			sessionName := "session-name-" + token
 			// Create a new session for the user with the combined session name
 			session, _ := store.Get(r, sessionName)
