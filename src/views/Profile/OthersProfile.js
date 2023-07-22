@@ -140,7 +140,7 @@ function OthersProfile(props) {
     }
   return (
         <div>
-           <Topnav userDisplayname={props.userDisplayname} />
+           <Topnav userDisplayname={props.userDisplayname} socket={props.socket}/>
             <div className="container-fluid">
                 <section className="profileTopnav">
                     <div className="container py-5 h-100">

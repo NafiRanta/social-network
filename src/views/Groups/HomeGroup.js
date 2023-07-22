@@ -8,7 +8,7 @@ import CommentCard from "../../components/Card/CommentCard";
 function HomeGroup(props) {
   const userInfo = useSelector((state) => state.userInfo);
   const mygroups = useSelector((state) => state.myGroups);
-  console.log("mygroups", mygroups);
+  // console.log("mygroups", mygroups);
   const [myGroupsPosts, setMyGroupsPosts] = useState([]);
   const [expandedPosts, setExpandedPosts] = useState({}); // Added state for expanded posts
 
@@ -27,16 +27,19 @@ function HomeGroup(props) {
         if (res.ok) {
           const data = await res.json();
           // get group names using data.GroupID from mygroups and add to data
-          console.log("data", data);
-          const updatedData = data.allMyGroupsPosts.map((post) => {
-            const group = mygroups.find(
-              (group) => group.GroupID === post.GroupID
-            );
-            const groupName = group ? group.GroupName : "";
-            return { ...post, groupName };
-          });
-          console.log("updatedData", updatedData);
+          // console.log("data", data);
+          let updatedData
+          if (data.allMyGroupsPosts) {
+            data.allMyGroupsPosts.map((post) => {
+              const group = mygroups.find(
+                (group) => group.GroupID === post.GroupID
+              );
+              const groupName = group ? group.GroupName : "";
+              return { ...post, groupName };
+            });
+          }
           setMyGroupsPosts(updatedData);
+          // console.log("updatedData", updatedData);
         } else {
           console.log("error");
           // alert("Something went wrong. Please try again later.");
@@ -79,11 +82,14 @@ function HomeGroup(props) {
 
   const displayMyGroupsPosts = () => {
     // Sort the myGroupsPosts array by CreateAt in descending order
-    const sortedPosts = myGroupsPosts.sort((a, b) => {
-      const dateA = new Date(a.CreateAt);
-      const dateB = new Date(b.CreateAt);
-      return dateB - dateA;
-    });
+    let sortedPosts = [];
+    if (myGroupsPosts) {
+      sortedPosts = myGroupsPosts.sort((a, b) => {
+        const dateA = new Date(a.CreateAt);
+        const dateB = new Date(b.CreateAt);
+        return dateB - dateA;
+      });
+    }
 
     return sortedPosts.map((post, index) => {
       const date = new Date(post.CreateAt);
@@ -145,6 +151,7 @@ function HomeGroup(props) {
     <div>
       <Topnav
         userDisplayname={props.userDisplayname}
+        socket={props.socket}
       />
       <div className="container-fluid">
         <div className="row justify-content-evenly">

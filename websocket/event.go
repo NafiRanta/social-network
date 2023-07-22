@@ -18,7 +18,7 @@ const (
 	EventAcknowledgement = "acknowledgement"
 	EventTyping          = "send_typing"
 	EventNotification    = "notification"
-	messageNotification  = "message_notification"
+	MessageNotification  = "message_notification"
 )
 
 type SendMessageEvent struct {

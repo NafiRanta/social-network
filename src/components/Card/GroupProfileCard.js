@@ -5,11 +5,11 @@ import './Card.css';
 import { Link } from 'react-router-dom';
 //import { set } from "draft-js/lib/DefaultDraftBlockRenderMap";
 function GroupProfileCard(props) {
+    console.log("props", props);
     const dispatch = useDispatch();
     const [groupsToDisplay, setGroupsToDisplay] = useState([]);
     const currentPath = window.location.pathname;
     const allgroups = useSelector((state) => state.allGroups);
-    console.log("allgroups", allgroups);
     const mygroups = useSelector((state) => state.myGroups);
     
     useEffect(() => {

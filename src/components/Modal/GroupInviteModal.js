@@ -11,8 +11,6 @@ function GroupInviteModal(props) {
   const userInfo = useSelector((state) => state.userInfo);
   const allGroups = useSelector((state) => state.allGroups);
   const allusers = useSelector((state) => state.allUsers);
-  console.log("props.isGroupAdmin: ", props.isUserGroupAdmin)
-  console.log("props.isGroupMember: ", props.isUserGroupMember)
   // find props.groupID from allGroups
   const group = allGroups.find((group) => group.GroupID === props.groupID);
   const groupAdmin = group.Admin;
@@ -77,21 +75,26 @@ function GroupInviteModal(props) {
       memberUsername : userInfo.UserName,
     };
     // loop through selectedUserNames and send notification to each user through ws
-    selectedUserNames.forEach((username) => {
-      const notification = {
-        type : "notification",
-        payload : {
-          sender : userInfo.UserName,
-          receiver : username,
+    if (selectedUserNames) {
+      selectedUserNames.forEach((username) => {
+        const notification = {
+          type : "notification",
+          payload : {
+            senderUsername : userInfo.UserName,
+            receiverUsername : username,
+          }
         }
-      }
-      console.log("props", props)
-      console.log("props.socket: ", props.socket)
-      if (props.socket) {
-        console.log("sending notification through ws: ", props.socket, notification)
-        props.socket.send(JSON.stringify(notification));
-      }
-    });
+        console.log("notification", notification)
+        console.log("notification.payload", notification.payload)
+
+        console.log("props", props)
+        console.log("props.socket: ", props.socket)
+        if (props.socket) {
+          console.log("sending notification through ws: ", props.socket, notification)
+          props.socket.send(JSON.stringify(notification));
+        }
+      });
+    }
 
 
     try {

@@ -55,7 +55,7 @@ func (m *Manager) setupEventHandlers() {
 	m.handlers[EventSendMessage] = SendMessage
 	m.handlers[EventAcknowledgement] = SendLoggedinUsers
 	m.handlers[EventNotification] = SendNotification
-	m.handlers[messageNotification] = SendMessageNotification
+	m.handlers[MessageNotification] = SendMessageNotification
 }
 
 // Send a notification to the reciever client
@@ -65,19 +65,24 @@ func SendNotification(event Event, c *Client) error {
 	if err := json.Unmarshal(event.Payload, &notificationevent); err != nil {
 		return fmt.Errorf("bad payload in request: %v", err)
 	}
+	fmt.Println("notificationevent", notificationevent)
 	data, err := json.Marshal(notificationevent)
 	if err != nil {
 		return fmt.Errorf("failed to marshal broadcast message: %v", err)
 	}
+	fmt.Println("data", string(data))
 	outgoingEvent := Event{
 		Payload: data,
 		Type:    EventNotification,
 	}
+	fmt.Println("outgoingEvent", string(outgoingEvent.Payload))
 	for client := range c.manager.clients {
 		if c.manager.loggedinUsers[client.otp] == notificationevent.Receiver {
+			fmt.Println("sent to client.otp", client.otp)
 			client.egress <- outgoingEvent
 		}
 	}
+	fmt.Println("Notification sent to", notificationevent.Receiver)
 	return nil
 }
 
@@ -93,7 +98,7 @@ func SendMessageNotification(event Event, c *Client) error {
 	}
 	outgoingEvent := Event{
 		Payload: data,
-		Type:    messageNotification,
+		Type:    MessageNotification,
 	}
 	for client := range c.manager.clients {
 		if c.manager.loggedinUsers[client.otp] == notificationevent.Receiver {
@@ -243,57 +248,6 @@ func (m *Manager) ServeWS(w http.ResponseWriter, r *http.Request) {
 		log.Printf("error routing event: %v", err)
 	}
 }
-
-// logs in a user and creates an otp and adds the user to the manager
-// func (m *Manager) loginHandler(w http.ResponseWriter, r *http.Request) {
-// 	type userLoginRequest struct {
-// 		EmailUsername string `json:"emailUsername"`
-// 		Password      string `json:"password"`
-// 	}
-
-// 	var req userLoginRequest
-// 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-// 		http.Error(w, err.Error(), http.StatusBadRequest)
-// 		return
-// 	}
-
-// 	// get users from Users database
-// 	selDB, err := s.Database.Query("SELECT ID, Username, Firstname, Lastname, Gender, Email, Password, Dob FROM Users")
-// 	if err != nil {
-// 		log.Fatal(err)
-// 	}
-// 	defer selDB.Close()
-// 	var users []u.User
-// 	for selDB.Next() {
-// 		var user u.User
-// 		err = selDB.Scan(&user.ID, &user.Username, &user.Firstname, &user.Lastname, &user.Gender, &user.Email, &user.Password, &user.DateOfBirth)
-// 		if err != nil {
-// 			log.Fatal(err)
-// 		}
-// 		users = append(users, user)
-// 	}
-
-// 	// loop through users and check that username, password, and email match
-// 	for _, user := range users {
-// 		if (user.Email == req.EmailUsername || user.Username == req.EmailUsername) && user.Password == req.Password {
-
-// 			otp := m.otps.NewOTP()
-
-// 			m.addLoggedInUser(user.Username, otp.Key)
-// 			s.AddOtpToDb(otp.Key, m.loggedinUsers[otp.Key])
-// 			user.Otp = otp.Key
-// 			data, err := json.Marshal(user)
-// 			if err != nil {
-// 				log.Println(err)
-// 				return
-// 			}
-// 			w.WriteHeader(http.StatusOK)
-// 			w.Write(data)
-// 			return
-// 		}
-// 	}
-// 	w.WriteHeader(http.StatusUnauthorized)
-// }
 
 // add to loggedinUsers userId as key and username as value
 func (m *Manager) addLoggedInUser(username, userId string) {

@@ -9,11 +9,10 @@ import Topnav from '../Topnav';
 
 function Home(props) {
     // use selector for logged in users
-    const loggedinUsers = useSelector((state) => state.loggedinUsers);
     const dispatch = useDispatch();
+    const loggedinUsers = useSelector((state) => state.loggedinUsers);
     const userInfo = useSelector((state) => state.userInfo);
     const allusers = useSelector((state) => state.allUsers);
-    console.log("allusers: ", allusers); 
 
     const displayChatUsers = () => {
         if (!allusers) {
@@ -51,7 +50,7 @@ function Home(props) {
     return (
         
         <div>
-            <Topnav userDisplayname={props.userDisplayname} allusers={props.allusers}/>
+            <Topnav userDisplayname={props.userDisplayname} allusers={props.allusers} socket={props.socket}/>
             <div className="container-fluid">
                 <div className="row justify-content-evenly">
                     <div className="col-12 col-lg-6 pb-5">

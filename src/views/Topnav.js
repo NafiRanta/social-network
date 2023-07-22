@@ -172,7 +172,7 @@ Notifications = [
                   id="notMenu"
                   // if notification is true, set to bg-red, else bg-gray dont change color if hover dispatch notification to false onclick and open dropdown
                   className={`rounded-circle ${notification ? "bg-red" : "bg-gray"} border-0`}
-                  onKeyDown={() => dispatch({ type: "SET_NOTIFICATION", payload: false }) }
+                  onMouseDown={() => dispatch({ type: "SET_NOTIFICATION", payload: false }) }
                   >
                   <i className="fas fa-bell"></i>
                 </Dropdown.Toggle>
@@ -251,7 +251,7 @@ Notifications = [
         </div>
       </div>
       <CreatePostModal userDisplayname={props.userDisplayname}/>
-      <CreateGroupModal userDisplayname={props.userDisplayname} allusers={props.allusers}/>
+      <CreateGroupModal userDisplayname={props.userDisplayname} allusers={props.allusers} socket={props.socket}/>
     </div>
   );
 }

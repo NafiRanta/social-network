@@ -74,7 +74,7 @@ function MyProfile(props) {
       if (response.ok) {
         console.log("Privacy updated successfully");
         const data = await response.json();
-        console.log("data", data);
+        // console.log("data", data);
         dispatch({ type: "SET_USER", payload: data });
       } else {
         throw new Error("Error updating privacy");
@@ -88,6 +88,7 @@ function MyProfile(props) {
     <div>
       <Topnav
         userDisplayname={props.userDisplayname}
+        socket={props.socket}
       />
       <div className="container-fluid">
         <section className="profileTopnav">

@@ -43,7 +43,7 @@ function App() {
             // set chatNotification to true
             dispatch({ type: "SET_CHATNOTIFICATION", payload: true });
             // show the notification on the chat bubble icon
-            console.log("show the notification on the chat icon");
+            console.log("show notification on the chat icon");
             break;
           }
       }
@@ -54,19 +54,18 @@ function App() {
             if (event.payload.loggedInUsers) {
               let loggedinUsers = event.payload.loggedInUsers;
               dispatch({ type: "SET_LOGGEDINUSERS", payload: loggedinUsers });
-              console.log("loggedinUsers", loggedinUsers);
+              // console.log("loggedinUsers", loggedinUsers);
             }
           }
           break;
         }
         case "notification"
         : {
+          console.log("notification received");
           // is event.payload, then if event.payload.receiver is the current user, then dispatch notification to redux store to true
           if (event) {
             if (event.payload) {
-              if (event.payload.receiver === userInfo.UserName) {
-                console.log("notification received");
-                alert("You have a new notification");
+              if (event.payload.receiverUsername === userInfo.UserName) {
                 dispatch({ type: "SET_NOTIFICATION", payload: true });
               }
             }
@@ -153,10 +152,7 @@ function App() {
               document.cookie =
                 name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; domain=localhost";
             }
-            // alert("You have been logged out");
-            // setTimeout(() => {
-              window.location.href = "/login";
-            // }, 1000);
+            window.location.href = "/login";
           }
         } else {
           alert("WebSocket is not supported by your Browser!");

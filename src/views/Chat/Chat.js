@@ -204,6 +204,9 @@ function Chat(props) {
       type: "message_notification",
       payload: payload,
     };
+
+    console.log("props", props)
+    console.log("props.socket", props.socket)
     
     // send message_notification to receiver through websocket
     props.socket.send(JSON.stringify(messageNotification));
@@ -244,6 +247,7 @@ function Chat(props) {
       <Topnav
         userDisplayname={props.userDisplayname}
         allusers={props.allusers}
+        socket={props.socket}
       />
       <div className="container-fluid">
         <div className="row justify-content-evenly">

@@ -3475,3 +3475,161 @@ created by net/http.(*Server).Serve
 2023/07/22 02:40:42 [2023-07-22 02:40:42] ERROR: invalid token
 2023/07/22 02:40:42 failed to send message: websocket: close sent
 2023/07/22 02:40:49 writemsg error websocket: close sent
+2023/07/22 19:31:11 failed to send message: websocket: close sent
+2023/07/22 19:31:17 writemsg error websocket: close sent
+2023/07/22 19:32:26 failed to send message: websocket: close sent
+2023/07/22 19:32:33 writemsg error websocket: close sent
+2023/07/22 20:49:16 failed to send message: websocket: close sent
+2023/07/22 20:49:21 writemsg error websocket: close sent
+2023/07/22 20:49:43 failed to send message: websocket: close sent
+2023/07/22 20:49:46 writemsg error websocket: close sent
+2023/07/22 21:17:23 failed to send message: websocket: close sent
+2023/07/22 21:17:27 failed to send message: websocket: close sent
+2023/07/22 21:17:29 writemsg error websocket: close sent
+2023/07/22 21:17:32 failed to send message: websocket: close sent
+2023/07/22 21:17:33 writemsg error websocket: close sent
+2023/07/22 21:17:39 writemsg error websocket: close sent
+2023/07/22 21:20:02 failed to send message: websocket: close sent
+2023/07/22 21:20:02 failed to send message: websocket: close sent
+2023/07/22 21:20:05 writemsg error websocket: close sent
+2023/07/22 21:20:08 writemsg error websocket: close sent
+2023/07/22 21:22:01 failed to send message: websocket: close sent
+2023/07/22 21:22:01 failed to send message: write tcp [::1]:8080->[::1]:52026: write: broken pipe
+2023/07/22 21:22:01 writemsg error write tcp [::1]:8080->[::1]:52026: write: broken pipe
+2023/07/22 21:22:01 writemsg error websocket: close sent
+2023/07/22 21:26:11 failed to send message: websocket: close sent
+2023/07/22 21:26:17 writemsg error websocket: close sent
+2023/07/22 21:39:54 failed to send message: websocket: close sent
+2023/07/22 21:39:54 failed to send message: websocket: close sent
+2023/07/22 21:39:56 writemsg error websocket: close sent
+2023/07/22 21:40:00 writemsg error websocket: close sent
+2023/07/22 21:40:29 failed to send message: websocket: close sent
+2023/07/22 21:40:34 writemsg error websocket: close sent
+2023/07/22 21:42:17 failed to send message: websocket: close sent
+2023/07/22 21:42:19 writemsg error websocket: close sent
+2023/07/22 21:43:38 failed to send message: websocket: close sent
+2023/07/22 21:43:39 failed to send message: websocket: close sent
+2023/07/22 21:43:41 writemsg error websocket: close sent
+2023/07/22 21:43:48 writemsg error websocket: close sent
+2023/07/22 21:44:36 failed to send message: websocket: close sent
+2023/07/22 21:44:41 writemsg error websocket: close sent
+2023/07/22 21:45:09 failed to send message: websocket: close sent
+2023/07/22 21:45:10 writemsg error websocket: close sent
+2023/07/22 21:45:10 failed to send message: websocket: close sent
+2023/07/22 21:45:19 writemsg error websocket: close sent
+2023/07/22 21:45:24 failed to send message: websocket: close sent
+2023/07/22 21:45:26 writemsg error websocket: close sent
+2023/07/22 21:45:48 failed to send message: websocket: close sent
+2023/07/22 21:45:52 writemsg error websocket: close sent
+2023/07/22 21:54:38 failed to send message: websocket: close sent
+2023/07/22 21:54:40 writemsg error websocket: close sent
+2023/07/22 22:00:33 failed to send message: websocket: close sent
+2023/07/22 22:00:39 writemsg error websocket: close sent
+2023/07/22 22:01:27 failed to send message: websocket: close sent
+2023/07/22 22:01:28 writemsg error websocket: close sent
+2023/07/22 22:01:33 failed to send message: websocket: close sent
+2023/07/22 22:01:33 failed to send message: websocket: close sent
+2023/07/22 22:01:33 failed to send message: websocket: close sent
+2023/07/22 22:01:33 failed to send message: websocket: close sent
+2023/07/22 22:01:33 failed to send message: websocket: close sent
+2023/07/22 22:01:33 failed to send message: websocket: close sent
+2023/07/22 22:01:33 failed to send message: websocket: close sent
+2023/07/22 22:01:35 writemsg error websocket: close sent
+2023/07/22 22:01:39 writemsg error websocket: close sent
+2023/07/22 22:01:41 writemsg error websocket: close sent
+2023/07/22 22:01:56 failed to send message: websocket: close sent
+2023/07/22 22:02:05 writemsg error websocket: close sent
+2023/07/22 22:02:07 failed to send message: websocket: close sent
+2023/07/22 22:02:11 writemsg error websocket: close sent
+2023/07/22 22:05:17 failed to send message: websocket: close sent
+2023/07/22 22:05:17 failed to send message: websocket: close sent
+2023/07/22 22:05:17 failed to send message: websocket: close sent
+2023/07/22 22:05:17 writemsg error websocket: close sent
+2023/07/22 22:05:19 writemsg error websocket: close sent
+2023/07/22 22:05:24 writemsg error websocket: close sent
+2023/07/22 22:05:26 failed to send message: websocket: close sent
+2023/07/22 22:05:29 writemsg error websocket: close sent
+2023/07/22 22:08:05 failed to send message: websocket: close sent
+2023/07/22 22:08:12 writemsg error websocket: close sent
+2023/07/22 22:09:12 failed to send message: websocket: close sent
+2023/07/22 22:09:14 failed to send message: websocket: close sent
+2023/07/22 22:09:17 writemsg error websocket: close sent
+2023/07/22 22:09:22 writemsg error websocket: close sent
+2023/07/22 22:09:27 failed to send message: websocket: close sent
+2023/07/22 22:09:29 writemsg error websocket: close sent
+2023/07/22 22:10:19 failed to send message: websocket: close sent
+2023/07/22 22:10:21 writemsg error websocket: close sent
+2023/07/22 22:12:28 failed to send message: websocket: close sent
+2023/07/22 22:12:33 writemsg error websocket: close sent
+2023/07/22 22:15:23 failed to send message: websocket: close sent
+2023/07/22 22:15:31 writemsg error websocket: close sent
+2023/07/22 22:19:46 failed to send message: websocket: close sent
+2023/07/22 22:19:52 writemsg error websocket: close sent
+2023/07/22 22:20:42 failed to send message: websocket: close sent
+2023/07/22 22:20:49 writemsg error websocket: close sent
+2023/07/22 22:21:13 failed to send message: websocket: close sent
+2023/07/22 22:21:15 failed to send message: websocket: close sent
+2023/07/22 22:21:19 writemsg error websocket: close sent
+2023/07/22 22:21:23 writemsg error websocket: close sent
+2023/07/22 22:21:26 failed to send message: websocket: close sent
+2023/07/22 22:21:30 writemsg error websocket: close sent
+2023/07/22 22:23:54 failed to send message: websocket: close sent
+2023/07/22 22:24:02 writemsg error websocket: close sent
+2023/07/22 22:26:00 failed to send message: websocket: close sent
+2023/07/22 22:26:02 failed to send message: websocket: close sent
+2023/07/22 22:26:08 writemsg error websocket: close sent
+2023/07/22 22:26:10 writemsg error websocket: close sent
+2023/07/22 22:27:24 failed to send message: websocket: close sent
+2023/07/22 22:27:29 writemsg error websocket: close sent
+2023/07/22 22:28:45 failed to send message: websocket: close sent
+2023/07/22 22:28:45 failed to send message: websocket: close sent
+2023/07/22 22:28:46 writemsg error websocket: close sent
+2023/07/22 22:28:47 failed to send message: websocket: close sent
+2023/07/22 22:28:53 writemsg error websocket: close sent
+2023/07/22 22:28:55 writemsg error websocket: close sent
+2023/07/22 22:29:03 failed to send message: websocket: close sent
+2023/07/22 22:29:07 failed to send message: websocket: close sent
+2023/07/22 22:29:07 failed to send message: websocket: close sent
+2023/07/22 22:29:07 failed to send message: websocket: close sent
+2023/07/22 22:29:09 writemsg error websocket: close sent
+2023/07/22 22:29:10 writemsg error websocket: close sent
+2023/07/22 22:29:12 writemsg error websocket: close sent
+2023/07/22 22:29:58 failed to send message: websocket: close sent
+2023/07/22 22:30:00 failed to send message: websocket: close sent
+2023/07/22 22:30:07 writemsg error websocket: close sent
+2023/07/22 22:30:08 writemsg error websocket: close sent
+2023/07/22 22:30:15 failed to send message: websocket: close sent
+2023/07/22 22:30:15 failed to send message: websocket: close sent
+2023/07/22 22:30:15 failed to send message: websocket: close sent
+2023/07/22 22:30:16 writemsg error websocket: close sent
+2023/07/22 22:30:24 writemsg error websocket: close sent
+2023/07/22 22:31:12 failed to send message: websocket: close sent
+2023/07/22 22:31:16 writemsg error websocket: close sent
+2023/07/22 22:34:49 failed to send message: websocket: close sent
+2023/07/22 22:34:54 writemsg error websocket: close sent
+2023/07/22 22:35:22 failed to send message: websocket: close sent
+2023/07/22 22:35:24 writemsg error websocket: close sent
+2023/07/22 22:35:34 failed to send message: websocket: close sent
+2023/07/22 22:35:40 writemsg error websocket: close sent
+2023/07/22 22:36:29 failed to send message: websocket: close sent
+2023/07/22 22:36:33 failed to send message: websocket: close sent
+2023/07/22 22:36:33 writemsg error websocket: close sent
+2023/07/22 22:36:39 writemsg error websocket: close sent
+2023/07/22 22:36:50 failed to send message: websocket: close sent
+2023/07/22 22:36:55 writemsg error websocket: close sent
+2023/07/22 22:37:13 failed to send message: websocket: close sent
+2023/07/22 22:37:18 writemsg error websocket: close sent
+2023/07/22 22:41:26 failed to send message: websocket: close sent
+2023/07/22 22:41:28 writemsg error websocket: close sent
+2023/07/22 22:46:48 failed to send message: websocket: close sent
+2023/07/22 22:46:55 writemsg error websocket: close sent
+2023/07/22 22:48:53 failed to send message: websocket: close sent
+2023/07/22 22:48:57 writemsg error websocket: close sent
+2023/07/22 22:50:25 failed to send message: websocket: close sent
+2023/07/22 22:50:33 writemsg error websocket: close sent
+2023/07/22 22:53:16 failed to send message: websocket: close sent
+2023/07/22 22:53:17 writemsg error websocket: close sent
+2023/07/22 22:54:16 failed to send message: websocket: close sent
+2023/07/22 22:54:20 writemsg error websocket: close sent
+2023/07/22 22:54:39 failed to send message: websocket: close sent
+2023/07/22 22:54:44 writemsg error websocket: close sent

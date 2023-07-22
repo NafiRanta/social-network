@@ -120,7 +120,7 @@ function SingleGroup(props) {
 
     return (
         <div>
-            <Topnav userDisplayname={props.userDisplayname} allusers={props.allusers}/>
+            <Topnav userDisplayname={props.userDisplayname} allusers={props.allusers} socket={props.socket}/>
             {group.map((groupItem) => (
             <div className="container-fluid" key={groupItem.GroupID}>
                 <div className="bg-white p-5" >
@@ -182,8 +182,8 @@ function SingleGroup(props) {
                         </div>
                     </div>
                 </div>
-                <GroupInviteModal userDisplayname={props.userDisplayname} openModal={openModal} allusers={props.allusers} groupID={groupID} isUserGroupAdmin={isUserGroupAdmin} isUserGroupMember={isUserGroupMember}></GroupInviteModal>
-                <CreateEventModal userDisplayname={props.userDisplayname} openModal={openModal} allusers={props.allusers} groupID={groupID}/>
+                <GroupInviteModal userDisplayname={props.userDisplayname} openModal={openModal} allusers={props.allusers} groupID={groupID} isUserGroupAdmin={isUserGroupAdmin} isUserGroupMember={isUserGroupMember} socket={props.socket}></GroupInviteModal>
+                <CreateEventModal userDisplayname={props.userDisplayname} openModal={openModal} allusers={props.allusers} groupID={groupID} socket={props.socket}/>
                 <div className="row justify-content-evenly">
                     <div className="col-12 col-lg-3">
                         <div className="d-flex flex-column justify-content-center w-100 mx-auto" id="d-flex-postcontainer-followersbox">

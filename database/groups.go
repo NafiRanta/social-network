@@ -516,6 +516,5 @@ func AddUserToMemberInvite(groupID string, memberUsername string, invitedUsernam
 	if err != nil {
 		return err
 	}
-
 	return nil
 }

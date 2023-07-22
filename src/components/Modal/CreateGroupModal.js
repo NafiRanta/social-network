@@ -65,6 +65,25 @@ function CreateGroupModal(props) {
       eventIDs: groupEventID,
       createAt: now
     };
+    console.log("groupData: ", groupData);
+    if (groupData.adminInvitedUsernames.length > 0) {
+      groupData.adminInvitedUsernames.forEach((username) => {
+        // send notification to invited users
+        const notification = {
+          type: "notification",
+          payload: {
+            senderUsername: userInfo.UserName,
+            receiverUsername: username,
+          }
+        };
+        console.log("props: ", props)
+        console.log("props.socket: ", props.socket)
+        if (props.socket) {
+          props.socket.send(JSON.stringify(notification));
+          console.log("notification sent");
+        }
+      });
+    }
 
     console.log("groupData: ", groupData);
     const headers = new Headers();
