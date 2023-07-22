@@ -61,12 +61,13 @@ function App() {
         }
         case "notification"
         : {
-          console.log("notification received");
           // is event.payload, then if event.payload.receiver is the current user, then dispatch notification to redux store to true
           if (event) {
             if (event.payload) {
               if (event.payload.receiverUsername === userInfo.UserName) {
+                console.log("notification received");
                 dispatch({ type: "SET_NOTIFICATION", payload: true });
+                window.location.reload();
               }
             }
           }
