@@ -84,11 +84,6 @@ function GroupInviteModal(props) {
             receiverUsername : username,
           }
         }
-        console.log("notification", notification)
-        console.log("notification.payload", notification.payload)
-
-        console.log("props", props)
-        console.log("props.socket: ", props.socket)
         if (props.socket) {
           console.log("sending notification through ws: ", props.socket, notification)
           props.socket.send(JSON.stringify(notification));
