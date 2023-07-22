@@ -8718,3 +8718,225 @@ net/http.(*conn).serve(0x14000215b00, {0x102759998, 0x14000115ad0})
 	/usr/local/go/src/net/http/server.go:1995 +0x560
 created by net/http.(*Server).Serve
 	/usr/local/go/src/net/http/server.go:3089 +0x520
+2023/07/23 00:44:51 http: panic serving [::1]:54451: runtime error: invalid memory address or nil pointer dereference
+goroutine 5 [running]:
+net/http.(*conn).serve.func1()
+	/usr/local/go/src/net/http/server.go:1854 +0xb0
+panic({0x1005d53e0, 0x100851350})
+	/usr/local/go/src/runtime/panic.go:890 +0x258
+socialnetwork/groups.GetGroupsHandler({0x1006317d0, 0x140002140e0}, 0x1009f81a8?)
+	/Users/jacob.pesamaa/Desktop/projects/social-network/groups/getHandler.go:33 +0x50
+net/http.HandlerFunc.ServeHTTP(0x14000012120?, {0x1006317d0?, 0x140002140e0?}, 0x10037ff4c?)
+	/usr/local/go/src/net/http/server.go:2122 +0x38
+net/http.(*ServeMux).ServeHTTP(0x100603ae0?, {0x1006317d0, 0x140002140e0}, 0x14000204300)
+	/usr/local/go/src/net/http/server.go:2500 +0x140
+socialnetwork/utils.CorsMiddleware.func1({0x1006317d0, 0x140002140e0}, 0x14000204300)
+	/Users/jacob.pesamaa/Desktop/projects/social-network/utils/cors.go:23 +0x32c
+net/http.HandlerFunc.ServeHTTP(0x0?, {0x1006317d0?, 0x140002140e0?}, 0x10034edb8?)
+	/usr/local/go/src/net/http/server.go:2122 +0x38
+net/http.serverHandler.ServeHTTP({0x1400007e150?}, {0x1006317d0, 0x140002140e0}, 0x14000204300)
+	/usr/local/go/src/net/http/server.go:2936 +0x2d8
+net/http.(*conn).serve(0x14000206090, {0x100631998, 0x1400009dad0})
+	/usr/local/go/src/net/http/server.go:1995 +0x560
+created by net/http.(*Server).Serve
+	/usr/local/go/src/net/http/server.go:3089 +0x520
+2023/07/23 00:44:51 http: panic serving [::1]:54449: runtime error: invalid memory address or nil pointer dereference
+goroutine 21 [running]:
+net/http.(*conn).serve.func1()
+	/usr/local/go/src/net/http/server.go:1854 +0xb0
+panic({0x1005d53e0, 0x100851350})
+	/usr/local/go/src/runtime/panic.go:890 +0x258
+socialnetwork/groups.GetAdminGroupInvitesHandler({0x1006317d0, 0x140001481c0}, 0x127dc4288?)
+	/Users/jacob.pesamaa/Desktop/projects/social-network/groups/getHandler.go:135 +0x50
+net/http.HandlerFunc.ServeHTTP(0x1400010e130?, {0x1006317d0?, 0x140001481c0?}, 0x10037ff4c?)
+	/usr/local/go/src/net/http/server.go:2122 +0x38
+net/http.(*ServeMux).ServeHTTP(0x100603ae0?, {0x1006317d0, 0x140001481c0}, 0x14000138100)
+	/usr/local/go/src/net/http/server.go:2500 +0x140
+socialnetwork/utils.CorsMiddleware.func1({0x1006317d0, 0x140001481c0}, 0x14000138100)
+	/Users/jacob.pesamaa/Desktop/projects/social-network/utils/cors.go:23 +0x32c
+net/http.HandlerFunc.ServeHTTP(0x0?, {0x1006317d0?, 0x140001481c0?}, 0x10034edb8?)
+	/usr/local/go/src/net/http/server.go:2122 +0x38
+net/http.serverHandler.ServeHTTP({0x1400007e030?}, {0x1006317d0, 0x140001481c0}, 0x14000138100)
+	/usr/local/go/src/net/http/server.go:2936 +0x2d8
+net/http.(*conn).serve(0x140000f05a0, {0x100631998, 0x1400009dad0})
+	/usr/local/go/src/net/http/server.go:1995 +0x560
+created by net/http.(*Server).Serve
+	/usr/local/go/src/net/http/server.go:3089 +0x520
+2023/07/23 00:44:51 http: panic serving [::1]:54452: runtime error: invalid memory address or nil pointer dereference
+goroutine 6 [running]:
+net/http.(*conn).serve.func1()
+	/usr/local/go/src/net/http/server.go:1854 +0xb0
+panic({0x1005d53e0, 0x100851350})
+	/usr/local/go/src/runtime/panic.go:890 +0x258
+socialnetwork/groups.GetGroupsHandler({0x1006317d0, 0x140001482a0}, 0x127dc4288?)
+	/Users/jacob.pesamaa/Desktop/projects/social-network/groups/getHandler.go:33 +0x50
+net/http.HandlerFunc.ServeHTTP(0x1400010e3c0?, {0x1006317d0?, 0x140001482a0?}, 0x10037ff4c?)
+	/usr/local/go/src/net/http/server.go:2122 +0x38
+net/http.(*ServeMux).ServeHTTP(0x100603ae0?, {0x1006317d0, 0x140001482a0}, 0x14000138500)
+	/usr/local/go/src/net/http/server.go:2500 +0x140
+socialnetwork/utils.CorsMiddleware.func1({0x1006317d0, 0x140001482a0}, 0x14000138500)
+	/Users/jacob.pesamaa/Desktop/projects/social-network/utils/cors.go:23 +0x32c
+net/http.HandlerFunc.ServeHTTP(0x0?, {0x1006317d0?, 0x140001482a0?}, 0x10034edb8?)
+	/usr/local/go/src/net/http/server.go:2122 +0x38
+net/http.serverHandler.ServeHTTP({0x1400007e240?}, {0x1006317d0, 0x140001482a0}, 0x14000138500)
+	/usr/local/go/src/net/http/server.go:2936 +0x2d8
+net/http.(*conn).serve(0x14000206120, {0x100631998, 0x1400009dad0})
+	/usr/local/go/src/net/http/server.go:1995 +0x560
+created by net/http.(*Server).Serve
+	/usr/local/go/src/net/http/server.go:3089 +0x520
+2023/07/23 00:44:51 http: panic serving [::1]:54454: runtime error: invalid memory address or nil pointer dereference
+goroutine 35 [running]:
+net/http.(*conn).serve.func1()
+	/usr/local/go/src/net/http/server.go:1854 +0xb0
+panic({0x1005d53e0, 0x100851350})
+	/usr/local/go/src/runtime/panic.go:890 +0x258
+socialnetwork/groups.GetAdminGroupInvitesHandler({0x1006317d0, 0x140002141c0}, 0x1009f81a8?)
+	/Users/jacob.pesamaa/Desktop/projects/social-network/groups/getHandler.go:135 +0x50
+net/http.HandlerFunc.ServeHTTP(0x140000123b0?, {0x1006317d0?, 0x140002141c0?}, 0x10037ff4c?)
+	/usr/local/go/src/net/http/server.go:2122 +0x38
+net/http.(*ServeMux).ServeHTTP(0x100603ae0?, {0x1006317d0, 0x140002141c0}, 0x14000138000)
+	/usr/local/go/src/net/http/server.go:2500 +0x140
+socialnetwork/utils.CorsMiddleware.func1({0x1006317d0, 0x140002141c0}, 0x14000138000)
+	/Users/jacob.pesamaa/Desktop/projects/social-network/utils/cors.go:23 +0x32c
+net/http.HandlerFunc.ServeHTTP(0x0?, {0x1006317d0?, 0x140002141c0?}, 0x10034edb8?)
+	/usr/local/go/src/net/http/server.go:2122 +0x38
+net/http.serverHandler.ServeHTTP({0x140001240f0?}, {0x1006317d0, 0x140002141c0}, 0x14000138000)
+	/usr/local/go/src/net/http/server.go:2936 +0x2d8
+net/http.(*conn).serve(0x14000126090, {0x100631998, 0x1400009dad0})
+	/usr/local/go/src/net/http/server.go:1995 +0x560
+created by net/http.(*Server).Serve
+	/usr/local/go/src/net/http/server.go:3089 +0x520
+2023/07/23 00:44:51 http: panic serving [::1]:54455: runtime error: invalid memory address or nil pointer dereference
+goroutine 54 [running]:
+net/http.(*conn).serve.func1()
+	/usr/local/go/src/net/http/server.go:1854 +0xb0
+panic({0x1005d53e0, 0x100851350})
+	/usr/local/go/src/runtime/panic.go:890 +0x258
+socialnetwork/groups.GetGroupsHandler({0x1006317d0, 0x140002142a0}, 0x1009f81a8?)
+	/Users/jacob.pesamaa/Desktop/projects/social-network/groups/getHandler.go:33 +0x50
+net/http.HandlerFunc.ServeHTTP(0x140000127a0?, {0x1006317d0?, 0x140002142a0?}, 0x10037ff4c?)
+	/usr/local/go/src/net/http/server.go:2122 +0x38
+net/http.(*ServeMux).ServeHTTP(0x100603ae0?, {0x1006317d0, 0x140002142a0}, 0x140002a0800)
+	/usr/local/go/src/net/http/server.go:2500 +0x140
+socialnetwork/utils.CorsMiddleware.func1({0x1006317d0, 0x140002142a0}, 0x140002a0800)
+	/Users/jacob.pesamaa/Desktop/projects/social-network/utils/cors.go:23 +0x32c
+net/http.HandlerFunc.ServeHTTP(0x0?, {0x1006317d0?, 0x140002142a0?}, 0x10034edb8?)
+	/usr/local/go/src/net/http/server.go:2122 +0x38
+net/http.serverHandler.ServeHTTP({0x14000286570?}, {0x1006317d0, 0x140002142a0}, 0x140002a0800)
+	/usr/local/go/src/net/http/server.go:2936 +0x2d8
+net/http.(*conn).serve(0x140002823f0, {0x100631998, 0x1400009dad0})
+	/usr/local/go/src/net/http/server.go:1995 +0x560
+created by net/http.(*Server).Serve
+	/usr/local/go/src/net/http/server.go:3089 +0x520
+2023/07/23 00:44:51 http: panic serving [::1]:54456: runtime error: invalid memory address or nil pointer dereference
+goroutine 55 [running]:
+net/http.(*conn).serve.func1()
+	/usr/local/go/src/net/http/server.go:1854 +0xb0
+panic({0x1005d53e0, 0x100851350})
+	/usr/local/go/src/runtime/panic.go:890 +0x258
+socialnetwork/groups.GetAdminGroupInvitesHandler({0x1006317d0, 0x140002981c0}, 0x127dc66c8?)
+	/Users/jacob.pesamaa/Desktop/projects/social-network/groups/getHandler.go:135 +0x50
+net/http.HandlerFunc.ServeHTTP(0x140002945c0?, {0x1006317d0?, 0x140002981c0?}, 0x10037ff4c?)
+	/usr/local/go/src/net/http/server.go:2122 +0x38
+net/http.(*ServeMux).ServeHTTP(0x100603ae0?, {0x1006317d0, 0x140002981c0}, 0x140002a0900)
+	/usr/local/go/src/net/http/server.go:2500 +0x140
+socialnetwork/utils.CorsMiddleware.func1({0x1006317d0, 0x140002981c0}, 0x140002a0900)
+	/Users/jacob.pesamaa/Desktop/projects/social-network/utils/cors.go:23 +0x32c
+net/http.HandlerFunc.ServeHTTP(0x0?, {0x1006317d0?, 0x140002981c0?}, 0x10034edb8?)
+	/usr/local/go/src/net/http/server.go:2122 +0x38
+net/http.serverHandler.ServeHTTP({0x14000286630?}, {0x1006317d0, 0x140002981c0}, 0x140002a0900)
+	/usr/local/go/src/net/http/server.go:2936 +0x2d8
+net/http.(*conn).serve(0x14000282480, {0x100631998, 0x1400009dad0})
+	/usr/local/go/src/net/http/server.go:1995 +0x560
+created by net/http.(*Server).Serve
+	/usr/local/go/src/net/http/server.go:3089 +0x520
+2023/07/23 00:44:51 http: panic serving [::1]:54453: runtime error: invalid memory address or nil pointer dereference
+goroutine 34 [running]:
+net/http.(*conn).serve.func1()
+	/usr/local/go/src/net/http/server.go:1854 +0xb0
+panic({0x1005d53e0, 0x100851350})
+	/usr/local/go/src/runtime/panic.go:890 +0x258
+socialnetwork/groups.GetGroupsHandler({0x1006317d0, 0x140001902a0}, 0x1009fbd08?)
+	/Users/jacob.pesamaa/Desktop/projects/social-network/groups/getHandler.go:33 +0x50
+net/http.HandlerFunc.ServeHTTP(0x140000f8940?, {0x1006317d0?, 0x140001902a0?}, 0x10037ff4c?)
+	/usr/local/go/src/net/http/server.go:2122 +0x38
+net/http.(*ServeMux).ServeHTTP(0x100603ae0?, {0x1006317d0, 0x140001902a0}, 0x14000188400)
+	/usr/local/go/src/net/http/server.go:2500 +0x140
+socialnetwork/utils.CorsMiddleware.func1({0x1006317d0, 0x140001902a0}, 0x14000188400)
+	/Users/jacob.pesamaa/Desktop/projects/social-network/utils/cors.go:23 +0x32c
+net/http.HandlerFunc.ServeHTTP(0x0?, {0x1006317d0?, 0x140001902a0?}, 0x10034edb8?)
+	/usr/local/go/src/net/http/server.go:2122 +0x38
+net/http.serverHandler.ServeHTTP({0x1400009ddd0?}, {0x1006317d0, 0x140001902a0}, 0x14000188400)
+	/usr/local/go/src/net/http/server.go:2936 +0x2d8
+net/http.(*conn).serve(0x14000126000, {0x100631998, 0x1400009dad0})
+	/usr/local/go/src/net/http/server.go:1995 +0x560
+created by net/http.(*Server).Serve
+	/usr/local/go/src/net/http/server.go:3089 +0x520
+2023/07/23 00:44:51 http: panic serving [::1]:54450: runtime error: invalid memory address or nil pointer dereference
+goroutine 22 [running]:
+net/http.(*conn).serve.func1()
+	/usr/local/go/src/net/http/server.go:1854 +0xb0
+panic({0x1005d53e0, 0x100851350})
+	/usr/local/go/src/runtime/panic.go:890 +0x258
+socialnetwork/groups.GetGroupsHandler({0x1006317d0, 0x14000190380}, 0x1009fbd08?)
+	/Users/jacob.pesamaa/Desktop/projects/social-network/groups/getHandler.go:33 +0x50
+net/http.HandlerFunc.ServeHTTP(0x140000f8bd0?, {0x1006317d0?, 0x14000190380?}, 0x10037ff4c?)
+	/usr/local/go/src/net/http/server.go:2122 +0x38
+net/http.(*ServeMux).ServeHTTP(0x100603ae0?, {0x1006317d0, 0x14000190380}, 0x14000188800)
+	/usr/local/go/src/net/http/server.go:2500 +0x140
+socialnetwork/utils.CorsMiddleware.func1({0x1006317d0, 0x14000190380}, 0x14000188800)
+	/Users/jacob.pesamaa/Desktop/projects/social-network/utils/cors.go:23 +0x32c
+net/http.HandlerFunc.ServeHTTP(0x0?, {0x1006317d0?, 0x14000190380?}, 0x10034edb8?)
+	/usr/local/go/src/net/http/server.go:2122 +0x38
+net/http.serverHandler.ServeHTTP({0x1400009dc50?}, {0x1006317d0, 0x14000190380}, 0x14000188800)
+	/usr/local/go/src/net/http/server.go:2936 +0x2d8
+net/http.(*conn).serve(0x140000f0630, {0x100631998, 0x1400009dad0})
+	/usr/local/go/src/net/http/server.go:1995 +0x560
+created by net/http.(*Server).Serve
+	/usr/local/go/src/net/http/server.go:3089 +0x520
+2023/07/23 00:44:51 http: panic serving [::1]:54457: runtime error: invalid memory address or nil pointer dereference
+goroutine 33 [running]:
+net/http.(*conn).serve.func1()
+	/usr/local/go/src/net/http/server.go:1854 +0xb0
+panic({0x1005d53e0, 0x100851350})
+	/usr/local/go/src/runtime/panic.go:890 +0x258
+socialnetwork/groups.GetGroupsHandler({0x1006317d0, 0x14000190460}, 0x1009fbd08?)
+	/Users/jacob.pesamaa/Desktop/projects/social-network/groups/getHandler.go:33 +0x50
+net/http.HandlerFunc.ServeHTTP(0x140000f8e70?, {0x1006317d0?, 0x14000190460?}, 0x10037ff4c?)
+	/usr/local/go/src/net/http/server.go:2122 +0x38
+net/http.(*ServeMux).ServeHTTP(0x100603ae0?, {0x1006317d0, 0x14000190460}, 0x14000188c00)
+	/usr/local/go/src/net/http/server.go:2500 +0x140
+socialnetwork/utils.CorsMiddleware.func1({0x1006317d0, 0x14000190460}, 0x14000188c00)
+	/Users/jacob.pesamaa/Desktop/projects/social-network/utils/cors.go:23 +0x32c
+net/http.HandlerFunc.ServeHTTP(0x0?, {0x1006317d0?, 0x14000190460?}, 0x10034edb8?)
+	/usr/local/go/src/net/http/server.go:2122 +0x38
+net/http.serverHandler.ServeHTTP({0x1400019ed50?}, {0x1006317d0, 0x14000190460}, 0x14000188c00)
+	/usr/local/go/src/net/http/server.go:2936 +0x2d8
+net/http.(*conn).serve(0x140000f10e0, {0x100631998, 0x1400009dad0})
+	/usr/local/go/src/net/http/server.go:1995 +0x560
+created by net/http.(*Server).Serve
+	/usr/local/go/src/net/http/server.go:3089 +0x520
+2023/07/23 00:44:52 http: panic serving [::1]:54460: runtime error: invalid memory address or nil pointer dereference
+goroutine 84 [running]:
+net/http.(*conn).serve.func1()
+	/usr/local/go/src/net/http/server.go:1854 +0xb0
+panic({0x1005d53e0, 0x100851350})
+	/usr/local/go/src/runtime/panic.go:890 +0x258
+socialnetwork/websocket.(*Manager).ServeWS(0x140000d3700, {0x1006317d0, 0x14000190540}, 0x14000189000)
+	/Users/jacob.pesamaa/Desktop/projects/social-network/websocket/manager.go:201 +0x64
+net/http.HandlerFunc.ServeHTTP(0x140000f9110?, {0x1006317d0?, 0x14000190540?}, 0x10037ff4c?)
+	/usr/local/go/src/net/http/server.go:2122 +0x38
+net/http.(*ServeMux).ServeHTTP(0x100603ae0?, {0x1006317d0, 0x14000190540}, 0x14000189000)
+	/usr/local/go/src/net/http/server.go:2500 +0x140
+socialnetwork/utils.CorsMiddleware.func1({0x1006317d0, 0x14000190540}, 0x14000189000)
+	/Users/jacob.pesamaa/Desktop/projects/social-network/utils/cors.go:23 +0x32c
+net/http.HandlerFunc.ServeHTTP(0x140000a0908?, {0x1006317d0?, 0x14000190540?}, 0x10034edb8?)
+	/usr/local/go/src/net/http/server.go:2122 +0x38
+net/http.serverHandler.ServeHTTP({0x1400019f170?}, {0x1006317d0, 0x14000190540}, 0x14000189000)
+	/usr/local/go/src/net/http/server.go:2936 +0x2d8
+net/http.(*conn).serve(0x140000f1440, {0x100631998, 0x1400009dad0})
+	/usr/local/go/src/net/http/server.go:1995 +0x560
+created by net/http.(*Server).Serve
+	/usr/local/go/src/net/http/server.go:3089 +0x520
+2023/07/23 00:45:01 failed to send message: websocket: close sent
+2023/07/23 00:45:07 writemsg error websocket: close sent
