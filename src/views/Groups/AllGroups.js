@@ -6,7 +6,6 @@ import './Groups.css'
 
 
 function AllGroups(props){
-    console.log("props", props)
     return (
         <div>
              <Topnav userDisplayname={props.userDisplayname} />

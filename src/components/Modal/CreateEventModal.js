@@ -5,41 +5,9 @@ import Avatar from "../Avatar/Avatar";
 
 function CreateEventModal(props) {
   const userInfo = useSelector((state) => state.userInfo);
-  const allusers = useSelector((state) => state.allUsers);
-  const [myFriends, setMyFriends] = useState([]); // [{username: "John", displayname: "John Doe"}, {username: "Jane", displayname: "Jane Doe"}
-  const [selectedNames, setSelectedNames] = useState([]);
-  const [selectedName, setSelectedName] = useState('');
   const [eventDate, setEventDate] = useState('');
   const [eventTime, setEventTime] = useState('');
-  const names = myFriends.map((friend) => friend.displayname);
-
-  useEffect(() => {
-    const filteredData = allusers?.filter((user) => user.UserName !== userInfo.UserName);
-    const updatedFriends = filteredData?.map((friend) => ({
-      username: friend.UserName,
-      displayname: friend.FirstName + " " + friend.LastName,
-    }));
-    setMyFriends(updatedFriends);
-  }, [allusers, userInfo.UserName]);
-
-  const handleNameChange = (event) => {
-    // get username of the selected name
-    setSelectedName(event.target.value);
-  };
-
-  const handleAddName = (event) => {
-    event.preventDefault();
-    if (selectedName && !selectedNames.includes(selectedName)) {
-      setSelectedNames([...selectedNames, selectedName]);
-      setSelectedName('');
-    }
-  };
-
-  const handleRemoveName = (name) => {
-    const updatedNames = selectedNames.filter((n) => n !== name);
-    setSelectedNames(updatedNames);
-  };
-
+ 
   const handleEventDateChange = (event) => {
     setEventDate(event.target.value);
   };
@@ -55,12 +23,7 @@ const handleEventSubmit = async (event) => {
     const eventDescription = document.getElementById("eventdescription").value;
     const eventDate = document.getElementById("eventdate").value;
     const eventTime = document.getElementById("eventtime").value;
-    const selectedUserNames = [];
-    selectedNames.forEach((name) => {
-      const user = myFriends.find((friend) => friend.displayname === name);
-      selectedUserNames.push(user.username);
-    });
-    const invitedFriends  = selectedNames;
+   
     const now = new Date();
     const goingFriends = [];
 
@@ -71,10 +34,31 @@ const handleEventSubmit = async (event) => {
       eventDescription: eventDescription,
       eventDate: eventDate,
       eventTime: eventTime,
-      invitedUsers: invitedFriends,
+      notGoingUsers: [],
       goingUsers: goingFriends,
       createAt: now,
     };
+    // fetch group with groupID
+    const group = await fetch(`http://localhost:8080/getgroup?groupID=${props.groupID}`, { 
+      method: 'GET',
+      headers: {
+        'Authorization': 'Bearer ' + token, 
+        'Content-Type': 'application/json'
+      }
+    });
+    const groupData = await group.json();
+    const groupMembers = groupData.MemberUsernames;
+    // loop through groupMembers and broadcast to all users in the group a notification through websocket
+    groupMembers.forEach((member) => {
+      const notification = {
+        type: "notification",
+        payload: {
+          receiverUsername: member,
+          senderUsername: userInfo.UserName,
+        }
+      }
+      props.socket.send(JSON.stringify(notification));
+    });
 
     const headers = new Headers();
     headers.append('Authorization', 'Bearer ' + token);
@@ -120,25 +104,7 @@ const handleEventSubmit = async (event) => {
                     </div>
                     <input type="date" value={eventDate} id="eventdate" onChange={handleEventDateChange} className="form-control my-3" placeholder="Event Date" />
                     <input type="time" value={eventTime} id="eventtime" onChange={handleEventTimeChange} className="form-control my-3" placeholder="Event Time" />
-                    <div>
-                      {selectedNames.map((name) => (
-                        <div key={name} className="d-flex align-items-center">
-                          <input type="text" className="form-control me-2" value={name} readOnly />
-                          <button onClick={() => handleRemoveName(name)}>Remove</button>
-                        </div>
-                      ))}
-                    </div>
-                    <select value={selectedName} onChange={handleNameChange} className="form-select form-control my-3">
-                      <option disabled value="">
-                        Invite Friends (optional)
-                      </option>
-                      {names.filter((name) => !selectedNames.includes(name)).map((name) => (
-                        <option key={name} value={name}>
-                          {name}
-                        </option>
-                      ))}
-                    </select>
-                    <button onClick={handleAddName}>Add Name</button>
+                    
                   </form>
                 </div>
               </div>

@@ -119,11 +119,16 @@ function CreateGroupPostModal(props) {
                         aria-label="Default select example"
                       >
                         <option defaultValue="0">Select your groups</option>
-                        {mygroups.map((group) => (
-                          <option key={group.GroupID} value={group.GroupID}>
-                            {group.GroupName}
-                          </option>
-                        ))}
+                        {/* if mygroup != undefined */}
+                        {mygroups ? (
+                          mygroups.map((group) => (
+                            <option key={group.GroupID} value={group.GroupID}>
+                              {group.GroupName}
+                            </option>
+                          ))
+                        ) : (
+                          <option value="0">No groups to display</option>
+                        )}
                       </select>
                     )}
                   </div>

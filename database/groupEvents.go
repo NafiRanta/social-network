@@ -3,6 +3,7 @@ package database
 import (
 	"database/sql"
 	"encoding/json"
+
 	//"fmt"
 	u "socialnetwork/utils"
 	"time"
@@ -18,7 +19,7 @@ type GroupEvent struct {
 	EventDescription string
 	EventDate        string
 	EventTime        string
-	InvitedUsers     string
+	NotGoingUsers    string
 	GoingUsers       string
 	CreateAt         time.Time
 }
@@ -31,7 +32,7 @@ type GroupEventResponse struct {
 	EventDescription string    `json:"eventDescription"`
 	EventDate        string    `json:"eventDate"`
 	EventTime        string    `json:"eventTime"`
-	InvitedUsers     []string  `json:"invitedUsers"`
+	NotGoingUsers    []string  `json:"notGoingUsers"`
 	GoingUsers       []string  `json:"goingUsers"`
 	CreateAt         time.Time `json:"createAt"`
 }
@@ -46,7 +47,7 @@ func CreateGroupEventsTable(db *sql.DB) {
 		EventDescription TEXT NOT NULL,
 		EventDate TEXT NOT NULL,
 		EventTime TEXT NOT NULL,
-		InvitedUsers TEXT,
+		notGoingUsers TEXT,
 		GoingUsers TEXT,
 		CreateAt TIMESTAMP NOT NULL,
 		PRIMARY KEY (GroupEventID)
@@ -65,12 +66,12 @@ func AddGroupEvent(groupEvent *GroupEventResponse) error {
 	defer db.Close()
 
 	query := `
-		INSERT INTO GroupEvents (GroupEventID, GroupID, UserName, EventName, EventDescription, EventDate, EventTime, InvitedUsers, GoingUsers, CreateAt)
+		INSERT INTO GroupEvents (GroupEventID, GroupID, UserName, EventName, EventDescription, EventDate, EventTime, notGoingUsers, GoingUsers, CreateAt)
 			VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`
 
 	groupEventID := uuid.New().String()
 
-	invitedJSON, err := json.Marshal(groupEvent.InvitedUsers)
+	invitedJSON, err := json.Marshal(groupEvent.NotGoingUsers)
 	if err != nil {
 		return err
 	}
@@ -115,7 +116,7 @@ func GetGroupEvent(groupID string) ([]GroupEvent, error) {
 			&groupEvent.EventDescription,
 			&groupEvent.EventDate,
 			&groupEvent.EventTime,
-			&groupEvent.InvitedUsers,
+			&groupEvent.NotGoingUsers,
 			&groupEvent.GoingUsers,
 			&groupEvent.CreateAt,
 		)
