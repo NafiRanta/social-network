@@ -9,15 +9,16 @@ import "./Profile.css";
 import ChangeProfilePicModal from "../../components/Modal/ChangeProfilePicModal";
 import UpdateProfileSettingsModal from "../../components/Modal/UpdateProfileSettingsModal";
 import Topnav from "../Topnav";
+import { Link } from 'react-router-dom';
 //import { set } from 'draft-js/lib/DefaultDraftBlockRenderMap';
 
 function MyProfile(props) {
   const dispatch = useDispatch();
-  // get the username from the url
-  const user = window.location.pathname.split("/")[2];
-  console.log("user", user)
   const userInfo = useSelector((state) => state.userInfo);
-  console.log("userInfo myprofile", userInfo)
+  const allusers = useSelector((state) => state.allusers);
+  const myfollowers = userInfo?.FollowerUsernames ? userInfo?.FollowerUsernames.split(",") : [];
+  const [myfollowersInfo, setMyfollowersInfo] = useState([]);
+  console.log("myfollowers", myfollowers)
 
   // format date of birth to be displayed to dd month yyyy
   const dob = new Date(userInfo.DateOfBirth).toLocaleDateString("en-US", {
@@ -35,6 +36,18 @@ function MyProfile(props) {
     if (userInfo) {
       setPrivacy(privacy);
     }
+
+    if (myfollowers) {
+      const myFollowersInfo = [];
+      myfollowers.forEach((follower) => {
+          const followerInfo = allusers?.find((user) => user.UserName === follower);
+          myFollowersInfo.push(followerInfo);
+      });
+      setMyfollowersInfo(myFollowersInfo);
+  } else {
+    setMyfollowersInfo([]);
+  }
+
   }, [userInfo]);
 
   if (!userInfo) {
@@ -213,65 +226,27 @@ function MyProfile(props) {
                 </ul>
               </div>
               <div className="bg-white rounded border shadow p-3">
-                <div>
-                  <p className="m-0">Followers</p>
+                <div className="p-2">
+                    <p className="m-0"><strong>Followers</strong></p>
                 </div>
                 <div className="follow-box-content p-1 m-0 d-flex">
-                  <a
-                    href="#"
-                    className="d-flex align-items-center text-decoration-none text-dark"
-                  >
-                    <div className="fellows d-flex align-items-center">
-                      <AvatarSquare />
-                    </div>
-                    <div className="fellows d-flex align-items-center">
-                      <p className="m-0">Jacob</p>
-                    </div>
-                  </a>
-                  <a
-                    href="#"
-                    className="d-flex align-items-center text-decoration-none text-dark"
-                  >
-                    <div className="fellows d-flex align-items-center">
-                      <AvatarSquare />
-                    </div>
-                    <div className="fellows d-flex align-items-center">
-                      <p className="m-0">Gin</p>
-                    </div>
-                  </a>
-                  <a
-                    href="#"
-                    className="d-flex align-items-center text-decoration-none text-dark"
-                  >
-                    <div className="fellows d-flex align-items-center">
-                      <AvatarSquare />
-                    </div>
-                    <div className="fellows d-flex align-items-center">
-                      <p className="m-0">Ashley</p>
-                    </div>
-                  </a>
-                  <a
-                    href="#"
-                    className="d-flex align-items-center text-decoration-none text-dark"
-                  >
-                    <div className="fellows d-flex align-items-center">
-                      <AvatarSquare />
-                    </div>
-                    <div className="fellows d-flex align-items-center">
-                      <p className="m-0">Amanda</p>
-                    </div>
-                  </a>
-                  <a
-                    href="#"
-                    className="d-flex align-items-center text-decoration-none text-dark"
-                  >
-                    <div className="fellows d-flex align-items-center">
-                      <AvatarSquare />
-                    </div>
-                    <div className="fellows d-flex align-items-center">
-                      <p className="m-0">Noah</p>
-                    </div>
-                  </a>
+                  {myfollowersInfo.length === 0 ? (
+                      <p className="m-0">You have no followers</p>
+                  ) : (
+                      // If not empty, map over the followers
+                      myfollowersInfo.map((follower) => (
+                          <div className="p-2" key={follower.UserName}>
+                            <Link to={`/othersprofile/${follower.UserName}`} className="text-decoration-none text-dark">
+                              <div className="fellows d-flex align-items-center">
+                                <AvatarSquare avatar={follower.Avatar} />
+                              </div>
+                              <div className="fellows d-flex align-items-center">
+                                <p className="m-0">{follower.FirstName + " " + follower.LastName}</p>
+                              </div>
+                            </Link>
+                          </div>
+                      ))
+                  )}
                 </div>
               </div>
             </div>
