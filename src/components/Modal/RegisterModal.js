@@ -18,8 +18,6 @@ function RegisterModal({ openModal }) {
 
     const handleFileInputChange = (e) => {
       const file = e.target.files[0];
-      
-
       if (file) {
         const reader = new FileReader();
         reader.onload = () => {
@@ -175,6 +173,7 @@ function RegisterModal({ openModal }) {
       
       try {
         const response = await fetch("http://localhost:8080/register", {
+     
           method: "POST",
           credentials: "include",
           headers: {
@@ -191,9 +190,9 @@ function RegisterModal({ openModal }) {
             about: about, 
             avatar: profilePicture}),
         });
-        
         if (response.ok) {
-          console.log("Register successful");
+          // const data = await response.json();
+          // dispatch({ type: "FETCH_ALLUSERS", payload: data });
           document.getElementById("registerForm").reset();
           alert("Register successful");
            window.location.href = "/login";

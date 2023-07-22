@@ -24,28 +24,6 @@ function Topnav(props) {
   
   let Notifications = []
 
-  // fetch all users from redux
-  useEffect(() => {
-    const fetchAllUsers = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        const headers = new Headers();
-        headers.append("Authorization", "Bearer " + token);
-        const url = "http://localhost:8080/users";
-        const res = await fetch(url, {
-          method: "GET",
-          headers: headers,
-        });
-        const data = await res.json();
-        dispatch({ type: "FETCH_ALLUSERS", payload: data });
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchAllUsers();
-  }, [dispatch]);
-
-
   // get group invites by admin getting admin Avatar, admin Displayname, groupName, groupID 
   // set these variables to setGroupInvitesByAdmin
   useEffect(() => {
@@ -251,7 +229,7 @@ Notifications = [
                   aria-labelledby="secondMenu"
                 >
                   <Dropdown.Item as="li" className="my-2 p-1">
-                    <Link to={`/profile/${props.userDisplayname}`} className="text-decoration-none text-dark d-flex align-items-center">
+                    <Link to={`/profile/${userInfo.UserName}`} className="text-decoration-none text-dark d-flex align-items-center">
                       <div className="rounded-circle d-flex align-items-center justify-content-center mx-2" id="avatar">
                         <Avatar username={props.userDisplayname} />
                       </div>

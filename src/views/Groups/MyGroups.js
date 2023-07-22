@@ -7,7 +7,7 @@ import Topnav from '../../views/Topnav'
 function MyGroups(props) {
     return (
         <div>
-             <Topnav userDisplayname={props.userDisplayname}  allusers={props.allusers}/>
+             <Topnav userDisplayname={props.userDisplayname}  />
             <div className="container-fluid">
                 <div className="row justify-content-evenly">
                     <div className="col-12 col-lg-3">

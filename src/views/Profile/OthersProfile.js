@@ -1,31 +1,99 @@
-import React from 'react';
+import {React, useState, useEffect} from 'react';
 import Topnav from '../../views/Topnav';    
 import PostCard from '../../components/Card/PostCard';
 import AvatarSquare from '../../components/Avatar/AvatarSquare';
 import { useLocation } from 'react-router-dom';
 import './Profile.css';
+import { useSelector } from 'react-redux';
 
 
 
 function OthersProfile(props) {
     const location = useLocation();
     const { pathname } = location;
-    const encodedUsername = pathname.split('/').pop();
-    const clickedProfileUsername = decodeURIComponent(encodedUsername);
-    console.log("username in othersprofile", clickedProfileUsername)
-
-  if (!clickedProfileUsername) {
-    // Handle the error here, such as displaying an error message or redirecting to a different page
-    return <p>Error: User information not found.</p>;
-  }
+    const allusers = useSelector((state) => state.allUsers);
+    const userInfo = useSelector((state) => state.userInfo);
+    const username = window.location.pathname.split("/")[2];
   
-  // iterate in allusers and find the user with the user.firstname and user.lastname that matches clickedProfileUsername
-    const clickedProfileInfo = props.allusers.find(user => user.firstname + " " + user.lastname === clickedProfileUsername);
-    console.log("clickedProfile", clickedProfileInfo)
+    const clickedProfileInfo = allusers?.find(user => user.UserName  === username);
+    const clickedProfileUsername = clickedProfileInfo?.UserName;
+    const clickedProfileDisplayName = clickedProfileInfo?.FirstName + " " + clickedProfileInfo?.LastName;
+    
+    const [followers, setFollowers] = useState([]);
+    const [followingUsernamesReceived, setFollowingUsernamesReceived] = useState([]);
+    const [followingUsernamesSent, setFollowingUsernamesSent] = useState([]);
+    const [isPrivate, setIsPrivate] = useState(false);
+    const [isPublic, setIsPublic] = useState(false);
+    const [pending, setPending] = useState([]);
+
+    const clickedProfilePrivacy = clickedProfileInfo?.Privacy;
+
+  
+    useEffect(() => {
+        if (userInfo.FollowerUsernames) {
+            const myFollowers = userInfo.FollowerUsernames.split(",");
+            setFollowers(myFollowers);
+        } 
+
+        if (userInfo.FollowerUsernamesReceived) {
+            const followingReceived = userInfo.FollowerUsernamesReceived.split(",");
+            setFollowingUsernamesReceived(followingReceived);
+        } 
+        if (userInfo.FollowingUsernamesSent) {
+            const followingSent = userInfo.FollowerUsernamesSent.split(",");
+            setFollowingUsernamesSent(followingSent);
+        } 
+        if (clickedProfilePrivacy === 'public') {
+            setIsPublic(true);
+        } else if (clickedProfilePrivacy === 'private') {
+            setIsPrivate(true);
+        }
+    }, [userInfo]); // Only run the effect when clickedProfileInfo changes 
+
+
+    // if username is found in followers, then the user is following the clicked profile
+    const isFollowing = followers.includes(clickedProfileUsername);
+
+    // if username is found in followingUsernamesReceived or followingUsernamesSent, then the clicked profile follow request is pending
+    const isPending = followingUsernamesReceived.includes(clickedProfileUsername) || followingUsernamesSent.includes(clickedProfileUsername);
+
+    console.log("myfollowers", isFollowing);
+    console.log("isPending", isPending);
+    console.log("ClickedProfile isPrivate", isPrivate);
+    console.log("ClickedProfile isPublic", isPublic);
+
+    // handle follow button
+    const handleFollow = async (event) => {
+        event.preventDefault();
+        const data = {
+            sender_username: userInfo.UserName,
+            receiver_username: username
+        }
+        try{
+            const response = await fetch("http://localhost:8080/sendfollowreq", {
+                method: 'POST',
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json",
+                  },
+                body: JSON.stringify(data)
+            });
+            if (response.ok) {
+                console.log("Follow request sent");
+                alert("Follow request sent");
+                window.location.reload();
+            } else {
+                console.log("Error sending follow request");
+            }
+        }
+        catch(error){
+            console.log(error);
+        }
+    }
 
   return (
         <div>
-           <Topnav userDisplayname={props.userDisplayname} allusers={props.allusers}/>
+           <Topnav userDisplayname={props.userDisplayname} />
             <div className="container-fluid">
                 <section className="profileTopnav">
                     <div className="container py-5 h-100">
@@ -35,15 +103,15 @@ function OthersProfile(props) {
                             <div className="card-body p-4">
                                 <div className="d-flex text-black">
                                 <div className="flex-shrink-0">
-                                    <img src={clickedProfileInfo.profilePicture}
+                                    <img src={clickedProfileInfo?.Avatar}
                                     className="img-fluid"/>
                                 </div>
                                 <div className="flex-grow-1 ms-3">
                                     <div className="d-flex align-items-center">
-                                        <h2 className="mb-0 mr-2"><strong>{clickedProfileUsername}</strong></h2>
-                                        {clickedProfileInfo.nickname && (
+                                        <h2 className="mb-0 mr-2"><strong>{clickedProfileDisplayName}</strong></h2>
+                                        {clickedProfileInfo?.Nickname && (
                                             <span className="nickname-text">
-                                                <small className="text-muted">({clickedProfileInfo.nickname})</small>
+                                                <small className="text-muted">({clickedProfileInfo?.Nickname})</small>
                                             </span>
                                         )}
                                     </div>
@@ -55,20 +123,31 @@ function OthersProfile(props) {
                                             </p>
                                             <p className="mb-0">976</p>
                                         </div>
-                                        <div>
+                                        <div className="px-3">
                                             <p className="small text-muted mb-1">
-                                            Following
+                                            Profile
                                             </p>
-                                            <p className="mb-0">8.5</p>
+                                            <p className="mb-0">{clickedProfileInfo?.Privacy}</p>
                                         </div>
                                     </div>
                                     <div className="d-flex pt-1">
-                                        <button type="button" className="btn btn-outline-primary me-1 flex-grow-1">
-                                            Chat
-                                        </button>
-                                        <button type="button" className="btn btn-primary flex-grow-1">
-                                            Follow
-                                        </button>
+                                    {isFollowing ? (
+                            <button type="button" className="btn btn-primary flex-grow-1" disabled>
+                              You follow each other
+                            </button>
+                          ) : isPending ? (
+                            <button type="button" className="btn btn-primary flex-grow-1" disabled>
+                              Pending Follow Request
+                            </button>
+                          ) : clickedProfilePrivacy === 'public' ? (
+                            <button type="button" className="btn btn-primary flex-grow-1" onClick={handleFollow}>
+                              Follow
+                            </button>
+                          ) : (
+                            <button type="button" className="btn btn-primary flex-grow-1" disabled>
+                              Private Profile
+                            </button>
+                          )}
                                     </div>
                                 </div>
                                 </div>
@@ -87,9 +166,9 @@ function OthersProfile(props) {
                                         <div className="p-2">
                                             <p className="m-0"><strong>Intro</strong></p>
                                         </div>
-                                         {clickedProfileInfo.about && (
+                                         {clickedProfileInfo?.AboutMe && (
                                             <li className="dropdown-item p-1 rounded text-center">
-                                                <p className="text-center">{clickedProfileInfo.about}</p>
+                                                <p className="text-center">{clickedProfileInfo?.AboutMe}</p>
                                             </li>
                                         )}
                                     </li>
@@ -97,10 +176,10 @@ function OthersProfile(props) {
                                         <span><i className="fas fa-user"></i> <span className="name">Nickname</span></span>
                                     </li> */}
                                     <li className="my-2 p-1">
-                                        <span><i className="fas fa-edit"></i> <span className="name">{clickedProfileInfo.email}</span></span>
+                                        <span><i className="fas fa-edit"></i> <span className="name">{clickedProfileInfo?.Email}</span></span>
                                     </li>
                                     <li className="dropdown-item p-1 rounded">
-                                        <span><i className="fas fa-birthday-cake"></i> <span className="name">{clickedProfileInfo.dob}</span></span>
+                                        <span><i className="fas fa-birthday-cake"></i> <span className="name">{clickedProfileInfo?.DateOfBirth}</span></span>
                                     </li>
                                 </ul>
                             </div>
@@ -147,45 +226,6 @@ function OthersProfile(props) {
                                         </div>
                                         <div className="fellows d-flex align-items-center">
                                             <p className="m-0">Noah</p>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                            <div className="bg-white rounded border shadow p-3">
-                                <div>
-                                    <p className="m-0">Following</p>
-                                </div>
-                                <div className="follow-box-content p-1 m-0 d-flex">
-                                    <a href="#" className="d-flex align-items-center text-decoration-none text-dark">
-                                        <div className="fellows d-flex align-items-center">
-                                            <AvatarSquare/>
-                                        </div>
-                                        <div className="fellows d-flex align-items-center">
-                                            <p className="m-0">Jacob</p>
-                                        </div>
-                                    </a>
-                                    <a href="#" className="d-flex align-items-center text-decoration-none text-dark">
-                                        <div className="fellows d-flex align-items-center">
-                                            <AvatarSquare/>
-                                        </div>
-                                        <div className="fellows d-flex align-items-center">
-                                            <p className="m-0">Jacob</p>
-                                        </div>
-                                    </a>
-                                    <a href="#" className="d-flex align-items-center text-decoration-none text-dark">
-                                        <div className="fellows d-flex align-items-center">
-                                            <AvatarSquare/>
-                                        </div>
-                                        <div className="fellows d-flex align-items-center">
-                                            <p className="m-0">Jacob</p>
-                                        </div>
-                                    </a>
-                                    <a href="#" className="d-flex align-items-center text-decoration-none text-dark">
-                                        <div className="fellows d-flex align-items-center">
-                                            <AvatarSquare/>
-                                        </div>
-                                        <div className="fellows d-flex align-items-center">
-                                            <p className="m-0">Jacob</p>
                                         </div>
                                     </a>
                                 </div>

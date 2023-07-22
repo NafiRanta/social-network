@@ -96,10 +96,9 @@ function App() {
   const [userDisplayname, setUserDisplayname] = useState("");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
-  const [allusers, setAllUsers] = useState([]);
+  const [ws, setConn] = useState(null);
   const [myGroups, setMyGroups] = useState([]);
   const [allGroups, setAllGroups] = useState([]);
-  const [ws, setConn] = useState(null);
   useEffect(() => {
     if (isAuth) {
       const userDisplayname = userInfo.FirstName + " " + userInfo.LastName;
@@ -181,8 +180,6 @@ function App() {
               const data = await res.json();
               // setAllUsers to include users that are not the current user
               const filteredData = data.filter((user) => user.email !== email);
-              setAllUsers(filteredData);
-              console.log("allusers", filteredData);
               dispatch({ type: "FETCH_ALLUSERS", payload: filteredData });
             } else {
               console.log("error");
@@ -201,6 +198,41 @@ function App() {
           sessionStorage.removeItem("userInfo");
           localStorage.removeItem("token");
         }
+    }
+  }, [isAuth]);
+  useEffect(() => {
+    if (isAuth) {
+      const fetchUserInfo = async () => {
+        try {
+          const token = localStorage.getItem("token");
+          const headers = new Headers();
+          headers.append("Authorization", "Bearer " + token);
+          headers.append("Content-Type", "application/json");
+          const res = await fetch(`http://localhost:8080/getUserByUsername?senderUsername=${userInfo.UserName}`, {
+            method: "GET",
+            headers: headers,
+          });
+          if (res.ok) {
+            const data = await res.json();
+            dispatch({ type: "SET_USER", payload: data });
+            sessionStorage.setItem("userInfo", JSON.stringify(data));
+          } else {
+            console.log("error");
+          }
+        } catch (error) {
+          // Handle error
+          console.log(error);
+        }
+      };
+      if (isAuth) {
+        fetchUserInfo();
+      } else {
+        console.log("not authenticated");
+        // clear redux and user info and token from local storage and session storage
+        localStorage.removeItem("reduxState");
+        sessionStorage.removeItem("userInfo");
+        localStorage.removeItem("token");
+      }
     }
   }, [isAuth]);
 
@@ -290,7 +322,6 @@ function App() {
               <Home
                 userInfo={userInfo}
                 userDisplayname={userDisplayname}
-                allusers={allusers}
               />
             </div>
           }
@@ -311,7 +342,6 @@ function App() {
               userInfo={userInfo}
               username={username}
               userDisplayname={userDisplayname}
-              allusers={allusers}
               socket={ws}
             />
           </div>
@@ -325,7 +355,6 @@ function App() {
               userInfo={userInfo}
               username={username}
               userDisplayname={userDisplayname}
-              allusers={allusers}
               socket={ws}
             />
           </div>
@@ -339,7 +368,6 @@ function App() {
               userInfo={userInfo}
               username={username}
               userDisplayname={userDisplayname}
-              allusers={allusers}
               socket={ws}
             />
           </div>
@@ -353,7 +381,6 @@ function App() {
               userInfo={userInfo}
               username={username}
               userDisplayname={userDisplayname}
-              allusers={allusers}
               socket={ws}
             />
           </div>
@@ -366,7 +393,6 @@ function App() {
             <MyProfile
               userDisplayname={userDisplayname}
               username={username}
-              allusers={allusers}
               socket={ws}
             />
           </div>
@@ -380,21 +406,20 @@ function App() {
               userInfo={userInfo}
               username={username}
               userDisplayname={userDisplayname}
-              allusers={allusers}
               socket={ws}
             />
           </div>
         }
       />
-      {/* <Route
+      <Route
         path="/othersprofile/:username"
         // pass :username to othersprofile
         element={
           <div>
-            <OthersProfile userInfo={userInfo} userDisplayname={userDisplayname} allusers={allusers}/>
+            <OthersProfile userInfo={userInfo} userDisplayname={userDisplayname}/>
           </div>
        } 
-      /> */}
+      />
     </Routes>
   );
 }

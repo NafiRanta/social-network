@@ -10,6 +10,9 @@ function GroupInviteModal(props) {
   const websocket = useSelector((state) => state.websocket);
   const userInfo = useSelector((state) => state.userInfo);
   const allGroups = useSelector((state) => state.allGroups);
+  const allusers = useSelector((state) => state.allUsers);
+  console.log("props.isGroupAdmin: ", props.isUserGroupAdmin)
+  console.log("props.isGroupMember: ", props.isUserGroupMember)
   // find props.groupID from allGroups
   const group = allGroups.find((group) => group.GroupID === props.groupID);
   const groupAdmin = group.Admin;
@@ -22,8 +25,7 @@ function GroupInviteModal(props) {
   const names = myFriends.map((friend) => friend.displayname);
 
   useEffect(() => {
-    const allusers = props.allusers;
-    let filteredData = allusers.filter((user) => user.UserName !== userInfo.UserName);
+    let filteredData = allusers?.filter((user) => user.UserName !== userInfo.UserName);
     filteredData = filteredData.filter((user) => user.UserName !== groupAdmin);
     filteredData = filteredData.filter((user) => !MemberInvitedUsernames.includes(user.UserName));
     filteredData = filteredData.filter((user) => !AdminInvitedUsernames.includes(user.UserName));
@@ -33,7 +35,7 @@ function GroupInviteModal(props) {
       displayname: friend.FirstName + " " + friend.LastName,
     }));
     setMyFriends(updatedFriends);
-  }, [props.allusers, userInfo.UserName]);
+  }, [allusers, userInfo.UserName]);
   
   const handleNameChange = (event) => {
     // get username of the selected name

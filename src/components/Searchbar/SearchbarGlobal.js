@@ -11,16 +11,38 @@ function SearchbarGlobal(props) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const userInfo = useSelector((state) => state.userInfo);
-  const allusers = props.allusers;
+  const allusers = useSelector((state) => state.allUsers);
   const inputRef = useRef(null);
+
+    // fetch all users from redux
+    useEffect(() => {
+      const fetchAllUsers = async () => {
+        try {
+          const token = localStorage.getItem("token");
+          const headers = new Headers();
+          headers.append("Authorization", "Bearer " + token);
+          const url = "http://localhost:8080/users";
+          const res = await fetch(url, {
+            method: "GET",
+            headers: headers,
+          });
+          const data = await res.json();
+          dispatch({ type: "FETCH_ALLUSERS", payload: data });
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      fetchAllUsers();
+    }, [dispatch]);
+  
 
   const handleInputClick = (e) => {
     e.stopPropagation();
   };
 
-  const handleButtonClick = (e, email, username) => {
-    e.stopPropagation();
-    console.log("Clicked user:", email, "username:", username);
+  const handleButtonClick = (username) => {
+    //e.stopPropagation();
+    console.log( "username:", username);
     // link to user profile
     navigate(`/othersprofile/${username}`);
   };
@@ -46,13 +68,13 @@ function SearchbarGlobal(props) {
     let filteredData = allusers.filter((user) => user.UserName !== userInfo.UserName);
     filteredData.sort((a, b) => (a.FirstName > b.FirstName) ? 1 : -1);
     return filteredData.map(user => {
-      const username = user.FirstName + " " + user.LastName;
+      const username = user.UserName;
       return (
         <div 
           key={user.UserName} 
           className="alert fade show p-1 m-0 d-flex align-items-center justify-content-between" 
           role="alert" 
-          onClick={(e) => handleButtonClick(e, user.email, username)}
+          onClick={(e) => handleButtonClick(username)}
         >
           <div className="d-flex align-items-center">
             <p className="m-0">{user.FirstName + " " + user.LastName}</p>

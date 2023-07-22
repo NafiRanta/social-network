@@ -173,19 +173,23 @@ func UpdateAvatarOfUser(w http.ResponseWriter, r *http.Request) {
 	w.Write(jsonData)
 }
 
-//add friend
+// add friend
 type FollowRequest struct {
 	SenderUsername   string `json:"sender_username"`
 	ReceiverUsername string `json:"receiver_username"`
 }
 
 func SendFollowRequest(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("send follow request")
 	if r.Method != "POST" {
 		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
 		return
 	}
 	var followReq FollowRequest
 	err := json.NewDecoder(r.Body).Decode(&followReq)
+
+	fmt.Println("followReq", followReq)
+
 	// frontend need to send in the r http.Request the sender username(the one who send request) and the receiver username
 	if err != nil {
 		http.Error(w, "Invalid request data", http.StatusBadRequest)
@@ -193,6 +197,10 @@ func SendFollowRequest(w http.ResponseWriter, r *http.Request) {
 	}
 	// get sender user from db
 	senderUser, err := d.GetUserByUsername(followReq.SenderUsername)
+	if err != nil {
+		http.Error(w, "Sender not found", http.StatusNotFound)
+		return
+	}
 	//check receiver user privacy
 	receiverUser, err := d.GetUserByUsername(followReq.ReceiverUsername)
 	if err != nil {
@@ -210,14 +218,14 @@ func SendFollowRequest(w http.ResponseWriter, r *http.Request) {
 
 	if receiverUser.Privacy == "public" {
 		//fmt.Println("public")
-		// add receiver username to sender's FollowerUsernames 
+		// add receiver username to sender's FollowerUsernames
 		if err := d.AddFollower(senderUser, receiverUser); err != nil {
 			//fmt.Println(err)
 			http.Error(w, "Failed to update sender's followers", http.StatusInternalServerError)
 			return
 		}
 		//fmt.Println(senderUser)
-		// Add the sender's username to the receiver's FollowerUsernames 
+		// Add the sender's username to the receiver's FollowerUsernames
 		if err := d.AddFollower(receiverUser, senderUser); err != nil {
 			http.Error(w, "Failed to update receiver's followers", http.StatusInternalServerError)
 			return

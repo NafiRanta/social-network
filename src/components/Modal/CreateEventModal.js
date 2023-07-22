@@ -5,6 +5,7 @@ import Avatar from "../Avatar/Avatar";
 
 function CreateEventModal(props) {
   const userInfo = useSelector((state) => state.userInfo);
+  const allusers = useSelector((state) => state.allUsers);
   const [myFriends, setMyFriends] = useState([]); // [{username: "John", displayname: "John Doe"}, {username: "Jane", displayname: "Jane Doe"}
   const [selectedNames, setSelectedNames] = useState([]);
   const [selectedName, setSelectedName] = useState('');
@@ -13,14 +14,13 @@ function CreateEventModal(props) {
   const names = myFriends.map((friend) => friend.displayname);
 
   useEffect(() => {
-    const allusers = props.allusers;
     const filteredData = allusers.filter((user) => user.UserName !== userInfo.UserName);
     const updatedFriends = filteredData.map((friend) => ({
       username: friend.UserName,
       displayname: friend.FirstName + " " + friend.LastName,
     }));
     setMyFriends(updatedFriends);
-  }, [props.allusers, userInfo.UserName]);
+  }, [allusers, userInfo.UserName]);
 
   const handleNameChange = (event) => {
     // get username of the selected name

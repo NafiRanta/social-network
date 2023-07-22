@@ -145,14 +145,12 @@ function HomeGroup(props) {
     <div>
       <Topnav
         userDisplayname={props.userDisplayname}
-        allusers={props.allusers}
       />
       <div className="container-fluid">
         <div className="row justify-content-evenly">
           <div className="col-12 col-lg-3">
             <GroupSidenav
               userDisplayname={props.userDisplayname}
-              allusers={props.allusers}
             />
           </div>
           <div className="col-12 col-lg-6 pb-5 p-3">
@@ -165,7 +163,6 @@ function HomeGroup(props) {
               </h5>
               <CreateGroupPost
                 userDisplayname={props.userDisplayname}
-                allusers={props.allusers}
               />
               {displayMyGroupsPosts()}
             </div>

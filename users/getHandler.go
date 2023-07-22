@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-
 	a "socialnetwork/authentication"
 	d "socialnetwork/database"
 )
@@ -31,11 +30,12 @@ func GetAllUsers(w http.ResponseWriter, r *http.Request) {
 	response := make([]a.UserProfile, len(allUsers))
 	for i, user := range allUsers {
 		response[i] = a.UserProfile{
-			FirstName: user.FirstName,
-			LastName:  user.LastName,
-			UserName:  user.UserName,
-			Privacy:   user.Privacy,
-			Avatar:    user.Avatar,
+			FirstName:         user.FirstName,
+			LastName:          user.LastName,
+			UserName:          user.UserName,
+			Privacy:           user.Privacy,
+			Avatar:            user.Avatar,
+			FollowerUsernames: user.FollowerUsernames,
 		}
 	}
 
@@ -90,17 +90,18 @@ func GetUserByUsernameHandler(w http.ResponseWriter, r *http.Request) {
 	// Create a UserResponse instance with the desired fields
 	//change dob format
 	userResponse := a.UserResponse{
-		FirstName:      user.FirstName,
-		LastName:       user.LastName,
-		Email:          user.Email,
-		Privacy:        user.Privacy,
-		DateOfBirth:    user.DateOfBirth,
-		Gender:         user.Gender,
-		Avatar:         user.Avatar,
-		Nickname:       user.Nickname,
-		AboutMe:        user.AboutMe,
-		FollowerUsernames:    user.FollowerUsernames,
-		FollowerUsernamesSent: user.FollowerUsernamesSent,
+		FirstName:                 user.FirstName,
+		LastName:                  user.LastName,
+		Email:                     user.Email,
+		Privacy:                   user.Privacy,
+		DateOfBirth:               user.DateOfBirth,
+		Gender:                    user.Gender,
+		Avatar:                    user.Avatar,
+		Nickname:                  user.Nickname,
+		AboutMe:                   user.AboutMe,
+		UserName:                  user.UserName,
+		FollowerUsernames:         user.FollowerUsernames,
+		FollowerUsernamesSent:     user.FollowerUsernamesSent,
 		FollowerUsernamesReceived: user.FollowerUsernamesReceived,
 	}
 	userJSON, err := json.Marshal(userResponse)

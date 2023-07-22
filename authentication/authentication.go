@@ -37,11 +37,12 @@ type UserResponse struct {
 }
 
 type UserProfile struct {
-	FirstName string `json:"FirstName"`
-	LastName  string `json:"LastName"`
-	UserName  string `json:"UserName"`
-	Privacy   string `json:"Privacy"`
-	Avatar    string `json:"Avatar"`
+	FirstName         string `json:"FirstName"`
+	LastName          string `json:"LastName"`
+	UserName          string `json:"UserName"`
+	Privacy           string `json:"Privacy"`
+	Avatar            string `json:"Avatar"`
+	FollowerUsernames string `json:"FollowerUsernames"`
 }
 
 //user repsonse after login should not have password, the followers should have name, email, pic
@@ -125,11 +126,7 @@ func LogIn(w http.ResponseWriter, r *http.Request) {
 				http.Error(w, "Failed to encode user", http.StatusInternalServerError)
 				return
 			}
-			if err != nil {
-				u.CheckErr(err)
-				http.Error(w, err.Error(), http.StatusInternalServerError)
-				return
-			}
+
 			// Set the token in the response header
 			w.Header().Set("Authorization", "Bearer "+token)
 			w.Header().Set("Content-Type", "application/json")
@@ -160,14 +157,6 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
 		return
 	}
-
-	/* err := json.NewDecoder(r.Body).Decode(&user)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
-	}
-	//fmt.Println("Request Body:", r.Body)
-	//fmt.Println(&user) */
 
 	// Read the request body
 	body, err := ioutil.ReadAll(r.Body)
@@ -210,17 +199,54 @@ func Register(w http.ResponseWriter, r *http.Request) {
 				http.Error(w, err.Error(), http.StatusInternalServerError)
 				return
 			}
+
+			// publicUsers, err := d.GetAllPublicUsers()
+			// if err != nil {
+			// 	w.WriteHeader(http.StatusInternalServerError)
+			// 	fmt.Fprintf(w, "Error retrieving public user data: %v", err)
+			// 	return
+			// }
+
+			// privateUsers, err := d.GetAllPrivateUsers()
+			// if err != nil {
+			// 	w.WriteHeader(http.StatusInternalServerError)
+			// 	fmt.Fprintf(w, "Error retrieving private user data: %v", err)
+			// 	return
+			// }
+
+			// // Combine public and private users
+			// allUsers := append(publicUsers, privateUsers...)
+
+			// // Create a slice of UserResponse with the desired fields
+			// response := make([]UserProfile, len(allUsers))
+			// for i, user := range allUsers {
+			// 	response[i] = UserProfile{
+			// 		FirstName: user.FirstName,
+			// 		LastName:  user.LastName,
+			// 		UserName:  user.UserName,
+			// 		Privacy:   user.Privacy,
+			// 		Avatar:    user.Avatar,
+			// 	}
+			// }
+
+			// Marshal the response to JSON and send it in the response
+			// responseJSON, err := json.Marshal(response)
+			// if err != nil {
+			// 	http.Error(w, err.Error(), http.StatusInternalServerError)
+			// 	return
+			// }
+
+			// Set the Content-Type header to application/json
+			w.Header().Set("Content-Type", "application/json")
+
+			// Send the response JSON with a status code of 200 (OK)
+			w.WriteHeader(http.StatusOK)
+			//w.Write(responseJSON)
+
 		} else {
 			fmt.Println("different error")
 		}
 	}
-
-	/* // Create bcrypt hash from password
-	// Set the hashed password in the user struct
-	user.Password = hashedPassword */
-	w.WriteHeader(http.StatusOK)
-	w.Write([]byte("Register successfully"))
-
 }
 
 func SetDefaultImg(imgDefaultPath string) []byte {

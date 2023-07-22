@@ -5,20 +5,20 @@ import Avatar from "../Avatar/Avatar";
 
 function CreateGroupModal(props) {
   const userInfo = useSelector((state) => state.userInfo);
+  const allusers = useSelector((state) => state.allUsers);
   const [myFriends, setMyFriends] = useState([]); // [{username: "John", displayname: "John Doe"}, {username: "Jane", displayname: "Jane Doe"}
   const [selectedNames, setSelectedNames] = useState([]);
   const [selectedName, setSelectedName] = useState('');
-  const names = myFriends.map((friend) => friend.displayname);
+  const names = myFriends?.map((friend) => friend.displayname);
 
   useEffect(() => {
-    const allusers = props.allusers;
-    const filteredData = allusers.filter((user) => user.UserName !== userInfo.UserName);
-    const updatedFriends = filteredData.map((friend) => ({
+    const filteredData = allusers?.filter((user) => user.UserName !== userInfo.UserName);
+    const updatedFriends = filteredData?.map((friend) => ({
       username: friend.UserName,
       displayname: friend.FirstName + " " + friend.LastName,
     }));
     setMyFriends(updatedFriends);
-  }, [props.allusers, userInfo.UserName]);
+  }, [allusers, userInfo.UserName]);
   
   const handleNameChange = (event) => {
     // get username of the selected name
@@ -129,7 +129,7 @@ function CreateGroupModal(props) {
                       <option disabled value="">
                         Add Friends (optional)
                       </option>
-                      {names.filter((name) => !selectedNames.includes(name)).map((name) => (
+                      {names?.filter((name) => !selectedNames.includes(name)).map((name) => (
                         <option key={name} value={name}>
                           {name}
                         </option>

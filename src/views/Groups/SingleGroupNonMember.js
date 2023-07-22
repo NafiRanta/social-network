@@ -9,7 +9,7 @@ import '../../components/Card/Card.css'
 function SingleGroupNonMember(props) {
     return (
         <div>
-            <Topnav userDisplayname={props.userDisplayname} allusers={props.allusers}/>
+            <Topnav userDisplayname={props.userDisplayname} />
             <div className="container-fluid">
                   <div className="bg-white p-3 mt-3 rounded border shadow" id="bg-white">
                         <div className="profile-cover-group__bg bg--img" data-overlay="0.3"></div>

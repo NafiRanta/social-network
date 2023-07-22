@@ -13,6 +13,9 @@ import Topnav from "../Topnav";
 
 function MyProfile(props) {
   const dispatch = useDispatch();
+  // get the username from the url
+  const user = window.location.pathname.split("/")[2];
+  console.log("user", user)
   const userInfo = useSelector((state) => state.userInfo);
   console.log("userInfo myprofile", userInfo)
 
@@ -72,7 +75,6 @@ function MyProfile(props) {
     <div>
       <Topnav
         userDisplayname={props.userDisplayname}
-        allusers={props.allusers}
       />
       <div className="container-fluid">
         <section className="profileTopnav">
@@ -114,10 +116,6 @@ function MyProfile(props) {
                           <div className="px-3">
                             <p className="small text-muted mb-1">Followers</p>
                             <p className="mb-0">976</p>
-                          </div>
-                          <div>
-                            <p className="small text-muted mb-1">Following</p>
-                            <p className="mb-0">8.5</p>
                           </div>
                         </div>
                         <div className="d-flex align-items-center">
@@ -272,57 +270,6 @@ function MyProfile(props) {
                     </div>
                     <div className="fellows d-flex align-items-center">
                       <p className="m-0">Noah</p>
-                    </div>
-                  </a>
-                </div>
-              </div>
-              <div className="bg-white rounded border shadow p-3">
-                <div>
-                  <p className="m-0">Following</p>
-                </div>
-                <div className="follow-box-content p-1 m-0 d-flex">
-                  <a
-                    href="#"
-                    className="d-flex align-items-center text-decoration-none text-dark"
-                  >
-                    <div className="fellows d-flex align-items-center">
-                      <AvatarSquare />
-                    </div>
-                    <div className="fellows d-flex align-items-center">
-                      <p className="m-0">Jacob</p>
-                    </div>
-                  </a>
-                  <a
-                    href="#"
-                    className="d-flex align-items-center text-decoration-none text-dark"
-                  >
-                    <div className="fellows d-flex align-items-center">
-                      <AvatarSquare />
-                    </div>
-                    <div className="fellows d-flex align-items-center">
-                      <p className="m-0">Jacob</p>
-                    </div>
-                  </a>
-                  <a
-                    href="#"
-                    className="d-flex align-items-center text-decoration-none text-dark"
-                  >
-                    <div className="fellows d-flex align-items-center">
-                      <AvatarSquare />
-                    </div>
-                    <div className="fellows d-flex align-items-center">
-                      <p className="m-0">Jacob</p>
-                    </div>
-                  </a>
-                  <a
-                    href="#"
-                    className="d-flex align-items-center text-decoration-none text-dark"
-                  >
-                    <div className="fellows d-flex align-items-center">
-                      <AvatarSquare />
-                    </div>
-                    <div className="fellows d-flex align-items-center">
-                      <p className="m-0">Jacob</p>
                     </div>
                   </a>
                 </div>
