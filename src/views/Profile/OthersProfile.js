@@ -1,18 +1,22 @@
 import {React, useState, useEffect} from 'react';
 import Topnav from '../../views/Topnav';    
-import PostCard from '../../components/Card/PostCard';
+import OthersPostCard from '../../components/Card/OthersPostCard';
 import AvatarSquare from '../../components/Avatar/AvatarSquare';
 import { useLocation } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import './Profile.css';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 function OthersProfile(props) {
     const location = useLocation();
+    const dispatch = useDispatch();
     const { pathname } = location;
     const allusers = useSelector((state) => state.allUsers);
     const userInfo = useSelector((state) => state.userInfo);
     const clickedProfileUsername = window.location.pathname.split("/")[2];
+    //const [clickedProfileUsername, setClickedProfileUsername] = useState(window.location.pathname.split("/")[2]);
+
     const [clickedProfileInfo, setClickedProfileInfo] = useState({});
     const clickedProfileDisplayName = clickedProfileInfo.FirstName + " " + clickedProfileInfo.LastName;
     const clickedProfileFollowers = clickedProfileInfo.FollowerUsernames ? clickedProfileInfo.FollowerUsernames.split(",") : [];
@@ -34,7 +38,7 @@ function OthersProfile(props) {
       const year = dob.split(" ")[2];
       const formattedDOB = `${day} ${month} ${year}`.replace(/,/g, ""); // remove comma from date
     
-
+      
     useEffect(() => {
         // get clickedProfileInfo from /users database
         const getClickedProfileInfo = async () => {
@@ -52,6 +56,8 @@ function OthersProfile(props) {
                 if (response.ok) {
                     const data = await response.json();
                     setClickedProfileInfo(data);
+                    dispatch ({type: "SET_CLICKEDPROFILEINFO", payload: data});
+
                 } else {
                     console.log("Error getting clicked profile info");
                 }
@@ -67,16 +73,23 @@ function OthersProfile(props) {
         if (userInfo.FollowerUsernames) {
             const myFollowers = userInfo.FollowerUsernames.split(",");
             setFollowers(myFollowers);
-        } 
+        } else {
+            setFollowers([]);
+        }
 
-        // get all my pending follow requests
-        if (userInfo.FollowerUsernamesReceived) {
-            const followingReceived = userInfo.FollowerUsernamesReceived.split(",");
+        // check if current user has pending follow requests from clickedProfile
+        if (clickedProfileInfo.FollowerUsernamesReceived) {
+            const followingReceived = clickedProfileInfo.FollowerUsernamesReceived.split(",");
             setFollowingUsernamesReceived(followingReceived);
-        } 
-        if (userInfo.FollowingUsernamesSent) {
-            const followingSent = userInfo.FollowerUsernamesSent.split(",");
+        } else {
+            setFollowingUsernamesReceived([]);
+        }
+
+        if (clickedProfileInfo.FollowingUsernamesSent) {
+            const followingSent = clickedProfileInfo.FollowerUsernamesSent.split(",");
             setFollowingUsernamesSent(followingSent);
+        } else {
+            setFollowingUsernamesSent([]);
         } 
 
         // get clickedProfile privacy
@@ -108,7 +121,12 @@ function OthersProfile(props) {
     const isFollowing = myfollowers.includes(clickedProfileUsername);
 
     // if username is found in followingUsernamesReceived or followingUsernamesSent, then the clicked profile follow request is pending
-    const isPending = followingUsernamesReceived.includes(clickedProfileInfo.UserName) || followingUsernamesSent.includes(clickedProfileInfo.UserName);
+    const isPending = followingUsernamesReceived.includes(userInfo.UserName) || followingUsernamesSent.includes(userInfo.UserName);
+
+    console.log("followingUsernamesReceived", followingUsernamesReceived)
+    console.log("followingUsernamesSent", followingUsernamesSent)   
+    console.log("isPending", isPending)
+    console.log("clickedProfileInfo", clickedProfileInfo)
 
     // handle follow button
     const handleFollow = async (event) => {
@@ -155,6 +173,7 @@ function OthersProfile(props) {
             console.log(error);
         }
     }
+   
   return (
         <div>
            <Topnav userDisplayname={props.userDisplayname} socket={props.socket}/>
@@ -197,7 +216,7 @@ function OthersProfile(props) {
                                     <div className="d-flex pt-1">
                                     {isFollowing ? (
                                         <button type="button" className="btn btn-primary flex-grow-1" disabled>
-                                        You follow each other
+                                        Unfollow
                                         </button>
                                     ) : isPending ? (
                                         <button type="button" className="btn btn-primary flex-grow-1" disabled>
@@ -217,7 +236,7 @@ function OthersProfile(props) {
                         </div>
                     </div>
                 </section>
-                {isPrivate ? null : (
+                {isPublic || (isPrivate && isFollowing) ? (
                 <div className="row justify-content-evenly">
                     <div className="col-12 col-lg-3">
                         <div className="d-flex flex-column justify-content-center w-100 mx-auto" id="d-flex-postcontainer-followersbox">
@@ -275,11 +294,11 @@ function OthersProfile(props) {
                     </div>
                     <div className="col-12 col-lg-6 pb-5">
                         <div className="d-flex flex-column justify-content-center w-100 mx-auto" id="d-flex-postcontainer-myprofile">
-                            <PostCard userDisplayname={props.userDisplayname} />
+                            <OthersPostCard />
                         </div>
                     </div>
                 </div>
-                )}
+                ): null}
             </div>
         </div>
     )

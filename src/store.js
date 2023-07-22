@@ -13,6 +13,7 @@ let defaultInitialState = {
   invitesByMember: [],
   chatNotification : false,
   notification : false,
+  clickedProfileInfo: [],
 };
 let serializedState = localStorage.getItem("reduxState");
 let initialState = serializedState || defaultInitialState;
@@ -87,6 +88,11 @@ function rootReducer(state = initialState, action) {
       return {
         ...state,
         notification: action.payload,
+      };
+    case "SET_CLICKEDPROFILEINFO":
+      return {
+        ...state,
+        clickedProfileInfo: action.payload,
       };
     default:
       return state; 

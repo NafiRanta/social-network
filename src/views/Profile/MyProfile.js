@@ -15,10 +15,10 @@ import { Link } from 'react-router-dom';
 function MyProfile(props) {
   const dispatch = useDispatch();
   const userInfo = useSelector((state) => state.userInfo);
-  const allusers = useSelector((state) => state.allusers);
-  const myfollowers = userInfo?.FollowerUsernames ? userInfo?.FollowerUsernames.split(",") : [];
+  const allusers = useSelector((state) => state.allUsers);
+  const [myfollowers, setFollowers] = useState([]);
   const [myfollowersInfo, setMyfollowersInfo] = useState([]);
-  console.log("myfollowers", myfollowers)
+
 
   // format date of birth to be displayed to dd month yyyy
   const dob = new Date(userInfo.DateOfBirth).toLocaleDateString("en-US", {
@@ -36,23 +36,33 @@ function MyProfile(props) {
     if (userInfo) {
       setPrivacy(privacy);
     }
-
-    if (myfollowers) {
-      const myFollowersInfo = [];
-      myfollowers.forEach((follower) => {
-          const followerInfo = allusers?.find((user) => user.UserName === follower);
-          myFollowersInfo.push(followerInfo);
-      });
-      setMyfollowersInfo(myFollowersInfo);
-  } else {
-    setMyfollowersInfo([]);
-  }
-
+      // get all my followers
+      if (userInfo.FollowerUsernames) {
+        const myFollowers = userInfo.FollowerUsernames.split(",");
+        setFollowers(myFollowers);
+    } else {
+        setFollowers([]);
+    }
   }, [userInfo]);
 
-  if (!userInfo) {
-    return null;
-  }
+  useEffect(() => {
+    console.log("allusers 1111:", allusers);
+    console.log("myfollowers 1111:", myfollowers)
+      if (myfollowers && allusers) {
+        const myFollowersInfo = [];
+        myfollowers.forEach((follower) => {
+            const followerInfo = allusers.find((user) => user.UserName === follower);
+            myFollowersInfo.push(followerInfo);
+            
+        });
+        setMyfollowersInfo(myFollowersInfo);
+      } else {
+        console.log("missing")
+        setMyfollowersInfo([]);
+      }
+    }
+  , [myfollowers, allusers]);
+
 
   const handlePrivacyChange = (checked) => {
     const newPrivacy = checked ? "public" : "private";
@@ -83,7 +93,6 @@ function MyProfile(props) {
       console.error("Error updating privacy:", error);
     }
   };
-
   return (
     <div>
       <Topnav
@@ -231,11 +240,11 @@ function MyProfile(props) {
                     <p className="m-0"><strong>Followers</strong></p>
                 </div>
                 <div className="follow-box-content p-1 m-0 d-flex">
-                  {myfollowersInfo.length === 0 ? (
+                  {myfollowersInfo?.length === 0 ? (
                       <p className="m-0">You have no followers</p>
                   ) : (
                       // If not empty, map over the followers
-                      myfollowersInfo.map((follower) => (
+                      myfollowersInfo?.map((follower) => (
                           <div className="p-2" key={follower.UserName}>
                             <Link to={`/othersprofile/${follower.UserName}`} className="text-decoration-none text-dark">
                               <div className="fellows d-flex align-items-center">

@@ -3,36 +3,21 @@ import { useSelector } from "react-redux";
 import CommentCard from "./CommentCard";
 
 // Function to decode a JSON Web Token (JWT)
-export function decodeJwt(jwt) {
-  if (!jwt) {
-    return null; // Or handle the error in an appropriate way
-  }
 
-  const base64Url = jwt.split(".")[1];
-  if (!base64Url) {
-    return null; // Or handle the error in an appropriate way
-  }
-
-  const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
-  const decoded = atob(base64);
-  const result = JSON.parse(decoded);
-  return result;
-}
 
 function PostCard(props) {
-  const userInfo = useSelector((state) => state.userInfo); // Get user information from Redux store
+ const userInfo = useSelector((state) => state.userInfo); // Get the user info from redux store
   const [publicPosts, setPublicPosts] = useState([]); // State for public posts
   const [privatePosts, setPrivatePosts] = useState([]); // State for private posts
   const [customPosts, setCustomPosts] = useState([]); // State for custom posts
   const [expandedPosts, setExpandedPosts] = useState([]); // State for expanded posts
   const token = localStorage.getItem("token"); // Get the JWT token from local storage
-  let userId = null;
-  if (decodeJwt(token)) {
-    userId = decodeJwt(token).userID; // Decode the JWT token to get the user ID
-  }
+  
+
   useEffect(() => {
     // Fetch user posts when the component mounts
     const GetUserPosts = async () => {
+      const token = localStorage.getItem("token");
       const headers = new Headers();
       headers.append("Authorization", "Bearer " + token);
       headers.append("Content-Type", "application/json");
@@ -45,7 +30,7 @@ function PostCard(props) {
 
         if (res.ok) {
           const data = await res.json();
-
+          console.log("postcards", data);
           const publicPosts = data.publicPosts;
           const privatePosts = data.privatePosts;
           const customPosts = data.customPosts;
@@ -120,7 +105,21 @@ function PostCard(props) {
     return <>{contentLines}</>;
   };
 
+  const allPosts = [
+    ...(customPosts || []),
+    ...(privatePosts || []),
+    ...(publicPosts || []),
+  ];
+
+  const sortedPosts = allPosts.sort(
+    (a, b) => new Date(a.CreateAt) - new Date(b.CreateAt)
+  );
+  console.log("sortedPosts", sortedPosts)
+
   const displayAllPosts = () => {
+    const userPosts = sortedPosts.filter(
+      (post) => post.UserName === userInfo.UserName
+    );
     // Render all posts
     return userPosts.map((post, index) => {
       const date = new Date(post.CreateAt);
@@ -192,19 +191,7 @@ function PostCard(props) {
     });
   };
 
-  const allPosts = [
-    ...(customPosts || []),
-    ...(privatePosts || []),
-    ...(publicPosts || []),
-  ];
-
-  const sortedPosts = allPosts.sort(
-    (a, b) => new Date(a.CreateAt) - new Date(b.CreateAt)
-  );
-
-  const userPosts = sortedPosts.filter(
-    (post) => post.UserName === userInfo.UserName
-  );
+ 
 
   return <>{displayAllPosts()}</>;
 }

@@ -2,6 +2,8 @@ package posts
 
 import (
 	"encoding/json"
+	"fmt"
+
 	//"fmt"
 	"net/http"
 	a "socialnetwork/authentication"
@@ -35,6 +37,42 @@ func GetPostsHandler(w http.ResponseWriter, r *http.Request) {
 		"privatePosts": privatePosts,
 		"customPosts":  customPosts,
 	}
+
+	// Convert the response to JSON
+	responseJSON, err := json.Marshal(response)
+	if err != nil {
+		http.Error(w, "Failed to marshal response", http.StatusInternalServerError)
+		return
+	}
+
+	// Set the Content-Type header to application/json
+	w.Header().Set("Content-Type", "application/json")
+
+	// Write the JSON response to the HTTP response writer
+	w.Write(responseJSON)
+}
+
+func GetPostsByUserNameHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("getPostsByUserNameHandler")
+
+	username := r.URL.Query().Get("username")
+	fmt.Println("username: ", username)
+
+	//public posts
+	publicPosts, _ := d.GetPublicPostsByUserName(username)
+	//private posts by me
+	privatePosts, _ := d.GetPrivatePostsByUserName(username)
+	//custom posts with me included
+	customPosts, _ := d.GetCustomPostsByUserName(username)
+
+	// Create a response object containing the posts
+	response := map[string]interface{}{
+		"publicPosts":  publicPosts,
+		"privatePosts": privatePosts,
+		"customPosts":  customPosts,
+	}
+
+	fmt.Println("response: ", response)
 
 	// Convert the response to JSON
 	responseJSON, err := json.Marshal(response)

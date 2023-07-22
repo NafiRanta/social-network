@@ -3,6 +3,8 @@ package database
 import (
 	"database/sql"
 	"encoding/json"
+	"fmt"
+
 	//"fmt"
 	u "socialnetwork/utils"
 	"sort"
@@ -228,7 +230,7 @@ func GetCustomPosts(userID string) ([]Post, error) {
 		var includedFriends []string
 		test := json.Unmarshal([]byte(post.IncludedFriends), &includedFriends)
 		if test != nil {
-			//fmt.Println("Error:", err)
+			fmt.Println("Error:", err)
 		}
 		//fmt.Println(includedFriends)
 		sort.Strings(includedFriends)
@@ -245,6 +247,141 @@ func GetCustomPosts(userID string) ([]Post, error) {
 
 	}
 	// //fmt.Println("posts: ", posts)
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return posts, nil
+}
+
+func GetPublicPostsByUserName(username string) ([]Post, error) {
+	db, err := sql.Open("sqlite3", "./socialnetwork.db")
+	if err != nil {
+		return nil, err
+	}
+	defer db.Close()
+	query := `
+		SELECT PostID, UserName, Privacy, IncludedFriends, Content, Image, CreateAt
+		FROM Posts
+		WHERE Privacy = 'public' AND UserName = ?
+	`
+
+	rows, err := db.Query(query, username)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var posts []Post
+
+	for rows.Next() {
+		var post Post
+
+		err := rows.Scan(
+			&post.PostID,
+			&post.UserName,
+			&post.Privacy,
+			&post.IncludedFriends,
+			&post.Content,
+			&post.Image,
+			&post.CreateAt,
+		)
+		if err != nil {
+			return nil, err
+		}
+		posts = append(posts, post)
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return posts, nil
+}
+
+func GetPrivatePostsByUserName(username string) ([]Post, error) {
+	db, err := sql.Open("sqlite3", "./socialnetwork.db")
+	if err != nil {
+		return nil, err
+	}
+	defer db.Close()
+	query := `
+		SELECT PostID, UserName, Privacy, IncludedFriends, Content, Image, CreateAt
+		FROM Posts
+		WHERE Privacy = 'private' AND UserName = ?
+	`
+
+	rows, err := db.Query(query, username)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var posts []Post
+
+	for rows.Next() {
+		var post Post
+
+		err := rows.Scan(
+			&post.PostID,
+			&post.UserName,
+			&post.Privacy,
+			&post.IncludedFriends,
+			&post.Content,
+			&post.Image,
+			&post.CreateAt,
+		)
+		if err != nil {
+			return nil, err
+		}
+
+		posts = append(posts, post)
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return posts, nil
+}
+
+func GetCustomPostsByUserName(username string) ([]Post, error) {
+	db, err := sql.Open("sqlite3", "./socialnetwork.db")
+	if err != nil {
+		return nil, err
+	}
+	defer db.Close()
+
+	query := `
+		SELECT PostID, UserName, Privacy, IncludedFriends, Content, Image, CreateAt
+		FROM Posts
+		WHERE Privacy = 'custom' AND UserName = ?
+	`
+
+	rows, err := db.Query(query, username)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var posts []Post
+
+	for rows.Next() {
+		var post Post
+
+		err := rows.Scan(
+			&post.PostID,
+			&post.UserName,
+			&post.Privacy,
+			&post.IncludedFriends,
+			&post.Content,
+			&post.Image,
+			&post.CreateAt,
+		)
+		if err != nil {
+			return nil, err
+		}
+		posts = append(posts, post)
+	}
+
 	if err := rows.Err(); err != nil {
 		return nil, err
 	}
