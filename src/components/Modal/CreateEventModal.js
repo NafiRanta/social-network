@@ -14,8 +14,8 @@ function CreateEventModal(props) {
   const names = myFriends.map((friend) => friend.displayname);
 
   useEffect(() => {
-    const filteredData = allusers.filter((user) => user.UserName !== userInfo.UserName);
-    const updatedFriends = filteredData.map((friend) => ({
+    const filteredData = allusers?.filter((user) => user.UserName !== userInfo.UserName);
+    const updatedFriends = filteredData?.map((friend) => ({
       username: friend.UserName,
       displayname: friend.FirstName + " " + friend.LastName,
     }));
