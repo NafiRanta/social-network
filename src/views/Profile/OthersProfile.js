@@ -117,6 +117,23 @@ function OthersProfile(props) {
             sender_username: userInfo.UserName,
             receiver_username: clickedProfileUsername
         }
+
+        // send notification to clickedProfileUsername through ws if clickedProfileUsername is private
+        console.log("clickedProfileInfo", clickedProfileInfo);
+        if (clickedProfileInfo.Privacy === 'private') {
+            const notification = {
+                type: "notification",
+                payload: {
+                    senderUsername: userInfo.UserName,
+                    receiverUsername: clickedProfileUsername,
+                }
+            };
+            if (props.socket) {
+                props.socket.send(JSON.stringify(notification));
+                console.log("notification sent");
+            }
+        }
+
         try{
             const response = await fetch("http://localhost:8080/sendfollowreq", {
                 method: 'POST',

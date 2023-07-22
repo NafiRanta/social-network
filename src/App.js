@@ -412,7 +412,7 @@ function App() {
         // pass :username to othersprofile
         element={
           <div>
-            <OthersProfile userInfo={userInfo} userDisplayname={userDisplayname}/>
+            <OthersProfile userInfo={userInfo} userDisplayname={userDisplayname} socket={ws}/>
           </div>
        } 
       />
