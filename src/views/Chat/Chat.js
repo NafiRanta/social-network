@@ -84,18 +84,82 @@ function Chat(props) {
     dispatch ({ type: "SET_CHATMATEUSERNAME", payload: chatMateUsername });
   };
 
-  const displayAllUsers = () => {
+  const [otherUsers, setOtherUsers] = useState([]);
+    
+  useEffect(() => {
+
     // set chatNotification to false
     dispatch ({ type: "SET_CHATNOTIFICATION", payload: false });
-    if (!allusers) {
-      return null;
-    }
-    // save all users except the current user to a variable called filteredData
-    let filteredData = allusers.filter(
+    const fetchAllMessagesAndSortUsers = async () => {
+
+    // save all users except the current user to a variable called otherUsers
+    let otherUsers = allusers.filter(
       (user) => user.UserName !== userInfo.UserName
     );
-   
-    return filteredData.map((user) => {
+    // fetch all messages from the database
+      const headers = new Headers();
+      headers.append("Authorization", "Bearer " + token);
+      headers.append("Content-Type", "application/json");
+      try {
+        const response = await fetch(
+          `http://localhost:8080/messages?username=${userInfo.UserName}`,
+          {
+            method: "GET",
+            headers: headers,
+          }
+        );
+        if (response.ok) {
+          const allMessages = await response.json();
+          if (!allMessages) {
+            return null;
+          }
+        // sort otherUsers by allMessages sentAt 
+        otherUsers.sort((a, b) => {
+          const aMessages = allMessages.filter(
+            (message) =>
+              (message.senderUsername === a.UserName &&
+                message.receiverUsername === userInfo.UserName) ||
+              (message.senderUsername === userInfo.UserName &&
+                message.receiverUsername === a.UserName)
+          );
+          const bMessages = allMessages.filter(
+            (message) =>
+              (message.senderUsername === b.UserName &&
+                message.receiverUsername === userInfo.UserName) ||
+              (message.senderUsername === userInfo.UserName &&
+                message.receiverUsername === b.UserName)
+          );
+          const aLastMessage = aMessages[aMessages.length - 1];
+          const bLastMessage = bMessages[bMessages.length - 1];
+          if (!aLastMessage && !bLastMessage) {
+            return 0;
+          } else if (!aLastMessage) {
+            return 1;
+          } else if (!bLastMessage) {
+            return -1;
+          } else {
+            return aLastMessage.sentAt > bLastMessage.sentAt ? -1 : 1;
+          }
+        });
+        }
+      } catch (error) {
+        console.log(error);
+      }
+      setOtherUsers(otherUsers);
+      // set the first user in otherUsers as the selectedChatMate
+      if (otherUsers[0]) {
+        setSelectedChatMateUsername(otherUsers[0].UserName);
+        setSelectedChatMateDisplayname(
+          otherUsers[0].FirstName + " " + otherUsers[0].LastName
+        );
+        dispatch ({ type: "SET_CHATMATEUSERNAME", payload: otherUsers[0].UserName });
+      }
+    };
+    fetchAllMessagesAndSortUsers();
+}, [allusers, userInfo, token]);
+
+  const displayAllUsers = () => {   
+    return otherUsers.map((user) => {
       const chatMatedisplayName = user.FirstName + " " + user.LastName;
       const chatMateusername = user.UserName;
       let isUserLoggedIn
@@ -130,6 +194,8 @@ function Chat(props) {
       );
     });
   };
+  
+
   
 
 
@@ -205,9 +271,6 @@ function Chat(props) {
       type: "message_notification",
       payload: payload,
     };
-
-    console.log("props", props)
-    console.log("props.socket", props.socket)
     
     // send message_notification to receiver through websocket
     props.socket.send(JSON.stringify(messageNotification));

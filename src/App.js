@@ -38,7 +38,7 @@ function App() {
         : {
           // if the user is in the chat page, then update the chat page
           if (window.location.pathname === "/chat") {
-              // window.location.reload();
+              window.location.reload();
           } else {
             // set chatNotification to true
             dispatch({ type: "SET_CHATNOTIFICATION", payload: true });
@@ -248,7 +248,7 @@ function App() {
           });
           if (res.ok) {
             const data = await res.json();
-            console.log("data of groups", data);
+            // console.log("data of sgroups", data);
             // add userMemberGroups and adminGroups to one object
             const mygroups = [
               ...(data.userMemberGroups || []),

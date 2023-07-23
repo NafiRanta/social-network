@@ -114,7 +114,7 @@ function PostCard(props) {
   const sortedPosts = allPosts.sort(
     (a, b) => new Date(a.CreateAt) - new Date(b.CreateAt)
   );
-  console.log("sortedPosts", sortedPosts)
+  // console.log("sortedPosts", sortedPosts)
 
   const displayAllPosts = () => {
     const userPosts = sortedPosts.filter(

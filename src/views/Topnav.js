@@ -25,7 +25,7 @@ function Topnav(props) {
   const [followRequestsInfo, setFollowRequestsInfo] = useState([]);
   let Notifications = []
 
-console.log("followRequestsUsernames", followRequestsUsernames)
+// console.log("followRequestsUsernames", followRequestsUsernames)
 
 useEffect(() => {
   if (followRequestsUsernames && Array.isArray(allusers)) {
@@ -46,7 +46,7 @@ useEffect(() => {
   }
 }, [allusers]);
 
-  console.log("followRequestsInfo", followRequestsInfo)
+  // console.log("followRequestsInfo", followRequestsInfo)
 
 
 

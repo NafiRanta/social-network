@@ -77,7 +77,7 @@ function CreateGroupModal(props) {
           }
         };
         console.log("props: ", props)
-        console.log("props.socket: ", props.socket)
+        // console.log("props.socket: ", props.socket)
         if (props.socket) {
           props.socket.send(JSON.stringify(notification));
           console.log("notification sent");

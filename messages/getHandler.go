@@ -39,7 +39,7 @@ func GetMessagesHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	// get message by userEmail
+	// get message by userID
 	messages, err := d.GetMessagesByUserID(user.UserID)
 	if err != nil {
 		u.CheckErr(err)
