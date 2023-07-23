@@ -125,7 +125,7 @@ func MarkMessagesByUsernameAsSeen(username string) error {
 	query := `
 		UPDATE Messages
 		SET SeenAt = ?
-		WHERE SenderUsername = ? OR ReceiverUsername = ?;`
+		WHERE ReceiverUsername = ?;`
 
 	_, err = db.Exec(query, time.Now(), username, username)
 	if err != nil {

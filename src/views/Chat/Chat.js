@@ -67,7 +67,8 @@ function Chat(props) {
     props.userDisplayname
   );
   const mygroups = useSelector((state) => state.myGroups);
-
+  const [activeTab, setActiveTab] = useState("inbox");
+  
   const handleUserClick = (chatMateDisplayName, chatMateUsername) => {
     const chatMate = allusers.find(
       (chatMate) => chatMate.UserName === chatMateUsername
@@ -93,9 +94,7 @@ function Chat(props) {
     let filteredData = allusers.filter(
       (user) => user.UserName !== userInfo.UserName
     );
-    // sort the filteredData by firstname
-    filteredData.sort((a, b) => (a.FirstName > b.FirstName ? 1 : -1));
-    // map the filteredData to display all users except the current user
+   
     return filteredData.map((user) => {
       const chatMatedisplayName = user.FirstName + " " + user.LastName;
       const chatMateusername = user.UserName;
@@ -131,6 +130,8 @@ function Chat(props) {
       );
     });
   };
+  
+
 
   const displayGroupChats = () => {
     if (!mygroups) {
@@ -178,7 +179,7 @@ function Chat(props) {
       );
     });
   };
-  
+
 
   const handleMessageSubmit = async (e) => {
     e.preventDefault();
@@ -241,6 +242,9 @@ function Chat(props) {
       chatMateAvatar = chatMateUser[0].Avatar;
     }
   }
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+  };
 
   return (
     <div>
@@ -266,26 +270,32 @@ function Chat(props) {
                 >
                   <li className="nav-item" role="presentation">
                     <a
-                      className="nav-link"
+                      className={`nav-link ${
+                        activeTab === "inbox" ? "active" : ""
+                      }`}
                       id="pills-inbox-tab"
                       data-toggle="pill"
                       href="#pills-inbox"
                       role="tab"
                       aria-controls="pills-inbox"
-                      aria-selected="false"
+                      aria-selected="true"
+                      onClick={() => handleTabChange("inbox")}
                     >
                       Inbox
                     </a>
                   </li>
                   <li className="nav-item" role="presentation">
                     <a
-                      className="nav-link"
+                      className={`nav-link ${
+                        activeTab === "communities" ? "active" : ""
+                      }`}
                       id="pills-communities-tab"
                       data-toggle="pill"
                       href="#pills-communities"
                       role="tab"
                       aria-controls="pills-communities"
                       aria-selected="false"
+                      onClick={() => handleTabChange("communities")}
                     >
                       Communities
                     </a>
@@ -293,7 +303,9 @@ function Chat(props) {
                 </ul>
                 <div className="tab-content" id="pills-tabContent">
                   <div
-                    className="tab-pane fade"
+                    className={`tab-pane fade ${
+                      activeTab === "inbox" ? "show active" : ""
+                    }`}
                     id="pills-inbox"
                     role="tabpanel"
                     aria-labelledby="pills-inbox-tab"
@@ -303,7 +315,9 @@ function Chat(props) {
                     </div>
                   </div>
                   <div
-                    className="tab-pane fade"
+                    className={`tab-pane fade ${
+                      activeTab === "communities" ? "show active" : ""
+                    }`}
                     id="pills-communities"
                     role="tabpanel"
                     aria-labelledby="pills-communities-tab"
