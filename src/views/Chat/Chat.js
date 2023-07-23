@@ -87,7 +87,6 @@ function Chat(props) {
   const [otherUsers, setOtherUsers] = useState([]);
     
   useEffect(() => {
-
     // set chatNotification to false
     dispatch ({ type: "SET_CHATNOTIFICATION", payload: false });
     const fetchAllMessagesAndSortUsers = async () => {
@@ -110,37 +109,35 @@ function Chat(props) {
         );
         if (response.ok) {
           const allMessages = await response.json();
-          if (!allMessages) {
-            return null;
-          }
-        // sort otherUsers by allMessages sentAt 
-        otherUsers.sort((a, b) => {
-          const aMessages = allMessages.filter(
-            (message) =>
-              (message.senderUsername === a.UserName &&
-                message.receiverUsername === userInfo.UserName) ||
-              (message.senderUsername === userInfo.UserName &&
-                message.receiverUsername === a.UserName)
-          );
-          const bMessages = allMessages.filter(
-            (message) =>
-              (message.senderUsername === b.UserName &&
-                message.receiverUsername === userInfo.UserName) ||
-              (message.senderUsername === userInfo.UserName &&
-                message.receiverUsername === b.UserName)
-          );
-          const aLastMessage = aMessages[aMessages.length - 1];
-          const bLastMessage = bMessages[bMessages.length - 1];
-          if (!aLastMessage && !bLastMessage) {
-            return 0;
-          } else if (!aLastMessage) {
-            return 1;
-          } else if (!bLastMessage) {
-            return -1;
-          } else {
+          
+          // sort otherUsers by allMessages sentAt 
+          otherUsers.sort((a, b) => {
+            const aMessages = allMessages.filter(
+              (message) =>
+                (message.senderUsername === a.UserName &&
+                  message.receiverUsername === userInfo.UserName) ||
+                (message.senderUsername === userInfo.UserName &&
+                  message.receiverUsername === a.UserName)
+            );
+            const bMessages = allMessages.filter(
+              (message) =>
+                (message.senderUsername === b.UserName &&
+                  message.receiverUsername === userInfo.UserName) ||
+                (message.senderUsername === userInfo.UserName &&
+                  message.receiverUsername === b.UserName)
+            );
+            const aLastMessage = aMessages[aMessages.length - 1];
+            const bLastMessage = bMessages[bMessages.length - 1];
+      
+            // If a user has no messages, move them to the end
+            if (!aLastMessage) return 1;
+            if (!bLastMessage) return -1;
+      
+            // Sort by sentAt if both users have messages
             return aLastMessage.sentAt > bLastMessage.sentAt ? -1 : 1;
-          }
-        });
+          });
+        } else {
+          throw new Error("Error occurred while fetching messages");
         }
       } catch (error) {
         console.log(error);
@@ -200,9 +197,10 @@ function Chat(props) {
 
 
   const displayGroupChats = () => {
-    if (!mygroups) {
-      return null;
-    }
+      // set chatmate to null
+      dispatch ({ type: "SET_CHATMATEUSERNAME", payload: null });
+      // return ;
+    // }
     // save GroupName and GroupID to a variable called filteredData
     let filteredData = mygroups.map((group) => {
       return {
@@ -333,9 +331,7 @@ function Chat(props) {
                 >
                   <li className="nav-item" role="presentation">
                     <a
-                      className={`nav-link ${
-                        activeTab === "inbox" ? "active" : ""
-                      }`}
+                      className={`nav-link ${activeTab === "inbox" ? "active" : ""}`}
                       id="pills-inbox-tab"
                       data-toggle="pill"
                       href="#pills-inbox"
@@ -349,9 +345,7 @@ function Chat(props) {
                   </li>
                   <li className="nav-item" role="presentation">
                     <a
-                      className={`nav-link ${
-                        activeTab === "communities" ? "active" : ""
-                      }`}
+                      className={`nav-link ${activeTab === "communities" ? "active" : ""}`}
                       id="pills-communities-tab"
                       data-toggle="pill"
                       href="#pills-communities"
@@ -366,9 +360,7 @@ function Chat(props) {
                 </ul>
                 <div className="tab-content" id="pills-tabContent">
                   <div
-                    className={`tab-pane fade ${
-                      activeTab === "inbox" ? "show active" : ""
-                    }`}
+                    className={`tab-pane fade ${activeTab === "inbox" ? "show active" : ""}`}
                     id="pills-inbox"
                     role="tabpanel"
                     aria-labelledby="pills-inbox-tab"
@@ -378,9 +370,7 @@ function Chat(props) {
                     </div>
                   </div>
                   <div
-                    className={`tab-pane fade ${
-                      activeTab === "communities" ? "show active" : ""
-                    }`}
+                    className={`tab-pane fade `}//${activeTab === "communities" ? "show active" : ""}`}
                     id="pills-communities"
                     role="tabpanel"
                     aria-labelledby="pills-communities-tab"
