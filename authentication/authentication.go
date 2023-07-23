@@ -86,6 +86,7 @@ func LogIn(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 			token, err := GenerateJWT(user.UserID)
+			fmt.Println("token:", token)
 			if err != nil {
 				u.CheckErr(err)
 				http.Error(w, "Failed to generate JWT", http.StatusInternalServerError)

@@ -6,9 +6,9 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"net/url"
 	a "socialnetwork/authentication"
 	d "socialnetwork/database"
+	u "socialnetwork/utils"
 )
 
 func ChangePrivacyofUser(w http.ResponseWriter, r *http.Request) {
@@ -203,17 +203,10 @@ func SendFollowRequest(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("receiverUsername", receiverUsername)
 
 	// check if sender and receiver names contains %C3%A4 , %C3%B6, %C3%A5, if so replace them with ä, ö, å
-	decodedSender, err := url.PathUnescape(senderUsername)
-	if err != nil {
-		fmt.Println("Error decoding sender username:", err)
-		return
-	}
+	// check if sender and receiver names contain %C3%A4, %C3%B6, %C3%A5, if so replace them with ä, ö, å
+	decodedSender := u.SpecialCharDecode(senderUsername)
 	fmt.Println("Decoded sender username:", decodedSender)
-	decodedReceiver, err := url.PathUnescape(receiverUsername)
-	if err != nil {
-		fmt.Println("Error decoding receiver username:", err)
-		return
-	}
+	decodedReceiver := u.SpecialCharDecode(receiverUsername)
 	fmt.Println("Decoded receiver username:", decodedReceiver)
 	// get sender user from db
 	senderUser, err := d.GetUserByUsername(decodedSender)
@@ -231,6 +224,7 @@ func SendFollowRequest(w http.ResponseWriter, r *http.Request) {
 	if receiverUser.Privacy == "private" {
 		fmt.Println("private")
 		if err := d.SentFollowerRequest(senderUser, receiverUser); err != nil {
+			fmt.Println(err)
 			http.Error(w, "Failed to send following request", http.StatusInternalServerError)
 			return
 		}
@@ -253,4 +247,153 @@ func SendFollowRequest(w http.ResponseWriter, r *http.Request) {
 	}
 
 	fmt.Fprintf(w, "Successfully followed %s", followReq.ReceiverUsername)
+}
+
+func RemoveSendFollowReq(w http.ResponseWriter, r *http.Request) {
+	if r.Method != "POST" {
+		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
+		return
+	}
+
+	var followReq FollowRequest
+	err := json.NewDecoder(r.Body).Decode(&followReq)
+	if err != nil {
+		http.Error(w, "Invalid request data", http.StatusBadRequest)
+		return
+	}
+
+	senderUsername := followReq.SenderUsername
+	receiverUsername := followReq.ReceiverUsername
+
+	// Check if sender and receiver names contain %C3%A4, %C3%B6, %C3%A5, if so replace them with ä, ö, å
+	decodedSender := u.SpecialCharDecode(senderUsername)
+	decodedReceiver := u.SpecialCharDecode(receiverUsername)
+
+	// Get sender user from the database
+	senderUser, err := d.GetUserByUsername(decodedSender)
+	if err != nil {
+		http.Error(w, "Sender not found", http.StatusNotFound)
+		return
+	}
+
+	// Check receiver user privacy and get receiver user from the database
+	receiverUser, err := d.GetUserByUsername(decodedReceiver)
+	if err != nil {
+		http.Error(w, "Receiver not found", http.StatusNotFound)
+		return
+	}
+
+	// Remove sender's username from receiver's FollowerUsernamesReceived
+	// Remove receiver's username from sender's FollowerUsernamesSent
+	if err := d.RemoveFollowRequest(senderUser, receiverUser); err != nil {
+		fmt.Println(err)
+		http.Error(w, "Failed to remove follow request", http.StatusInternalServerError)
+		return
+	}
+	fmt.Fprintf(w, "Remove follow request successfully")
+}
+
+
+func AcceptFollowRequest(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("Accept follow request")
+	if r.Method != "POST" {
+		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
+		return
+	}
+
+	var followReq FollowRequest
+	err := json.NewDecoder(r.Body).Decode(&followReq)
+	if err != nil {
+		http.Error(w, "Invalid request data", http.StatusBadRequest)
+		return
+	}
+
+	senderUsername := followReq.SenderUsername
+	receiverUsername := followReq.ReceiverUsername
+
+	// Check if sender and receiver names contain %C3%A4, %C3%B6, %C3%A5, if so replace them with ä, ö, å
+	decodedSender := u.SpecialCharDecode(senderUsername)
+	decodedReceiver := u.SpecialCharDecode(receiverUsername)
+
+	// Get sender user from the database
+	senderUser, err := d.GetUserByUsername(decodedSender)
+	if err != nil {
+		http.Error(w, "Sender not found", http.StatusNotFound)
+		return
+	}
+
+	// Check receiver user privacy and get receiver user from the database
+	receiverUser, err := d.GetUserByUsername(decodedReceiver)
+	if err != nil {
+		http.Error(w, "Receiver not found", http.StatusNotFound)
+		return
+	}
+
+	// Remove sender's username from receiver's FollowerUsernamesReceived
+	// Remove receiver's username from sender's FollowerUsernamesSent
+	if err := d.RemoveFollowRequest(senderUser, receiverUser); err != nil {
+		fmt.Println(err)
+		http.Error(w, "Failed to remove follow request", http.StatusInternalServerError)
+		return
+	}
+
+	// Add receiver username to sender's FollowerUsernames
+	if err := d.AddFollower(senderUser, receiverUser); err != nil {
+		http.Error(w, "Failed to update sender's followers", http.StatusInternalServerError)
+		return
+	}
+
+	// Add the sender's username to the receiver's FollowerUsernames
+	if err := d.AddFollower(receiverUser, senderUser); err != nil {
+		http.Error(w, "Failed to update receiver's followers", http.StatusInternalServerError)
+		return
+	}
+	fmt.Println(senderUser.FollowerUsernames)
+	// Return a success response
+	fmt.Fprintf(w, "Follow request accepted successfully")
+}
+
+func DeclineFollowRequest(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("Decline follow request")
+	if r.Method != "POST" {
+		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
+		return
+	}
+
+	var followReq FollowRequest
+	err := json.NewDecoder(r.Body).Decode(&followReq)
+	if err != nil {
+		http.Error(w, "Invalid request data", http.StatusBadRequest)
+		return
+	}
+
+	senderUsername := followReq.SenderUsername
+	receiverUsername := followReq.ReceiverUsername
+
+	// Check if sender and receiver names contain %C3%A4, %C3%B6, %C3%A5, if so replace them with ä, ö, å
+	decodedSender := u.SpecialCharDecode(senderUsername)
+	decodedReceiver := u.SpecialCharDecode(receiverUsername)
+
+	// Get sender user from the database
+	senderUser, err := d.GetUserByUsername(decodedSender)
+	if err != nil {
+		http.Error(w, "Sender not found", http.StatusNotFound)
+		return
+	}
+
+	// Check receiver user privacy and get receiver user from the database
+	receiverUser, err := d.GetUserByUsername(decodedReceiver)
+	if err != nil {
+		http.Error(w, "Receiver not found", http.StatusNotFound)
+		return
+	}
+
+	// Remove sender's username from receiver's FollowerUsernamesReceived
+	// Remove receiver's username from sender's FollowerUsernamesSent
+	if err := d.RemoveFollowRequest(senderUser, receiverUser); err != nil {
+		fmt.Println(err)
+		http.Error(w, "Failed to remove follow request", http.StatusInternalServerError)
+		return
+	}
+	fmt.Fprintf(w, "Decline request successfully")
 }

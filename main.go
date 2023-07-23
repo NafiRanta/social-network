@@ -66,6 +66,9 @@ func Start() error {
 
 	// add friend
 	router.HandleFunc("/sendfollowreq", user.SendFollowRequest)
+	router.HandleFunc("/acceptfollowreq", user.AcceptFollowRequest)
+	router.HandleFunc("/declinefollowreq", user.DeclineFollowRequest)
+	router.HandleFunc("/removesendfollowreq", user.RemoveSendFollowReq)
 
 	//handle post
 	router.HandleFunc("/posts", p.GetPostsHandler)

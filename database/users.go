@@ -5,7 +5,7 @@ import (
 	"database/sql"
 	//"fmt"
 	u "socialnetwork/utils"
-
+	"strings"
 	"github.com/gofrs/uuid"
 )
 
@@ -457,4 +457,58 @@ func SentFollowerRequest(sender *User, receiver *User) error {
 	}
 
 	return nil
+}
+
+func RemoveFollowRequest(sender *User, receiver *User) error {
+	db, err := sql.Open("sqlite3", "./socialnetwork.db")
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+
+	// Remove sender's username from receiver's FollowerUsernamesReceived
+	receiverFollowerUsernamesReceived := strings.Split(receiver.FollowerUsernamesReceived, ",")
+	var updatedReceiverFollowerUsernamesReceived []string
+	for _, username := range receiverFollowerUsernamesReceived {
+		if username != sender.UserName {
+			updatedReceiverFollowerUsernamesReceived = append(updatedReceiverFollowerUsernamesReceived, username)
+		}
+	}
+	receiver.FollowerUsernamesReceived = strings.Join(updatedReceiverFollowerUsernamesReceived, ",")
+	// Remove receiver's username from sender's FollowerUsernamesSent
+	senderFollowerUsernameSent := strings.Split(sender.FollowerUsernamesSent, ",")
+	var updatedSenderFollowerUsernameSent []string
+	for _, username := range senderFollowerUsernameSent {
+		if username != receiver.UserName {
+			updatedSenderFollowerUsernameSent = append(updatedSenderFollowerUsernameSent, username)
+		}
+	}
+	sender.FollowerUsernamesSent = strings.Join(updatedSenderFollowerUsernameSent, ",")
+
+	// Prepare and execute the update queries
+	stmtSender, err := db.Prepare("UPDATE Users SET FollowerUsernamesSent = ? WHERE UserID = ?")
+	if err != nil {
+		return err
+	}
+	defer stmtSender.Close()
+
+	stmtReceiver, err := db.Prepare("UPDATE Users SET FollowerUsernamesReceived = ? WHERE UserID = ?")
+	if err != nil {
+		return err
+	}
+	defer stmtReceiver.Close()
+
+	_, err = stmtSender.Exec(sender.FollowerUsernamesSent, sender.UserID)
+	if err != nil {
+		return err
+	}
+
+	_, err = stmtReceiver.Exec(receiver.FollowerUsernamesReceived, receiver.UserID)
+	if err != nil {
+		return err
+	}
+
+	return nil
+
+
 }
