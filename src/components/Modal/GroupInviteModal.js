@@ -90,8 +90,6 @@ function GroupInviteModal(props) {
         }
       });
     }
-
-
     try {
       const response = await fetch(url, {
         method: 'POST',

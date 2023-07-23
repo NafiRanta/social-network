@@ -206,3 +206,60 @@ func AddUsersToMemberInvited(w http.ResponseWriter, r *http.Request) {
 
 	//fmt.Println("users added to group successfully")
 }
+
+func DeclineGroupInviteHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("DeclineGroupInviteHandler")
+	// Check if the request method is POST
+	if r.Method != http.MethodPost {
+		w.WriteHeader(http.StatusMethodNotAllowed)
+		fmt.Fprint(w, "Method not allowed")
+		return
+	}
+
+	// Extract the userID from the header
+	authHeader := r.Header.Get("Authorization")
+	userID, err := a.ExtractUserIDFromAuthHeader(authHeader)
+	if err != nil {
+		http.Error(w, "Invalid authorization header", http.StatusUnauthorized)
+		return
+	}
+
+	groupID := r.URL.Query().Get("groupID")
+	if groupID == "" {
+		http.Error(w, "Missing groupID", http.StatusBadRequest)
+		return
+	}
+
+	user, err := d.GetUserByID(userID)
+	if err != nil {
+		//fmt.Println("error from getuserbyid:", err)
+		http.Error(w, "Failed to get user", http.StatusInternalServerError)
+		return
+	}
+	username := user.UserName
+	// find username in group adminInvitedUsernames and delete it
+	err = d.DeleteUserFromAdminInvite(groupID, username)
+	if err != nil {
+		//fmt.Println("error from delete:", err)
+		http.Error(w, "Failed to delete group", http.StatusInternalServerError)
+		return
+	}
+	// get all groups
+	groups, err := d.GetAllGroups()
+	if err != nil {
+		//fmt.Println("error from getgroups:", err)
+		http.Error(w, "Failed to get groups", http.StatusInternalServerError)
+		return
+	}
+	// write groups to response
+	responseJSON, err := json.Marshal(groups)
+	if err != nil {
+		//fmt.Println("error from json.Marshal:", err)
+		http.Error(w, "Failed to marshal response", http.StatusInternalServerError)
+		return
+	}
+	w.WriteHeader(http.StatusOK)
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(responseJSON)
+	fmt.Println("users added to group successfully")
+}

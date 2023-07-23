@@ -20,26 +20,51 @@ function SingleGroup(props) {
      const allgroups = useSelector((state) => state.allGroups);
      const userInfo = useSelector((state) => state.userInfo);
      const allusers = useSelector((state) => state.allUsers);
+     console.log("allgroups singlegroup", allgroups);
     // group
     const [group, setGroup] = useState([]);
     const [adminDisplayName, setAdminDisplayName] = useState([]);
     const [membersInfo, setMembersInfo] = useState([]);
     const groupID = window.location.pathname.split('/')[2];
+    const [declineInvite, setDeclineInvite] = useState(false);
+    const [isGroupMember, setIsGroupMember] = useState(false);
+    const [isGroupAdmin, setIsGroupAdmin] = useState(false);
+    const [adminInvitedUsers, setAdminInvitedUsers] = useState([]); 
+    const [isInvitedByAdmin, setIsInvitedByAdmin] = useState(false);
+    const [memberInvitedUsers, setMemberInvitedUsers] = useState([]);
     // menu
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const dropdownRef = useRef(null);
     const [modalOpen, setModalOpen] = useState(false);
 
-    // check if user is a member of the group 
-    const groupmembers = JSON.parse(group?.[0]?.MemberUsernames ?? "[]");
-    const isUserGroupMember = Array.isArray(groupmembers) && groupmembers.includes(userInfo.UserName);
-   
-    // check if user is the admin of the group
-    const isUserGroupAdmin = group.length > 0 && group[0].Admin === userInfo.UserName;
+   useEffect(() => {
+     // check if user is a member of the group 
+     const groupmembers = JSON.parse(group?.[0]?.MemberUsernames ?? "[]");
+     const isGroupMember = Array.isArray(groupmembers) && groupmembers.includes(userInfo.UserName);
+    setIsGroupMember(isGroupMember);
+    
+     // check if user is the admin of the group
+     const isGroupAdmin = group.length > 0 && group[0].Admin === userInfo.UserName;
+    setIsGroupAdmin(isGroupAdmin);
+ 
+     // check if user is invited by admin
+     const adminInvitedUsers = JSON.parse(group?.[0]?.AdminInvitedUsernames ?? "[]");
+    setAdminInvitedUsers(adminInvitedUsers);
+     const isInvitedByAdmin = Array.isArray(adminInvitedUsers) && adminInvitedUsers.includes(userInfo.UserName);
+    setIsInvitedByAdmin(isInvitedByAdmin);
 
-    // check if user is invited by admin
-    const adminInvitedUsers = JSON.parse(group?.[0]?.AdminInvitedUsernames ?? "[]");
-    const isInvitedByAdmin = Array.isArray(adminInvitedUsers) && adminInvitedUsers.includes(userInfo.UserName);
+    // check if user is invited by member
+    const memberInvitedUsers = JSON.parse(group?.[0]?.MemberInvitedUsernames ?? "[]");
+    setMemberInvitedUsers(memberInvitedUsers);
+
+
+   }, [group, userInfo]);
+
+    console.log('isGroupMember', isGroupMember);
+    console.log('isGroupAdmin', isGroupAdmin);
+    console.log('isInvitedByAdmin', isInvitedByAdmin);
+    console.log('adminInvitedUsers', adminInvitedUsers);
+    console.log('memberInvitedUsers', memberInvitedUsers);
 
     useEffect(() => {
         const group = allgroups.filter((group) => group.GroupID === groupID);
@@ -117,7 +142,31 @@ function SingleGroup(props) {
         }
     };
 
-
+    const handleDeclineInvite = async() => {
+        try {
+            const token = localStorage.getItem('token');
+            const headers = new Headers();
+            headers.append('Authorization', 'Bearer ' + token);
+            headers.append('Content-Type', 'application/json');
+            const url = `http://localhost:8080/declinegroupinvite?groupID=${groupID}`;
+            const res = await fetch(url, {
+                method: 'POST',
+                headers: headers,
+            });
+            if (!res.ok) {
+                throw new Error('Failed to decline invite.');
+            } else {
+                const response = await res.json();
+                console.log(response);
+                dispatch({ type: 'SET_ALLGROUPS', payload: response });
+                setDeclineInvite(true);
+                alert('You have declined the invite.');
+                window.location.href = '/';
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
     return (
         <div>
             <Topnav userDisplayname={props.userDisplayname} allusers={props.allusers} socket={props.socket}/>
@@ -125,64 +174,73 @@ function SingleGroup(props) {
             <div className="container-fluid" key={groupItem.GroupID}>
                 <div className="bg-white p-5" >
                     <div className="panel-group profile-cover p-5" >
-                        <div className="profile-cover__info" id="coverContent">
+                    <div className="profile-cover__info" id="coverContent">
                             <h2><strong>{groupItem.GroupName}</strong></h2>
                             <p className="card-description">{groupItem.GroupDescription}</p>
+                        {!(declineInvite && (!isGroupAdmin || !isGroupMember)) && ( // Check for isDecline and group membership conditions
+                            <>
+                            
                             <div className="profile-cover__action">
-                                {(isUserGroupAdmin || isUserGroupMember) && (
-                                    <>
-                                        <button 
-                                        href="#" 
-                                        className="btn btn-primary btn-sm d-flex justify-content-center align-items-center" 
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#groupInviteModal"
-                                        >
-                                            + Invite
-                                        </button>
+                                {(isGroupAdmin || isGroupMember) && (
+                                <>
+                                    <button
+                                    href="#"
+                                    className="btn btn-primary btn-sm d-flex justify-content-center align-items-center"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#groupInviteModal"
+                                    >
+                                    + Invite
+                                    </button>
+                                    <div
+                                    className="btn btn-primary btn-sm d-flex justify-content-center align-items-center"
+                                    onClick={toggleMenu}
+                                    ref={dropdownRef}
+                                    >
+                                    <i className="fa fa-bars"> </i>
+                                    {isMenuOpen && (
                                         <div
-                                            className="btn btn-primary btn-sm d-flex justify-content-center align-items-center"
-                                            onClick={toggleMenu}
-                                            ref={dropdownRef}
+                                        className="dropdown-menu show"
+                                        id="groupdropdown"
+                                        style={{
+                                            position: 'absolute',
+                                            top: '84%',
+                                            left: '55%',
+                                        }}
                                         >
-                                            <i className="fa fa-bars"> </i>
-                                            {isMenuOpen && (
-                                                <div
-                                                    className="dropdown-menu show"
-                                                    id="groupdropdown"
-                                                    style={{
-                                                        position: 'absolute',
-                                                        top: '84%',
-                                                        left: '55%',
-                                                    }}
-                                                >
-                                                    <button className="dropdown-item" type="button">
-                                                    Leave
-                                                    </button>
-                                                    <button className="dropdown-item" type="button"  data-bs-toggle="modal"
-                                                    data-bs-target="#createEventModal">
-                                                    Create Event
-                                                    </button>
-                                                </div>
-                                            )}
+                                        <button className="dropdown-item" type="button">
+                                            Leave
+                                        </button>
+                                        <button
+                                            className="dropdown-item"
+                                            type="button"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#createEventModal"
+                                        >
+                                            Create Event
+                                        </button>
                                         </div>
-                                    </>
+                                    )}
+                                    </div>
+                                </>
                                 )}
                             </div>
-                            {(isInvitedByAdmin && !isUserGroupAdmin && !isUserGroupMember) &&  (
+                            {isInvitedByAdmin && !isGroupAdmin && !isGroupMember && (
                                 <div className="alert alert-warning" role="alert">
-                                    <strong>Invited by admin</strong>
-                                    <button className="btn btn-success mx-2" onClick={handleAcceptInvite}>
+                                <strong>Invited by admin</strong>
+                                <button className="btn btn-success mx-2" onClick={handleAcceptInvite}>
                                     Accept
-                                    </button>
-                                    <button className="btn btn-danger" /*onClick={handleDeclineInvite}*/>
+                                </button>
+                                <button className="btn btn-danger" onClick={handleDeclineInvite}>
                                     Decline
-                                    </button>
+                                </button>
                                 </div>
                             )}
+                            </>
+                        )}
                         </div>
                     </div>
                 </div>
-                <GroupInviteModal userDisplayname={props.userDisplayname} openModal={openModal} allusers={props.allusers} groupID={groupID} isUserGroupAdmin={isUserGroupAdmin} isUserGroupMember={isUserGroupMember} socket={props.socket}></GroupInviteModal>
+                <GroupInviteModal userDisplayname={props.userDisplayname} openModal={openModal} allusers={props.allusers} groupID={groupID} isGroupAdmin={isGroupAdmin} isGroupMember={isGroupMember} socket={props.socket}></GroupInviteModal>
                 <CreateEventModal userDisplayname={props.userDisplayname} openModal={openModal} allusers={props.allusers} groupID={groupID} socket={props.socket}/>
                 <div className="row justify-content-evenly">
                     <div className="col-12 col-lg-3">
@@ -219,7 +277,7 @@ function SingleGroup(props) {
                                     ))}
                                 </div>
                             </div>
-                            {(isUserGroupAdmin || isUserGroupMember) && (
+                            {(isGroupAdmin || isGroupMember) && (
                                 <div className="bg-white rounded border shadow p-3">
                                     <p className="m-0"><strong>Events</strong></p>
                                     <EventCard groupID={groupID}/>
@@ -228,7 +286,7 @@ function SingleGroup(props) {
                         </div>
                     </div>
                     <div className="col-12 col-lg-6 pb-5">
-                        {(isUserGroupAdmin || isUserGroupMember) && (
+                        {(isGroupAdmin || isGroupMember) && (
                             <div className="d-flex flex-column justify-content-center w-100 mx-auto" id="d-flex-postcontainer-myprofile">
                                 <CreateGroupPost userDisplayname={props.userDisplayname} groupID={groupID}/>
                                 <GroupPostCard userDisplayname={props.userDisplayname}/>
