@@ -293,7 +293,6 @@ func RemoveSendFollowReq(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Remove follow request successfully")
 }
 
-
 func AcceptFollowRequest(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Accept follow request")
 	if r.Method != "POST" {
@@ -395,5 +394,6 @@ func DeclineFollowRequest(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Failed to remove follow request", http.StatusInternalServerError)
 		return
 	}
+
 	fmt.Fprintf(w, "Decline request successfully")
 }

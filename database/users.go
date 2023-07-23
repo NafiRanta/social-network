@@ -3,33 +3,36 @@ package database
 //TODO: update the user table to include a profile picture and a cover photo => fit with requirements
 import (
 	"database/sql"
+	"fmt"
+
 	//"fmt"
 	u "socialnetwork/utils"
 	"strings"
+
 	"github.com/gofrs/uuid"
 )
 
 type User struct {
-	UserID         string
-	FirstName      string
-	LastName       string
-	UserName       string
-	Email          string
-	Password       string
-	Privacy        string
-	Online         int
-	DateOfBirth    string
-	Gender         string
-	Avatar         string
-	Nickname       string
-	AboutMe        string
-	FollowerUsernames string
+	UserID                    string
+	FirstName                 string
+	LastName                  string
+	UserName                  string
+	Email                     string
+	Password                  string
+	Privacy                   string
+	Online                    int
+	DateOfBirth               string
+	Gender                    string
+	Avatar                    string
+	Nickname                  string
+	AboutMe                   string
+	FollowerUsernames         string
 	FollowerUsernamesReceived string
-	FollowerUsernamesSent string
+	FollowerUsernamesSent     string
 }
 
 // create users table
-//16 column
+// 16 column
 func CreateUsersTable(db *sql.DB) {
 	usersTable := `CREATE TABLE IF NOT EXISTS Users (
 		UserID CHAR(36) NOT NULL PRIMARY KEY,
@@ -93,21 +96,21 @@ func GetUserByEmail(email string) (*User, error) {
 
 	var user User
 	err = stmt.QueryRow(email).Scan(
-		&user.UserID, 
-		&user.FirstName, 
-		&user.LastName, 
-		&user.UserName, 
-		&user.Email, 
-		&user.Password, 
-		&user.Privacy, 
-		&user.Online, 
-		&user.DateOfBirth, 
-		&user.Gender, 
-		&user.Avatar, 
-		&user.Nickname, 
-		&user.AboutMe, 
-		&user.FollowerUsernames, 
-		&user.FollowerUsernamesReceived, 
+		&user.UserID,
+		&user.FirstName,
+		&user.LastName,
+		&user.UserName,
+		&user.Email,
+		&user.Password,
+		&user.Privacy,
+		&user.Online,
+		&user.DateOfBirth,
+		&user.Gender,
+		&user.Avatar,
+		&user.Nickname,
+		&user.AboutMe,
+		&user.FollowerUsernames,
+		&user.FollowerUsernamesReceived,
 		&user.FollowerUsernamesSent,
 	)
 	if err != nil {
@@ -138,21 +141,21 @@ func GetUserByUsername(username string) (*User, error) {
 
 	var user User
 	err = stmt.QueryRow(username).Scan(
-		&user.UserID, 
-		&user.FirstName, 
-		&user.LastName, 
-		&user.UserName, 
-		&user.Email, 
-		&user.Password, 
-		&user.Privacy, 
-		&user.Online, 
-		&user.DateOfBirth, 
-		&user.Gender, 
-		&user.Avatar, 
-		&user.Nickname, 
-		&user.AboutMe, 
-		&user.FollowerUsernames, 
-		&user.FollowerUsernamesReceived, 
+		&user.UserID,
+		&user.FirstName,
+		&user.LastName,
+		&user.UserName,
+		&user.Email,
+		&user.Password,
+		&user.Privacy,
+		&user.Online,
+		&user.DateOfBirth,
+		&user.Gender,
+		&user.Avatar,
+		&user.Nickname,
+		&user.AboutMe,
+		&user.FollowerUsernames,
+		&user.FollowerUsernamesReceived,
 		&user.FollowerUsernamesSent,
 	)
 	if err != nil {
@@ -185,21 +188,21 @@ func GetUserByID(userID string) (*User, error) {
 	var user User
 
 	err = stmt.QueryRow(userID).Scan(
-		&user.UserID, 
-		&user.FirstName, 
-		&user.LastName, 
-		&user.UserName, 
-		&user.Email, 
-		&user.Password, 
-		&user.Privacy, 
-		&user.Online, 
-		&user.DateOfBirth, 
-		&user.Gender, 
-		&user.Avatar, 
-		&user.Nickname, 
-		&user.AboutMe, 
-		&user.FollowerUsernames, 
-		&user.FollowerUsernamesReceived, 
+		&user.UserID,
+		&user.FirstName,
+		&user.LastName,
+		&user.UserName,
+		&user.Email,
+		&user.Password,
+		&user.Privacy,
+		&user.Online,
+		&user.DateOfBirth,
+		&user.Gender,
+		&user.Avatar,
+		&user.Nickname,
+		&user.AboutMe,
+		&user.FollowerUsernames,
+		&user.FollowerUsernamesReceived,
 		&user.FollowerUsernamesSent,
 	)
 	if err != nil {
@@ -236,21 +239,21 @@ func GetAllPublicUsers() ([]*User, error) {
 	for rows.Next() {
 		user := &User{}
 		err := rows.Scan(
-			&user.UserID, 
-			&user.FirstName, 
-			&user.LastName, 
-			&user.UserName, 
-			&user.Email, 
-			&user.Password, 
-			&user.Privacy, 
-			&user.Online, 
-			&user.DateOfBirth, 
-			&user.Gender, 
-			&user.Avatar, 
-			&user.Nickname, 
-			&user.AboutMe, 
-			&user.FollowerUsernames, 
-			&user.FollowerUsernamesReceived, 
+			&user.UserID,
+			&user.FirstName,
+			&user.LastName,
+			&user.UserName,
+			&user.Email,
+			&user.Password,
+			&user.Privacy,
+			&user.Online,
+			&user.DateOfBirth,
+			&user.Gender,
+			&user.Avatar,
+			&user.Nickname,
+			&user.AboutMe,
+			&user.FollowerUsernames,
+			&user.FollowerUsernamesReceived,
 			&user.FollowerUsernamesSent,
 		)
 		if err != nil {
@@ -288,21 +291,21 @@ func GetAllPrivateUsers() ([]*User, error) {
 	for rows.Next() {
 		user := &User{}
 		err := rows.Scan(
-			&user.UserID, 
-			&user.FirstName, 
-			&user.LastName, 
-			&user.UserName, 
-			&user.Email, 
-			&user.Password, 
-			&user.Privacy, 
-			&user.Online, 
-			&user.DateOfBirth, 
-			&user.Gender, 
-			&user.Avatar, 
-			&user.Nickname, 
-			&user.AboutMe, 
-			&user.FollowerUsernames, 
-			&user.FollowerUsernamesReceived, 
+			&user.UserID,
+			&user.FirstName,
+			&user.LastName,
+			&user.UserName,
+			&user.Email,
+			&user.Password,
+			&user.Privacy,
+			&user.Online,
+			&user.DateOfBirth,
+			&user.Gender,
+			&user.Avatar,
+			&user.Nickname,
+			&user.AboutMe,
+			&user.FollowerUsernames,
+			&user.FollowerUsernamesReceived,
 			&user.FollowerUsernamesSent,
 		)
 		if err != nil {
@@ -392,7 +395,7 @@ func AddFollower(userA *User, userB *User) error {
 		return err
 	}
 	defer db.Close()
-	
+
 	if userA.FollowerUsernames == "" {
 		userA.FollowerUsernames = userB.UserName
 	} else {
@@ -468,6 +471,7 @@ func RemoveFollowRequest(sender *User, receiver *User) error {
 
 	// Remove sender's username from receiver's FollowerUsernamesReceived
 	receiverFollowerUsernamesReceived := strings.Split(receiver.FollowerUsernamesReceived, ",")
+	fmt.Println("receiverFollowerUsernamesReceived1:", receiverFollowerUsernamesReceived)
 	var updatedReceiverFollowerUsernamesReceived []string
 	for _, username := range receiverFollowerUsernamesReceived {
 		if username != sender.UserName {
@@ -475,8 +479,10 @@ func RemoveFollowRequest(sender *User, receiver *User) error {
 		}
 	}
 	receiver.FollowerUsernamesReceived = strings.Join(updatedReceiverFollowerUsernamesReceived, ",")
+	fmt.Println("receiver.FollowerUsernamesReceived2:", receiver.FollowerUsernamesReceived)
 	// Remove receiver's username from sender's FollowerUsernamesSent
 	senderFollowerUsernameSent := strings.Split(sender.FollowerUsernamesSent, ",")
+	fmt.Println("senderFollowerUsernameSent1:", senderFollowerUsernameSent)
 	var updatedSenderFollowerUsernameSent []string
 	for _, username := range senderFollowerUsernameSent {
 		if username != receiver.UserName {
@@ -484,7 +490,7 @@ func RemoveFollowRequest(sender *User, receiver *User) error {
 		}
 	}
 	sender.FollowerUsernamesSent = strings.Join(updatedSenderFollowerUsernameSent, ",")
-
+	fmt.Println("sender.FollowerUsernamesSent2:", sender.FollowerUsernamesSent)
 	// Prepare and execute the update queries
 	stmtSender, err := db.Prepare("UPDATE Users SET FollowerUsernamesSent = ? WHERE UserID = ?")
 	if err != nil {
@@ -509,6 +515,5 @@ func RemoveFollowRequest(sender *User, receiver *User) error {
 	}
 
 	return nil
-
 
 }

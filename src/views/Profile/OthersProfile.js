@@ -187,7 +187,39 @@ function OthersProfile(props) {
             console.log(error);
         }
     }
-   
+   const handleUnfollow = async (event) => {
+    console.log("clickedProfileUsername", clickedProfileUsername)
+    console.log("userInfo.UserName", userInfo.UserName)
+        event.preventDefault();
+        const data = {
+            sender_username: userInfo.UserName,
+            receiver_username: clickedProfileUsername
+        }
+
+        try{
+            const response = await fetch("http://localhost:8080/declinefollowreq", {
+                method: 'POST',
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json",
+                    },
+                body: JSON.stringify(data)
+            });
+            console.log("response", response)
+            if (response.ok) {
+                console.log("Unfollow");
+                alert("You unfollowed " + clickedProfileDisplayName + "");
+                setIsFollowing(false);
+                //window.location.reload();
+            } else {
+                console.log("Error declining follow request");
+            }
+        }
+        catch(error){
+            console.log(error);
+        }
+    }
+
   return (
         <div>
            <Topnav userDisplayname={props.userDisplayname} socket={props.socket}/>
@@ -229,7 +261,7 @@ function OthersProfile(props) {
                                     </div>
                                     <div className="d-flex pt-1">
                                     {isFollowing ? (
-                                        <button type="button" className="btn btn-primary flex-grow-1" disabled>
+                                        <button type="button" className="btn btn-primary flex-grow-1" onClick={handleUnfollow}>
                                         Unfollow
                                         </button>
                                     ) : isPending ? (
