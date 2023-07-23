@@ -125,7 +125,19 @@ function OthersProfile(props) {
     const isFollowing = myfollowers.includes(clickedProfileUsername);
 
     // if username is found in followingUsernamesReceived or followingUsernamesSent, then the clicked profile follow request is pending
-    const isPending = followingUsernamesReceived.includes(clickedProfileInfo.UserName) || followingUsernamesSent.includes(clickedProfileInfo.UserName);
+    useEffect(() => {
+    const isPending = followingUsernamesReceived.includes(userInfo.UserName) || followingUsernamesSent.includes(userInfo.UserName);
+    const isPendingToAprove = clickedProfileFollowerUsernamesSent.includes(userInfo.UserName) 
+    setPending(isPending);
+    setIsPendingToAprove(isPendingToAprove);
+    }, [followingUsernamesReceived, followingUsernamesSent, userInfo.UserName, clickedProfileUsername]);
+
+    console.log("followingUsernamesReceived", followingUsernamesReceived)
+    console.log("followingUsernamesSent", followingUsernamesSent)   
+    console.log("isPending", isPending)
+    console.log("isPendingToAprove", isPendingToAprove)
+    console.log("clickedProfileUsername", clickedProfileUsername)
+    console.log("clickedProfileInfo", clickedProfileInfo)
 
     // handle follow button
     const handleFollow = async (event) => {
@@ -319,11 +331,10 @@ function OthersProfile(props) {
                         </div>
                     </div>
                 </div>
-                ): null: null}
+                ): null}
             </div>
         </div>
     )
 }
 
 export default OthersProfile;
-
