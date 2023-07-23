@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"net/url"
 	a "socialnetwork/authentication"
 	d "socialnetwork/database"
 )
@@ -195,14 +196,33 @@ func SendFollowRequest(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid request data", http.StatusBadRequest)
 		return
 	}
+
+	senderUsername := followReq.SenderUsername
+	fmt.Println("senderUsername", senderUsername)
+	receiverUsername := followReq.ReceiverUsername
+	fmt.Println("receiverUsername", receiverUsername)
+
+	// check if sender and receiver names contains %C3%A4 , %C3%B6, %C3%A5, if so replace them with ä, ö, å
+	decodedSender, err := url.PathUnescape(senderUsername)
+	if err != nil {
+		fmt.Println("Error decoding sender username:", err)
+		return
+	}
+	fmt.Println("Decoded sender username:", decodedSender)
+	decodedReceiver, err := url.PathUnescape(receiverUsername)
+	if err != nil {
+		fmt.Println("Error decoding receiver username:", err)
+		return
+	}
+	fmt.Println("Decoded receiver username:", decodedReceiver)
 	// get sender user from db
-	senderUser, err := d.GetUserByUsername(followReq.SenderUsername)
+	senderUser, err := d.GetUserByUsername(decodedSender)
 	if err != nil {
 		http.Error(w, "Sender not found", http.StatusNotFound)
 		return
 	}
 	//check receiver user privacy
-	receiverUser, err := d.GetUserByUsername(followReq.ReceiverUsername)
+	receiverUser, err := d.GetUserByUsername(decodedReceiver)
 	if err != nil {
 		http.Error(w, "Receiver not found", http.StatusNotFound)
 		return
