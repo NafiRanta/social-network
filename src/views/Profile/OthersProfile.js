@@ -31,6 +31,7 @@ function OthersProfile(props) {
     const [isPublic, setIsPublic] = useState(false);
     const [isPending, setPending] = useState([]);
     const [isPendingToAprove, setIsPendingToAprove] = useState([]);
+    const [isFollowing, setIsFollowing] = useState(false);
 
     const dob = new Date(clickedProfileInfo.DateOfBirth).toLocaleDateString("en-US", {
         day: "numeric",
@@ -121,19 +122,20 @@ function OthersProfile(props) {
         }
     }, [userInfo, clickedProfileInfo]); 
   
-    // if username is found in followers, then the user is following the clicked profile
-    const isFollowing = myfollowers.includes(clickedProfileUsername);
-
     // if username is found in followingUsernamesReceived or followingUsernamesSent, then the clicked profile follow request is pending
     useEffect(() => {
-    const isPending = followingUsernamesReceived.includes(userInfo.UserName) || followingUsernamesSent.includes(userInfo.UserName);
-    const isPendingToAprove = clickedProfileFollowerUsernamesSent.includes(userInfo.UserName) 
-    setPending(isPending);
-    setIsPendingToAprove(isPendingToAprove);
-    }, [followingUsernamesReceived, followingUsernamesSent, userInfo.UserName, clickedProfileUsername]);
+        const isPending = followingUsernamesReceived.includes(userInfo.UserName) || followingUsernamesSent.includes(userInfo.UserName);
+        const isPendingToAprove = clickedProfileFollowerUsernamesSent.includes(userInfo.UserName) 
+        const isFollowing = myfollowers.includes(clickedProfileInfo.UserName);
+        setPending(isPending);
+        setIsPendingToAprove(isPendingToAprove);
+        setIsFollowing(isFollowing);
+    }, [followingUsernamesReceived, followingUsernamesSent, userInfo.UserName, myfollowers]);
 
     console.log("followingUsernamesReceived", followingUsernamesReceived)
     console.log("followingUsernamesSent", followingUsernamesSent)   
+    console.log("myfollowers", myfollowers)
+    console.log("isFollowing", isFollowing)
     console.log("isPending", isPending)
     console.log("isPendingToAprove", isPendingToAprove)
     console.log("clickedProfileUsername", clickedProfileUsername)
