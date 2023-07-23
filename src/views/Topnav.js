@@ -19,10 +19,36 @@ function Topnav(props) {
   const userInfo = useSelector((state) => state.userInfo);
   const invitesbyadmin = useSelector((state) => state.invitesByAdmin);
   const invitesbymember = useSelector((state) => state.invitesByMember);
+  const followRequestsUsernames = userInfo.FollowerUsernamesReceived ? userInfo.FollowerUsernamesReceived.split(",") : [];
   const [groupInvitesByAdmin, setGroupInvitesByAdmin] = useState([]);
   const [groupInvitesByMember, setGroupInvitesByMember] = useState([]);
-  
+  const [followRequestsInfo, setFollowRequestsInfo] = useState([]);
   let Notifications = []
+
+console.log("followRequestsUsernames", followRequestsUsernames)
+
+useEffect(() => {
+  if (followRequestsUsernames && Array.isArray(allusers)) {
+    const updatedFollowRequests = followRequestsUsernames.map((username) => {
+      const requestorInfo = allusers.find((user) => user.UserName === username);
+      const requestorAvatar = requestorInfo?.Avatar;
+      const requestorUsername = requestorInfo?.UserName;
+      const requestorDisplayname = requestorInfo?.FirstName + " " + requestorInfo?.LastName;
+
+      return {
+        type: "SET_FOLLOWNOTIFICATION",
+        requestorAvatar: requestorAvatar,
+        requestorDisplayname: requestorDisplayname,
+        requestorUsername: requestorUsername,
+      };
+    });
+    setFollowRequestsInfo(updatedFollowRequests);
+  }
+}, [allusers]);
+
+  console.log("followRequestsInfo", followRequestsInfo)
+
+
 
   // get group invites by admin getting admin Avatar, admin Displayname, groupName, groupID 
   // set these variables to setGroupInvitesByAdmin
@@ -34,6 +60,7 @@ function Topnav(props) {
         const adminDisplayname = adminInfo?.FirstName + " " + adminInfo?.LastName;
 
         return {
+          type: "SET_INVITESBYADMIN",
           adminAvatar: adminAvatar,
           adminDisplayname: adminDisplayname,
           groupName: invite.GroupName,
@@ -53,6 +80,7 @@ function Topnav(props) {
         const memberDisplayname = memberInfo?.FirstName + " " + memberInfo?.LastName;
 
         return {
+          type: "SET_INVITESBYMEMBER",
           memberAvatar: memberAvatar,
           memberDisplayname: memberDisplayname,
           groupName: invite.GroupName,
@@ -66,6 +94,7 @@ function Topnav(props) {
 Notifications = [
   ...groupInvitesByAdmin || [],
   ...groupInvitesByMember || [],
+  ...followRequestsInfo || [],
 ]
 
   //handle logout
@@ -186,22 +215,76 @@ Notifications = [
                     </div>
                 </Dropdown.Item>
                 <div className="overflow-auto" style={{ maxHeight: "300px" }}>
-                  {Notifications.map((invite) => ( // Add parentheses here to return JSX
-                    <div key={invite.groupID}>
-                      <Dropdown.Item as="li" className="my-2 p-1">
-                        <div className="d-flex justify-content-between">
-                          <div className="d-flex align-items-center">
-                            <div className="rounded-circle d-flex align-items-center justify-content-center mx-2" id="avatar">
-                              <img src={invite.adminAvatar} alt="avatar" className="rounded-circle me-2" />
+                  {Notifications.map((notification) => {// Add parentheses here to return JSX
+                  if (!notification) {
+                    return null; 
+                  } else if (notification.type === "SET_FOLLOWNOTIFICATION") {
+                    return (
+                      <div key={notification.type}>
+                        <Dropdown.Item as="li" className="my-2 p-1">
+                          <div className="d-flex justify-content-between">
+                            <div className="d-flex align-items-center"> 
+                              <div className="rounded-circle d-flex align-items-center justify-content-center mx-2" id="avatar">
+                                <img src={notification.requestorAvatar} alt="avatar" className="rounded-circle me-2" />
+                              </div>
+                              <div>
+                                <p className="m-0">{notification.requestorDisplayname} wants to follow you</p>
+                              </div>
                             </div>
                             <div>
-                              <p className="m-0">{invite.adminDisplayname} invited you to join {invite.groupName}</p>
+                              <Link
+                                to={`/othersprofile/${notification.requestorUsername}`}
+                                className="btn btn-primary btn-sm d-flex justify-content-center align-items-center"
+                              >
+                                View
+                              </Link>
+                            </div>
+                          </div>
+                        </Dropdown.Item>
+                      </div>
+                    );
+                  } else if (notification.type === "SET_INVITESBYADMIN") {
+                    return (
+                      <div key={notification.groupID}>
+                        <Dropdown.Item as="li" className="my-2 p-1">
+                          <div className="d-flex justify-content-between"> 
+                            <div className="d-flex align-items-center">
+                              <div className="rounded-circle d-flex align-items-center justify-content-center mx-2" id="avatar">
+                                <img src={notification.adminAvatar} alt="avatar" className="rounded-circle me-2" />
+                              </div>
+                              <div>
+                                <p className="m-0">{notification.adminDisplayname} invited you to join {notification.groupName}</p>
+                              </div>
+                            </div>
+                            <div>
+                              <Link
+                                to={`/singlegroup/${notification.groupID}`}
+                                className="btn btn-primary btn-sm d-flex justify-content-center align-items-center" 
+                              >
+                                View
+                              </Link>
+                            </div>
+                          </div>
+                        </Dropdown.Item>
+                      </div>
+                    );
+                  } else if (notification.type === "SET_INVITESBYMEMBER") {
+                    return (
+                      <div key={notification.groupID}>
+                        <Dropdown.Item as="li" className="my-2 p-1">
+                          <div className="d-flex justify-content-between">
+                            <div className="d-flex align-items-center">
+                              <div className="rounded-circle d-flex align-items-center justify-content-center mx-2" id="avatar">
+                                <img src={notification.memberAvatar} alt="avatar" className="rounded-circle me-2" />
+                              </div>
+                            <div>
+                              <p className="m-0">{notification.memberDisplayname} invited you to join {notification.groupName}</p>
                             </div>
                           </div>
                           <div>
                             <Link
-                              to={`/singlegroup/${invite.groupID}`}
-                              className="btn btn-primary btn-sm d-flex justify-content-center align-items-center"
+                              to={`/singlegroup/${notification.groupID}`}
+                              className="btn btn-primary btn-sm d-flex justify-content-center align-items-center" 
                             >
                               View
                             </Link>
@@ -209,9 +292,12 @@ Notifications = [
                         </div>
                       </Dropdown.Item>
                     </div>
-                  ))}
+                    );
+                  } else {
+                    return null;
+                  }
+                })}
                 </div>
-                
                 </Dropdown.Menu>
               </Dropdown>
             </div>

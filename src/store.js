@@ -14,6 +14,7 @@ let defaultInitialState = {
   chatNotification : false,
   notification : false,
   clickedProfileInfo: [],
+  followNotification: [],
 };
 let serializedState = localStorage.getItem("reduxState");
 let initialState = serializedState || defaultInitialState;
@@ -94,6 +95,11 @@ function rootReducer(state = initialState, action) {
         ...state,
         clickedProfileInfo: action.payload,
       };
+    case "SET_FOLLOWNOTIFICATION":
+      return {
+        ...state,
+        followNotification: action.payload,
+      };
     default:
       return state; 
   }
@@ -107,6 +113,7 @@ const store = configureStore({
 store.subscribe(() => {
   const state = store.getState();
   localStorage.setItem("reduxState", JSON.stringify(state));
+  console.log("state", state);
 });
 
 export default store;

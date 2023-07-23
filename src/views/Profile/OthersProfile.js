@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 function OthersProfile(props) {
+    console.log("props", props)
     const location = useLocation();
     const dispatch = useDispatch();
     const { pathname } = location;
@@ -20,13 +21,16 @@ function OthersProfile(props) {
     const [clickedProfileInfo, setClickedProfileInfo] = useState({});
     const clickedProfileDisplayName = clickedProfileInfo.FirstName + " " + clickedProfileInfo.LastName;
     const clickedProfileFollowers = clickedProfileInfo.FollowerUsernames ? clickedProfileInfo.FollowerUsernames.split(",") : [];
+    const clickedProfileFollowerUsernamesSent = clickedProfileInfo.FollowerUsernamesSent ? clickedProfileInfo.FollowerUsernamesSent.split(",") : [];
+    console.log("clickedProfileFollowerUsernamesSent", clickedProfileFollowerUsernamesSent);
     const [clickedProfileFollowersInfo, setClickedProfileFollowersInfo] = useState([]); // [ {username, avatar, displayname}
     const [myfollowers, setFollowers] = useState([]);
     const [followingUsernamesReceived, setFollowingUsernamesReceived] = useState([]);
     const [followingUsernamesSent, setFollowingUsernamesSent] = useState([]);
     const [isPrivate, setIsPrivate] = useState(false);
     const [isPublic, setIsPublic] = useState(false);
-    const [pending, setPending] = useState([]);
+    const [isPending, setPending] = useState([]);
+    const [isPendingToAprove, setIsPendingToAprove] = useState([]);
 
     const dob = new Date(clickedProfileInfo.DateOfBirth).toLocaleDateString("en-US", {
         day: "numeric",
@@ -121,11 +125,18 @@ function OthersProfile(props) {
     const isFollowing = myfollowers.includes(clickedProfileUsername);
 
     // if username is found in followingUsernamesReceived or followingUsernamesSent, then the clicked profile follow request is pending
+    useEffect(() => {
     const isPending = followingUsernamesReceived.includes(userInfo.UserName) || followingUsernamesSent.includes(userInfo.UserName);
+    const isPendingToAprove = clickedProfileFollowerUsernamesSent.includes(userInfo.UserName) 
+    setPending(isPending);
+    setIsPendingToAprove(isPendingToAprove);
+    }, [followingUsernamesReceived, followingUsernamesSent, userInfo.UserName, clickedProfileUsername]);
 
     console.log("followingUsernamesReceived", followingUsernamesReceived)
     console.log("followingUsernamesSent", followingUsernamesSent)   
     console.log("isPending", isPending)
+    console.log("isPendingToAprove", isPendingToAprove)
+    console.log("clickedProfileUsername", clickedProfileUsername)
     console.log("clickedProfileInfo", clickedProfileInfo)
 
     // handle follow button
@@ -134,22 +145,6 @@ function OthersProfile(props) {
         const data = {
             sender_username: userInfo.UserName,
             receiver_username: clickedProfileUsername
-        }
-
-        // send notification to clickedProfileUsername through ws if clickedProfileUsername is private
-        console.log("clickedProfileInfo", clickedProfileInfo);
-        if (clickedProfileInfo.Privacy === 'private') {
-            const notification = {
-                type: "notification",
-                payload: {
-                    senderUsername: userInfo.UserName,
-                    receiverUsername: clickedProfileUsername,
-                }
-            };
-            if (props.socket) {
-                props.socket.send(JSON.stringify(notification));
-                console.log("notification sent");
-            }
         }
 
         try{
@@ -164,7 +159,24 @@ function OthersProfile(props) {
             if (response.ok) {
                 console.log("Follow request sent");
                 alert("Follow request sent");
-                window.location.reload();
+                // send notification to clickedProfileUsername through ws if clickedProfileUsername is private
+                console.log("clickedProfileInfo", clickedProfileInfo);
+                if (clickedProfileInfo.Privacy === 'private') {
+                    const notification = {
+                        type: "notification",
+                        payload: data
+                    };
+                    console.log("notification", notification);
+                    if (props.socket) {
+                        props.socket.send(JSON.stringify(notification));
+                        console.log("notification sent");
+                       dispatch({ type: "SET_FOLLOWNOTIFICATION", payload: notification.payload });
+                    }
+                    
+                }
+               
+               window.location.reload();
+
             } else {
                 console.log("Error sending follow request");
             }
@@ -222,11 +234,32 @@ function OthersProfile(props) {
                                         <button type="button" className="btn btn-primary flex-grow-1" disabled>
                                         Pending Follow Request
                                         </button>
+                                    ) : isPendingToAprove ? (
+                                        <div className="d-flex flex-column">
+                                            <div className="row mb-2">
+                                                <div className="col">
+                                                <p className="mb-0">{clickedProfileDisplayName} requested to follow you</p>
+                                                </div>
+                                            </div>
+                                            <div className="row">
+                                                <div className="col">
+                                                <div className="btn-group" role="group" aria-label="Follow Request Actions">
+                                                    <button type="button" className="btn btn-primary mr-2">
+                                                    Accept
+                                                    </button>
+                                                    <button type="button" className="btn btn-danger">
+                                                    Decline
+                                                    </button>
+                                                </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     ) : (
                                         <button type="button" className="btn btn-primary flex-grow-1" onClick={handleFollow}>
                                         Follow
                                         </button>
-                                    )}
+                                    )
+                                    }
                                     </div>
                                 </div>
                                 </div>
@@ -272,7 +305,7 @@ function OthersProfile(props) {
                                 </div>
                                 <div className="follow-box-content p-1 m-0 d-flex">
                                     {clickedProfileFollowersInfo.length === 0 ? (
-                                        <p className="m-0">You have no followers</p>
+                                        <p className="m-0">{clickedProfileDisplayName} has no followers</p>
                                     ) : (
                                         // If not empty, map over the followers
                                         clickedProfileFollowersInfo.map((follower) => (
