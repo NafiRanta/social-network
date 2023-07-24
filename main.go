@@ -65,10 +65,10 @@ func Start() error {
 	router.HandleFunc("/updateavatar", user.UpdateAvatarOfUser)
 
 	// add friend
-	router.HandleFunc("/sendfollowreq", user.SendFollowRequest)
-	router.HandleFunc("/acceptfollowreq", user.AcceptFollowRequest)
-	router.HandleFunc("/declinefollowreq", user.DeclineFollowRequest)
-	router.HandleFunc("/removefollower", user.RemoveFollower)
+	router.HandleFunc("/sendfollowreq", user.SendFollowRequestHandler)
+	router.HandleFunc("/acceptfollowreq", user.AcceptFollowRequestHandler)
+	router.HandleFunc("/declinefollowreq", user.DeclineFollowRequestHandler)
+	router.HandleFunc("/removefollower", user.RemoveFollowerHandler)
 
 	//handle post
 	router.HandleFunc("/posts", p.GetPostsHandler)
@@ -103,7 +103,10 @@ func Start() error {
 
 	// handle group events
 	router.HandleFunc("/addevent", ge.AddGroupEventHandler)
-	router.HandleFunc("/getevent", ge.GetGroupEventHandler)
+	router.HandleFunc("/getevents", ge.GetGroupEventsHandler)
+	//router.HandleFunc("/getsingleevent", ge.GetSingleGroupEventHandler)
+	router.HandleFunc("/going", ge.AcceptGoingEventHandler)
+	router.HandleFunc("/decline", ge.DeclineGoingHandler)
 
 	// router.HandleFunc("/websocket", ws)
 	handler := u.CorsMiddleware(router)

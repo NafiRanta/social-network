@@ -18,6 +18,7 @@ function CreateEventModal(props) {
 
 const handleEventSubmit = async (event) => {
     event.preventDefault();
+    console.log('create event')
     const token = localStorage.getItem('token');
     const eventName = document.getElementById("eventname").value;
     const eventDescription = document.getElementById("eventdescription").value;
@@ -39,26 +40,26 @@ const handleEventSubmit = async (event) => {
       createAt: now,
     };
     // fetch group with groupID
-    const group = await fetch(`http://localhost:8080/getgroup?groupID=${props.groupID}`, { 
-      method: 'GET',
-      headers: {
-        'Authorization': 'Bearer ' + token, 
-        'Content-Type': 'application/json'
-      }
-    });
-    const groupData = await group.json();
-    const groupMembers = groupData.MemberUsernames;
-    // loop through groupMembers and broadcast to all users in the group a notification through websocket
-    groupMembers.forEach((member) => {
-      const notification = {
-        type: "notification",
-        payload: {
-          receiverUsername: member,
-          senderUsername: userInfo.UserName,
-        }
-      }
-      props.socket.send(JSON.stringify(notification));
-    });
+    // const group = await fetch(`http://localhost:8080/getgroup?groupID=${props.groupID}`, { 
+    //   method: 'GET',
+    //   headers: {
+    //     'Authorization': 'Bearer ' + token, 
+    //     'Content-Type': 'application/json'
+    //   }
+    // });
+    // const groupData = await group.json();
+    // const groupMembers = groupData.MemberUsernames;
+    // // loop through groupMembers and broadcast to all users in the group a notification through websocket
+    // groupMembers.forEach((member) => {
+    //   const notification = {
+    //     type: "notification",
+    //     payload: {
+    //       receiverUsername: member,
+    //       senderUsername: userInfo.UserName,
+    //     }
+    //   }
+    //   props.socket.send(JSON.stringify(notification));
+    // });
 
     const headers = new Headers();
     headers.append('Authorization', 'Bearer ' + token);

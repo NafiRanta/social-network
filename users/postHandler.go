@@ -180,7 +180,7 @@ type FollowRequest struct {
 	ReceiverUsername string `json:"receiver_username"`
 }
 
-func SendFollowRequest(w http.ResponseWriter, r *http.Request) {
+func SendFollowRequestHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("send follow request")
 	if r.Method != "POST" {
 		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
@@ -249,7 +249,7 @@ func SendFollowRequest(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Successfully followed %s", followReq.ReceiverUsername)
 }
 
-func RemoveFollower(w http.ResponseWriter, r *http.Request) {
+func RemoveFollowerHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "POST" {
 		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
 		return
@@ -299,7 +299,7 @@ func RemoveFollower(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func AcceptFollowRequest(w http.ResponseWriter, r *http.Request) {
+func AcceptFollowRequestHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Accept follow request")
 	if r.Method != "POST" {
 		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
@@ -358,7 +358,7 @@ func AcceptFollowRequest(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Follow request accepted successfully")
 }
 
-func DeclineFollowRequest(w http.ResponseWriter, r *http.Request) {
+func DeclineFollowRequestHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Decline follow request")
 	if r.Method != "POST" {
 		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)

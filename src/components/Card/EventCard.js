@@ -10,7 +10,7 @@ function EventCard(props) {
       const headers = new Headers();
       headers.append('Authorization', 'Bearer ' + token);
       headers.append('Content-Type', 'application/json');
-      const url = `http://localhost:8080/getevent?groupID=${groupID}`;
+      const url = `http://localhost:8080/getevents?groupID=${groupID}`;
       const response = await fetch(url, {
         method: 'GET',
         headers: headers,
@@ -33,7 +33,10 @@ function EventCard(props) {
               <p className="card-text">Date: {event.EventDate}</p>
               <p className="card-text">Time: {event.EventTime}</p>
               <a href="#" className="btn btn-primary">
-                Go somewhere
+                Going
+              </a>
+              <a href="#" className="btn btn-danger">
+                Not going
               </a>
             </div>
           </div>
