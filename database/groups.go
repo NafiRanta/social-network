@@ -518,3 +518,23 @@ func AddUserToMemberInvite(groupID string, memberUsername string, invitedUsernam
 	}
 	return nil
 }
+
+func AddUserToJoinRequest(groupID string, username string) error {
+	db, err := sql.Open("sqlite3", "./socialnetwork.db")
+	if err != nil {
+		fmt.Println("open error", err)
+	}
+	defer db.Close()
+	// add username to the RequestUsernames slice in the Groups table
+	query := `UPDATE Groups SET RequestUsernames = json_insert(RequestUsernames, '$[#]', ?) WHERE GroupID = ?`
+	stmt, err := db.Prepare(query)
+	if err != nil {
+		fmt.Println("prepare error", err)
+	}
+	_, err = stmt.Exec(username, groupID)
+	if err != nil {
+		fmt.Println("exec error", err)
+	}
+
+	return nil
+}
