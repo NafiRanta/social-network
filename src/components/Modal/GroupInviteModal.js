@@ -11,7 +11,6 @@ function GroupInviteModal(props) {
   const userInfo = useSelector((state) => state.userInfo);
   const allGroups = useSelector((state) => state.allGroups);
   const allusers = useSelector((state) => state.allUsers);
-  // find props.groupID from allGroups
   const group = allGroups.find((group) => group.GroupID === props.groupID);
   const groupAdmin = group.Admin;
   const MemberInvitedUsernames = group.MemberInvitedUsernames

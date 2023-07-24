@@ -46,7 +46,7 @@ function App() {
             console.log("show notification on the chat icon");
             break;
           }
-      }
+        }
       case "acknowledgement"
         : {
           // dispatch event.data.loggedinUsers to redux store
@@ -248,7 +248,6 @@ function App() {
           });
           if (res.ok) {
             const data = await res.json();
-            // console.log("data of sgroups", data);
             // add userMemberGroups and adminGroups to one object
             const mygroups = [
               ...(data.userMemberGroups || []),
@@ -295,7 +294,6 @@ function App() {
             console.log("error");
           }
         } catch (error) {
-          // Handle error
           console.log(error);
         }
       };
@@ -410,7 +408,6 @@ function App() {
       />
       <Route
         path="/othersprofile/:username"
-        // pass :username to othersprofile
         element={
           <div>
             <OthersProfile userInfo={userInfo} userDisplayname={userDisplayname} socket={ws}/>

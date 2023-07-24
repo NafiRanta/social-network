@@ -20,8 +20,6 @@ function SingleGroup(props) {
      const allgroups = useSelector((state) => state.allGroups);
      const userInfo = useSelector((state) => state.userInfo);
      const allusers = useSelector((state) => state.allUsers);
-     console.log("allgroups singlegroup", allgroups);
-    // group
     const [group, setGroup] = useState([]);
     const [adminDisplayName, setAdminDisplayName] = useState([]);
     const [membersInfo, setMembersInfo] = useState([]);
