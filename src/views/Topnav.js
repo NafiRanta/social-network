@@ -37,41 +37,37 @@ useEffect(() => {
     const filteredAllGroups = allGroups.map((group) => {
       // Parse the JSON-encoded string back to a JavaScript object
       const groupObj = JSON.parse(group.MemberInvitedUsernames);
+      console.log("groupObj", groupObj); // Add this line
       
       // If groupObj is not a valid object, return null or handle it as needed
       if (!groupObj || !Array.isArray(groupObj)) {
         return null;
       }
-      
-      // Extract the InvitedUsernames that match userInfo.UserName and Member values from the group object
-      const invitedUsernames = groupObj.map((entry) => entry.InvitedUsernames);
-      const member = groupObj.map((entry) => entry.Member);
-      
+    
       // Return the extracted data as an object
       return {
         groupID: group.GroupID,
         groupName: group.GroupName,
-        invitedUsernames: invitedUsernames,
-        member: member,
+        invitedUsernames: groupObj.map((entry) => entry.InvitedUsernames),
+        member: groupObj.map((entry) => entry.Member),
       };
     });
   
     console.log("filteredAllGroups", filteredAllGroups);
+    console.log("userInfo.UserName", userInfo.UserName);
    // loop through filteredAllGroups and check if userInfo.UserName is in invitedUsernames
    const matchedGroups = [];
-
    // Loop through filteredAllGroups and check if userInfo.UserName is in invitedUsernames
    filteredAllGroups.forEach((group) => {
-     if (group && group.invitedUsernames.includes(userInfo.UserName)) {
-       matchedGroups.push({
-         type: "SET_INVITESBYMEMBER",
-         memberWhoInvited: group.member[0],
-         groupName: group.groupName,
-         groupID: group.groupID,
-       });
-     }
-   });
-   
+    if (group && group.invitedUsernames.flat().includes(userInfo.UserName)) {
+      matchedGroups.push({
+        type: "SET_INVITESBYMEMBER",
+        memberWhoInvited: group.member[0],
+        groupName: group.groupName,
+        groupID: group.groupID,
+      });
+    }
+  });
    // Set the GroupInvitesByMember state after the loop has finished
    setGroupInvitesByMember(matchedGroups);
   }

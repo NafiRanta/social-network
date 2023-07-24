@@ -30,6 +30,7 @@ function SingleGroup(props) {
     const [adminInvitedUsers, setAdminInvitedUsers] = useState([]); 
     const [isInvitedByAdmin, setIsInvitedByAdmin] = useState(false);
     const [memberInvitedUsers, setMemberInvitedUsers] = useState([]);
+    const [isInvitedByMember, setIsInvitedByMember] = useState(false);
     // menu
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const dropdownRef = useRef(null);
@@ -54,19 +55,20 @@ function SingleGroup(props) {
     // check if user is invited by member
     const memberInvitedUsers = JSON.parse(group?.[0]?.MemberInvitedUsernames ?? "[]");
     setMemberInvitedUsers(memberInvitedUsers);
-
-
+    const isInvitedByMember = Array.isArray(memberInvitedUsers) && memberInvitedUsers.length > 0 && memberInvitedUsers[0].InvitedUsernames.includes(userInfo.UserName);
+    setIsInvitedByMember(isInvitedByMember);
+    
    }, [group, userInfo]);
-
+    console.log('memberInvitedUsers', memberInvitedUsers);
+    console.log('adminInvitedUsers', adminInvitedUsers);
     console.log('isGroupMember', isGroupMember);
     console.log('isGroupAdmin', isGroupAdmin);
     console.log('isInvitedByAdmin', isInvitedByAdmin);
-    console.log('adminInvitedUsers', adminInvitedUsers);
-    console.log('memberInvitedUsers', memberInvitedUsers);
+    console.log('isInvitedByMember', isInvitedByMember);
 
     useEffect(() => {
+        // display group info
         const group = allgroups.filter((group) => group.GroupID === groupID);
-      
         // Check if group exists and has MemberUsernames property
         if (group.length > 0 && group[0].MemberUsernames) {
           const membersUsernames = JSON.parse(group[0].MemberUsernames);
@@ -222,7 +224,7 @@ function SingleGroup(props) {
                                 </>
                                 )}
                             </div>
-                            {isInvitedByAdmin && !isGroupAdmin && !isGroupMember && (
+                            {(isInvitedByAdmin || isInvitedByMember) && !isGroupAdmin && !isGroupMember && (
                                 <div className="alert alert-warning" role="alert">
                                 <strong>Invited by admin</strong>
                                 <button className="btn btn-success mx-2" onClick={handleAcceptInvite}>
