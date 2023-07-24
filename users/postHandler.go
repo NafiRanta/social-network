@@ -249,7 +249,7 @@ func SendFollowRequest(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Successfully followed %s", followReq.ReceiverUsername)
 }
 
-func RemoveSendFollowReq(w http.ResponseWriter, r *http.Request) {
+func RemoveFollower(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "POST" {
 		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
 		return
@@ -282,15 +282,21 @@ func RemoveSendFollowReq(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Receiver not found", http.StatusNotFound)
 		return
 	}
-
-	// Remove sender's username from receiver's FollowerUsernamesReceived
-	// Remove receiver's username from sender's FollowerUsernamesSent
-	if err := d.RemoveFollowRequest(senderUser, receiverUser); err != nil {
+	// remove
+	if err := d.RemoveFollower(senderUser, receiverUser); err != nil {
 		fmt.Println(err)
-		http.Error(w, "Failed to remove follow request", http.StatusInternalServerError)
+		http.Error(w, "Failed to unfriend", http.StatusInternalServerError)
 		return
 	}
-	fmt.Fprintf(w, "Remove follow request successfully")
+
+	if err := d.RemoveFollower(receiverUser, senderUser); err != nil {
+		fmt.Println(err)
+		http.Error(w, "Failed to unfriend", http.StatusInternalServerError)
+		return
+	}
+
+	fmt.Fprintf(w, "Unfollow successfully")
+
 }
 
 func AcceptFollowRequest(w http.ResponseWriter, r *http.Request) {

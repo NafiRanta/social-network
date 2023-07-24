@@ -417,6 +417,40 @@ func AddFollower(userA *User, userB *User) error {
 
 }
 
+// RemoveFollower removes userB's UserName from userA's FollowerUsernames in the database.
+func RemoveFollower(userA *User, userB *User) error {
+	db, err := sql.Open("sqlite3", "./socialnetwork.db")
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+	
+	followerUsernames := strings.Split(userA.FollowerUsernames, ",")
+	var updatedFollowerUsernames []string
+
+	for _, follower := range followerUsernames {
+		if follower != userB.UserName {
+			updatedFollowerUsernames = append(updatedFollowerUsernames, follower)
+		}
+	}
+
+	userA.FollowerUsernames = strings.Join(updatedFollowerUsernames, ",")
+
+	stmt, err := db.Prepare("UPDATE Users SET FollowerUsernames = ? WHERE UserID = ?")
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
+
+	_, err = stmt.Exec(userA.FollowerUsernames, userA.UserID)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+
 func SentFollowerRequest(sender *User, receiver *User) error {
 	db, err := sql.Open("sqlite3", "./socialnetwork.db")
 	if err != nil {
