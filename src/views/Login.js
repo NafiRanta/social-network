@@ -11,34 +11,13 @@ export const ValidateEmail = (email) => {
 };
 
 export const ValidatePassword = (password) => {
-  // Check if password is at least 5 characters long
-  if (password.length < 5) {
-    return false;
-  }
+  // Define the regular expression to match the password criteria
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{5,}$/;
 
-  // Check if password contains at least one uppercase letter
-  if (!/[A-Z]/.test(password)) {
-    return false;
-  }
-
-  // Check if password contains at least one lowercase letter
-  if (!/[a-z]/.test(password)) {
-    return false;
-  }
-
-  // Check if password contains at least one digit
-  if (!/\d/.test(password)) {
-    return false;
-  }
-
-  // Check if password contains at least one special character
-  if (!/[!@#$%^&*]/.test(password)) {
-    return false;
-  }
-
-  // Password format is valid
-  return true;
+  // Test the password against the regex
+  return passwordRegex.test(password);
 };
+
 
 function Login() {
   const dispatch = useDispatch();
