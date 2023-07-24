@@ -38,9 +38,21 @@ const handleEventSubmit = async (event) => {
       goingUsers: goingFriends,
       createAt: now,
     };
-    console.log("props.groupID", props.groupID);
-    // fetch group with groupID
-    const group = await fetch(`http://localhost:8080/getsinglegroup?groupID=${props.groupID}`, { 
+
+    const headers = new Headers();
+    headers.append('Authorization', 'Bearer ' + token);
+    headers.append('Content-Type', 'application/json');
+
+    const response = await fetch('http://localhost:8080/addevent', {
+      method: 'POST',
+      headers: headers,
+      body: JSON.stringify(eventData),
+    });
+    if (!response.ok) {
+      throw new Error('Something went wrong');
+    }
+     // fetch group with groupID
+     const group = await fetch(`http://localhost:8080/getsinglegroup?groupID=${props.groupID}`, { 
       method: 'POST',
       headers: {
         'Authorization': 'Bearer ' + token, 
@@ -48,7 +60,6 @@ const handleEventSubmit = async (event) => {
       }
     });
     const groupData = await group.json();
-    console.log("groupData", groupData);
     const groupMembers = groupData.group[0].memberUsernames;
     // loop through groupMembers and broadcast to all users in the group a notification through websocket
     groupMembers.forEach((member) => {
@@ -64,19 +75,6 @@ const handleEventSubmit = async (event) => {
       }
       console.log("notification sent" + notification);
     });
-
-    const headers = new Headers();
-    headers.append('Authorization', 'Bearer ' + token);
-    headers.append('Content-Type', 'application/json');
-
-    const response = await fetch('http://localhost:8080/addevent', {
-      method: 'POST',
-      headers: headers,
-      body: JSON.stringify(eventData),
-    });
-    if (!response.ok) {
-      throw new Error('Something went wrong');
-    }
     alert("Event created successfully");
     window.location.href = `/singlegroup/${props.groupID}`;
   };
