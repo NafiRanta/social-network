@@ -5,19 +5,19 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Login from "./views/Login";
 import Home from "./views/Home/Home";
-import CreatePost from "./components/CreatePost/CreatePost";
-import CreatePostModal from "./components/Modal/CreatePostModal";
-import Topnav from "./views/Topnav";
 import MyProfile from "./views/Profile/MyProfile";
 import MyGroups from "./views/Groups/MyGroups";
 import HomeGroup from "./views/Groups/HomeGroup";
 import Chat from "./views/Chat/Chat";
 import SingleGroup from "./views/Groups/SingleGroup";
+import AllGroups from "./views/Groups/AllGroups";
+import OthersProfile from "./views/Profile/OthersProfile";
+import CreatePost from "./components/CreatePost/CreatePost";
+import CreatePostModal from "./components/Modal/CreatePostModal";
+import Topnav from "./views/Topnav";
 import Error from "./views/Error/Error";
 import SingleGroupNonMember from "./views/Groups/SingleGroupNonMember";
 import GroupSidenav from "./views/Groups/GroupSidenav";
-import AllGroups from "./views/Groups/AllGroups";
-import OthersProfile from "./views/Profile/OthersProfile";
 import SingleEvent from "./views/Events/SingleEvent";
 import SearchbarGlobal from "./components/Searchbar/SearchbarGlobal";
 import { click } from "@testing-library/user-event/dist/click";
@@ -67,7 +67,7 @@ function App() {
               if (event.payload.receiverUsername === userInfo.UserName) {
                 console.log("notification received");
                 dispatch({ type: "SET_NOTIFICATION", payload: true });
-                window.location.reload();
+                // window.location.reload();
               }
             }
           }
