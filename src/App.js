@@ -67,7 +67,7 @@ function App() {
               if (event.payload.receiverUsername === userInfo.UserName) {
                 console.log("notification received");
                 dispatch({ type: "SET_NOTIFICATION", payload: true });
-                // window.location.reload();
+                window.location.reload();
               }
             }
           }
