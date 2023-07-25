@@ -159,7 +159,7 @@ function SingleGroup(props) {
                 throw new Error('Failed to accept invite.');
             } else {
                 alert('Pending admin approval.');
-                window.location.reload();
+                window.location.href = '/allgroups';
             }
         } catch (error) {
             console.log(error);
