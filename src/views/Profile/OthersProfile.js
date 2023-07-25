@@ -153,10 +153,10 @@ function OthersProfile(props) {
             });
             if (response.ok) {
                 console.log("Follow request sent");
-                alert("Follow request sent");
                 // send notification to clickedProfileUsername through ws if clickedProfileUsername is private
                 console.log("clickedProfileInfo", clickedProfileInfo);
                 if (clickedProfileInfo.Privacy === 'private') {
+                    alert("Follow request sent");
                     const notification = {
                         type: "notification",
                         payload: data
