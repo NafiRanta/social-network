@@ -197,7 +197,7 @@ function OthersProfile(props) {
         }
 
         try{
-            const response = await fetch("http://localhost:8080/declinefollowreq", {
+            const response = await fetch("http://localhost:8080/removefollower", {
                 method: 'POST',
                 credentials: "include",
                 headers: {
@@ -210,7 +210,7 @@ function OthersProfile(props) {
                 console.log("Unfollow");
                 alert("You unfollowed " + clickedProfileDisplayName + "");
                 setIsFollowing(false);
-                //window.location.reload();
+                window.location.reload();
             } else {
                 console.log("Error declining follow request");
             }
