@@ -46,8 +46,6 @@ function MyProfile(props) {
   }, [userInfo]);
 
   useEffect(() => {
-    console.log("allusers 1111:", allusers);
-    console.log("myfollowers 1111:", myfollowers)
       if (myfollowers && allusers) {
         const myFollowersInfo = [];
         myfollowers.forEach((follower) => {
@@ -65,8 +63,19 @@ function MyProfile(props) {
 
 
   const handlePrivacyChange = (checked) => {
+    allusers.forEach((user) => {
+      const notification = {
+        type: "notification",
+        payload: {
+          receiverUsername: user.UserName,
+          senderUsername: "",
+        },
+      };
+      props.socket.send(JSON.stringify(notification));
+    });
+
     const newPrivacy = checked ? "public" : "private";
-    setPrivacy(checked ? "Public" : "Private");
+    setPrivacy(privacy === "public" ? "private" : "public");
     updatePrivacy(newPrivacy); // Call the function to update the privacy in the backend
   };
   const updatePrivacy = async (privacy) => {
@@ -84,7 +93,6 @@ function MyProfile(props) {
       if (response.ok) {
         console.log("Privacy updated successfully");
         const data = await response.json();
-        // console.log("data", data);
         dispatch({ type: "SET_USER", payload: data });
       } else {
         throw new Error("Error updating privacy");
