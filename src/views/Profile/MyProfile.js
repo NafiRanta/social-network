@@ -182,7 +182,7 @@ function MyProfile(props) {
                           data-bs-toggle="modal"
                           data-bs-target="#changeProfilePicModal"
                           >
-                          <i class="fa fa-picture-o fa-lg" aria-hidden="true"></i>
+                          <i className="fa fa-picture-o fa-lg" aria-hidden="true"></i>
                         </button>
                       </div>
                     </div>
