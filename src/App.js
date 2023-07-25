@@ -61,6 +61,7 @@ function App() {
         }
         case "notification"
         : {
+          console.log("notification event", event);
           if (event) {
             if (event.payload) {
               if (event.payload.receiverUsername === userInfo.UserName) {

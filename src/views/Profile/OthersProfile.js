@@ -192,8 +192,6 @@ function OthersProfile(props) {
         }
     }
    const handleUnfollow = async (event) => {
-    console.log("clickedProfileUsername", clickedProfileUsername)
-    console.log("userInfo.UserName", userInfo.UserName)
         event.preventDefault();
         const data = {
             sender_username: userInfo.UserName,

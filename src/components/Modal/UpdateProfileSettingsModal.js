@@ -8,7 +8,6 @@ function UpdateProfileSettingsModal(props) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const userInfo = props.userInfo
-  console.log("userInfo update", userInfo)
   
     // format date of birth to be displayed to dd month yyyy
     const dateOfBirth = new Date(userInfo.DateOfBirth).toLocaleDateString('en-US', {

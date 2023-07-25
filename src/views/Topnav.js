@@ -26,18 +26,11 @@ function Topnav(props) {
   const [followRequestsInfo, setFollowRequestsInfo] = useState([]);
   let Notifications = []
 
-// console.log("followRequestsUsernames", followRequestsUsernames)
-
 useEffect(() => {
-  // check if user is invited by member
-  console.log("allgroups", allGroups)
-  // check allGroups and in each group, get MemberInvitedUsernames and check if userInfo.UserName is in that map
-  // if it is, set notification to true
   if (Array.isArray(allGroups)) {
     const filteredAllGroups = allGroups.map((group) => {
       // Parse the JSON-encoded string back to a JavaScript object
       const groupObj = JSON.parse(group.MemberInvitedUsernames);
-      console.log("groupObj", groupObj); // Add this line
       
       // If groupObj is not a valid object, return null or handle it as needed
       if (!groupObj || !Array.isArray(groupObj)) {
@@ -53,8 +46,6 @@ useEffect(() => {
       };
     });
   
-    console.log("filteredAllGroups", filteredAllGroups);
-    console.log("userInfo.UserName", userInfo.UserName);
    // loop through filteredAllGroups and check if userInfo.UserName is in invitedUsernames
    const matchedGroups = [];
    // Loop through filteredAllGroups and check if userInfo.UserName is in invitedUsernames
@@ -71,7 +62,6 @@ useEffect(() => {
    // Set the GroupInvitesByMember state after the loop has finished
    setGroupInvitesByMember(matchedGroups);
   }
-  console.log("groupInvitesByMember", groupInvitesByMember)
   
   if (followRequestsUsernames && Array.isArray(allusers)) {
     const updatedFollowRequests = followRequestsUsernames.map((username) => {
@@ -90,10 +80,6 @@ useEffect(() => {
     setFollowRequestsInfo(updatedFollowRequests);
   }
 }, [allusers]);
-
-  // console.log("followRequestsInfo", followRequestsInfo)
-
-
 
   // get group invites by admin getting admin Avatar, admin Displayname, groupName, groupID 
   // set these variables to setGroupInvitesByAdmin
@@ -159,10 +145,7 @@ Notifications = [
       document.cookie =
         name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; domain=localhost";
     }
-    // alert("You have been logged out");
-    // setTimeout(() => {
       window.location.href = "/login";
-    // }, 5);
   };
 
   return (
