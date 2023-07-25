@@ -107,11 +107,11 @@ function MyProfile(props) {
         userDisplayname={props.userDisplayname}
         socket={props.socket}
       />
-      <div className="container-fluid">
+      <div className="container-fluid" >
         <section className="profileTopnav">
           <div className="container py-5 h-100">
-            <div className="row d-flex justify-content-center align-items-center h-100">
-              <div className="col-8">
+            <div className="row d-flex justify-content-center h-100" >
+              <div className="col-8" >
                 <div className="card">
                   <div className="card-body p-4">
                     <div className="d-flex text-black">
@@ -121,11 +121,6 @@ function MyProfile(props) {
                           alt="Generic placeholder image"
                           className="img-fluid"
                         />
-                        <i
-                          className="fas fa-images fs-5 text-success pointer position-absolute bottom-0 start-0 ms-2"
-                          data-bs-toggle="modal"
-                          data-bs-target="#changeProfilePicModal"
-                        ></i>
                       </div>
                       <div className="flex-grow-1 ms-3">
                         <div className="d-flex align-items-center">
@@ -180,6 +175,15 @@ function MyProfile(props) {
                             </span>
                           )}
                         </div>
+                        <button
+                          href="#"
+                          className="btn btn-primary btn-sm d-flex justify-content-center align-items-center"
+                          id="ChangeProfilePic"
+                          data-bs-toggle="modal"
+                          data-bs-target="#changeProfilePicModal"
+                          >
+                          <i class="fa fa-picture-o fa-lg" aria-hidden="true"></i>
+                        </button>
                       </div>
                     </div>
                   </div>

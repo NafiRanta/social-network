@@ -882,4 +882,16 @@ body{
         margin-top: 101px;
     }
   }
+
+  #ChangeProfilePic {
+    background-color: rgb(239,239,239);
+    color: green ;
+    border: none;
+    margin-top: 5px;
+    height: 38px;
+    width: 60px;
+  }
   
+  .profileTopnav {
+    margin-top: 65px;
+  }
