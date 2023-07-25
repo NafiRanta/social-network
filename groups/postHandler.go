@@ -166,7 +166,7 @@ func AddUsersToMemberInvited(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	memberUsername := user.UserName
+	username := user.UserName
 
 	groupID := r.URL.Query().Get("groupID")
 
@@ -191,7 +191,7 @@ func AddUsersToMemberInvited(w http.ResponseWriter, r *http.Request) {
 	}
 	//fmt.Println("responseJSON:", responseJSON)
 
-	err = d.AddUserToMemberInvite(groupID, memberUsername, invitedUsernames)
+	err = d.AddUserToMemberInvite(groupID, username, invitedUsernames)
 	if err != nil {
 		//fmt.Println("error from addgroup:", err)
 		http.Error(w, "Failed to add group", http.StatusInternalServerError)
@@ -277,6 +277,7 @@ func JoinRequestHandler(w http.ResponseWriter, r *http.Request) {
 	authHeader := r.Header.Get("Authorization")
 	userID, err := a.ExtractUserIDFromAuthHeader(authHeader)
 	if err != nil {
+		fmt.Println("error from extractuserid:", err)
 		http.Error(w, "Invalid authorization header", http.StatusUnauthorized)
 		return
 	}
@@ -289,7 +290,7 @@ func JoinRequestHandler(w http.ResponseWriter, r *http.Request) {
 
 	user, err := d.GetUserByID(userID)
 	if err != nil {
-		//fmt.Println("error from getuserbyid:", err)
+		fmt.Println("error from getuserbyid:", err)
 		http.Error(w, "Failed to get user", http.StatusInternalServerError)
 		return
 	}
@@ -297,8 +298,24 @@ func JoinRequestHandler(w http.ResponseWriter, r *http.Request) {
 
 	err = d.AddUserToJoinRequest(groupID, username)
 	if err != nil {
-		//fmt.Println("error from addgroup:", err)
+		fmt.Println("error from addgroup:", err)
 		http.Error(w, "Failed to add group", http.StatusInternalServerError)
+		return
+	}
+
+	// remove user from AdminInvitedUsernames
+	err = d.DeleteUserFromAdminInvite(groupID, username)
+	if err != nil {
+		fmt.Println("error from delete 1:", err)
+		http.Error(w, "Failed to delete group", http.StatusInternalServerError)
+		return
+	}
+
+	// remove user from memberInvitedUsernames
+	err = d.DeleteUserFromMemberInvite(groupID, username)
+	if err != nil {
+		fmt.Println("error from delete 2:", err)
+		http.Error(w, "Failed to delete group", http.StatusInternalServerError)
 		return
 	}
 

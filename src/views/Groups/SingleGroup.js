@@ -120,7 +120,7 @@ function SingleGroup(props) {
       };
     }, []);
 
-    const handleAcceptInvite = async() => {
+    const handleAdminAcceptInvite = async() => {
         try {
             const token = localStorage.getItem('token');
             const headers = new Headers();
@@ -135,6 +135,28 @@ function SingleGroup(props) {
                 throw new Error('Failed to accept invite.');
             } else {
                 alert('You have joined the group.');
+                window.location.reload();
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const handleMemberAcceptInvite = async() => {
+        try {
+            const token = localStorage.getItem('token');
+            const headers = new Headers();
+            headers.append('Authorization', 'Bearer ' + token);
+            headers.append('Content-Type', 'application/json');
+            const url = `http://localhost:8080/joinrequest?groupID=${groupID}`;
+            const res = await fetch(url, {
+                method: 'POST',
+                headers: headers,
+            });
+            if (!res.ok) {
+                throw new Error('Failed to accept invite.');
+            } else {
+                alert('Pending admin approval.');
                 window.location.reload();
             }
         } catch (error) {
@@ -224,10 +246,21 @@ function SingleGroup(props) {
                                 </>
                                 )}
                             </div>
-                            {(isInvitedByAdmin || isInvitedByMember) && !isGroupAdmin && !isGroupMember && (
+                            {(isInvitedByAdmin) && !isGroupAdmin && !isGroupMember && (
                                 <div className="alert alert-warning" role="alert">
                                 <strong>Invited by admin</strong>
-                                <button className="btn btn-success mx-2" onClick={handleAcceptInvite}>
+                                <button className="btn btn-success mx-2" onClick={handleAdminAcceptInvite}>
+                                    Accept
+                                </button>
+                                <button className="btn btn-danger" onClick={handleDeclineInvite}>
+                                    Decline
+                                </button>
+                                </div>
+                            )}
+                            {(isInvitedByMember) && !isGroupAdmin && !isGroupMember && (
+                                <div className="alert alert-warning" role="alert">
+                                <strong>Invited by member</strong>
+                                <button className="btn btn-success mx-2" onClick={handleMemberAcceptInvite}>
                                     Accept
                                 </button>
                                 <button className="btn btn-danger" onClick={handleDeclineInvite}>

@@ -91,11 +91,6 @@ function rootReducer(state = initialState, action) {
         ...state,
         notification: action.payload,
       };
-    case "SET_CLICKEDPROFILEINFO":
-      return {
-        ...state,
-        clickedProfileInfo: action.payload,
-      };
     case "SET_FOLLOWNOTIFICATION":
       return {
         ...state,

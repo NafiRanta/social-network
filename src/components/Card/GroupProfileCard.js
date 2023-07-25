@@ -10,6 +10,7 @@ function GroupProfileCard(props) {
     const currentPath = window.location.pathname;
     const allgroups = useSelector((state) => state.allGroups);
     const mygroups = useSelector((state) => state.myGroups);
+    const [pendingJoinRequest, setPendingJoinRequest] = useState(false);
     
     useEffect(() => {
       if (currentPath === "/mygroups") {
@@ -25,13 +26,14 @@ function GroupProfileCard(props) {
           const headers = new Headers();
           headers.append("Authorization", "Bearer " + token);
           headers.append("Content-Type", "application/json");
-          const url = `http://localhost:8080/joingroup?groupID=${groupId}`;
+          const url = `http://localhost:8080/joinrequest?groupID=${groupId}`;
           const res = await fetch(url, {
             method: "POST",
             headers: headers,
           });
     
           if (res.ok) {
+            setPendingJoinRequest(true);
             setGroupsToDisplay((prevGroups) =>
               prevGroups.map((group) =>
                 group.GroupID === groupId
@@ -48,14 +50,18 @@ function GroupProfileCard(props) {
         }
       };
 
+      console.log("groupsToDisplay", groupsToDisplay);
+      console.log("pendingJoinRequest", pendingJoinRequest)
       const renderGroupActions = (group) => {
         if (window.location.pathname === "/allgroups") {
           console.log("group rendergroupactions", group);
-
+      
           const memberUsernames = group.MemberUsernames || [];
           const isMember = memberUsernames.includes(props.username);
           console.log("isMember", isMember)
           const isAdmin = props.username && group.Admin === props.username;
+          const isPendingJoinRequest = pendingJoinRequest && !isMember && !isAdmin;
+      
           if (isMember || isAdmin) {
             return (
               <Link
@@ -68,11 +74,12 @@ function GroupProfileCard(props) {
           } else {
             return (
               <button
-                className="btn btn-primary btn-sm d-flex justify-content-center align-items-center"
+                className={`btn btn-primary btn-sm d-flex justify-content-center align-items-center ${isPendingJoinRequest ? "disabled" : ""}`}
                 id="joinbutton"
                 onClick={() => handleJoinGroup(group.GroupID)}
+                disabled={isPendingJoinRequest}
               >
-                Join
+                {isPendingJoinRequest ? "Pending Join" : "Join" ? "Join" : "Join"}
               </button>
             );
           }
@@ -87,8 +94,6 @@ function GroupProfileCard(props) {
           );
         }
       };
-      
-    
       return (
         <div className="row1"  >
          {groupsToDisplay ? (

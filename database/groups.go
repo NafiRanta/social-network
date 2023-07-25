@@ -459,6 +459,78 @@ func DeleteUserFromAdminInvite(groupID string, username string) error {
 	return nil
 }
 
+func DeleteUserFromMemberInvite(groupID string, username string) error {
+	// ...
+	db, err := sql.Open("sqlite3", "./socialnetwork.db")
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+
+	// Get the current JSON array
+	query := "SELECT MemberInvitedUsernames FROM Groups WHERE GroupID = ?"
+	stmt, err := db.Prepare(query)
+	if err != nil {
+		fmt.Println("prepare error", err)
+		return err
+	}
+
+	row := stmt.QueryRow(groupID)
+
+	var memberInvitedUsernames string
+	err = row.Scan(&memberInvitedUsernames)
+	if err != nil {
+		fmt.Println("scan error", err)
+		return err
+	}
+
+	fmt.Println("memberInvitedUsernames", memberInvitedUsernames)
+
+	// Parse the JSON array into a slice of InvitesByMember
+	var invitesByMember []map[string]interface{}
+	err = json.Unmarshal([]byte(memberInvitedUsernames), &invitesByMember)
+	if err != nil {
+		fmt.Println("unmarshal error", err)
+		return err
+	}
+
+	// Find the index of the object to delete
+	var indexToDelete int
+	for i, invite := range invitesByMember {
+		member, ok := invite["Member"].(string)
+		if ok && member == username {
+			indexToDelete = i
+			break
+		}
+	}
+
+	// Remove the object from the slice
+	if indexToDelete >= 0 && indexToDelete < len(invitesByMember) {
+		invitesByMember = append(invitesByMember[:indexToDelete], invitesByMember[indexToDelete+1:]...)
+	}
+
+	// Convert the slice back to a JSON array
+	newMemberInvitedUsernames, err := json.Marshal(invitesByMember)
+	if err != nil {
+		return err
+	}
+
+	fmt.Println("newMemberInvitedUsernames", string(newMemberInvitedUsernames))
+
+	// Update the Groups table with the new JSON array
+	updateQuery := "UPDATE Groups SET MemberInvitedUsernames = ? WHERE GroupID = ?"
+	updateStmt, err := db.Prepare(updateQuery)
+	if err != nil {
+		return err
+	}
+	_, err = updateStmt.Exec(string(newMemberInvitedUsernames), groupID)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func AddUserToMemberInvite(groupID string, memberUsername string, invitedUsernames []string) error {
 	db, err := sql.Open("sqlite3", "./socialnetwork.db")
 	if err != nil {
@@ -531,6 +603,7 @@ func AddUserToJoinRequest(groupID string, username string) error {
 	if err != nil {
 		fmt.Println("prepare error", err)
 	}
+
 	_, err = stmt.Exec(username, groupID)
 	if err != nil {
 		fmt.Println("exec error", err)

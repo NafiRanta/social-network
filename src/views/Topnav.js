@@ -18,51 +18,108 @@ function Topnav(props) {
   const allusers = useSelector((state) => state.allUsers);
   const userInfo = useSelector((state) => state.userInfo);
   const allGroups = useSelector((state) => state.allGroups);
+  const myGroups = useSelector((state) => state.myGroups);
   const invitesbyadmin = useSelector((state) => state.invitesByAdmin);
   const invitesbymember = useSelector((state) => state.invitesByMember);
   const followRequestsUsernames = userInfo.FollowerUsernamesReceived ? userInfo.FollowerUsernamesReceived.split(",") : [];
   const [groupInvitesByAdmin, setGroupInvitesByAdmin] = useState([]);
   const [groupInvitesByMember, setGroupInvitesByMember] = useState([]);
   const [followRequestsInfo, setFollowRequestsInfo] = useState([]);
+  const [joinRequests, setJoinRequests] = useState([]);
+  const [isInvitedByMember, setIsInvitedByMember] = useState(false);
+  const [isInvitedByAdmin, setIsInvitedByAdmin] = useState(false);
   let Notifications = []
 
-useEffect(() => {
-  if (Array.isArray(allGroups)) {
-    const filteredAllGroups = allGroups.map((group) => {
-      // Parse the JSON-encoded string back to a JavaScript object
-      const groupObj = JSON.parse(group.MemberInvitedUsernames);
-      
-      // If groupObj is not a valid object, return null or handle it as needed
-      if (!groupObj || !Array.isArray(groupObj)) {
-        return null;
-      }
-    
-      // Return the extracted data as an object
-      return {
-        groupID: group.GroupID,
-        groupName: group.GroupName,
-        invitedUsernames: groupObj.map((entry) => entry.InvitedUsernames),
-        member: groupObj.map((entry) => entry.Member),
-      };
-    });
-  
-   // loop through filteredAllGroups and check if userInfo.UserName is in invitedUsernames
-   const matchedGroups = [];
-   // Loop through filteredAllGroups and check if userInfo.UserName is in invitedUsernames
-   filteredAllGroups.forEach((group) => {
-    if (group && group.invitedUsernames.flat().includes(userInfo.UserName)) {
-      matchedGroups.push({
-        type: "SET_INVITESBYMEMBER",
-        memberWhoInvited: group.member[0],
-        groupName: group.groupName,
-        groupID: group.groupID,
+  useEffect(() => {
+    // for Join Requests
+    if(Array.isArray(myGroups) && Array.isArray(allusers)) {
+      const filteredGroups = myGroups?.filter((group) => {
+        return group.Admin === userInfo.UserName && group.RequestUsernames !== "[]";
       });
+      if (filteredGroups.length > 0 ) {
+        const updatedJoinRequests = filteredGroups.map((group) => {
+          const requestUsernames = JSON.parse(group.RequestUsernames);
+          const requestorInfo = allusers.find((user) => user.UserName === requestUsernames[0]); 
+          const requestorAvatar = requestorInfo?.Avatar;
+          const requestorUsername = requestorInfo?.UserName;
+          const requestorDisplayname = requestorInfo?.FirstName + " " + requestorInfo?.LastName;
+    
+          return {
+            type: "SET_JOINREQUESTS",
+            requestorAvatar: requestorAvatar,
+            requestorDisplayname: requestorDisplayname,
+            requestorUsername: requestorUsername,
+            groupName: group.GroupName,
+            groupID: group.GroupID,
+          };
+        });
+        setJoinRequests(updatedJoinRequests);
+      }
     }
-  });
-   // Set the GroupInvitesByMember state after the loop has finished
-   setGroupInvitesByMember(matchedGroups);
-  }
-  
+  }, [myGroups, allusers]);
+
+
+  useEffect(() => {
+    // for Invites by Member
+    let memberInvites = [];
+    let adminInvites = [];
+      if (Array.isArray(allGroups)) {
+          const filteredAllGroups = allGroups.map((group) => {
+          if (!(group.AdminInvitedUsernames.includes(userInfo.UserName))) {
+              
+            const groupObj = JSON.parse(group.MemberInvitedUsernames);
+           // const groupObj2 = JSON.parse(group.AdminInvitedUsernames);
+         
+          if (!groupObj || !Array.isArray(groupObj)) {
+            return null;
+          }
+          setIsInvitedByMember(true)
+          memberInvites.push(groupObj)
+         
+          // Return the extracted data as an object
+          return {
+            groupID: group.GroupID,
+            groupName: group.GroupName,
+            memberInvites: memberInvites,
+            adminInvites: group.AdminInvitedUsernames,
+            invitor: memberInvites[0].Member,
+          };
+          }
+        });
+        console.log("filteredAllGroups 1234", filteredAllGroups);
+        const matchedGroups = [];
+    
+        filteredAllGroups.forEach((group) => {
+          if (group ) {
+            group.memberInvites.forEach((invite) => {
+              console.log("inviteeeee", invite)
+              invite.forEach((member) => {
+                console.log("member", member.InvitedUsernames, (member.InvitedUsernames.includes(userInfo.UserName)), userInfo.UserName)
+                if (member.InvitedUsernames.includes(userInfo.UserName)) {
+                  setIsInvitedByMember(true)
+                  const memberInfo = allusers?.find((user) => user.UserName === member.Member);
+                  const memberAvatar = memberInfo?.Avatar;
+                  const memberWhoInvited = memberInfo?.FirstName + " " + memberInfo?.LastName;
+                  console.log("memberWhoInvited", memberWhoInvited)
+                  matchedGroups.push({
+                    type: "SET_INVITESBYMEMBER",
+                    memberAvatar: memberAvatar,
+                    memberWhoInvited: memberWhoInvited,
+                    groupName: group.groupName,
+                    groupID: group.groupID,
+                  });
+                  setGroupInvitesByMember(matchedGroups);
+                }
+              });
+            });
+          }
+        }
+        );
+        console.log("matchedGroups", matchedGroups)
+      }
+  }, [allGroups]);
+
+useEffect(() => {
   if (followRequestsUsernames && Array.isArray(allusers)) {
     const updatedFollowRequests = followRequestsUsernames.map((username) => {
       const requestorInfo = allusers.find((user) => user.UserName === username);
@@ -81,15 +138,15 @@ useEffect(() => {
   }
 }, [allusers]);
 
-  // get group invites by admin getting admin Avatar, admin Displayname, groupName, groupID 
-  // set these variables to setGroupInvitesByAdmin
+
   useEffect(() => {
+    // for Invites by Admin
     if (Array.isArray(invitesbyadmin?.groups) && Array.isArray(allusers)) {
       const updatedInvites = invitesbyadmin.groups.map((invite) => {
         const adminInfo = allusers.find((user) => user.UserName === invite.Admin);
         const adminAvatar = adminInfo?.Avatar;
         const adminDisplayname = adminInfo?.FirstName + " " + adminInfo?.LastName;
-
+        setIsInvitedByAdmin(true)
         return {
           type: "SET_INVITESBYADMIN",
           adminAvatar: adminAvatar,
@@ -101,34 +158,13 @@ useEffect(() => {
       setGroupInvitesByAdmin(updatedInvites);
     }
   }, [invitesbyadmin, allusers, invitesbymember]);
-   // get group invites by member getting member Avatar, member Displayname, groupName, groupID 
-  // set these variables to setGroupInvitesByMember
-  // useEffect(() => {
-  //   if (Array.isArray(invitesbymember?.groups) && Array.isArray(allusers)) {
-  //     const updatedInvites = invitesbymember.groups.map((invite) => {
-  //       const memberInfo = allusers.find((user) => user.UserName === invite.Member);
-  //       const memberAvatar = memberInfo?.Avatar;
-  //       const memberDisplayname = memberInfo?.FirstName + " " + memberInfo?.LastName;
 
-  //       return {
-  //         type: "SET_INVITESBYMEMBER",
-  //         memberAvatar: memberAvatar,
-  //         memberDisplayname: memberDisplayname,
-  //         groupName: invite.GroupName,
-  //         groupID: invite.GroupID,
-  //       };
-  //     });
-  //     setGroupInvitesByMember(updatedInvites);
-  //   }
-  // }, [invitesbymember, allusers]);
-
-Notifications = [
-  ...groupInvitesByAdmin || [],
-  ...groupInvitesByMember || [],
-  ...followRequestsInfo || [],
-]
-
-
+  Notifications = [
+    ...groupInvitesByAdmin || [],
+    ...groupInvitesByMember || [],
+    ...followRequestsInfo || [],
+    ...joinRequests || [],
+  ]
   //handle logout
   const handleLogout = () => {
     // clear redux and user info and token from local storage and session storage
@@ -272,7 +308,7 @@ Notifications = [
                         </Dropdown.Item>
                       </div>
                     );
-                  } else if (notification.type === "SET_INVITESBYADMIN") {
+                  } else if (notification.type === "SET_INVITESBYADMIN" && isInvitedByAdmin) {
                     return (
                       <div key={notification.groupID}>
                         <Dropdown.Item as="li" className="my-2 p-1">
@@ -297,7 +333,7 @@ Notifications = [
                         </Dropdown.Item>
                       </div>
                     );
-                  } else if (notification.type === "SET_INVITESBYMEMBER") {
+                  } else if (notification.type === "SET_INVITESBYMEMBER" && isInvitedByMember) {
                     return (
                       <div key={notification.groupID}>
                         <Dropdown.Item as="li" className="my-2 p-1">
@@ -321,6 +357,39 @@ Notifications = [
                         </div>
                       </Dropdown.Item>
                     </div>
+                    );
+                  } else if (notification.type === "SET_JOINREQUESTS"){
+                    return (
+                      <div key={notification.groupID}>
+                        <Dropdown.Item as="li" className="my-2 p-1">
+                          <div className="d-flex justify-content-between">
+                            <div className="d-flex align-items-center">
+                              <div className="rounded-circle d-flex align-items-center justify-content-center mx-2" id="avatar">
+                                <Avatar username={notification.requestorUsername} />
+                              </div>
+                              <div>
+                                <p className="m-0">
+                                  {notification.requestorDisplayname} wants to join {notification.groupName}
+                                </p>
+                              </div>
+                            </div>
+                            <div>
+                              <button
+                                className="btn btn-success btn-sm mx-1"
+                                // onClick={() => handleAcceptJoinRequest(notification.groupID)}
+                              >
+                                Accept
+                              </button>
+                              <button
+                                className="btn btn-danger btn-sm mx-1"
+                                // onClick={() => handleDeclineJoinRequest(notification.groupID)}
+                              >
+                                Decline
+                              </button>
+                            </div>
+                          </div>
+                        </Dropdown.Item>
+                      </div>
                     );
                   } else {
                     return null;
