@@ -229,7 +229,7 @@ Notifications = [
                   variant="light"
                   id="notMenu"
                   // if notification is true, set to bg-red, else bg-gray dont change color if hover dispatch notification to false onclick and open dropdown
-                  className={`rounded-circle ${notification ? "bg-red" : "bg-gray"} border-0`}
+                  className={`rounded-circle ${Notifications.length > 0 ? "bg-red" : "bg-gray"} border-0`}
                   onMouseDown={() => dispatch({ type: "SET_NOTIFICATION", payload: false }) }
                   >
                   <i className="fas fa-bell"></i>
