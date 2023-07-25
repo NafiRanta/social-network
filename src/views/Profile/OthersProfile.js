@@ -155,11 +155,14 @@ function OthersProfile(props) {
                 console.log("Follow request sent");
                 // send notification to clickedProfileUsername through ws if clickedProfileUsername is private
                 console.log("clickedProfileInfo", clickedProfileInfo);
-                if (clickedProfileInfo.Privacy === 'private') {
+                if (clickedProfileInfo.Privacy == 'private') {
                     alert("Follow request sent");
                     const notification = {
                         type: "notification",
-                        payload: data
+                        payload: {
+                            senderUsername : userInfo.UserName,
+                            receiverUsername : clickedProfileUsername,
+                        }
                     };
                     console.log("notification", notification);
                     if (props.socket) {
@@ -167,11 +170,8 @@ function OthersProfile(props) {
                         console.log("notification sent");
                        dispatch({ type: "SET_FOLLOWNOTIFICATION", payload: notification.payload });
                     }
-                    
                 }
-               
-               window.location.reload();
-
+            //    window.location.reload();
             } else {
                 console.log("Error sending follow request");
             }
