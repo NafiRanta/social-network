@@ -329,7 +329,6 @@ func GetGroupByID(groupID string) ([]GroupResponse, error) {
 }
 
 func AddUserToGroup(groupID string, username string) error {
-	//fmt.Println("groupID in addusertogroup", groupID)
 	//fmt.Println("username in addusertogroup", username)
 	db, err := sql.Open("sqlite3", "./socialnetwork.db")
 	if err != nil {
@@ -337,8 +336,9 @@ func AddUserToGroup(groupID string, username string) error {
 		return err
 	}
 	defer db.Close()
-	// add username to the MemberUsernames slice in the Groups table
-	query := `UPDATE Groups SET MemberUsernames = json_insert(MemberUsernames, '$[#]', ?) WHERE GroupID = ?`
+	// add username to the MemberUsernames slice in the Groups table and delete user from the RequestUsernames, MemberInvitedUsernames, and admininviteusernames slices in the Groups tables if they exist
+	query := `UPDATE Groups SET MemberUsernames = json_insert(MemberUsernames, '$[#]', ?), RequestUsernames = json_remove(RequestUsernames, '$[?]'), MemberInvitedUsernames = json_remove(MemberInvitedUsernames, '$[?]'), AdminInvitedUsernames = json_remove(AdminInvitedUsernames, '$[?]') WHERE GroupID = ?`
+
 	stmt, err := db.Prepare(query)
 	if err != nil {
 		//fmt.Println("prepare error", err)
