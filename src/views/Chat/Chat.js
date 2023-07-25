@@ -109,33 +109,34 @@ function Chat(props) {
         );
         if (response.ok) {
           const allMessages = await response.json();
+            if (allMessages > 0) {
+              // sort otherUsers by allMessages sentAt 
+              otherUsers?.sort((a, b) => {
+                const aMessages = allMessages?.filter(
+                  (message) =>
+                    (message?.senderUsername === a?.UserName &&
+                      message?.receiverUsername === userInfo?.UserName) ||
+                    (message?.senderUsername === userInfo?.UserName &&
+                      message?.receiverUsername === a?.UserName)
+                );
+                const bMessages = allMessages?.filter(
+                  (message) =>
+                    (message?.senderUsername === b?.UserName &&
+                      message?.receiverUsername === userInfo?.UserName) ||
+                    (message?.senderUsername === userInfo?.UserName &&
+                      message?.receiverUsername === b?.UserName)
+                );
+                const aLastMessage = aMessages[aMessages?.length - 1];
+                const bLastMessage = bMessages[bMessages?.length - 1];
           
-          // sort otherUsers by allMessages sentAt 
-          otherUsers.sort((a, b) => {
-            const aMessages = allMessages.filter(
-              (message) =>
-                (message.senderUsername === a.UserName &&
-                  message.receiverUsername === userInfo.UserName) ||
-                (message.senderUsername === userInfo.UserName &&
-                  message.receiverUsername === a.UserName)
-            );
-            const bMessages = allMessages.filter(
-              (message) =>
-                (message.senderUsername === b.UserName &&
-                  message.receiverUsername === userInfo.UserName) ||
-                (message.senderUsername === userInfo.UserName &&
-                  message.receiverUsername === b.UserName)
-            );
-            const aLastMessage = aMessages[aMessages.length - 1];
-            const bLastMessage = bMessages[bMessages.length - 1];
-      
-            // If a user has no messages, move them to the end
-            if (!aLastMessage) return 1;
-            if (!bLastMessage) return -1;
-      
-            // Sort by sentAt if both users have messages
-            return aLastMessage.sentAt > bLastMessage.sentAt ? -1 : 1;
-          });
+                // If a user has no messages, move them to the end
+                if (!aLastMessage) return 1;
+                if (!bLastMessage) return -1;
+          
+                // Sort by sentAt if both users have messages
+                return aLastMessage?.sentAt > bLastMessage?.sentAt ? -1 : 1;
+            });
+          }
         } else {
           throw new Error("Error occurred while fetching messages");
         }
