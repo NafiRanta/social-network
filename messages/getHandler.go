@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"net/url"
 	a "socialnetwork/authentication"
 	d "socialnetwork/database"
 	u "socialnetwork/utils"
@@ -31,7 +32,13 @@ func GetMessagesHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusUnauthorized)
 		return
 	}
+	// url.QueryUnescape to get username
 	username := r.URL.Query().Get("username")
+	username, err = url.QueryUnescape(username)
+	if err != nil {
+		fmt.Println("Error decoding username:", err)
+		return
+	}
 	// get userEmail by email
 	user, err := d.GetUserByUsername(username)
 	if err != nil {
