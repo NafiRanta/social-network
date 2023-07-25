@@ -135,7 +135,9 @@ function SingleGroup(props) {
                 throw new Error('Failed to accept invite.');
             } else {
                 alert('You have joined the group.');
-                window.location.reload();
+                setTimeout(() => {
+                    window.location.reload();
+                }, 500);
             }
         } catch (error) {
             console.log(error);

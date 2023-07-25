@@ -335,9 +335,11 @@ func AddUserToGroup(groupID string, username string) error {
 		//fmt.Println("open error", err)
 		return err
 	}
+	DeleteUserFromAdminInvite(groupID, username)
+	DeleteUserFromMemberInvite(groupID, username)
 	defer db.Close()
-	// add username to the MemberUsernames slice in the Groups table and delete user from the RequestUsernames, MemberInvitedUsernames, and admininviteusernames slices in the Groups tables if they exist
-	query := `UPDATE Groups SET MemberUsernames = json_insert(MemberUsernames, '$[#]', ?), RequestUsernames = json_remove(RequestUsernames, '$[?]'), MemberInvitedUsernames = json_remove(MemberInvitedUsernames, '$[?]'), AdminInvitedUsernames = json_remove(AdminInvitedUsernames, '$[?]') WHERE GroupID = ?`
+	// add user to memberUsernames slice in the Groups table
+	query := `UPDATE Groups SET MemberUsernames = json_insert(MemberUsernames, '$[#]', ?) WHERE GroupID = ?`
 
 	stmt, err := db.Prepare(query)
 	if err != nil {
