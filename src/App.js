@@ -123,7 +123,6 @@ function App() {
             conn = new WebSocket(
               "ws://" + "localhost:8080" + "/ws?otp=" + user.userID
             );
-            console.log("setting ws to conn", conn);
             setConn(conn);
 
             conn.onopen = function () {

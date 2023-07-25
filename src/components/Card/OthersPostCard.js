@@ -24,7 +24,6 @@ function OthersPostCard(props) {
         
         if (res.ok) {
           const data = await res.json();
-          console.log("others postcards", data);
           // get all posts of that matched with userID
           const publicPosts = data.publicPosts ;
           const privatePosts = data.privatePosts;

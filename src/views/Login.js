@@ -71,7 +71,7 @@ function Login() {
     if (!ValidatePassword(password)) {
       console.log("Invalid password format");
       document.getElementById("loginPasswordErrMsg").innerHTML =
-        "Invalid password format";
+        "Invalid password format, password has to be at least 5 characters, containing uppercase, lowercase, number, and special character";
       setValid({ ...valid, password: false });
     }
     // All validations passed

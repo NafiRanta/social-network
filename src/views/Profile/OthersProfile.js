@@ -9,7 +9,6 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 function OthersProfile(props) {
-    console.log("props", props)
     const location = useLocation();
     const dispatch = useDispatch();
     const { pathname } = location;
@@ -26,7 +25,6 @@ function OthersProfile(props) {
     const clickedProfileDisplayName = clickedProfileInfo.FirstName + " " + clickedProfileInfo.LastName;
     const clickedProfileFollowers = clickedProfileInfo.FollowerUsernames ? clickedProfileInfo.FollowerUsernames.split(",") : [];
     const clickedProfileFollowerUsernamesSent = clickedProfileInfo.FollowerUsernamesSent ? clickedProfileInfo.FollowerUsernamesSent.split(",") : [];
-    console.log("clickedProfileFollowerUsernamesSent", clickedProfileFollowerUsernamesSent);
     const [clickedProfileFollowersInfo, setClickedProfileFollowersInfo] = useState([]); // [ {username, avatar, displayname}
     const [myfollowers, setFollowers] = useState([]);
     const [followingUsernamesReceived, setFollowingUsernamesReceived] = useState([]);
@@ -135,15 +133,6 @@ function OthersProfile(props) {
         setIsPendingToAprove(isPendingToAprove);
         setIsFollowing(isFollowing);
     }, [followingUsernamesReceived, followingUsernamesSent, userInfo.UserName, myfollowers]);
-
-    console.log("followingUsernamesReceived", followingUsernamesReceived)
-    console.log("followingUsernamesSent", followingUsernamesSent)   
-    console.log("myfollowers", myfollowers)
-    console.log("isFollowing", isFollowing)
-    console.log("isPending", isPending)
-    console.log("isPendingToAprove", isPendingToAprove)
-    console.log("clickedProfileUsername", clickedProfileUsername)
-    console.log("clickedProfileInfo", clickedProfileInfo)
 
     // handle follow button
     const handleFollow = async (event) => {
