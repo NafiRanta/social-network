@@ -71,7 +71,17 @@ function MyProfile(props) {
           senderUsername: "",
         },
       };
-      props.socket.send(JSON.stringify(notification));
+      if (props.socket) {
+        props.socket.send(JSON.stringify(notification));
+      } else {
+        setTimeout(() => {
+          if (props.socket) {
+            props.socket.send(JSON.stringify(notification));
+          } else {
+            console.log("Socket not open");
+          }
+        }, 1000);
+      }
     });
 
     const newPrivacy = checked ? "public" : "private";
