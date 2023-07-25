@@ -171,7 +171,7 @@ function OthersProfile(props) {
                        dispatch({ type: "SET_FOLLOWNOTIFICATION", payload: notification.payload });
                     }
                 }
-            //    window.location.reload();
+             window.location.reload();
             } else {
                 console.log("Error sending follow request");
             }

@@ -63,20 +63,22 @@ const handleEventSubmit = async (event) => {
     const groupMembers = groupData.group[0].memberUsernames;
     // loop through groupMembers and broadcast to all users in the group a notification through websocket
     groupMembers.forEach((member) => {
-      const notification = {
-        type: "notification",
-        payload: {
-          receiverUsername: member,
-          senderUsername: userInfo.UserName,
+      if (member !== userInfo.UserName) {
+        const notification = {
+          type: "notification",
+          payload: {
+            receiverUsername: member,
+            senderUsername: userInfo.UserName,
+          }
+        }
+        if (props.socket) {
+          props.socket.send(JSON.stringify(notification));
         }
       }
-      if (props.socket) {
-        props.socket.send(JSON.stringify(notification));
-      }
-      console.log("notification sent" + notification);
     });
-    alert("Event created successfully");
-    window.location.href = `/singlegroup/${props.groupID}`;
+    setTimeout(() => {
+      window.location.href = `/singlegroup/${props.groupID}`;
+    }, 1000);
   };
 
 
