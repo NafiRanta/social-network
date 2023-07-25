@@ -16,6 +16,10 @@ function OthersProfile(props) {
     const allusers = useSelector((state) => state.allUsers);
     const userInfo = useSelector((state) => state.userInfo);
     const clickedProfileUsername = window.location.pathname.split("/")[2];
+    // if own profile, redirect to /profile/username
+    if (clickedProfileUsername === userInfo.UserName) {
+        window.location.href = "/profile/" + userInfo.UserName;
+    }
     //const [clickedProfileUsername, setClickedProfileUsername] = useState(window.location.pathname.split("/")[2]);
 
     const [clickedProfileInfo, setClickedProfileInfo] = useState({});
