@@ -2,7 +2,6 @@ package groupcomments
 
 import (
 	"encoding/json"
-	//"fmt"
 	"net/http"
 	d "socialnetwork/database"
 )

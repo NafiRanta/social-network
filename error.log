@@ -9001,3 +9001,24 @@ created by net/http.(*Server).Serve
 	/usr/local/go/src/net/http/server.go:3089 +0x520
 2023/07/23 00:45:01 failed to send message: websocket: close sent
 2023/07/23 00:45:07 writemsg error websocket: close sent
+2023/07/25 13:26:11 failed to send message: websocket: close sent
+2023/07/25 13:26:17 failed to send message: websocket: close sent
+2023/07/25 13:26:19 writemsg error websocket: close sent
+2023/07/25 13:26:20 writemsg error websocket: close sent
+2023/07/25 13:26:39 failed to send message: websocket: close sent
+2023/07/25 13:26:45 writemsg error websocket: close sent
+2023/07/25 13:26:45 failed to send message: websocket: close sent
+2023/07/25 13:26:48 writemsg error websocket: close sent
+2023/07/25 13:26:55 failed to send message: websocket: close sent
+2023/07/25 13:26:55 writemsg error websocket: close sent
+2023/07/25 13:34:52 failed to send message: websocket: close sent
+2023/07/25 13:34:53 writemsg error websocket: close sent
+2023/07/25 14:07:07 failed to send message: websocket: close sent
+2023/07/25 14:07:07 failed to send message: websocket: close sent
+2023/07/25 14:07:07 failed to send message: websocket: close sent
+2023/07/25 14:07:10 writemsg error websocket: close sent
+2023/07/25 14:07:16 writemsg error websocket: close sent
+2023/07/25 14:11:25 failed to send message: websocket: close sent
+2023/07/25 14:11:29 writemsg error websocket: close sent
+2023/07/25 14:12:03 failed to send message: websocket: close sent
+2023/07/25 14:12:11 writemsg error websocket: close sent

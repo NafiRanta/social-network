@@ -7,7 +7,7 @@ import "./Card.css";
 function GroupCommentCard(props) {
     const userInfo = useSelector((state) => state.userInfo);
     const token = localStorage.getItem("token");
-    const postId = props.PostID;
+    const groupPostId = props.GroupPostID;
 
     const [groupCommentInput, setGroupCommentInput] = useState("");
     const [groupComments, setGroupComments] = useState([]);
@@ -18,7 +18,7 @@ function GroupCommentCard(props) {
     }
 
     const getGroupComments = async () => {
-        const url = `http://localhost:8080/getgroupcomments?postID=${postId}`;
+        const url = `http://localhost:8080/getgroupcomments?groupPostID=${groupPostId}`;
         const headers = new Headers();
         headers.append("Authorization", "Bearer " + token);
         headers.append("Content-Type", "application/json");
@@ -52,44 +52,39 @@ function GroupCommentCard(props) {
 
     useEffect(() => {
         getGroupComments();
-    }
-        , []);
+    }, []);
 
 const handleGroupCommentSubmit = async (e) => {
     e.preventDefault();
-    const groupcomment = groupCommentInput;
+    const comment = groupCommentInput;
     const now = new Date();
-
-    const groupCommentData = {
-        content: groupcomment,
-        createAt: now,
-        userName: userInfo.userName,
-        groupPostID: postId,
-    };
-
-    if (!groupcomment){
-        return;
-    }
 
     const headers = new Headers();
     headers.append("Authorization", "Bearer " + token);
     headers.append("Content-Type", "application/json");
-    try{
+
+    const body = {
+        groupPostID: groupPostId,
+        content: comment,
+        createAt: now,
+        userName: userInfo.UserName,
+    };
+    console.log("body", body);
+    try {
         const res = await fetch("http://localhost:8080/addgroupcomment", {
             method: "POST",
             headers: headers,
-            credentials: "include",
-            body: JSON.stringify(groupCommentData),
+            body: JSON.stringify(body),
         });
         if (res.ok) {
-            console.log("Group Comment Added");
+            const data = await res.json();
+            console.log("data", data);
             setGroupCommentInput("");
             getGroupComments();
         } else {
-            throw new Error("Error occurred while adding the group comment");
+            throw new Error("Error occurred while adding the comment");
         }
-    }
-    catch (error) {
+    } catch (error) {
         console.log("error", error);
     }
 };
@@ -151,7 +146,7 @@ return (
                 className="d-flex align-items-center my-1"
                 key={`${groupComment.groupCommentID}-${index}`}
                 >
-                <Avatar userName={groupComment.AuthorID} />
+                <Avatar userName={groupComment.AuthorID}/>
                 <div className="p-3 rounded comment__input w-100">
                       <p className="m-0 fs-7 bg-gray p-2 rounded">
                         {groupComment.content}

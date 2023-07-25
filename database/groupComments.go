@@ -13,18 +13,17 @@ type GroupComment struct {
 	GroupCommentID string
 	GroupID        string
 	UserName       string
-	Comment        string
+	Content        string
 	CreateAt       time.Time
 }
 
 type GroupCommentResponse struct {
-	GroupCommentID  string    `json:"groupCommentID"`
-	GroupID         string    `json:"groupID"`
-	UserName        string    `json:"userName"`
-	Comment         string    `json:"comment"`
-	CreateAt        time.Time `json:"createAt"`
-	AuthorFirstName string    `json:"authorFirstName"`
-	AuthorLastName  string    `json:"authorLastName"`
+	GroupCommentID string    `json:"groupCommentID"`
+	GroupPostID    string    `json:"groupPostID"`
+	GroupID        string    `json:"groupID"`
+	UserName       string    `json:"userName"`
+	Content        string    `json:"content"`
+	CreateAt       time.Time `json:"createAt"`
 }
 
 func CreateGroupCommentsTable(db *sql.DB) {
@@ -34,7 +33,7 @@ func CreateGroupCommentsTable(db *sql.DB) {
 		GroupPostID CHAR(36) NOT NULL,
 		GroupID CHAR(36) NOT NULL,
 		UserName CHAR(36) NOT NULL,
-		Comment TEXT NOT NULL,
+		Content TEXT NOT NULL,
 		CreateAt TIMESTAMP NOT NULL,
 		PRIMARY KEY (GroupCommentID)
 	);`
@@ -55,17 +54,15 @@ func AddGroupComment(groupComment *GroupCommentResponse) error {
 	groupComment.CreateAt = time.Now()
 
 	query := `
-		INSERT INTO GroupComments (GroupCommentID, GroupID, UserName, Comment, CreateAt)
+		INSERT INTO GroupComments (GroupCommentID, GroupID, UserName, Content, CreateAt)
 			VALUES (?, ?, ?, ?, ?);`
 
-	_, err = db.Exec(query, groupComment.GroupCommentID, groupComment.GroupID, groupComment.UserName, groupComment.Comment, groupComment.CreateAt)
+	_, err = db.Exec(query, groupComment.GroupCommentID, groupComment.GroupID, groupComment.UserName, groupComment.Content, groupComment.CreateAt)
 	if err != nil {
-		//fmt.Println("error from addGroupComment:", err)
 		return err
 	}
 
 	return nil
-
 }
 
 func GetGroupCommentsByGroupPostID(groupID string) ([]GroupCommentResponse, error) {
@@ -88,7 +85,7 @@ func GetGroupCommentsByGroupPostID(groupID string) ([]GroupCommentResponse, erro
 	var allGroupComments []GroupCommentResponse
 	for rows.Next() {
 		var groupComment GroupCommentResponse
-		err := rows.Scan(&groupComment.GroupCommentID, &groupComment.GroupID, &groupComment.UserName, &groupComment.Comment, &groupComment.CreateAt)
+		err := rows.Scan(&groupComment.GroupCommentID, &groupComment.GroupID, &groupComment.UserName, &groupComment.Content, &groupComment.CreateAt)
 		if err != nil {
 			return nil, err
 		}
@@ -117,7 +114,7 @@ func GetGroupPostsComments(groupPostID string) ([]GroupCommentResponse, error) {
 	var allGroupComments []GroupCommentResponse
 	for rows.Next() {
 		var groupComment GroupCommentResponse
-		err := rows.Scan(&groupComment.GroupCommentID, &groupComment.GroupID, &groupComment.UserName, &groupComment.Comment, &groupComment.CreateAt)
+		err := rows.Scan(&groupComment.GroupCommentID, &groupComment.GroupID, &groupComment.UserName, &groupComment.Content, &groupComment.CreateAt)
 		if err != nil {
 			return nil, err
 		}
