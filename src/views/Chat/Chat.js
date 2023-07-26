@@ -109,7 +109,8 @@ function Chat(props) {
         );
         if (response.ok) {
           const allMessages = await response.json();
-            if (allMessages > 0) {
+          console.log("allMessages", allMessages);
+            if (allMessages) {
               // sort otherUsers by allMessages sentAt 
               otherUsers?.sort((a, b) => {
                 const aMessages = allMessages?.filter(
@@ -137,13 +138,13 @@ function Chat(props) {
                 return aLastMessage?.sentAt > bLastMessage?.sentAt ? -1 : 1;
             });
           }
+          setOtherUsers(otherUsers);
         } else {
           throw new Error("Error occurred while fetching messages");
         }
       } catch (error) {
         console.log(error);
       }
-      setOtherUsers(otherUsers);
       // set the first user in otherUsers as the selectedChatMate
       if (otherUsers[0]) {
         setSelectedChatMateUsername(otherUsers[0].UserName);
