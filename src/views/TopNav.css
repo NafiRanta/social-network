@@ -40,4 +40,10 @@
     font-size: 20px;
 }
 
+.bg-red {
+    background-color: #4267B2 !important;
+}
 
+.bg-red i {
+    color:whitesmoke;
+}
