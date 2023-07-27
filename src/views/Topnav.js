@@ -398,7 +398,7 @@ useEffect(() => {
                           <div className="d-flex justify-content-between">
                             <div className="d-flex align-items-center">
                               <div className="rounded-circle d-flex align-items-center justify-content-center mx-2" id="avatar">
-                                <Avatar username={notification.requestorUsername} />
+                                <img src={notification.requestorAvatar} alt="avatar" className="rounded-circle me-2" />
                               </div>
                               <div>
                                 <p className="m-0">
