@@ -242,18 +242,18 @@ function MyProfile(props) {
                     </span>
                   </li>
                   <li className="dropdown-item p-1 rounded">
-                    <button
+                    {/* <button
                       type="button"
                       className="btn btn-primary w-100"
                       data-bs-toggle="modal"
                       data-bs-target="#updateProfileSettingsModal"
                     >
-                      Edit Profile
-                    </button>
+                      Edit Profile */}
+                    {/* </button>
                     <UpdateProfileSettingsModal
                       userDisplayname={props.userDisplayname}
                       userInfo={userInfo}
-                    />
+                    /> */}
                   </li>
                 </ul>
               </div>
