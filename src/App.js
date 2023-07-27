@@ -38,12 +38,35 @@ function App() {
         : {
           // if the user is in the chat page, then update the chat page
           if (window.location.pathname === "/chat") {
-              window.location.reload();
+            // fetch the chat messages from the server and dispatch to redux store
+            const fetchChatMessages = async () => {
+              try {
+                const token = localStorage.getItem("token");
+                const headers = new Headers();
+                headers.append("Authorization", "Bearer " + token);
+                headers.append("Content-Type", "application/json");
+                const res = await fetch(
+                  `http://localhost:8080/getchatmessages?senderUsername=${userInfo.UserName}&receiverUsername=${chatMateusername}`,
+                  {
+                    method: "GET",
+                    headers: headers,
+                  }
+                );
+                if (res.ok) {
+                  const data = await res.json();
+                  dispatch({ type: "SET_CHATMESSAGES", payload: data });
+                } else {
+                  console.log("error");
+                }
+              }
+              catch (error) {
+                // Handle error
+                console.log(error);
+              }
+            };
           } else {
             // set chatNotification to true
             dispatch({ type: "SET_CHATNOTIFICATION", payload: true });
-            // show the notification on the chat bubble icon
-            console.log("show notification on the chat icon");
             break;
           }
         }
