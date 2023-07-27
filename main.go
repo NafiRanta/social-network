@@ -64,11 +64,12 @@ func Start() error {
 	router.HandleFunc("/updatebio", user.UpdateBioOfUser)
 	router.HandleFunc("/updateavatar", user.UpdateAvatarOfUser)
 
-	// add friend
-	router.HandleFunc("/sendfollowreq", user.SendFollowRequestHandler)
+	// follow and unfollow
+	// router.HandleFunc("/sendfollowreq", user.SendFollowRequestHandler)
+	router.HandleFunc("/follow", user.FollowHandler)
 	router.HandleFunc("/acceptfollowreq", user.AcceptFollowRequestHandler)
 	router.HandleFunc("/declinefollowreq", user.DeclineFollowRequestHandler)
-	router.HandleFunc("/removefollower", user.RemoveFollowerHandler)
+	router.HandleFunc("/unfollow", user.UnfollowHandler)
 
 	//handle post
 	router.HandleFunc("/posts", p.GetPostsHandler)

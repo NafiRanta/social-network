@@ -180,7 +180,7 @@ type FollowRequest struct {
 	ReceiverUsername string `json:"receiver_username"`
 }
 
-func SendFollowRequestHandler(w http.ResponseWriter, r *http.Request) {
+func FollowHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("send follow request")
 	if r.Method != "POST" {
 		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
@@ -231,25 +231,25 @@ func SendFollowRequestHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if receiverUser.Privacy == "public" {
-		//fmt.Println("public")
-		// add receiver username to sender's FollowerUsernames
-		if err := d.AddFollower(senderUser, receiverUser); err != nil {
+		// add receiver username to sender's FollowingUsernames
+		if err := d.AddFollowing(senderUser, receiverUser); err != nil {
 			//fmt.Println(err)
 			http.Error(w, "Failed to update sender's followers", http.StatusInternalServerError)
 			return
 		}
-		//fmt.Println(senderUser)
-		// Add the sender's username to the receiver's FollowerUsernames
+		// add sender username to receiver's FollowerUsernames
 		if err := d.AddFollower(receiverUser, senderUser); err != nil {
-			http.Error(w, "Failed to update receiver's followers", http.StatusInternalServerError)
+			//fmt.Println(err)
+			http.Error(w, "Failed to update sender's followers", http.StatusInternalServerError)
 			return
 		}
+		
 	}
 
 	fmt.Fprintf(w, "Successfully followed %s", followReq.ReceiverUsername)
 }
 
-func RemoveFollowerHandler(w http.ResponseWriter, r *http.Request) {
+func UnfollowHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "POST" {
 		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
 		return
@@ -275,23 +275,23 @@ func RemoveFollowerHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Sender not found", http.StatusNotFound)
 		return
 	}
-
-	// Check receiver user privacy and get receiver user from the database
 	receiverUser, err := d.GetUserByUsername(decodedReceiver)
 	if err != nil {
 		http.Error(w, "Receiver not found", http.StatusNotFound)
 		return
 	}
-	// remove
-	if err := d.RemoveFollower(senderUser, receiverUser); err != nil {
+
+	// Remove the follower relationship: remove the sender from the receiver's follower list
+	if err := d.RemoveFollower(receiverUser, senderUser); err != nil {
 		fmt.Println(err)
-		http.Error(w, "Failed to unfriend", http.StatusInternalServerError)
+		http.Error(w, "Failed to unfollow", http.StatusInternalServerError)
 		return
 	}
 
-	if err := d.RemoveFollower(receiverUser, senderUser); err != nil {
+	// Remove the following relationship from the receiver's side
+	if err := d.RemoveFollowing(senderUser, receiverUser ); err != nil {
 		fmt.Println(err)
-		http.Error(w, "Failed to unfriend", http.StatusInternalServerError)
+		http.Error(w, "Failed to unfollow", http.StatusInternalServerError)
 		return
 	}
 

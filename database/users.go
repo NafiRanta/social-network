@@ -4,8 +4,8 @@ package database
 import (
 	"database/sql"
 	"fmt"
-
-	//"fmt"
+	"strconv"
+	"math/rand"
 	u "socialnetwork/utils"
 	"strings"
 
@@ -27,6 +27,7 @@ type User struct {
 	Nickname                  string
 	AboutMe                   string
 	FollowerUsernames         string
+	FollowingUsernames        string
 	FollowerUsernamesReceived string
 	FollowerUsernamesSent     string
 }
@@ -49,10 +50,13 @@ func CreateUsersTable(db *sql.DB) {
 		Nickname TEXT,
 		AboutMe TEXT,
 		FollowerUsernames TEXT,
+		FollowingUsernames TEXT,
 		FollowerUsernamesReceived TEXT,
 		FollowerUsernamesSent TEXT
 		
 	);`
+	//FollowerUsernames TEXT, -- Column containing the string of usernames that you follow
+	//FollowingUsernames TEXT, -- Column containing the string of usernames that follow you
 	//FollowerIDsReceived TEXT, -- Column containing the string of user IDs that sent follow requests to you
 	//FollowerIDsSent TEXT, -- Column containing the string of user IDs that you sent follow requests to
 	query, err := db.Prepare(usersTable)
@@ -62,8 +66,8 @@ func CreateUsersTable(db *sql.DB) {
 
 // add users to users table
 func AddUser(db *sql.DB, FirstName string, LastName string, UserName string, Email string, Password string, Dob string, Gender string, NickName string, Avatar string, About string) error {
-	records := `INSERT INTO Users (UserID, FirstName, LastName, UserName, Email, Password, Privacy, Online, DateOfBirth, Gender, Avatar, Nickname, AboutMe, FollowerUsernames, FollowerUsernamesReceived, FollowerUsernamesSent)
-	            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)`
+	records := `INSERT INTO Users (UserID, FirstName, LastName, UserName, Email, Password, Privacy, Online, DateOfBirth, Gender, Avatar, Nickname, AboutMe, FollowerUsernames, FollowerUsernamesReceived, FollowerUsernamesSent, FollowingUsernames)
+	            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
 	query, err := db.Prepare(records)
 	if err != nil {
 		return err
@@ -72,12 +76,100 @@ func AddUser(db *sql.DB, FirstName string, LastName string, UserName string, Ema
 	// Generate a unique UserID using UUID
 	userID, _ := uuid.NewV4()
 
-	_, err = query.Exec(userID, FirstName, LastName, UserName, Email, Password, "public", 0, Dob, Gender, Avatar, NickName, About, "", "", "")
+	_, err = query.Exec(userID, FirstName, LastName, UserName, Email, Password, "public", 0, Dob, Gender, Avatar, NickName, About, "", "", "", "") // Set the new column value to an empty string
 	if err != nil {
 		return err
 	}
 	return nil
 }
+
+func addDummyUserData(db *sql.DB) error {
+	dummyUsers := []struct {
+		FirstName    string
+		LastName     string
+		UserName     string
+		Email        string
+		Password     string
+		Dob          string
+		Gender       string
+		NickName     string
+		Avatar       string
+		About        string
+	}{
+		{
+			FirstName: "Admin",
+			LastName:  "Admin",
+			UserName:  "",
+			Email:     "admin@example.com",
+			Password:  "Admin1234!",
+			Dob:       "1990-01-01",
+			Gender:    "Male",
+			NickName:  "AA",
+			Avatar:    "https://example.com/avatar/johndoe.png",
+			About:     "Hello, I'm Admin!",
+		},
+		{
+			FirstName: "Nafisah",
+			LastName:  "Rantasalmi",
+			UserName:  "",
+			Email:     "nafisah.rantasalmi@gmail.com",
+			Password:  "Nafi1234!",
+			Dob:       "1985-05-15",
+			Gender:    "Female",
+			NickName:  "NR",
+			Avatar:    "https://example.com/avatar/janesmith.png",
+			About:     "Hi there, I'm Nafisah!",
+		},
+		{
+			FirstName: "Jacob",
+			LastName:  "Pensama",
+			UserName:  "",
+			Email:     "jacob.pensama@gmail.com",
+			Password:  "Jacob1234!",
+			Dob:       "1988-09-30",
+			Gender:    "Male",
+			NickName:  "JP",
+			Avatar:    "https://example.com/avatar/bobjohnson.png",
+			About:     "Nice to meet you, I'm Jacob!",
+		},
+		{
+			FirstName: "Gin",
+			LastName:  "B",
+			UserName:  "",
+			Email:     "gin.b@gmail.com",
+			Password:  "Gin1234!",
+			Dob:       "1999-04-30",
+			Gender:    "female",
+			NickName:  "GB",
+			Avatar:    "https://example.com/avatar/gin.png",
+			About:     "Nice to meet you, I'm Gin!",
+		},
+		{
+			FirstName: "Ashley",
+			LastName:  "Hgwtra",
+			UserName:  "",
+			Email:     "ashley.h@gmail.com",
+			Password:  "Ashley1234!",
+			Dob:       "1998-08-10",
+			Gender:    "female",
+			NickName:  "AH",
+			Avatar:    "https://example.com/avatar/gin.png",
+			About:     "Nice to meet you, I'm Ashley!",
+		},
+	}
+
+	for _, user := range dummyUsers {
+		randomNumber := rand.Intn(100)
+		user.UserName = user.FirstName + `-` + user.LastName + `-` + strconv.Itoa(randomNumber)
+		err := AddUser(db, user.FirstName, user.LastName, user.UserName, user.Email, user.Password, user.Dob, user.Gender, user.NickName, user.Avatar, user.About)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
 
 func GetUserByEmail(email string) (*User, error) {
 	//fmt.Println("GetUserByEmail")
@@ -110,13 +202,14 @@ func GetUserByEmail(email string) (*User, error) {
 		&user.Nickname,
 		&user.AboutMe,
 		&user.FollowerUsernames,
+		&user.FollowingUsernames,
 		&user.FollowerUsernamesReceived,
 		&user.FollowerUsernamesSent,
 	)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			//fmt.Println("user not found")
-			return &user, err // user not found
+			return nil, err // user not found
 		} else {
 			//fmt.Println("sth else error:", err)
 			return nil, err
@@ -155,13 +248,14 @@ func GetUserByUsername(username string) (*User, error) {
 		&user.Nickname,
 		&user.AboutMe,
 		&user.FollowerUsernames,
+		&user.FollowingUsernames,
 		&user.FollowerUsernamesReceived,
 		&user.FollowerUsernamesSent,
 	)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			//fmt.Println("user not found")
-			return &user, err // user not found
+			return nil, err // user not found
 		} else {
 			//fmt.Println("sth else error:", err)
 			return nil, err
@@ -202,6 +296,7 @@ func GetUserByID(userID string) (*User, error) {
 		&user.Nickname,
 		&user.AboutMe,
 		&user.FollowerUsernames,
+		&user.FollowingUsernames,
 		&user.FollowerUsernamesReceived,
 		&user.FollowerUsernamesSent,
 	)
@@ -253,6 +348,7 @@ func GetAllPublicUsers() ([]*User, error) {
 			&user.Nickname,
 			&user.AboutMe,
 			&user.FollowerUsernames,
+			&user.FollowingUsernames,
 			&user.FollowerUsernamesReceived,
 			&user.FollowerUsernamesSent,
 		)
@@ -305,6 +401,7 @@ func GetAllPrivateUsers() ([]*User, error) {
 			&user.Nickname,
 			&user.AboutMe,
 			&user.FollowerUsernames,
+			&user.FollowingUsernames,
 			&user.FollowerUsernamesReceived,
 			&user.FollowerUsernamesSent,
 		)
@@ -417,7 +514,33 @@ func AddFollower(userA *User, userB *User) error {
 
 }
 
-// RemoveFollower removes userB's UserName from userA's FollowerUsernames in the database.
+func AddFollowing(userA *User, userB *User) error {
+	db, err := sql.Open("sqlite3", "./socialnetwork.db")
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+
+	if userA.FollowingUsernames == "" {
+		userA.FollowingUsernames = userB.UserName
+	} else {
+		userA.FollowingUsernames = userA.FollowingUsernames + "," + userB.UserName
+	}
+
+	stmt, err := db.Prepare("UPDATE Users SET FollowingUsernames = ? WHERE UserID = ?")
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
+
+	_, err = stmt.Exec(userA.FollowingUsernames, userA.UserID)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func RemoveFollower(userA *User, userB *User) error {
 	db, err := sql.Open("sqlite3", "./socialnetwork.db")
 	if err != nil {
@@ -449,6 +572,39 @@ func RemoveFollower(userA *User, userB *User) error {
 
 	return nil
 }
+
+func RemoveFollowing(userA *User, userB *User) error {
+	db, err := sql.Open("sqlite3", "./socialnetwork.db")
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+	
+	followingUsernames := strings.Split(userA.FollowingUsernames, ",")
+	var updatedFollowingUsernames []string
+
+	for _, following := range followingUsernames {
+		if following != userB.UserName {
+			updatedFollowingUsernames = append(updatedFollowingUsernames, following)
+		}
+	}
+
+	userA.FollowingUsernames = strings.Join(updatedFollowingUsernames, ",")
+
+	stmt, err := db.Prepare("UPDATE Users SET FollowingUsernames = ? WHERE UserID = ?")
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
+
+	_, err = stmt.Exec(userA.FollowingUsernames, userA.UserID)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 
 
 func SentFollowerRequest(sender *User, receiver *User) error {
