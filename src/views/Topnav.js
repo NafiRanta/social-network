@@ -155,9 +155,10 @@ useEffect(() => {
         throw new Error("Failed to fetch all events.");
       }
       const data = await response.json();
-      if (data.length > 0) {
+      console.log("data", data)
+      if (data) {
         console.log("data", data); // data is an array of groupIDs that has events that user has not responded to
-        const updatedEventNotifications = data.map((groupID) => {
+        const updatedEventNotifications = data.groupIDEventNotifications.map((groupID) => {
           const groupInfo = allGroups.find((group) => group.GroupID === groupID);
           const groupAvatar = groupInfo?.GroupAvatar;
           const groupName = groupInfo?.GroupName;
@@ -522,6 +523,31 @@ useEffect(() => {
                               >
                                 Decline
                               </button>
+                            </div>
+                          </div>
+                        </Dropdown.Item>
+                      </div>
+                    );
+                  } else if (notification.type === "SET_NEWEVENTNOTIFICATIONS") {
+                    return (
+                      <div key={notification.groupID}>
+                        <Dropdown.Item as="li" className="my-2 p-1">
+                          <div className="d-flex justify-content-between">
+                            <div className="d-flex align-items-center">
+                              <div className="rounded-circle d-flex align-items-center justify-content-center mx-2" id="avatar">
+                                <img src={notification.groupAvatar} alt="avatar" className="rounded-circle me-2" />
+                              </div>
+                              <div>
+                                <p className="m-0">New event in {notification.groupName}</p>
+                              </div>
+                            </div>
+                            <div>
+                              <Link
+                                to={`/singlegroup/${notification.groupID}`}
+                                className="btn btn-primary btn-sm d-flex justify-content-center align-items-center" 
+                              >
+                                View
+                              </Link>
                             </div>
                           </div>
                         </Dropdown.Item>
