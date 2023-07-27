@@ -9058,3 +9058,29 @@ created by net/http.(*Server).Serve
 2023/07/27 18:04:29 writemsg error websocket: close sent
 2023/07/27 18:21:59 failed to send message: websocket: close sent
 2023/07/27 18:22:03 writemsg error websocket: close sent
+2023/07/27 20:38:18 failed to send message: websocket: close sent
+2023/07/27 20:38:24 writemsg error websocket: close sent
+2023/07/27 20:39:07 failed to send message: websocket: close sent
+2023/07/27 20:39:14 writemsg error websocket: close sent
+2023/07/27 20:39:25 failed to send message: websocket: close sent
+2023/07/27 20:39:25 writemsg error websocket: close sent
+2023/07/27 20:39:27 failed to send message: websocket: close sent
+2023/07/27 20:39:34 writemsg error websocket: close sent
+2023/07/27 20:39:41 failed to send message: websocket: close sent
+2023/07/27 20:39:44 writemsg error websocket: close sent
+2023/07/27 20:39:45 failed to send message: websocket: close sent
+2023/07/27 20:39:47 failed to send message: websocket: close sent
+2023/07/27 20:39:51 writemsg error websocket: close sent
+2023/07/27 20:39:55 writemsg error websocket: close sent
+2023/07/27 20:39:55 failed to send message: websocket: close sent
+2023/07/27 20:39:55 writemsg error websocket: close sent
+2023/07/27 20:40:00 failed to send message: websocket: close sent
+2023/07/27 20:40:03 failed to send message: websocket: close sent
+2023/07/27 20:40:05 writemsg error websocket: close sent
+2023/07/27 20:40:05 failed to send message: websocket: close sent
+2023/07/27 20:40:05 writemsg error websocket: close sent
+2023/07/27 20:40:09 failed to send message: websocket: close sent
+2023/07/27 20:40:09 writemsg error websocket: close sent
+2023/07/27 20:40:12 writemsg error websocket: close sent
+2023/07/27 20:40:14 failed to send message: websocket: close sent
+2023/07/27 20:40:15 writemsg error websocket: close sent

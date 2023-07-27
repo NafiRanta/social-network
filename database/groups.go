@@ -560,7 +560,6 @@ func DeleteUserFromRequestUsernames(groupID string, username string) error {
 }
 
 func DeleteUserFromMemberInvite(groupID string, username string) error {
-	// ...
 	db, err := sql.Open("sqlite3", "./socialnetwork.db")
 	if err != nil {
 		return err
@@ -628,6 +627,57 @@ func DeleteUserFromMemberInvite(groupID string, username string) error {
 		return err
 	}
 
+	return nil
+}
+
+// if user is found in the RequestUsernames slice, delete it
+func DeleteUserFromJoinRequest(groupID string, username string) error {
+	db, err := sql.Open("sqlite3", "./socialnetwork.db")
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+	// Get the current JSON array
+	query := "SELECT RequestUsernames FROM Groups WHERE GroupID = ?"
+	stmt, err := db.Prepare(query)
+	if err != nil {
+		return err
+	}
+	row := stmt.QueryRow(groupID)
+	// if username is in the row, delete it
+	var requestUsernames string
+	err = row.Scan(&requestUsernames)
+	if err != nil {
+		return err
+	}
+	// Parse the JSON array into a slice
+	var usernames []string
+	err = json.Unmarshal([]byte(requestUsernames), &usernames)
+	if err != nil {
+		return err
+	}
+	// Find and remove the specified username from the slice
+	for i, u := range usernames {
+		if u == username {
+			usernames = append(usernames[:i], usernames[i+1:]...)
+			break
+		}
+	}
+	// Convert the slice back to a JSON array
+	newRequestUsernames, err := json.Marshal(usernames)
+	if err != nil {
+		return err
+	}
+	// Update the Groups table with the new JSON array
+	updateQuery := "UPDATE Groups SET RequestUsernames = ? WHERE GroupID = ?"
+	updateStmt, err := db.Prepare(updateQuery)
+	if err != nil {
+		return err
+	}
+	_, err = updateStmt.Exec(string(newRequestUsernames), groupID)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 

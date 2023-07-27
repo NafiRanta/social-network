@@ -93,6 +93,7 @@ func Start() error {
 	router.HandleFunc("/invitesbymember", g.AddUsersToMemberInvited)
 	router.HandleFunc("/joinrequest", g.JoinRequestHandler)
 	router.HandleFunc("/acceptjoinrequest", g.AcceptJoinRequestHandler)
+	router.HandleFunc("/declinejoinrequest", g.DeclineJoinRequestHandler)
 
 	// handle group posts
 	router.HandleFunc("/addgrouppost", gp.AddGroupPostHandler)

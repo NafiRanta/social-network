@@ -382,3 +382,45 @@ func AcceptJoinRequestHandler(w http.ResponseWriter, r *http.Request) {
 	w.Write(responseJSON)
 	fmt.Println("users added to group successfully")
 }
+
+func DeclineJoinRequestHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("DeclineJoinRequestHandler")
+	// Check if the request method is POST
+	if r.Method != http.MethodPost {
+		w.WriteHeader(http.StatusMethodNotAllowed)
+		fmt.Fprint(w, "Method not allowed")
+		return
+	}
+	// get groupID & username from request body
+	var request d.AcceptJoinRequest
+	err := json.NewDecoder(r.Body).Decode(&request)
+	if err != nil {
+		fmt.Println("error from decode:", err)
+		http.Error(w, "Invalid request body", http.StatusBadRequest)
+		return
+	}
+	groupID := request.GroupID
+	username := request.UserName
+	// remove username from group joinRequests
+	err = d.DeleteUserFromJoinRequest(groupID, username)
+	if err != nil {
+		fmt.Println("error from delete:", err)
+		http.Error(w, "Failed to delete group", http.StatusInternalServerError)
+		return
+	}
+	// write response
+	response := map[string]interface{}{
+		"groupID": groupID,
+		"message": "user added to group successfully",
+	}
+	responseJSON, err := json.Marshal(response)
+	if err != nil {
+		fmt.Println("error from json.Marshal:", err)
+		http.Error(w, "Failed to marshal response", http.StatusInternalServerError)
+		return
+	}
+	w.WriteHeader(http.StatusOK)
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(responseJSON)
+	fmt.Println("users added to group successfully")
+}

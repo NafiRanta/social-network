@@ -194,8 +194,7 @@ useEffect(() => {
       userName: requestorUsername,
     };
     try {
-      // write groupID to url
-      const response = await fetch("http://localhost:8080/acceptjoinrequest?groupID=" + groupID, {
+      const response = await fetch("http://localhost:8080/acceptjoinrequest", {
         method: "POST",
         headers: headers,
         body: JSON.stringify(requestBody),
@@ -212,10 +211,45 @@ useEffect(() => {
       setJoinRequests(updatedJoinRequests);
       
       console.log("join request accepted");
+      window.location.reload();
     } catch (error) {
       console.error("Error accepting the join request:", error);
     }
   };
+
+  const handleDeclineJoinRequest = async (groupID, requestorUsername) => {
+    const token = localStorage.getItem("token");
+    const headers = new Headers();
+    headers.append("Authorization", "Bearer " + token);
+    headers.append("Content-Type", "application/json");
+    const requestBody = {
+      groupID: groupID,
+      userName: requestorUsername,
+    };
+    try {
+      const response = await fetch("http://localhost:8080/declinejoinrequest", {
+        method: "POST",
+        headers: headers,
+        body: JSON.stringify(requestBody),
+      });
+      if (!response.ok) {
+        throw new Error("Failed to decline the join request.");
+      }
+      const data = await response.json();
+      console.log("data", data);
+      // remove the join request from the join requests array
+      const updatedJoinRequests = joinRequests.filter((joinRequest) => {
+        return joinRequest.requestorUsername !== requestorUsername;
+      });
+      setJoinRequests(updatedJoinRequests);
+      console.log("join request declined");
+      window.location.reload();
+    } catch (error) {
+      console.error("Error declining the join request:", error);
+    }
+  };
+
+      
 
   return (
     <div className="bg-white d-flex align-items-center fixed-top shadow" >
@@ -415,7 +449,7 @@ useEffect(() => {
                               </button>
                               <button
                                 className="btn btn-danger btn-sm mx-1"
-                                // onClick={() => handleDeclineJoinRequest(notification.groupID)}
+                                onClick={() => handleDeclineJoinRequest(notification.groupID, notification.requestorUsername)}
                               >
                                 Decline
                               </button>
