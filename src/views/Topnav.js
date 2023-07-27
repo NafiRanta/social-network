@@ -28,6 +28,7 @@ function Topnav(props) {
   const [joinRequests, setJoinRequests] = useState([]);
   const [isInvitedByMember, setIsInvitedByMember] = useState(false);
   const [isInvitedByAdmin, setIsInvitedByAdmin] = useState(false);
+  const [newEventNotifications, setNewEventNotification] = useState(false);
   let Notifications = []
 
   useEffect(() => {
@@ -138,6 +139,77 @@ useEffect(() => {
   }
 }, [allusers]);
 
+useEffect(() => {
+  // fetch all events and check if userinfo.username is a member in the group and neither in going nor notgoing
+  // if so, add a notification to the notification array that there is a new event
+  // if not, do nothing
+  if (Array.isArray(allGroups)) {
+    const filteredAllGroups = allGroups.filter((group) => {
+      // return the groups where the user is a member
+      return group.MemberUsernames.includes(userInfo.UserName);
+    });
+    try {
+      // fetch all groupEvents
+      const token = localStorage.getItem("token");
+      const headers = new Headers();
+      headers.append("Authorization", "Bearer " + token);
+      headers.append("Content-Type", "application/json");
+      const url = `http://localhost:8080/getevents`;
+      // fetch and then when response is ok, set the state
+      const response = fetch(url, {
+        method: "GET",
+        headers: headers,
+      });
+      if (!response.ok) {
+        throw new Error("Failed to get all group events.");
+      }
+      const data = response.json();
+
+
+      // console.log("ALL GROUPS: ", data);
+      const allGroupEvents = data.groupEvent;
+      console.log("allGroupEvents", allGroupEvents);
+      console.log("filteredAllGroups", filteredAllGroups);
+      console.log("userInfo", userInfo);
+      console.log("allGroups", allGroups);
+      // if user is a member in the group and neither in going nor notgoing, add a notification to the notification array that there is a new event
+      const updatedNotifications = [];
+      filteredAllGroups.forEach((group) => {
+        // console.log("group", group);
+        const groupEvents = allGroupEvents.filter((groupEvent) => {
+          return groupEvent.GroupID === group.GroupID;
+        });
+        // console.log("groupEvents", groupEvents);
+        groupEvents.forEach((groupEvent) => {
+          // console.log("groupEvent", groupEvent);
+          const goingUsernames = JSON.parse(groupEvent.GoingUsernames);
+          const notGoingUsernames = JSON.parse(groupEvent.NotGoingUsernames);
+          // console.log("goingUsernames", goingUsernames);
+          // console.log("notGoingUsernames", notGoingUsernames);
+          if (
+            !goingUsernames.includes(userInfo.UserName) &&
+            !notGoingUsernames.includes(userInfo.UserName)
+          ) {
+            updatedNotifications.push({
+              type: "SET_EVENTNOTIFICATION",
+              groupID: group.GroupID,
+              groupName: group.GroupName,
+              eventID: groupEvent.GroupEventID,
+              eventName: groupEvent.EventName,
+            });
+          }
+        });
+      });
+      // console.log("updatedNotifications", updatedNotifications);
+      setNewEventNotification(updatedNotifications);
+    } catch (error) {
+      console.error("Error getting all group events:", error);
+    }
+  }
+}, [allGroups]);
+
+
+  
 
   useEffect(() => {
     // for Invites by Admin
@@ -160,6 +232,7 @@ useEffect(() => {
   }, [invitesbyadmin, allusers, invitesbymember]);
 
   Notifications = [
+    ...newEventNotifications || [],
     ...groupInvitesByAdmin || [],
     ...groupInvitesByMember || [],
     ...followRequestsInfo || [],
@@ -222,7 +295,9 @@ useEffect(() => {
       setJoinRequests(updatedJoinRequests);
       
       console.log("join request accepted");
-      window.location.reload();
+      setTimeout(() => {
+        window.location.reload();
+      }, 500);
     } catch (error) {
       console.error("Error accepting the join request:", error);
     }
@@ -265,7 +340,9 @@ useEffect(() => {
       });
       setJoinRequests(updatedJoinRequests);
       console.log("join request declined");
-      window.location.reload();
+      setTimeout(() => {
+        window.location.reload();
+      }, 500);
     } catch (error) {
       console.error("Error declining the join request:", error);
     }
