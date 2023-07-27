@@ -141,72 +141,42 @@ useEffect(() => {
 
 useEffect(() => {
   // fetch all events and check if userinfo.username is a member in the group and neither in going nor notgoing
-  // if so, add a notification to the notification array that there is a new event
-  // if not, do nothing
-  if (Array.isArray(allGroups)) {
-    const filteredAllGroups = allGroups.filter((group) => {
-      // return the groups where the user is a member
-      return group.MemberUsernames.includes(userInfo.UserName);
-    });
+  const fetchAllEventNotifications = async () => {
+    const token = localStorage.getItem("token");
+    const headers = new Headers();
+    headers.append("Authorization", "Bearer " + token);
+    headers.append("Content-Type", "application/json");
     try {
-      // fetch all groupEvents
-      const token = localStorage.getItem("token");
-      const headers = new Headers();
-      headers.append("Authorization", "Bearer " + token);
-      headers.append("Content-Type", "application/json");
-      const url = `http://localhost:8080/getevents`;
-      // fetch and then when response is ok, set the state
-      const response = fetch(url, {
-        method: "GET",
+      const response = await fetch("http://localhost:8080/geteventnotificatoins", {
+        method: "POST",
         headers: headers,
       });
       if (!response.ok) {
-        throw new Error("Failed to get all group events.");
+        throw new Error("Failed to fetch all events.");
       }
-      const data = response.json();
-
-
-      // console.log("ALL GROUPS: ", data);
-      const allGroupEvents = data.groupEvent;
-      console.log("allGroupEvents", allGroupEvents);
-      console.log("filteredAllGroups", filteredAllGroups);
-      console.log("userInfo", userInfo);
-      console.log("allGroups", allGroups);
-      // if user is a member in the group and neither in going nor notgoing, add a notification to the notification array that there is a new event
-      const updatedNotifications = [];
-      filteredAllGroups.forEach((group) => {
-        // console.log("group", group);
-        const groupEvents = allGroupEvents.filter((groupEvent) => {
-          return groupEvent.GroupID === group.GroupID;
+      const data = await response.json();
+      if (data.length > 0) {
+        console.log("data", data); // data is an array of groupIDs that has events that user has not responded to
+        const updatedEventNotifications = data.map((groupID) => {
+          const groupInfo = allGroups.find((group) => group.GroupID === groupID);
+          const groupAvatar = groupInfo?.GroupAvatar;
+          const groupName = groupInfo?.GroupName;
+          return {
+            type: "SET_NEWEVENTNOTIFICATIONS",
+            groupAvatar: groupAvatar,
+            groupName: groupName,
+            groupID: groupID,
+          };
         });
-        // console.log("groupEvents", groupEvents);
-        groupEvents.forEach((groupEvent) => {
-          // console.log("groupEvent", groupEvent);
-          const goingUsernames = JSON.parse(groupEvent.GoingUsernames);
-          const notGoingUsernames = JSON.parse(groupEvent.NotGoingUsernames);
-          // console.log("goingUsernames", goingUsernames);
-          // console.log("notGoingUsernames", notGoingUsernames);
-          if (
-            !goingUsernames.includes(userInfo.UserName) &&
-            !notGoingUsernames.includes(userInfo.UserName)
-          ) {
-            updatedNotifications.push({
-              type: "SET_EVENTNOTIFICATION",
-              groupID: group.GroupID,
-              groupName: group.GroupName,
-              eventID: groupEvent.GroupEventID,
-              eventName: groupEvent.EventName,
-            });
-          }
-        });
-      });
-      // console.log("updatedNotifications", updatedNotifications);
-      setNewEventNotification(updatedNotifications);
+        setNewEventNotification(updatedEventNotifications);
+      }
+
     } catch (error) {
-      console.error("Error getting all group events:", error);
+      console.error("Error fetching all events:", error);
     }
-  }
-}, [allGroups]);
+  };
+  fetchAllEventNotifications();
+}, []);
 
 
   

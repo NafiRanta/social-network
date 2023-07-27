@@ -107,7 +107,10 @@ func Start() error {
 	// handle group events
 	router.HandleFunc("/addevent", ge.AddGroupEventHandler)
 	router.HandleFunc("/getevents", ge.GetGroupEventsHandler)
-	//router.HandleFunc("/getsingleevent", ge.GetSingleGroupEventHandler)
+	// get all events where user is member but not responded yet
+	router.HandleFunc("/geteventnotificatoins", ge.GetEventNotificationsHandler)
+
+	// router.HandleFunc("/getsingleevent", ge.GetSingleGroupEventHandler)
 	router.HandleFunc("/going", ge.AcceptGoingEventHandler)
 	router.HandleFunc("/decline", ge.DeclineGoingHandler)
 

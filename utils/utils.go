@@ -3,8 +3,8 @@ package utils
 import (
 	"fmt"
 	"log"
-	"time"
 	"net/url"
+	"time"
 )
 
 // CheckErr checks if there is an error and logs it
@@ -20,7 +20,6 @@ func LogError(err error) {
 	log.Printf("[%s] ERROR: %v\n", time.Now().Format("2006-01-02 15:04:05"), err)
 }
 
-
 //decode special character
 func SpecialCharDecode(input string) string {
 	decoded, err := url.PathUnescape(input)
@@ -29,4 +28,15 @@ func SpecialCharDecode(input string) string {
 		return ""
 	}
 	return decoded
+}
+
+// contains checks if a string is present in a slice
+func Contains(s []string, str string) bool {
+	for _, v := range s {
+		if v == str {
+			return true
+		}
+	}
+
+	return false
 }
