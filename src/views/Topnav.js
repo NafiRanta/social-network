@@ -193,6 +193,17 @@ useEffect(() => {
       groupID: groupID,
       userName: requestorUsername,
     };
+    // send ws notification to requestor to props.socket
+    const notification = {
+      type: "notification",
+      payload: {
+        receiverUsername: requestorUsername,
+        sender: userInfo.UserName,
+      },
+    };
+    if (props.socket) {
+      props.socket.send(JSON.stringify(notification));
+    }
     try {
       const response = await fetch("http://localhost:8080/acceptjoinrequest", {
         method: "POST",
@@ -226,6 +237,17 @@ useEffect(() => {
       groupID: groupID,
       userName: requestorUsername,
     };
+     // send ws notification to requestor to props.socket
+     const notification = {
+      type: "notification",
+      payload: {
+        receiverUsername: requestorUsername,
+        sender: userInfo.UserName,
+      },
+    };
+    if (props.socket) {
+      props.socket.send(JSON.stringify(notification));
+    }
     try {
       const response = await fetch("http://localhost:8080/declinejoinrequest", {
         method: "POST",
