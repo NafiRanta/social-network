@@ -55,16 +55,18 @@ function SingleGroup(props) {
     // check if user is invited by member
     const memberInvitedUsers = JSON.parse(group?.[0]?.MemberInvitedUsernames ?? "[]");
     setMemberInvitedUsers(memberInvitedUsers);
-    const isInvitedByMember = Array.isArray(memberInvitedUsers) && memberInvitedUsers.length > 0 && memberInvitedUsers[0].InvitedUsernames.includes(userInfo.UserName);
+    const isInvitedByMember = Array.isArray(memberInvitedUsers) && memberInvitedUsers.length > 1 && memberInvitedUsers[1].InvitedUsernames.includes(userInfo.UserName);
     setIsInvitedByMember(isInvitedByMember);
     
    }, [group, userInfo]);
-    // console.log('memberInvitedUsers', memberInvitedUsers);
+    console.log('memberInvitedUsers', memberInvitedUsers);
     // console.log('adminInvitedUsers', adminInvitedUsers);
     // console.log('isGroupMember', isGroupMember);
     // console.log('isGroupAdmin', isGroupAdmin);
     // console.log('isInvitedByAdmin', isInvitedByAdmin);
     // console.log('isInvitedByMember', isInvitedByMember);
+
+    console.log("isInvitedByMember", isInvitedByMember);
 
     useEffect(() => {
         // display group info

@@ -184,6 +184,39 @@ useEffect(() => {
       window.location.href = "/login";
   };
 
+  const handleAcceptJoinRequest = async (groupID, requestorUsername) => {
+    const token = localStorage.getItem("token");
+    const headers = new Headers();
+    headers.append("Authorization", "Bearer " + token);
+    headers.append("Content-Type", "application/json");
+    const requestBody = {
+      groupID: groupID,
+      userName: requestorUsername,
+    };
+    try {
+      // write groupID to url
+      const response = await fetch("http://localhost:8080/acceptjoinrequest?groupID=" + groupID, {
+        method: "POST",
+        headers: headers,
+        body: JSON.stringify(requestBody),
+      });
+      if (!response.ok) {
+        throw new Error("Failed to accept the join request.");
+      }
+      const data = await response.json();
+      console.log("data", data);
+      // remove the join request from the join requests array
+      const updatedJoinRequests = joinRequests.filter((joinRequest) => {
+        return joinRequest.requestorUsername !== requestorUsername;
+      });
+      setJoinRequests(updatedJoinRequests);
+      
+      console.log("join request accepted");
+    } catch (error) {
+      console.error("Error accepting the join request:", error);
+    }
+  };
+
   return (
     <div className="bg-white d-flex align-items-center fixed-top shadow" >
       <div className="container-fluid" id="topNavBox">
@@ -376,7 +409,7 @@ useEffect(() => {
                             <div>
                               <button
                                 className="btn btn-success btn-sm mx-1"
-                                // onClick={() => handleAcceptJoinRequest(notification.groupID)}
+                                onClick={() => handleAcceptJoinRequest(notification.groupID, notification.requestorUsername)}
                               >
                                 Accept
                               </button>

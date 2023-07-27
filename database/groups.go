@@ -48,6 +48,10 @@ type InvitesByMemberResponse struct {
 	GroupID          string   `json:"groupID"`
 	InvitedUsernames []string `json:"memberInvitedUsernames"`
 }
+type AcceptJoinRequest struct {
+	GroupID  string `json:"groupID"`
+	UserName string `json:"userName"`
+}
 
 func CreateGroupsTable(db *sql.DB) {
 	groupsTable := `
@@ -337,6 +341,7 @@ func AddUserToGroup(groupID string, username string) error {
 	}
 	DeleteUserFromAdminInvite(groupID, username)
 	DeleteUserFromMemberInvite(groupID, username)
+	DeleteUserFromRequestUsernames(groupID, username)
 	defer db.Close()
 	// add user to memberUsernames slice in the Groups table
 	query := `UPDATE Groups SET MemberUsernames = json_insert(MemberUsernames, '$[#]', ?) WHERE GroupID = ?`
@@ -458,6 +463,66 @@ func DeleteUserFromAdminInvite(groupID string, username string) error {
 	}
 
 	//fmt.Println("Deleted user from admin invite")
+	return nil
+}
+
+func DeleteUserFromRequestUsernames(groupID string, username string) error {
+	// delete username from the RequestUsernames slice in the Groups table if it exists
+	db, err := sql.Open("sqlite3", "./socialnetwork.db")
+	if err != nil {
+		fmt.Println("open error", err)
+		return err
+	}
+	defer db.Close()
+	// Get the current JSON array
+	query := "SELECT RequestUsernames FROM Groups WHERE GroupID = ?"
+	stmt, err := db.Prepare(query)
+	if err != nil {
+		fmt.Println("prepare error", err)
+		return err
+	}
+	row := stmt.QueryRow(groupID)
+	// if username is in the row, delete it
+	var requestUsernames string
+	err = row.Scan(&requestUsernames)
+	if err != nil {
+		fmt.Println("scan error", err)
+		return err
+	}
+	fmt.Println("requestUsernames", requestUsernames)
+	// Parse the JSON array into a slice
+	var usernames []string
+	err = json.Unmarshal([]byte(requestUsernames), &usernames)
+	if err != nil {
+		fmt.Println("unmarshal error", err)
+		return err
+	}
+	fmt.Println("usernames", usernames)
+	// Find and remove the specified username from the slice
+	for i, u := range usernames {
+		if u == username {
+			usernames = append(usernames[:i], usernames[i+1:]...)
+			break
+		}
+	}
+	// Convert the slice back to a JSON array
+	newRequestUsernames, err := json.Marshal(usernames)
+	if err != nil {
+		fmt.Println("marshal error", err)
+		return err
+	}
+	// Update the Groups table with the new JSON array
+	updateQuery := "UPDATE Groups SET RequestUsernames = ? WHERE GroupID = ?"
+	updateStmt, err := db.Prepare(updateQuery)
+	if err != nil {
+		fmt.Println("prepare error", err)
+		return err
+	}
+	_, err = updateStmt.Exec(string(newRequestUsernames), groupID)
+	if err != nil {
+		fmt.Println("exec error", err)
+		return err
+	}
 	return nil
 }
 
