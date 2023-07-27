@@ -155,9 +155,7 @@ useEffect(() => {
         throw new Error("Failed to fetch all events.");
       }
       const data = await response.json();
-      console.log("data", data)
-      if (data) {
-        console.log("data", data); // data is an array of groupIDs that has events that user has not responded to
+      if (data.groupIDEventNotifications) {
         const updatedEventNotifications = data.groupIDEventNotifications.map((groupID) => {
           const groupInfo = allGroups.find((group) => group.GroupID === groupID);
           const groupAvatar = groupInfo?.GroupAvatar;
