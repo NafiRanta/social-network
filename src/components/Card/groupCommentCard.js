@@ -7,7 +7,7 @@ import "./Card.css";
 function GroupCommentCard(props) {
     const userInfo = useSelector((state) => state.userInfo);
     const token = localStorage.getItem("token");
-    const groupPostId = props.GroupPostID;
+    const groupPostId = props.groupPostID;
 
     const [groupCommentInput, setGroupCommentInput] = useState("");
     const [groupComments, setGroupComments] = useState([]);
@@ -59,6 +59,9 @@ const handleGroupCommentSubmit = async (e) => {
     const comment = groupCommentInput;
     const now = new Date();
 
+    console.log("groupPostId:", groupPostId);
+    console.log("comment:", comment);
+
     const headers = new Headers();
     headers.append("Authorization", "Bearer " + token);
     headers.append("Content-Type", "application/json");
@@ -67,7 +70,7 @@ const handleGroupCommentSubmit = async (e) => {
         groupPostID: groupPostId,
         content: comment,
         createAt: now,
-        userName: userInfo.UserName,
+        userName: userInfo.UserName
     };
     console.log("body", body);
     try {
@@ -159,7 +162,8 @@ return (
                 ))}
                 <form className="d-flex my-1" onSubmit={handleGroupCommentSubmit}>
                   <div>
-                    <Avatar userDisplayname={props.userDisplayname} />
+                    <Avatar userDisplayname={props.userDisplayname} 
+                    />
                   </div>
                   <input
                     type="text"

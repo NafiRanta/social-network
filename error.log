@@ -9022,3 +9022,39 @@ created by net/http.(*Server).Serve
 2023/07/25 14:11:29 writemsg error websocket: close sent
 2023/07/25 14:12:03 failed to send message: websocket: close sent
 2023/07/25 14:12:11 writemsg error websocket: close sent
+2023/07/27 17:40:34 http: panic serving [::1]:65236: runtime error: invalid memory address or nil pointer dereference
+goroutine 67 [running]:
+net/http.(*conn).serve.func1()
+	/opt/homebrew/Cellar/go/1.20.6/libexec/src/net/http/server.go:1854 +0xb0
+panic({0x1013d55c0, 0x101659370})
+	/opt/homebrew/Cellar/go/1.20.6/libexec/src/runtime/panic.go:890 +0x258
+socialnetwork/websocket.(*Manager).ServeWS(0x140000d3700, {0x101431db0, 0x140001a00e0}, 0x140004d8100)
+	/Users/anton.wiklund/code/social-network/websocket/manager.go:201 +0x64
+net/http.HandlerFunc.ServeHTTP(0x1400010c070?, {0x101431db0?, 0x140001a00e0?}, 0x1011504fc?)
+	/opt/homebrew/Cellar/go/1.20.6/libexec/src/net/http/server.go:2122 +0x38
+net/http.(*ServeMux).ServeHTTP(0x101403e20?, {0x101431db0, 0x140001a00e0}, 0x140004d8100)
+	/opt/homebrew/Cellar/go/1.20.6/libexec/src/net/http/server.go:2500 +0x140
+socialnetwork/utils.CorsMiddleware.func1({0x101431db0, 0x140001a00e0}, 0x140004d8100)
+	/Users/anton.wiklund/code/social-network/utils/cors.go:23 +0x32c
+net/http.HandlerFunc.ServeHTTP(0x140000a0408?, {0x101431db0?, 0x140001a00e0?}, 0x10111f368?)
+	/opt/homebrew/Cellar/go/1.20.6/libexec/src/net/http/server.go:2122 +0x38
+net/http.serverHandler.ServeHTTP({0x140001120f0?}, {0x101431db0, 0x140001a00e0}, 0x140004d8100)
+	/opt/homebrew/Cellar/go/1.20.6/libexec/src/net/http/server.go:2936 +0x2d8
+net/http.(*conn).serve(0x140005ae000, {0x101431f78, 0x1400009dad0})
+	/opt/homebrew/Cellar/go/1.20.6/libexec/src/net/http/server.go:1995 +0x560
+created by net/http.(*Server).Serve
+	/opt/homebrew/Cellar/go/1.20.6/libexec/src/net/http/server.go:3089 +0x520
+2023/07/27 17:43:08 failed to send message: websocket: close sent
+2023/07/27 17:43:16 writemsg error websocket: close sent
+2023/07/27 17:43:17 failed to send message: websocket: close sent
+2023/07/27 17:43:18 writemsg error websocket: close sent
+2023/07/27 17:57:07 failed to send message: websocket: close sent
+2023/07/27 17:57:14 writemsg error websocket: close sent
+2023/07/27 17:57:48 failed to send message: websocket: close sent
+2023/07/27 17:57:53 writemsg error websocket: close sent
+2023/07/27 18:01:28 failed to send message: websocket: close sent
+2023/07/27 18:01:34 writemsg error websocket: close sent
+2023/07/27 18:04:29 failed to send message: websocket: close sent
+2023/07/27 18:04:29 writemsg error websocket: close sent
+2023/07/27 18:21:59 failed to send message: websocket: close sent
+2023/07/27 18:22:03 writemsg error websocket: close sent

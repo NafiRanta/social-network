@@ -31,7 +31,6 @@ func CreateGroupCommentsTable(db *sql.DB) {
 	CREATE TABLE IF NOT EXISTS GroupComments (
 		GroupCommentID CHAR(36) NOT NULL,
 		GroupPostID CHAR(36) NOT NULL,
-		GroupID CHAR(36) NOT NULL,
 		UserName CHAR(36) NOT NULL,
 		Content TEXT NOT NULL,
 		CreateAt TIMESTAMP NOT NULL,
@@ -54,10 +53,10 @@ func AddGroupComment(groupComment *GroupCommentResponse) error {
 	groupComment.CreateAt = time.Now()
 
 	query := `
-		INSERT INTO GroupComments (GroupCommentID, GroupID, UserName, Content, CreateAt)
+		INSERT INTO GroupComments (GroupCommentID, GroupPostID ,UserName, Content, CreateAt)
 			VALUES (?, ?, ?, ?, ?);`
 
-	_, err = db.Exec(query, groupComment.GroupCommentID, groupComment.GroupID, groupComment.UserName, groupComment.Content, groupComment.CreateAt)
+	_, err = db.Exec(query, groupComment.GroupCommentID, groupComment.UserName, groupComment.Content, groupComment.CreateAt)
 	if err != nil {
 		return err
 	}

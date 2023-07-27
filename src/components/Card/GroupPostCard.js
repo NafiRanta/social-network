@@ -149,7 +149,9 @@ function GroupPostCard(props) {
                 />
               )}
             </div>
-            <GroupCommentCard userDisplayname={props.userDisplayname} />
+            <GroupCommentCard userDisplayname={props.userDisplayname}
+            groupPostID={post.groupPostID}
+            />
           </div>
         </div>
       );
