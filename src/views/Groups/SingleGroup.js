@@ -59,12 +59,12 @@ function SingleGroup(props) {
     setIsInvitedByMember(isInvitedByMember);
     
    }, [group, userInfo]);
-    console.log('memberInvitedUsers', memberInvitedUsers);
-    console.log('adminInvitedUsers', adminInvitedUsers);
-    console.log('isGroupMember', isGroupMember);
-    console.log('isGroupAdmin', isGroupAdmin);
-    console.log('isInvitedByAdmin', isInvitedByAdmin);
-    console.log('isInvitedByMember', isInvitedByMember);
+    // console.log('memberInvitedUsers', memberInvitedUsers);
+    // console.log('adminInvitedUsers', adminInvitedUsers);
+    // console.log('isGroupMember', isGroupMember);
+    // console.log('isGroupAdmin', isGroupAdmin);
+    // console.log('isInvitedByAdmin', isInvitedByAdmin);
+    // console.log('isInvitedByMember', isInvitedByMember);
 
     useEffect(() => {
         // display group info
@@ -121,6 +121,7 @@ function SingleGroup(props) {
     }, []);
 
     const handleAdminAcceptInvite = async() => {
+        console.log('handleAdminAcceptInvite')
         try {
             const token = localStorage.getItem('token');
             const headers = new Headers();

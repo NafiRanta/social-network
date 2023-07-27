@@ -86,13 +86,13 @@ function Topnav(props) {
           };
           }
         });
-        console.log("filteredAllGroups 1234", filteredAllGroups);
+        // console.log("filteredAllGroups 1234", filteredAllGroups);
         const matchedGroups = [];
     
         filteredAllGroups.forEach((group) => {
           if (group ) {
             group.memberInvites.forEach((invite) => {
-              console.log("inviteeeee", invite)
+              // console.log("inviteeeee", invite)
               invite.forEach((member) => {
                 console.log("member", member.InvitedUsernames, (member.InvitedUsernames.includes(userInfo.UserName)), userInfo.UserName)
                 if (member.InvitedUsernames.includes(userInfo.UserName)) {
@@ -115,7 +115,7 @@ function Topnav(props) {
           }
         }
         );
-        console.log("matchedGroups", matchedGroups)
+        // console.log("matchedGroups", matchedGroups)
       }
   }, [allGroups]);
 
@@ -339,9 +339,9 @@ useEffect(() => {
                         <Dropdown.Item as="li" className="my-2 p-1">
                           <div className="d-flex justify-content-between">
                             <div className="d-flex align-items-center">
-                              {/* <div className="rounded-circle d-flex align-items-center justify-content-center mx-2" id="avatar">
+                              <div className="rounded-circle d-flex align-items-center justify-content-center mx-2" id="avatar">
                                 <img src={notification.memberAvatar} alt="avatar" className="rounded-circle me-2" />
-                              </div> */}
+                              </div>
                             <div>
                               <p className="m-0">{notification.memberWhoInvited} invited you to join {notification.groupName}</p>
                             </div>

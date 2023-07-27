@@ -22,7 +22,7 @@ function EventCard(props) {
       headers: headers,
     });
     const data = await response.json();
-    console.log("ALL GROUPS: ", data);
+    // console.log("ALL GROUPS: ", data);
     setEvents(data.groupEvent);
   };
 
