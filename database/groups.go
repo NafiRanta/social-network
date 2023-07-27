@@ -343,19 +343,52 @@ func AddUserToGroup(groupID string, username string) error {
 	DeleteUserFromMemberInvite(groupID, username)
 	DeleteUserFromRequestUsernames(groupID, username)
 	defer db.Close()
-	// add user to memberUsernames slice in the Groups table
-	query := `UPDATE Groups SET MemberUsernames = json_insert(MemberUsernames, '$[#]', ?) WHERE GroupID = ?`
 
+	// Check if the username is already in the MemberUsernames slice for the given groupID
+	var usernamesJSON string
+	checkQuery := "SELECT MemberUsernames FROM Groups WHERE GroupID = ?"
+	err = db.QueryRow(checkQuery, groupID).Scan(&usernamesJSON)
+	if err != nil {
+		//fmt.Println("query error", err)
+		return err
+	}
+
+	var existingUsernames []string
+	err = json.Unmarshal([]byte(usernamesJSON), &existingUsernames)
+	if err != nil {
+		//fmt.Println("unmarshal error", err)
+		return err
+	}
+
+	// Check if the username is already in the existingUsernames slice
+	for _, existingUsername := range existingUsernames {
+		if existingUsername == username {
+			//fmt.Println("Username already exists in the MemberUsernames list")
+			return nil // Return early if the username is already in the list
+		}
+	}
+
+	// Add the username to the MemberUsernames slice in the Groups table
+	newUsernames := append(existingUsernames, username)
+	newUsernamesJSON, err := json.Marshal(newUsernames)
+	if err != nil {
+		//fmt.Println("marshal error", err)
+		return err
+	}
+
+	query := "UPDATE Groups SET MemberUsernames = ? WHERE GroupID = ?"
 	stmt, err := db.Prepare(query)
 	if err != nil {
 		//fmt.Println("prepare error", err)
 		return err
 	}
-	_, err = stmt.Exec(username, groupID)
+
+	_, err = stmt.Exec(newUsernamesJSON, groupID)
 	if err != nil {
 		//fmt.Println("exec error", err)
 		return err
 	}
+
 	return nil
 }
 
@@ -626,15 +659,38 @@ func AddUserToMemberInvite(groupID string, memberUsername string, invitedUsernam
 		return err
 	}
 
-	//fmt.Println("invitedUsernames", invitedUsernames)
+	// Check if the member already has an invite in the list
+	for i, invite := range invites {
+		if invite.Member == memberUsername {
+			// Member already has an invite, update the invited usernames and return
+			invites[i].InvitedUsernames = invitedUsernames
 
-	// Append the new invited user to the existing slice
+			// Convert the slice back to a JSON array
+			newMemberInvitedUsernames, err := json.Marshal(invites)
+			if err != nil {
+				return err
+			}
+
+			// Update the Groups table with the new JSON array
+			updateQuery := "UPDATE Groups SET MemberInvitedUsernames = ? WHERE GroupID = ?"
+			updateStmt, err := db.Prepare(updateQuery)
+			if err != nil {
+				return err
+			}
+			_, err = updateStmt.Exec(string(newMemberInvitedUsernames), groupID)
+			if err != nil {
+				return err
+			}
+
+			return nil
+		}
+	}
+
+	// If the member does not have an invite, add a new entry to the slice
 	invite := InvitesByMember{
 		InvitedUsernames: invitedUsernames,
 		Member:           memberUsername,
 	}
-
-	//fmt.Println("invite", invite)
 
 	invites = append(invites, invite)
 
@@ -650,11 +706,11 @@ func AddUserToMemberInvite(groupID string, memberUsername string, invitedUsernam
 	if err != nil {
 		return err
 	}
-	//fmt.Println("string(newMemberInvitedUsernames)", string(newMemberInvitedUsernames))
 	_, err = updateStmt.Exec(string(newMemberInvitedUsernames), groupID)
 	if err != nil {
 		return err
 	}
+
 	return nil
 }
 
@@ -662,18 +718,54 @@ func AddUserToJoinRequest(groupID string, username string) error {
 	db, err := sql.Open("sqlite3", "./socialnetwork.db")
 	if err != nil {
 		fmt.Println("open error", err)
+		return err
 	}
 	defer db.Close()
-	// add username to the RequestUsernames slice in the Groups table
-	query := `UPDATE Groups SET RequestUsernames = json_insert(RequestUsernames, '$[#]', ?) WHERE GroupID = ?`
-	stmt, err := db.Prepare(query)
+
+	// Check if the username is already in the RequestUsernames slice for the given groupID
+	var usernamesJSON string
+	checkQuery := "SELECT RequestUsernames FROM Groups WHERE GroupID = ?"
+	err = db.QueryRow(checkQuery, groupID).Scan(&usernamesJSON)
 	if err != nil {
-		fmt.Println("prepare error", err)
+		fmt.Println("query error", err)
+		return err
 	}
 
-	_, err = stmt.Exec(username, groupID)
+	var existingUsernames []string
+	err = json.Unmarshal([]byte(usernamesJSON), &existingUsernames)
+	if err != nil {
+		fmt.Println("unmarshal error", err)
+		return err
+	}
+
+	// Check if the username is already in the existingUsernames slice
+	for _, existingUsername := range existingUsernames {
+		if existingUsername == username {
+			fmt.Println("Username already exists in the RequestUsernames list")
+			return nil // Return early if the username is already in the list
+		}
+	}
+
+	// Add the username to the RequestUsernames slice in the Groups table
+	newUsernames := append(existingUsernames, username)
+	newUsernamesJSON, err := json.Marshal(newUsernames)
+	if err != nil {
+		fmt.Println("marshal error", err)
+		return err
+	}
+
+	// Update the Groups table with the new JSON array
+	updateQuery := "UPDATE Groups SET RequestUsernames = ? WHERE GroupID = ?"
+	updateStmt, err := db.Prepare(updateQuery)
+	if err != nil {
+		fmt.Println("prepare error", err)
+		return err
+	}
+
+	_, err = updateStmt.Exec(string(newUsernamesJSON), groupID)
 	if err != nil {
 		fmt.Println("exec error", err)
+		return err
 	}
 
 	return nil
