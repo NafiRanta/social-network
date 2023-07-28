@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import { Dropdown } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Avatar from '../components/Avatar/Avatar';
 import CreatePostModal from '../components/Modal/CreatePostModal';
@@ -12,9 +12,6 @@ import './TopNav.css'
 function Topnav(props) {
   const dispatch = useDispatch();
   const chatNotification = useSelector((state) => state.chatNotification);
-  const notification = useSelector((state) => state.notification);
-  const location = useLocation();
-  const navigate = useNavigate();
   const allusers = useSelector((state) => state.allUsers);
   const userInfo = useSelector((state) => state.userInfo);
   const allGroups = useSelector((state) => state.allGroups);
@@ -57,35 +54,32 @@ function Topnav(props) {
         setJoinRequests(updatedJoinRequests);
       }
     }
-  }, [myGroups, allusers]);
+  }, [myGroups, allusers, userInfo]);
 
 
   useEffect(() => {
     // for Invites by Member
     let memberInvites = [];
-    let adminInvites = [];
       if (Array.isArray(allGroups)) {
           const filteredAllGroups = allGroups.map((group) => {
           if (!(group.AdminInvitedUsernames.includes(userInfo.UserName))) {
-              
             const groupObj = JSON.parse(group.MemberInvitedUsernames);
-           // const groupObj2 = JSON.parse(group.AdminInvitedUsernames);
-         
-          if (!groupObj || !Array.isArray(groupObj)) {
-            return null;
+            if (!groupObj || !Array.isArray(groupObj)) {
+              return null;
+            }
+            setIsInvitedByMember(true)
+            memberInvites.push(groupObj)
+          
+            // Return the extracted data as an object
+            return {
+              groupID: group.GroupID,
+              groupName: group.GroupName,
+              memberInvites: memberInvites,
+              adminInvites: group.AdminInvitedUsernames,
+              invitor: memberInvites[0].Member,
+            };
           }
-          setIsInvitedByMember(true)
-          memberInvites.push(groupObj)
-         
-          // Return the extracted data as an object
-          return {
-            groupID: group.GroupID,
-            groupName: group.GroupName,
-            memberInvites: memberInvites,
-            adminInvites: group.AdminInvitedUsernames,
-            invitor: memberInvites[0].Member,
-          };
-          }
+          return null;
         });
         // console.log("filteredAllGroups 1234", filteredAllGroups);
         const matchedGroups = [];
@@ -118,6 +112,9 @@ function Topnav(props) {
         );
         // console.log("matchedGroups", matchedGroups)
       }
+      return () => {
+        setIsInvitedByMember(false)
+      }
   }, [allGroups]);
 
 useEffect(() => {
@@ -137,7 +134,7 @@ useEffect(() => {
     });
     setFollowRequestsInfo(updatedFollowRequests);
   }
-}, [allusers]);
+}, [allusers, followRequestsUsernames]);
 
 useEffect(() => {
   // fetch all events and check if userinfo.username is a member in the group and neither in going nor notgoing
@@ -158,11 +155,11 @@ useEffect(() => {
       if (data.groupIDEventNotifications) {
         const updatedEventNotifications = data.groupIDEventNotifications.map((groupID) => {
           const groupInfo = allGroups.find((group) => group.GroupID === groupID);
-          const groupAvatar = groupInfo?.GroupAvatar;
+          // const groupAvatar = groupInfo?.GroupAvatar;
           const groupName = groupInfo?.GroupName;
           return {
             type: "SET_NEWEVENTNOTIFICATIONS",
-            groupAvatar: groupAvatar,
+            // groupAvatar: groupAvatar,
             groupName: groupName,
             groupID: groupID,
           };
@@ -175,7 +172,7 @@ useEffect(() => {
     }
   };
   fetchAllEventNotifications();
-}, []);
+}, [allGroups]);
 
 
   
@@ -533,7 +530,9 @@ useEffect(() => {
                           <div className="d-flex justify-content-between">
                             <div className="d-flex align-items-center">
                               <div className="rounded-circle d-flex align-items-center justify-content-center mx-2" id="avatar">
-                                <img src={notification.groupAvatar} alt="avatar" className="rounded-circle me-2" />
+                                {/* <img src={notification.groupAvatar} alt="avatar" className="rounded-circle me-2" /> */}
+                                {/* // default avatar */}
+                                <img src="https://res.cloudinary.com/dk-find-out/image/upload/q_80,w_1920,f_auto/DCTM_Penguin_UK_DK_AL432958_hxjx5o.jpg" alt="avatar" className="rounded-circle me-2" />
                               </div>
                               <div>
                                 <p className="m-0">New event in {notification.groupName}</p>

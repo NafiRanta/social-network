@@ -9084,3 +9084,692 @@ created by net/http.(*Server).Serve
 2023/07/27 20:40:12 writemsg error websocket: close sent
 2023/07/27 20:40:14 failed to send message: websocket: close sent
 2023/07/27 20:40:15 writemsg error websocket: close sent
+2023/07/28 10:57:08 http: panic serving [::1]:65021: runtime error: invalid memory address or nil pointer dereference
+goroutine 84 [running]:
+net/http.(*conn).serve.func1()
+	/usr/local/go/src/net/http/server.go:1825 +0xbf
+panic({0x44b92e0, 0x47c9290})
+	/usr/local/go/src/runtime/panic.go:844 +0x258
+socialnetwork/websocket.(*Manager).ServeWS(0xc0001d3b00, {0x45ab2f8, 0xc00032a1c0}, 0xc000352800)
+	/Users/jacob.pesamaagmail.com/Desktop/Projects/social-network/websocket/manager.go:201 +0xb8
+net/http.HandlerFunc.ServeHTTP(0xf0000c0003264c0?, {0x45ab2f8?, 0xc00032a1c0?}, 0xc00005b9d0?)
+	/usr/local/go/src/net/http/server.go:2084 +0x2f
+net/http.(*ServeMux).ServeHTTP(0x44e4ba0?, {0x45ab2f8, 0xc00032a1c0}, 0xc000352800)
+	/usr/local/go/src/net/http/server.go:2462 +0x149
+socialnetwork/utils.CorsMiddleware.func1({0x45ab2f8, 0xc00032a1c0}, 0xc000352800)
+	/Users/jacob.pesamaagmail.com/Desktop/Projects/social-network/utils/cors.go:23 +0x352
+net/http.HandlerFunc.ServeHTTP(0xc000348188?, {0x45ab2f8?, 0xc00032a1c0?}, 0xc000400000?)
+	/usr/local/go/src/net/http/server.go:2084 +0x2f
+net/http.serverHandler.ServeHTTP({0xc000314510?}, {0x45ab2f8, 0xc00032a1c0}, 0xc000352800)
+	/usr/local/go/src/net/http/server.go:2916 +0x43b
+net/http.(*conn).serve(0xc00034e1e0, {0x45ab4f0, 0xc000185e00})
+	/usr/local/go/src/net/http/server.go:1966 +0x5d7
+created by net/http.(*Server).Serve
+	/usr/local/go/src/net/http/server.go:3071 +0x4db
+2023/07/28 10:57:22 [2023-07-28 10:57:22] ERROR: sql: expected 16 destination arguments in Scan, not 17
+2023/07/28 10:57:22 http: panic serving [::1]:65038: runtime error: invalid memory address or nil pointer dereference
+goroutine 54 [running]:
+net/http.(*conn).serve.func1()
+	/usr/local/go/src/net/http/server.go:1825 +0xbf
+panic({0x44b92e0, 0x47c9290})
+	/usr/local/go/src/runtime/panic.go:844 +0x258
+socialnetwork/authentication.LogIn({0x45ab2f8, 0xc00032a000}, 0xc000216000)
+	/Users/jacob.pesamaagmail.com/Desktop/Projects/social-network/authentication/authentication.go:75 +0x233
+net/http.HandlerFunc.ServeHTTP(0x80000c000012070?, {0x45ab2f8?, 0xc00032a000?}, 0xc0000619d0?)
+	/usr/local/go/src/net/http/server.go:2084 +0x2f
+net/http.(*ServeMux).ServeHTTP(0x44e4ba0?, {0x45ab2f8, 0xc00032a000}, 0xc000216000)
+	/usr/local/go/src/net/http/server.go:2462 +0x149
+socialnetwork/utils.CorsMiddleware.func1({0x45ab2f8, 0xc00032a000}, 0xc000216000)
+	/Users/jacob.pesamaagmail.com/Desktop/Projects/social-network/utils/cors.go:23 +0x352
+net/http.HandlerFunc.ServeHTTP(0x0?, {0x45ab2f8?, 0xc00032a000?}, 0x400e605?)
+	/usr/local/go/src/net/http/server.go:2084 +0x2f
+net/http.serverHandler.ServeHTTP({0x45aa520?}, {0x45ab2f8, 0xc00032a000}, 0xc000216000)
+	/usr/local/go/src/net/http/server.go:2916 +0x43b
+net/http.(*conn).serve(0xc0000c6140, {0x45ab4f0, 0xc000185e00})
+	/usr/local/go/src/net/http/server.go:1966 +0x5d7
+created by net/http.(*Server).Serve
+	/usr/local/go/src/net/http/server.go:3071 +0x4db
+2023/07/28 10:57:24 [2023-07-28 10:57:24] ERROR: sql: expected 16 destination arguments in Scan, not 17
+2023/07/28 10:57:24 http: panic serving [::1]:65041: runtime error: invalid memory address or nil pointer dereference
+goroutine 57 [running]:
+net/http.(*conn).serve.func1()
+	/usr/local/go/src/net/http/server.go:1825 +0xbf
+panic({0x44b92e0, 0x47c9290})
+	/usr/local/go/src/runtime/panic.go:844 +0x258
+socialnetwork/authentication.LogIn({0x45ab2f8, 0xc00032a2a0}, 0xc000216500)
+	/Users/jacob.pesamaagmail.com/Desktop/Projects/social-network/authentication/authentication.go:75 +0x233
+net/http.HandlerFunc.ServeHTTP(0xd0000c000012370?, {0x45ab2f8?, 0xc00032a2a0?}, 0xc0000619d0?)
+	/usr/local/go/src/net/http/server.go:2084 +0x2f
+net/http.(*ServeMux).ServeHTTP(0x44e4ba0?, {0x45ab2f8, 0xc00032a2a0}, 0xc000216500)
+	/usr/local/go/src/net/http/server.go:2462 +0x149
+socialnetwork/utils.CorsMiddleware.func1({0x45ab2f8, 0xc00032a2a0}, 0xc000216500)
+	/Users/jacob.pesamaagmail.com/Desktop/Projects/social-network/utils/cors.go:23 +0x352
+net/http.HandlerFunc.ServeHTTP(0x0?, {0x45ab2f8?, 0xc00032a2a0?}, 0x400e605?)
+	/usr/local/go/src/net/http/server.go:2084 +0x2f
+net/http.serverHandler.ServeHTTP({0x45aa520?}, {0x45ab2f8, 0xc00032a2a0}, 0xc000216500)
+	/usr/local/go/src/net/http/server.go:2916 +0x43b
+net/http.(*conn).serve(0xc0000c6320, {0x45ab4f0, 0xc000185e00})
+	/usr/local/go/src/net/http/server.go:1966 +0x5d7
+created by net/http.(*Server).Serve
+	/usr/local/go/src/net/http/server.go:3071 +0x4db
+2023/07/28 10:57:30 [2023-07-28 10:57:30] ERROR: sql: expected 16 destination arguments in Scan, not 17
+2023/07/28 10:57:30 http: panic serving [::1]:65044: runtime error: invalid memory address or nil pointer dereference
+goroutine 61 [running]:
+net/http.(*conn).serve.func1()
+	/usr/local/go/src/net/http/server.go:1825 +0xbf
+panic({0x44b92e0, 0x47c9290})
+	/usr/local/go/src/runtime/panic.go:844 +0x258
+socialnetwork/authentication.LogIn({0x45ab2f8, 0xc00032a540}, 0xc000216900)
+	/Users/jacob.pesamaagmail.com/Desktop/Projects/social-network/authentication/authentication.go:75 +0x233
+net/http.HandlerFunc.ServeHTTP(0xfa0000c0000126d0?, {0x45ab2f8?, 0xc00032a540?}, 0xc0000619d0?)
+	/usr/local/go/src/net/http/server.go:2084 +0x2f
+net/http.(*ServeMux).ServeHTTP(0x44e4ba0?, {0x45ab2f8, 0xc00032a540}, 0xc000216900)
+	/usr/local/go/src/net/http/server.go:2462 +0x149
+socialnetwork/utils.CorsMiddleware.func1({0x45ab2f8, 0xc00032a540}, 0xc000216900)
+	/Users/jacob.pesamaagmail.com/Desktop/Projects/social-network/utils/cors.go:23 +0x352
+net/http.HandlerFunc.ServeHTTP(0x0?, {0x45ab2f8?, 0xc00032a540?}, 0x400e605?)
+	/usr/local/go/src/net/http/server.go:2084 +0x2f
+net/http.serverHandler.ServeHTTP({0x45aa520?}, {0x45ab2f8, 0xc00032a540}, 0xc000216900)
+	/usr/local/go/src/net/http/server.go:2916 +0x43b
+net/http.(*conn).serve(0xc0000c6500, {0x45ab4f0, 0xc000185e00})
+	/usr/local/go/src/net/http/server.go:1966 +0x5d7
+created by net/http.(*Server).Serve
+	/usr/local/go/src/net/http/server.go:3071 +0x4db
+2023/07/28 10:57:42 [2023-07-28 10:57:42] ERROR: sql: expected 16 destination arguments in Scan, not 17
+2023/07/28 10:57:42 http: panic serving [::1]:65053: runtime error: invalid memory address or nil pointer dereference
+goroutine 114 [running]:
+net/http.(*conn).serve.func1()
+	/usr/local/go/src/net/http/server.go:1825 +0xbf
+panic({0x44b92e0, 0x47c9290})
+	/usr/local/go/src/runtime/panic.go:844 +0x258
+socialnetwork/authentication.LogIn({0x45ab2f8, 0xc00042c000}, 0xc0003ce000)
+	/Users/jacob.pesamaagmail.com/Desktop/Projects/social-network/authentication/authentication.go:75 +0x233
+net/http.HandlerFunc.ServeHTTP(0x520000c0001120a0?, {0x45ab2f8?, 0xc00042c000?}, 0xc0004229d0?)
+	/usr/local/go/src/net/http/server.go:2084 +0x2f
+net/http.(*ServeMux).ServeHTTP(0x44e4ba0?, {0x45ab2f8, 0xc00042c000}, 0xc0003ce000)
+	/usr/local/go/src/net/http/server.go:2462 +0x149
+socialnetwork/utils.CorsMiddleware.func1({0x45ab2f8, 0xc00042c000}, 0xc0003ce000)
+	/Users/jacob.pesamaagmail.com/Desktop/Projects/social-network/utils/cors.go:23 +0x352
+net/http.HandlerFunc.ServeHTTP(0x0?, {0x45ab2f8?, 0xc00042c000?}, 0x400e605?)
+	/usr/local/go/src/net/http/server.go:2084 +0x2f
+net/http.serverHandler.ServeHTTP({0x45aa520?}, {0x45ab2f8, 0xc00042c000}, 0xc0003ce000)
+	/usr/local/go/src/net/http/server.go:2916 +0x43b
+net/http.(*conn).serve(0xc00013c280, {0x45ab4f0, 0xc000185e00})
+	/usr/local/go/src/net/http/server.go:1966 +0x5d7
+created by net/http.(*Server).Serve
+	/usr/local/go/src/net/http/server.go:3071 +0x4db
+2023/07/28 10:57:43 [2023-07-28 10:57:43] ERROR: sql: expected 16 destination arguments in Scan, not 17
+2023/07/28 10:57:43 http: panic serving [::1]:65057: runtime error: invalid memory address or nil pointer dereference
+goroutine 117 [running]:
+net/http.(*conn).serve.func1()
+	/usr/local/go/src/net/http/server.go:1825 +0xbf
+panic({0x44b92e0, 0x47c9290})
+	/usr/local/go/src/runtime/panic.go:844 +0x258
+socialnetwork/authentication.LogIn({0x45ab2f8, 0xc00042c0e0}, 0xc0003ce600)
+	/Users/jacob.pesamaagmail.com/Desktop/Projects/social-network/authentication/authentication.go:75 +0x233
+net/http.HandlerFunc.ServeHTTP(0x370000c0001123a0?, {0x45ab2f8?, 0xc00042c0e0?}, 0xc0004229d0?)
+	/usr/local/go/src/net/http/server.go:2084 +0x2f
+net/http.(*ServeMux).ServeHTTP(0x44e4ba0?, {0x45ab2f8, 0xc00042c0e0}, 0xc0003ce600)
+	/usr/local/go/src/net/http/server.go:2462 +0x149
+socialnetwork/utils.CorsMiddleware.func1({0x45ab2f8, 0xc00042c0e0}, 0xc0003ce600)
+	/Users/jacob.pesamaagmail.com/Desktop/Projects/social-network/utils/cors.go:23 +0x352
+net/http.HandlerFunc.ServeHTTP(0x0?, {0x45ab2f8?, 0xc00042c0e0?}, 0x400e605?)
+	/usr/local/go/src/net/http/server.go:2084 +0x2f
+net/http.serverHandler.ServeHTTP({0x45aa520?}, {0x45ab2f8, 0xc00042c0e0}, 0xc0003ce600)
+	/usr/local/go/src/net/http/server.go:2916 +0x43b
+net/http.(*conn).serve(0xc00013c460, {0x45ab4f0, 0xc000185e00})
+	/usr/local/go/src/net/http/server.go:1966 +0x5d7
+created by net/http.(*Server).Serve
+	/usr/local/go/src/net/http/server.go:3071 +0x4db
+2023/07/28 10:58:41 [2023-07-28 10:58:41] ERROR: sql: expected 16 destination arguments in Scan, not 17
+2023/07/28 10:58:41 http: panic serving [::1]:65099: runtime error: invalid memory address or nil pointer dereference
+goroutine 18 [running]:
+net/http.(*conn).serve.func1()
+	/usr/local/go/src/net/http/server.go:1825 +0xbf
+panic({0x44b92e0, 0x47c9290})
+	/usr/local/go/src/runtime/panic.go:844 +0x258
+socialnetwork/authentication.LogIn({0x45ab2f8, 0xc0000ce000}, 0xc00009a100)
+	/Users/jacob.pesamaagmail.com/Desktop/Projects/social-network/authentication/authentication.go:75 +0x233
+net/http.HandlerFunc.ServeHTTP(0xa70000c0000b2060?, {0x45ab2f8?, 0xc0000ce000?}, 0xc0000aa9d0?)
+	/usr/local/go/src/net/http/server.go:2084 +0x2f
+net/http.(*ServeMux).ServeHTTP(0x44e4ba0?, {0x45ab2f8, 0xc0000ce000}, 0xc00009a100)
+	/usr/local/go/src/net/http/server.go:2462 +0x149
+socialnetwork/utils.CorsMiddleware.func1({0x45ab2f8, 0xc0000ce000}, 0xc00009a100)
+	/Users/jacob.pesamaagmail.com/Desktop/Projects/social-network/utils/cors.go:23 +0x352
+net/http.HandlerFunc.ServeHTTP(0x0?, {0x45ab2f8?, 0xc0000ce000?}, 0x400e605?)
+	/usr/local/go/src/net/http/server.go:2084 +0x2f
+net/http.serverHandler.ServeHTTP({0x45aa520?}, {0x45ab2f8, 0xc0000ce000}, 0xc00009a100)
+	/usr/local/go/src/net/http/server.go:2916 +0x43b
+net/http.(*conn).serve(0xc0000a2000, {0x45ab4f0, 0xc00010be00})
+	/usr/local/go/src/net/http/server.go:1966 +0x5d7
+created by net/http.(*Server).Serve
+	/usr/local/go/src/net/http/server.go:3071 +0x4db
+2023/07/28 10:59:14 [2023-07-28 10:59:14] ERROR: sql: expected 16 destination arguments in Scan, not 17
+2023/07/28 10:59:14 http: panic serving [::1]:65116: runtime error: invalid memory address or nil pointer dereference
+goroutine 34 [running]:
+net/http.(*conn).serve.func1()
+	/usr/local/go/src/net/http/server.go:1825 +0xbf
+panic({0x44b92e0, 0x47c9290})
+	/usr/local/go/src/runtime/panic.go:844 +0x258
+socialnetwork/authentication.LogIn({0x45ab2f8, 0xc0001b0000}, 0xc00018a100)
+	/Users/jacob.pesamaagmail.com/Desktop/Projects/social-network/authentication/authentication.go:75 +0x233
+net/http.HandlerFunc.ServeHTTP(0x4b0000c000184070?, {0x45ab2f8?, 0xc0001b0000?}, 0xc00005b9d0?)
+	/usr/local/go/src/net/http/server.go:2084 +0x2f
+net/http.(*ServeMux).ServeHTTP(0x44e4ba0?, {0x45ab2f8, 0xc0001b0000}, 0xc00018a100)
+	/usr/local/go/src/net/http/server.go:2462 +0x149
+socialnetwork/utils.CorsMiddleware.func1({0x45ab2f8, 0xc0001b0000}, 0xc00018a100)
+	/Users/jacob.pesamaagmail.com/Desktop/Projects/social-network/utils/cors.go:23 +0x352
+net/http.HandlerFunc.ServeHTTP(0x0?, {0x45ab2f8?, 0xc0001b0000?}, 0x400e605?)
+	/usr/local/go/src/net/http/server.go:2084 +0x2f
+net/http.serverHandler.ServeHTTP({0x45aa520?}, {0x45ab2f8, 0xc0001b0000}, 0xc00018a100)
+	/usr/local/go/src/net/http/server.go:2916 +0x43b
+net/http.(*conn).serve(0xc000192000, {0x45ab4f0, 0xc00010be00})
+	/usr/local/go/src/net/http/server.go:1966 +0x5d7
+created by net/http.(*Server).Serve
+	/usr/local/go/src/net/http/server.go:3071 +0x4db
+2023/07/28 10:59:43 [2023-07-28 10:59:43] ERROR: sql: no rows in result set
+2023/07/28 10:59:43 http: panic serving [::1]:65212: runtime error: invalid memory address or nil pointer dereference
+goroutine 10 [running]:
+net/http.(*conn).serve.func1()
+	/usr/local/go/src/net/http/server.go:1825 +0xbf
+panic({0x44b92e0, 0x47c9290})
+	/usr/local/go/src/runtime/panic.go:844 +0x258
+socialnetwork/authentication.LogIn({0x45ab2f8, 0xc000160460}, 0xc00017c100)
+	/Users/jacob.pesamaagmail.com/Desktop/Projects/social-network/authentication/authentication.go:75 +0x233
+net/http.HandlerFunc.ServeHTTP(0xb60000c00016a390?, {0x45ab2f8?, 0xc000160460?}, 0xc0000609d0?)
+	/usr/local/go/src/net/http/server.go:2084 +0x2f
+net/http.(*ServeMux).ServeHTTP(0x44e4ba0?, {0x45ab2f8, 0xc000160460}, 0xc00017c100)
+	/usr/local/go/src/net/http/server.go:2462 +0x149
+socialnetwork/utils.CorsMiddleware.func1({0x45ab2f8, 0xc000160460}, 0xc00017c100)
+	/Users/jacob.pesamaagmail.com/Desktop/Projects/social-network/utils/cors.go:23 +0x352
+net/http.HandlerFunc.ServeHTTP(0x0?, {0x45ab2f8?, 0xc000160460?}, 0x400e605?)
+	/usr/local/go/src/net/http/server.go:2084 +0x2f
+net/http.serverHandler.ServeHTTP({0x45aa520?}, {0x45ab2f8, 0xc000160460}, 0xc00017c100)
+	/usr/local/go/src/net/http/server.go:2916 +0x43b
+net/http.(*conn).serve(0xc00011b040, {0x45ab4f0, 0xc00010be00})
+	/usr/local/go/src/net/http/server.go:1966 +0x5d7
+created by net/http.(*Server).Serve
+	/usr/local/go/src/net/http/server.go:3071 +0x4db
+2023/07/28 10:59:49 [2023-07-28 10:59:49] ERROR: sql: expected 16 destination arguments in Scan, not 17
+2023/07/28 10:59:49 http: panic serving [::1]:65238: runtime error: invalid memory address or nil pointer dereference
+goroutine 38 [running]:
+net/http.(*conn).serve.func1()
+	/usr/local/go/src/net/http/server.go:1825 +0xbf
+panic({0x44b92e0, 0x47c9290})
+	/usr/local/go/src/runtime/panic.go:844 +0x258
+socialnetwork/authentication.LogIn({0x45ab2f8, 0xc0001b02a0}, 0xc00018a600)
+	/Users/jacob.pesamaagmail.com/Desktop/Projects/social-network/authentication/authentication.go:75 +0x233
+net/http.HandlerFunc.ServeHTTP(0x2c0000c0001843d0?, {0x45ab2f8?, 0xc0001b02a0?}, 0xc00005b9d0?)
+	/usr/local/go/src/net/http/server.go:2084 +0x2f
+net/http.(*ServeMux).ServeHTTP(0x44e4ba0?, {0x45ab2f8, 0xc0001b02a0}, 0xc00018a600)
+	/usr/local/go/src/net/http/server.go:2462 +0x149
+socialnetwork/utils.CorsMiddleware.func1({0x45ab2f8, 0xc0001b02a0}, 0xc00018a600)
+	/Users/jacob.pesamaagmail.com/Desktop/Projects/social-network/utils/cors.go:23 +0x352
+net/http.HandlerFunc.ServeHTTP(0x0?, {0x45ab2f8?, 0xc0001b02a0?}, 0x400e605?)
+	/usr/local/go/src/net/http/server.go:2084 +0x2f
+net/http.serverHandler.ServeHTTP({0x45aa520?}, {0x45ab2f8, 0xc0001b02a0}, 0xc00018a600)
+	/usr/local/go/src/net/http/server.go:2916 +0x43b
+net/http.(*conn).serve(0xc000192280, {0x45ab4f0, 0xc00010be00})
+	/usr/local/go/src/net/http/server.go:1966 +0x5d7
+created by net/http.(*Server).Serve
+	/usr/local/go/src/net/http/server.go:3071 +0x4db
+2023/07/28 10:59:55 [2023-07-28 10:59:55] ERROR: sql: expected 16 destination arguments in Scan, not 17
+2023/07/28 10:59:55 http: panic serving [::1]:65268: runtime error: invalid memory address or nil pointer dereference
+goroutine 42 [running]:
+net/http.(*conn).serve.func1()
+	/usr/local/go/src/net/http/server.go:1825 +0xbf
+panic({0x44b92e0, 0x47c9290})
+	/usr/local/go/src/runtime/panic.go:844 +0x258
+socialnetwork/authentication.LogIn({0x45ab2f8, 0xc0001b0540}, 0xc00018ab00)
+	/Users/jacob.pesamaagmail.com/Desktop/Projects/social-network/authentication/authentication.go:75 +0x233
+net/http.HandlerFunc.ServeHTTP(0x1b0000c000184730?, {0x45ab2f8?, 0xc0001b0540?}, 0xc00005b9d0?)
+	/usr/local/go/src/net/http/server.go:2084 +0x2f
+net/http.(*ServeMux).ServeHTTP(0x44e4ba0?, {0x45ab2f8, 0xc0001b0540}, 0xc00018ab00)
+	/usr/local/go/src/net/http/server.go:2462 +0x149
+socialnetwork/utils.CorsMiddleware.func1({0x45ab2f8, 0xc0001b0540}, 0xc00018ab00)
+	/Users/jacob.pesamaagmail.com/Desktop/Projects/social-network/utils/cors.go:23 +0x352
+net/http.HandlerFunc.ServeHTTP(0x0?, {0x45ab2f8?, 0xc0001b0540?}, 0x400e605?)
+	/usr/local/go/src/net/http/server.go:2084 +0x2f
+net/http.serverHandler.ServeHTTP({0x45aa520?}, {0x45ab2f8, 0xc0001b0540}, 0xc00018ab00)
+	/usr/local/go/src/net/http/server.go:2916 +0x43b
+net/http.(*conn).serve(0xc000192460, {0x45ab4f0, 0xc00010be00})
+	/usr/local/go/src/net/http/server.go:1966 +0x5d7
+created by net/http.(*Server).Serve
+	/usr/local/go/src/net/http/server.go:3071 +0x4db
+2023/07/28 10:59:57 [2023-07-28 10:59:57] ERROR: sql: expected 16 destination arguments in Scan, not 17
+2023/07/28 10:59:57 http: panic serving [::1]:65278: runtime error: invalid memory address or nil pointer dereference
+goroutine 45 [running]:
+net/http.(*conn).serve.func1()
+	/usr/local/go/src/net/http/server.go:1825 +0xbf
+panic({0x44b92e0, 0x47c9290})
+	/usr/local/go/src/runtime/panic.go:844 +0x258
+socialnetwork/authentication.LogIn({0x45ab2f8, 0xc0001b0620}, 0xc00018af00)
+	/Users/jacob.pesamaagmail.com/Desktop/Projects/social-network/authentication/authentication.go:75 +0x233
+net/http.HandlerFunc.ServeHTTP(0x4c0000c000184a30?, {0x45ab2f8?, 0xc0001b0620?}, 0xc00005b9d0?)
+	/usr/local/go/src/net/http/server.go:2084 +0x2f
+net/http.(*ServeMux).ServeHTTP(0x44e4ba0?, {0x45ab2f8, 0xc0001b0620}, 0xc00018af00)
+	/usr/local/go/src/net/http/server.go:2462 +0x149
+socialnetwork/utils.CorsMiddleware.func1({0x45ab2f8, 0xc0001b0620}, 0xc00018af00)
+	/Users/jacob.pesamaagmail.com/Desktop/Projects/social-network/utils/cors.go:23 +0x352
+net/http.HandlerFunc.ServeHTTP(0x0?, {0x45ab2f8?, 0xc0001b0620?}, 0x400e605?)
+	/usr/local/go/src/net/http/server.go:2084 +0x2f
+net/http.serverHandler.ServeHTTP({0x45aa520?}, {0x45ab2f8, 0xc0001b0620}, 0xc00018af00)
+	/usr/local/go/src/net/http/server.go:2916 +0x43b
+net/http.(*conn).serve(0xc000192640, {0x45ab4f0, 0xc00010be00})
+	/usr/local/go/src/net/http/server.go:1966 +0x5d7
+created by net/http.(*Server).Serve
+	/usr/local/go/src/net/http/server.go:3071 +0x4db
+2023/07/28 11:14:35 [2023-07-28 11:14:35] ERROR: sql: expected 16 destination arguments in Scan, not 17
+2023/07/28 11:14:35 http: panic serving [::1]:53292: runtime error: invalid memory address or nil pointer dereference
+goroutine 3 [running]:
+net/http.(*conn).serve.func1()
+	/usr/local/go/src/net/http/server.go:1825 +0xbf
+panic({0x44b92e0, 0x47c9290})
+	/usr/local/go/src/runtime/panic.go:844 +0x258
+socialnetwork/authentication.LogIn({0x45ab2f8, 0xc00019c000}, 0xc000192000)
+	/Users/jacob.pesamaagmail.com/Desktop/Projects/social-network/authentication/authentication.go:75 +0x233
+net/http.HandlerFunc.ServeHTTP(0x580000c000012090?, {0x45ab2f8?, 0xc00019c000?}, 0xc00005f9d0?)
+	/usr/local/go/src/net/http/server.go:2084 +0x2f
+net/http.(*ServeMux).ServeHTTP(0x44e4ba0?, {0x45ab2f8, 0xc00019c000}, 0xc000192000)
+	/usr/local/go/src/net/http/server.go:2462 +0x149
+socialnetwork/utils.CorsMiddleware.func1({0x45ab2f8, 0xc00019c000}, 0xc000192000)
+	/Users/jacob.pesamaagmail.com/Desktop/Projects/social-network/utils/cors.go:23 +0x352
+net/http.HandlerFunc.ServeHTTP(0x0?, {0x45ab2f8?, 0xc00019c000?}, 0x400e605?)
+	/usr/local/go/src/net/http/server.go:2084 +0x2f
+net/http.serverHandler.ServeHTTP({0x45aa520?}, {0x45ab2f8, 0xc00019c000}, 0xc000192000)
+	/usr/local/go/src/net/http/server.go:2916 +0x43b
+net/http.(*conn).serve(0xc00018c000, {0x45ab4f0, 0xc000205e00})
+	/usr/local/go/src/net/http/server.go:1966 +0x5d7
+created by net/http.(*Server).Serve
+	/usr/local/go/src/net/http/server.go:3071 +0x4db
+2023/07/28 11:16:22 [2023-07-28 11:16:22] ERROR: sql: expected 16 destination arguments in Scan, not 17
+2023/07/28 11:16:22 http: panic serving [::1]:53828: runtime error: invalid memory address or nil pointer dereference
+goroutine 20 [running]:
+net/http.(*conn).serve.func1()
+	/usr/local/go/src/net/http/server.go:1825 +0xbf
+panic({0x44b9200, 0x47c9290})
+	/usr/local/go/src/runtime/panic.go:844 +0x258
+socialnetwork/authentication.LogIn({0x45ab2d8, 0xc0000c8000}, 0xc0000a4100)
+	/Users/jacob.pesamaagmail.com/Desktop/Projects/social-network/authentication/authentication.go:76 +0x330
+net/http.HandlerFunc.ServeHTTP(0x330000c000090080?, {0x45ab2d8?, 0xc0000c8000?}, 0xc00005a9d0?)
+	/usr/local/go/src/net/http/server.go:2084 +0x2f
+net/http.(*ServeMux).ServeHTTP(0x44e4ac0?, {0x45ab2d8, 0xc0000c8000}, 0xc0000a4100)
+	/usr/local/go/src/net/http/server.go:2462 +0x149
+socialnetwork/utils.CorsMiddleware.func1({0x45ab2d8, 0xc0000c8000}, 0xc0000a4100)
+	/Users/jacob.pesamaagmail.com/Desktop/Projects/social-network/utils/cors.go:23 +0x352
+net/http.HandlerFunc.ServeHTTP(0x0?, {0x45ab2d8?, 0xc0000c8000?}, 0x400e445?)
+	/usr/local/go/src/net/http/server.go:2084 +0x2f
+net/http.serverHandler.ServeHTTP({0x45aa500?}, {0x45ab2d8, 0xc0000c8000}, 0xc0000a4100)
+	/usr/local/go/src/net/http/server.go:2916 +0x43b
+net/http.(*conn).serve(0xc0000ac000, {0x45ab4d0, 0xc00007fe00})
+	/usr/local/go/src/net/http/server.go:1966 +0x5d7
+created by net/http.(*Server).Serve
+	/usr/local/go/src/net/http/server.go:3071 +0x4db
+2023/07/28 11:18:06 [2023-07-28 11:18:06] ERROR: sql: expected 16 destination arguments in Scan, not 17
+2023/07/28 11:18:06 http: panic serving [::1]:54366: runtime error: invalid memory address or nil pointer dereference
+goroutine 34 [running]:
+net/http.(*conn).serve.func1()
+	/usr/local/go/src/net/http/server.go:1825 +0xbf
+panic({0x44b91a0, 0x47c9290})
+	/usr/local/go/src/runtime/panic.go:844 +0x258
+socialnetwork/authentication.LogIn({0x45ab2d8, 0xc000242000}, 0xc00022a000)
+	/Users/jacob.pesamaagmail.com/Desktop/Projects/social-network/authentication/authentication.go:76 +0x330
+net/http.HandlerFunc.ServeHTTP(0x7b0000c000200070?, {0x45ab2d8?, 0xc000242000?}, 0xc00021e9d0?)
+	/usr/local/go/src/net/http/server.go:2084 +0x2f
+net/http.(*ServeMux).ServeHTTP(0x44e4a60?, {0x45ab2d8, 0xc000242000}, 0xc00022a000)
+	/usr/local/go/src/net/http/server.go:2462 +0x149
+socialnetwork/utils.CorsMiddleware.func1({0x45ab2d8, 0xc000242000}, 0xc00022a000)
+	/Users/jacob.pesamaagmail.com/Desktop/Projects/social-network/utils/cors.go:23 +0x352
+net/http.HandlerFunc.ServeHTTP(0x0?, {0x45ab2d8?, 0xc000242000?}, 0x400e345?)
+	/usr/local/go/src/net/http/server.go:2084 +0x2f
+net/http.serverHandler.ServeHTTP({0x45aa500?}, {0x45ab2d8, 0xc000242000}, 0xc00022a000)
+	/usr/local/go/src/net/http/server.go:2916 +0x43b
+net/http.(*conn).serve(0xc00020c000, {0x45ab4d0, 0xc000115e00})
+	/usr/local/go/src/net/http/server.go:1966 +0x5d7
+created by net/http.(*Server).Serve
+	/usr/local/go/src/net/http/server.go:3071 +0x4db
+2023/07/28 11:18:16 [2023-07-28 11:18:16] ERROR: sql: expected 16 destination arguments in Scan, not 17
+2023/07/28 11:18:16 http: panic serving [::1]:54414: runtime error: invalid memory address or nil pointer dereference
+goroutine 10 [running]:
+net/http.(*conn).serve.func1()
+	/usr/local/go/src/net/http/server.go:1825 +0xbf
+panic({0x44b91a0, 0x47c9290})
+	/usr/local/go/src/runtime/panic.go:844 +0x258
+socialnetwork/authentication.LogIn({0x45ab2d8, 0xc00023a000}, 0xc000222000)
+	/Users/jacob.pesamaagmail.com/Desktop/Projects/social-network/authentication/authentication.go:76 +0x330
+net/http.HandlerFunc.ServeHTTP(0x550000c00021c060?, {0x45ab2d8?, 0xc00023a000?}, 0xc0002129d0?)
+	/usr/local/go/src/net/http/server.go:2084 +0x2f
+net/http.(*ServeMux).ServeHTTP(0x44e4a60?, {0x45ab2d8, 0xc00023a000}, 0xc000222000)
+	/usr/local/go/src/net/http/server.go:2462 +0x149
+socialnetwork/utils.CorsMiddleware.func1({0x45ab2d8, 0xc00023a000}, 0xc000222000)
+	/Users/jacob.pesamaagmail.com/Desktop/Projects/social-network/utils/cors.go:23 +0x352
+net/http.HandlerFunc.ServeHTTP(0x0?, {0x45ab2d8?, 0xc00023a000?}, 0x400e345?)
+	/usr/local/go/src/net/http/server.go:2084 +0x2f
+net/http.serverHandler.ServeHTTP({0x45aa500?}, {0x45ab2d8, 0xc00023a000}, 0xc000222000)
+	/usr/local/go/src/net/http/server.go:2916 +0x43b
+net/http.(*conn).serve(0xc00011b040, {0x45ab4d0, 0xc00010be00})
+	/usr/local/go/src/net/http/server.go:1966 +0x5d7
+created by net/http.(*Server).Serve
+	/usr/local/go/src/net/http/server.go:3071 +0x4db
+2023/07/28 11:19:02 [2023-07-28 11:19:02] ERROR: sql: expected 16 destination arguments in Scan, not 17
+2023/07/28 11:19:02 http: panic serving [::1]:54634: runtime error: invalid memory address or nil pointer dereference
+goroutine 23 [running]:
+net/http.(*conn).serve.func1()
+	/usr/local/go/src/net/http/server.go:1825 +0xbf
+panic({0x44b9180, 0x47c9290})
+	/usr/local/go/src/runtime/panic.go:844 +0x258
+socialnetwork/authentication.LogIn({0x45ab2b8, 0xc0001fa460}, 0xc000216200)
+	/Users/jacob.pesamaagmail.com/Desktop/Projects/social-network/authentication/authentication.go:76 +0x330
+net/http.HandlerFunc.ServeHTTP(0x8e0000c000204350?, {0x45ab2b8?, 0xc0001fa460?}, 0xc00005b9d0?)
+	/usr/local/go/src/net/http/server.go:2084 +0x2f
+net/http.(*ServeMux).ServeHTTP(0x44e4a40?, {0x45ab2b8, 0xc0001fa460}, 0xc000216200)
+	/usr/local/go/src/net/http/server.go:2462 +0x149
+socialnetwork/utils.CorsMiddleware.func1({0x45ab2b8, 0xc0001fa460}, 0xc000216200)
+	/Users/jacob.pesamaagmail.com/Desktop/Projects/social-network/utils/cors.go:23 +0x352
+net/http.HandlerFunc.ServeHTTP(0x0?, {0x45ab2b8?, 0xc0001fa460?}, 0x400e2c5?)
+	/usr/local/go/src/net/http/server.go:2084 +0x2f
+net/http.serverHandler.ServeHTTP({0x45aa4e0?}, {0x45ab2b8, 0xc0001fa460}, 0xc000216200)
+	/usr/local/go/src/net/http/server.go:2916 +0x43b
+net/http.(*conn).serve(0xc0001a30e0, {0x45ab4b0, 0xc000185e00})
+	/usr/local/go/src/net/http/server.go:1966 +0x5d7
+created by net/http.(*Server).Serve
+	/usr/local/go/src/net/http/server.go:3071 +0x4db
+2023/07/28 11:19:03 [2023-07-28 11:19:03] ERROR: sql: expected 16 destination arguments in Scan, not 17
+2023/07/28 11:19:03 http: panic serving [::1]:54642: runtime error: invalid memory address or nil pointer dereference
+goroutine 26 [running]:
+net/http.(*conn).serve.func1()
+	/usr/local/go/src/net/http/server.go:1825 +0xbf
+panic({0x44b9180, 0x47c9290})
+	/usr/local/go/src/runtime/panic.go:844 +0x258
+socialnetwork/authentication.LogIn({0x45ab2b8, 0xc0001fa540}, 0xc000216600)
+	/Users/jacob.pesamaagmail.com/Desktop/Projects/social-network/authentication/authentication.go:76 +0x330
+net/http.HandlerFunc.ServeHTTP(0x820000c000204670?, {0x45ab2b8?, 0xc0001fa540?}, 0xc00005b9d0?)
+	/usr/local/go/src/net/http/server.go:2084 +0x2f
+net/http.(*ServeMux).ServeHTTP(0x44e4a40?, {0x45ab2b8, 0xc0001fa540}, 0xc000216600)
+	/usr/local/go/src/net/http/server.go:2462 +0x149
+socialnetwork/utils.CorsMiddleware.func1({0x45ab2b8, 0xc0001fa540}, 0xc000216600)
+	/Users/jacob.pesamaagmail.com/Desktop/Projects/social-network/utils/cors.go:23 +0x352
+net/http.HandlerFunc.ServeHTTP(0x0?, {0x45ab2b8?, 0xc0001fa540?}, 0x400e2c5?)
+	/usr/local/go/src/net/http/server.go:2084 +0x2f
+net/http.serverHandler.ServeHTTP({0x45aa4e0?}, {0x45ab2b8, 0xc0001fa540}, 0xc000216600)
+	/usr/local/go/src/net/http/server.go:2916 +0x43b
+net/http.(*conn).serve(0xc0001a32c0, {0x45ab4b0, 0xc000185e00})
+	/usr/local/go/src/net/http/server.go:1966 +0x5d7
+created by net/http.(*Server).Serve
+	/usr/local/go/src/net/http/server.go:3071 +0x4db
+2023/07/28 11:23:06 [2023-07-28 11:23:06] ERROR: sql: expected 16 destination arguments in Scan, not 17
+2023/07/28 11:23:06 http: panic serving [::1]:55924: runtime error: invalid memory address or nil pointer dereference
+goroutine 23 [running]:
+net/http.(*conn).serve.func1()
+	/usr/local/go/src/net/http/server.go:1825 +0xbf
+panic({0x44b9120, 0x47c9290})
+	/usr/local/go/src/runtime/panic.go:844 +0x258
+socialnetwork/authentication.LogIn({0x45ab258, 0xc00018a460}, 0xc0001a6200)
+	/Users/jacob.pesamaagmail.com/Desktop/Projects/social-network/authentication/authentication.go:75 +0x233
+net/http.HandlerFunc.ServeHTTP(0xa60000c000194350?, {0x45ab258?, 0xc00018a460?}, 0xc00005b9d0?)
+	/usr/local/go/src/net/http/server.go:2084 +0x2f
+net/http.(*ServeMux).ServeHTTP(0x44e49e0?, {0x45ab258, 0xc00018a460}, 0xc0001a6200)
+	/usr/local/go/src/net/http/server.go:2462 +0x149
+socialnetwork/utils.CorsMiddleware.func1({0x45ab258, 0xc00018a460}, 0xc0001a6200)
+	/Users/jacob.pesamaagmail.com/Desktop/Projects/social-network/utils/cors.go:23 +0x352
+net/http.HandlerFunc.ServeHTTP(0x0?, {0x45ab258?, 0xc00018a460?}, 0x400e365?)
+	/usr/local/go/src/net/http/server.go:2084 +0x2f
+net/http.serverHandler.ServeHTTP({0x45aa480?}, {0x45ab258, 0xc00018a460}, 0xc0001a6200)
+	/usr/local/go/src/net/http/server.go:2916 +0x43b
+net/http.(*conn).serve(0xc000137040, {0x45ab450, 0xc00011be00})
+	/usr/local/go/src/net/http/server.go:1966 +0x5d7
+created by net/http.(*Server).Serve
+	/usr/local/go/src/net/http/server.go:3071 +0x4db
+2023/07/28 11:23:53 [2023-07-28 11:23:53] ERROR: sql: expected 16 destination arguments in Scan, not 17
+2023/07/28 11:23:53 http: panic serving [::1]:56164: runtime error: invalid memory address or nil pointer dereference
+goroutine 10 [running]:
+net/http.(*conn).serve.func1()
+	/usr/local/go/src/net/http/server.go:1825 +0xbf
+panic({0x44b9100, 0x47c9290})
+	/usr/local/go/src/runtime/panic.go:844 +0x258
+socialnetwork/authentication.LogIn({0x45ab258, 0xc000160460}, 0xc00017c200)
+	/Users/jacob.pesamaagmail.com/Desktop/Projects/social-network/authentication/authentication.go:75 +0x26b
+net/http.HandlerFunc.ServeHTTP(0xf40000c00016a390?, {0x45ab258?, 0xc000160460?}, 0xc0000609d0?)
+	/usr/local/go/src/net/http/server.go:2084 +0x2f
+net/http.(*ServeMux).ServeHTTP(0x44e49c0?, {0x45ab258, 0xc000160460}, 0xc00017c200)
+	/usr/local/go/src/net/http/server.go:2462 +0x149
+socialnetwork/utils.CorsMiddleware.func1({0x45ab258, 0xc000160460}, 0xc00017c200)
+	/Users/jacob.pesamaagmail.com/Desktop/Projects/social-network/utils/cors.go:23 +0x352
+net/http.HandlerFunc.ServeHTTP(0x0?, {0x45ab258?, 0xc000160460?}, 0x400e325?)
+	/usr/local/go/src/net/http/server.go:2084 +0x2f
+net/http.serverHandler.ServeHTTP({0x45aa480?}, {0x45ab258, 0xc000160460}, 0xc00017c200)
+	/usr/local/go/src/net/http/server.go:2916 +0x43b
+net/http.(*conn).serve(0xc00011b220, {0x45ab450, 0xc00010be00})
+	/usr/local/go/src/net/http/server.go:1966 +0x5d7
+created by net/http.(*Server).Serve
+	/usr/local/go/src/net/http/server.go:3071 +0x4db
+2023/07/28 11:23:57 [2023-07-28 11:23:57] ERROR: sql: no rows in result set
+2023/07/28 11:23:57 http: panic serving [::1]:56193: runtime error: invalid memory address or nil pointer dereference
+goroutine 13 [running]:
+net/http.(*conn).serve.func1()
+	/usr/local/go/src/net/http/server.go:1825 +0xbf
+panic({0x44b9100, 0x47c9290})
+	/usr/local/go/src/runtime/panic.go:844 +0x258
+socialnetwork/authentication.LogIn({0x45ab258, 0xc000160540}, 0xc00017c600)
+	/Users/jacob.pesamaagmail.com/Desktop/Projects/social-network/authentication/authentication.go:75 +0x26b
+net/http.HandlerFunc.ServeHTTP(0xfe0000c00016a690?, {0x45ab258?, 0xc000160540?}, 0xc0000609d0?)
+	/usr/local/go/src/net/http/server.go:2084 +0x2f
+net/http.(*ServeMux).ServeHTTP(0x44e49c0?, {0x45ab258, 0xc000160540}, 0xc00017c600)
+	/usr/local/go/src/net/http/server.go:2462 +0x149
+socialnetwork/utils.CorsMiddleware.func1({0x45ab258, 0xc000160540}, 0xc00017c600)
+	/Users/jacob.pesamaagmail.com/Desktop/Projects/social-network/utils/cors.go:23 +0x352
+net/http.HandlerFunc.ServeHTTP(0x0?, {0x45ab258?, 0xc000160540?}, 0x400e325?)
+	/usr/local/go/src/net/http/server.go:2084 +0x2f
+net/http.serverHandler.ServeHTTP({0x45aa480?}, {0x45ab258, 0xc000160540}, 0xc00017c600)
+	/usr/local/go/src/net/http/server.go:2916 +0x43b
+net/http.(*conn).serve(0xc00011b400, {0x45ab450, 0xc00010be00})
+	/usr/local/go/src/net/http/server.go:1966 +0x5d7
+created by net/http.(*Server).Serve
+	/usr/local/go/src/net/http/server.go:3071 +0x4db
+2023/07/28 11:24:11 [2023-07-28 11:24:11] ERROR: sql: expected 16 destination arguments in Scan, not 17
+2023/07/28 11:24:11 http: panic serving [::1]:56254: runtime error: invalid memory address or nil pointer dereference
+goroutine 18 [running]:
+net/http.(*conn).serve.func1()
+	/usr/local/go/src/net/http/server.go:1825 +0xbf
+panic({0x44b9100, 0x47c9290})
+	/usr/local/go/src/runtime/panic.go:844 +0x258
+socialnetwork/authentication.LogIn({0x45ab258, 0xc0001b0000}, 0xc00018a100)
+	/Users/jacob.pesamaagmail.com/Desktop/Projects/social-network/authentication/authentication.go:75 +0x26b
+net/http.HandlerFunc.ServeHTTP(0xca0000c000184070?, {0x45ab258?, 0xc0001b0000?}, 0xc00005b9d0?)
+	/usr/local/go/src/net/http/server.go:2084 +0x2f
+net/http.(*ServeMux).ServeHTTP(0x44e49c0?, {0x45ab258, 0xc0001b0000}, 0xc00018a100)
+	/usr/local/go/src/net/http/server.go:2462 +0x149
+socialnetwork/utils.CorsMiddleware.func1({0x45ab258, 0xc0001b0000}, 0xc00018a100)
+	/Users/jacob.pesamaagmail.com/Desktop/Projects/social-network/utils/cors.go:23 +0x352
+net/http.HandlerFunc.ServeHTTP(0x0?, {0x45ab258?, 0xc0001b0000?}, 0x400e325?)
+	/usr/local/go/src/net/http/server.go:2084 +0x2f
+net/http.serverHandler.ServeHTTP({0x45aa480?}, {0x45ab258, 0xc0001b0000}, 0xc00018a100)
+	/usr/local/go/src/net/http/server.go:2916 +0x43b
+net/http.(*conn).serve(0xc000192000, {0x45ab450, 0xc00010be00})
+	/usr/local/go/src/net/http/server.go:1966 +0x5d7
+created by net/http.(*Server).Serve
+	/usr/local/go/src/net/http/server.go:3071 +0x4db
+2023/07/28 11:24:13 [2023-07-28 11:24:13] ERROR: sql: expected 16 destination arguments in Scan, not 17
+2023/07/28 11:24:13 http: panic serving [::1]:56263: runtime error: invalid memory address or nil pointer dereference
+goroutine 21 [running]:
+net/http.(*conn).serve.func1()
+	/usr/local/go/src/net/http/server.go:1825 +0xbf
+panic({0x44b9100, 0x47c9290})
+	/usr/local/go/src/runtime/panic.go:844 +0x258
+socialnetwork/authentication.LogIn({0x45ab258, 0xc0001b00e0}, 0xc00018a500)
+	/Users/jacob.pesamaagmail.com/Desktop/Projects/social-network/authentication/authentication.go:75 +0x26b
+net/http.HandlerFunc.ServeHTTP(0xd00000c000184370?, {0x45ab258?, 0xc0001b00e0?}, 0xc00005b9d0?)
+	/usr/local/go/src/net/http/server.go:2084 +0x2f
+net/http.(*ServeMux).ServeHTTP(0x44e49c0?, {0x45ab258, 0xc0001b00e0}, 0xc00018a500)
+	/usr/local/go/src/net/http/server.go:2462 +0x149
+socialnetwork/utils.CorsMiddleware.func1({0x45ab258, 0xc0001b00e0}, 0xc00018a500)
+	/Users/jacob.pesamaagmail.com/Desktop/Projects/social-network/utils/cors.go:23 +0x352
+net/http.HandlerFunc.ServeHTTP(0x0?, {0x45ab258?, 0xc0001b00e0?}, 0x400e325?)
+	/usr/local/go/src/net/http/server.go:2084 +0x2f
+net/http.serverHandler.ServeHTTP({0x45aa480?}, {0x45ab258, 0xc0001b00e0}, 0xc00018a500)
+	/usr/local/go/src/net/http/server.go:2916 +0x43b
+net/http.(*conn).serve(0xc0001921e0, {0x45ab450, 0xc00010be00})
+	/usr/local/go/src/net/http/server.go:1966 +0x5d7
+created by net/http.(*Server).Serve
+	/usr/local/go/src/net/http/server.go:3071 +0x4db
+2023/07/28 14:09:48 [2023-07-28 14:09:48] ERROR: sql: expected 16 destination arguments in Scan, not 17
+2023/07/28 14:09:48 http: panic serving [::1]:62392: runtime error: invalid memory address or nil pointer dereference
+goroutine 26 [running]:
+net/http.(*conn).serve.func1()
+	/usr/local/go/src/net/http/server.go:1825 +0xbf
+panic({0x44b9100, 0x47c9290})
+	/usr/local/go/src/runtime/panic.go:844 +0x258
+socialnetwork/authentication.LogIn({0x45ab258, 0xc0001b0380}, 0xc00018ab00)
+	/Users/jacob.pesamaagmail.com/Desktop/Projects/social-network/authentication/authentication.go:75 +0x26b
+net/http.HandlerFunc.ServeHTTP(0x8a0000c0001846e0?, {0x45ab258?, 0xc0001b0380?}, 0xc00005c9d0?)
+	/usr/local/go/src/net/http/server.go:2084 +0x2f
+net/http.(*ServeMux).ServeHTTP(0x44e49c0?, {0x45ab258, 0xc0001b0380}, 0xc00018ab00)
+	/usr/local/go/src/net/http/server.go:2462 +0x149
+socialnetwork/utils.CorsMiddleware.func1({0x45ab258, 0xc0001b0380}, 0xc00018ab00)
+	/Users/jacob.pesamaagmail.com/Desktop/Projects/social-network/utils/cors.go:23 +0x352
+net/http.HandlerFunc.ServeHTTP(0x0?, {0x45ab258?, 0xc0001b0380?}, 0x400e325?)
+	/usr/local/go/src/net/http/server.go:2084 +0x2f
+net/http.serverHandler.ServeHTTP({0x45aa480?}, {0x45ab258, 0xc0001b0380}, 0xc00018ab00)
+	/usr/local/go/src/net/http/server.go:2916 +0x43b
+net/http.(*conn).serve(0xc000192500, {0x45ab450, 0xc00010be00})
+	/usr/local/go/src/net/http/server.go:1966 +0x5d7
+created by net/http.(*Server).Serve
+	/usr/local/go/src/net/http/server.go:3071 +0x4db
+2023/07/28 14:42:15 [2023-07-28 14:42:15] ERROR: sql: expected 16 destination arguments in Scan, not 17
+2023/07/28 14:42:15 http: panic serving [::1]:55234: runtime error: invalid memory address or nil pointer dereference
+goroutine 31 [running]:
+net/http.(*conn).serve.func1()
+	/usr/local/go/src/net/http/server.go:1825 +0xbf
+panic({0x44b9100, 0x47c9290})
+	/usr/local/go/src/runtime/panic.go:844 +0x258
+socialnetwork/authentication.LogIn({0x45ab258, 0xc0001b0620}, 0xc00018b200)
+	/Users/jacob.pesamaagmail.com/Desktop/Projects/social-network/authentication/authentication.go:75 +0x26b
+net/http.HandlerFunc.ServeHTTP(0x730000c000184a50?, {0x45ab258?, 0xc0001b0620?}, 0xc00005c9d0?)
+	/usr/local/go/src/net/http/server.go:2084 +0x2f
+net/http.(*ServeMux).ServeHTTP(0x44e49c0?, {0x45ab258, 0xc0001b0620}, 0xc00018b200)
+	/usr/local/go/src/net/http/server.go:2462 +0x149
+socialnetwork/utils.CorsMiddleware.func1({0x45ab258, 0xc0001b0620}, 0xc00018b200)
+	/Users/jacob.pesamaagmail.com/Desktop/Projects/social-network/utils/cors.go:23 +0x352
+net/http.HandlerFunc.ServeHTTP(0x0?, {0x45ab258?, 0xc0001b0620?}, 0x400e325?)
+	/usr/local/go/src/net/http/server.go:2084 +0x2f
+net/http.serverHandler.ServeHTTP({0x45aa480?}, {0x45ab258, 0xc0001b0620}, 0xc00018b200)
+	/usr/local/go/src/net/http/server.go:2916 +0x43b
+net/http.(*conn).serve(0xc000192780, {0x45ab450, 0xc00010be00})
+	/usr/local/go/src/net/http/server.go:1966 +0x5d7
+created by net/http.(*Server).Serve
+	/usr/local/go/src/net/http/server.go:3071 +0x4db
+2023/07/28 15:21:08 [2023-07-28 15:21:08] ERROR: sql: expected 16 destination arguments in Scan, not 17
+2023/07/28 15:21:08 http: panic serving [::1]:63043: runtime error: invalid memory address or nil pointer dereference
+goroutine 10 [running]:
+net/http.(*conn).serve.func1()
+	/usr/local/go/src/net/http/server.go:1825 +0xbf
+panic({0x44b9100, 0x47c9290})
+	/usr/local/go/src/runtime/panic.go:844 +0x258
+socialnetwork/authentication.LogIn({0x45ab258, 0xc000160460}, 0xc00017c200)
+	/Users/jacob.pesamaagmail.com/Desktop/Projects/social-network/authentication/authentication.go:75 +0x26b
+net/http.HandlerFunc.ServeHTTP(0xd20000c00016a390?, {0x45ab258?, 0xc000160460?}, 0xc0000609d0?)
+	/usr/local/go/src/net/http/server.go:2084 +0x2f
+net/http.(*ServeMux).ServeHTTP(0x44e49c0?, {0x45ab258, 0xc000160460}, 0xc00017c200)
+	/usr/local/go/src/net/http/server.go:2462 +0x149
+socialnetwork/utils.CorsMiddleware.func1({0x45ab258, 0xc000160460}, 0xc00017c200)
+	/Users/jacob.pesamaagmail.com/Desktop/Projects/social-network/utils/cors.go:23 +0x352
+net/http.HandlerFunc.ServeHTTP(0x0?, {0x45ab258?, 0xc000160460?}, 0x400e325?)
+	/usr/local/go/src/net/http/server.go:2084 +0x2f
+net/http.serverHandler.ServeHTTP({0x45aa480?}, {0x45ab258, 0xc000160460}, 0xc00017c200)
+	/usr/local/go/src/net/http/server.go:2916 +0x43b
+net/http.(*conn).serve(0xc00011b0e0, {0x45ab450, 0xc00010be00})
+	/usr/local/go/src/net/http/server.go:1966 +0x5d7
+created by net/http.(*Server).Serve
+	/usr/local/go/src/net/http/server.go:3071 +0x4db
+2023/07/28 15:29:55 [2023-07-28 15:29:55] ERROR: sql: no rows in result set
+2023/07/28 15:29:55 http: panic serving [::1]:49246: runtime error: invalid memory address or nil pointer dereference
+goroutine 34 [running]:
+net/http.(*conn).serve.func1()
+	/usr/local/go/src/net/http/server.go:1825 +0xbf
+panic({0x44b9100, 0x47c9290})
+	/usr/local/go/src/runtime/panic.go:844 +0x258
+socialnetwork/authentication.LogIn({0x45ab258, 0xc0001c6000}, 0xc0001a2100)
+	/Users/jacob.pesamaagmail.com/Desktop/Projects/social-network/authentication/authentication.go:75 +0x26b
+net/http.HandlerFunc.ServeHTTP(0x670000c00018c070?, {0x45ab258?, 0xc0001c6000?}, 0xc0001899d0?)
+	/usr/local/go/src/net/http/server.go:2084 +0x2f
+net/http.(*ServeMux).ServeHTTP(0x44e49c0?, {0x45ab258, 0xc0001c6000}, 0xc0001a2100)
+	/usr/local/go/src/net/http/server.go:2462 +0x149
+socialnetwork/utils.CorsMiddleware.func1({0x45ab258, 0xc0001c6000}, 0xc0001a2100)
+	/Users/jacob.pesamaagmail.com/Desktop/Projects/social-network/utils/cors.go:23 +0x352
+net/http.HandlerFunc.ServeHTTP(0x0?, {0x45ab258?, 0xc0001c6000?}, 0x400e325?)
+	/usr/local/go/src/net/http/server.go:2084 +0x2f
+net/http.serverHandler.ServeHTTP({0x45aa480?}, {0x45ab258, 0xc0001c6000}, 0xc0001a2100)
+	/usr/local/go/src/net/http/server.go:2916 +0x43b
+net/http.(*conn).serve(0xc0001a8000, {0x45ab450, 0xc000124000})
+	/usr/local/go/src/net/http/server.go:1966 +0x5d7
+created by net/http.(*Server).Serve
+	/usr/local/go/src/net/http/server.go:3071 +0x4db
+2023/07/28 15:33:52 [2023-07-28 15:33:52] ERROR: sql: no rows in result set
+2023/07/28 15:33:52 http: panic serving [::1]:50555: runtime error: invalid memory address or nil pointer dereference
+goroutine 25 [running]:
+net/http.(*conn).serve.func1()
+	/usr/local/go/src/net/http/server.go:1825 +0xbf
+panic({0x44b9100, 0x47c9290})
+	/usr/local/go/src/runtime/panic.go:844 +0x258
+socialnetwork/authentication.LogIn({0x45ab258, 0xc00010a620}, 0xc00012c300)
+	/Users/jacob.pesamaagmail.com/Desktop/Projects/social-network/authentication/authentication.go:75 +0x26b
+net/http.HandlerFunc.ServeHTTP(0x4a0000c000114820?, {0x45ab258?, 0xc00010a620?}, 0xc00005c9d0?)
+	/usr/local/go/src/net/http/server.go:2084 +0x2f
+net/http.(*ServeMux).ServeHTTP(0x44e49c0?, {0x45ab258, 0xc00010a620}, 0xc00012c300)
+	/usr/local/go/src/net/http/server.go:2462 +0x149
+socialnetwork/utils.CorsMiddleware.func1({0x45ab258, 0xc00010a620}, 0xc00012c300)
+	/Users/jacob.pesamaagmail.com/Desktop/Projects/social-network/utils/cors.go:23 +0x352
+net/http.HandlerFunc.ServeHTTP(0x0?, {0x45ab258?, 0xc00010a620?}, 0x400e325?)
+	/usr/local/go/src/net/http/server.go:2084 +0x2f
+net/http.serverHandler.ServeHTTP({0x45aa480?}, {0x45ab258, 0xc00010a620}, 0xc00012c300)
+	/usr/local/go/src/net/http/server.go:2916 +0x43b
+net/http.(*conn).serve(0xc0000b74a0, {0x45ab450, 0xc000124000})
+	/usr/local/go/src/net/http/server.go:1966 +0x5d7
+created by net/http.(*Server).Serve
+	/usr/local/go/src/net/http/server.go:3071 +0x4db
+2023/07/28 15:33:53 [2023-07-28 15:33:53] ERROR: sql: no rows in result set
+2023/07/28 15:33:53 http: panic serving [::1]:50561: runtime error: invalid memory address or nil pointer dereference
+goroutine 28 [running]:
+net/http.(*conn).serve.func1()
+	/usr/local/go/src/net/http/server.go:1825 +0xbf
+panic({0x44b9100, 0x47c9290})
+	/usr/local/go/src/runtime/panic.go:844 +0x258
+socialnetwork/authentication.LogIn({0x45ab258, 0xc00010a700}, 0xc00012c400)
+	/Users/jacob.pesamaagmail.com/Desktop/Projects/social-network/authentication/authentication.go:75 +0x26b
+net/http.HandlerFunc.ServeHTTP(0xe60000c000114a70?, {0x45ab258?, 0xc00010a700?}, 0xc00005c9d0?)
+	/usr/local/go/src/net/http/server.go:2084 +0x2f
+net/http.(*ServeMux).ServeHTTP(0x44e49c0?, {0x45ab258, 0xc00010a700}, 0xc00012c400)
+	/usr/local/go/src/net/http/server.go:2462 +0x149
+socialnetwork/utils.CorsMiddleware.func1({0x45ab258, 0xc00010a700}, 0xc00012c400)
+	/Users/jacob.pesamaagmail.com/Desktop/Projects/social-network/utils/cors.go:23 +0x352
+net/http.HandlerFunc.ServeHTTP(0x0?, {0x45ab258?, 0xc00010a700?}, 0x400e325?)
+	/usr/local/go/src/net/http/server.go:2084 +0x2f
+net/http.serverHandler.ServeHTTP({0x45aa480?}, {0x45ab258, 0xc00010a700}, 0xc00012c400)
+	/usr/local/go/src/net/http/server.go:2916 +0x43b
+net/http.(*conn).serve(0xc0000b7680, {0x45ab450, 0xc000124000})
+	/usr/local/go/src/net/http/server.go:1966 +0x5d7
+created by net/http.(*Server).Serve
+	/usr/local/go/src/net/http/server.go:3071 +0x4db
+2023/07/28 15:33:54 [2023-07-28 15:33:54] ERROR: sql: no rows in result set
+2023/07/28 15:33:54 http: panic serving [::1]:50566: runtime error: invalid memory address or nil pointer dereference
+goroutine 31 [running]:
+net/http.(*conn).serve.func1()
+	/usr/local/go/src/net/http/server.go:1825 +0xbf
+panic({0x44b9100, 0x47c9290})
+	/usr/local/go/src/runtime/panic.go:844 +0x258
+socialnetwork/authentication.LogIn({0x45ab258, 0xc00010a7e0}, 0xc00012c500)
+	/Users/jacob.pesamaagmail.com/Desktop/Projects/social-network/authentication/authentication.go:75 +0x26b
+net/http.HandlerFunc.ServeHTTP(0x940000c000114cc0?, {0x45ab258?, 0xc00010a7e0?}, 0xc00005c9d0?)
+	/usr/local/go/src/net/http/server.go:2084 +0x2f
+net/http.(*ServeMux).ServeHTTP(0x44e49c0?, {0x45ab258, 0xc00010a7e0}, 0xc00012c500)
+	/usr/local/go/src/net/http/server.go:2462 +0x149
+socialnetwork/utils.CorsMiddleware.func1({0x45ab258, 0xc00010a7e0}, 0xc00012c500)
+	/Users/jacob.pesamaagmail.com/Desktop/Projects/social-network/utils/cors.go:23 +0x352
+net/http.HandlerFunc.ServeHTTP(0x0?, {0x45ab258?, 0xc00010a7e0?}, 0x400e325?)
+	/usr/local/go/src/net/http/server.go:2084 +0x2f
+net/http.serverHandler.ServeHTTP({0x45aa480?}, {0x45ab258, 0xc00010a7e0}, 0xc00012c500)
+	/usr/local/go/src/net/http/server.go:2916 +0x43b
+net/http.(*conn).serve(0xc0000b7860, {0x45ab450, 0xc000124000})
+	/usr/local/go/src/net/http/server.go:1966 +0x5d7
+created by net/http.(*Server).Serve
+	/usr/local/go/src/net/http/server.go:3071 +0x4db

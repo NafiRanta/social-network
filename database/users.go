@@ -4,9 +4,9 @@ package database
 import (
 	"database/sql"
 	"fmt"
-	"strconv"
 	"math/rand"
 	u "socialnetwork/utils"
+	"strconv"
 	"strings"
 
 	"github.com/gofrs/uuid"
@@ -85,16 +85,16 @@ func AddUser(db *sql.DB, FirstName string, LastName string, UserName string, Ema
 
 func addDummyUserData(db *sql.DB) error {
 	dummyUsers := []struct {
-		FirstName    string
-		LastName     string
-		UserName     string
-		Email        string
-		Password     string
-		Dob          string
-		Gender       string
-		NickName     string
-		Avatar       string
-		About        string
+		FirstName string
+		LastName  string
+		UserName  string
+		Email     string
+		Password  string
+		Dob       string
+		Gender    string
+		NickName  string
+		Avatar    string
+		About     string
 	}{
 		{
 			FirstName: "Admin",
@@ -124,7 +124,7 @@ func addDummyUserData(db *sql.DB) error {
 			FirstName: "Jacob",
 			LastName:  "Pensama",
 			UserName:  "",
-			Email:     "jacob.pensama@gmail.com",
+			Email:     "jacob.pesamaa@gmail.com",
 			Password:  "Jacob1234!",
 			Dob:       "1988-09-30",
 			Gender:    "Male",
@@ -136,7 +136,7 @@ func addDummyUserData(db *sql.DB) error {
 			FirstName: "Gin",
 			LastName:  "B",
 			UserName:  "",
-			Email:     "gin.b@gmail.com",
+			Email:     "gin.thy@gmail.com",
 			Password:  "Gin1234!",
 			Dob:       "1999-04-30",
 			Gender:    "female",
@@ -156,6 +156,18 @@ func addDummyUserData(db *sql.DB) error {
 			Avatar:    "https://example.com/avatar/gin.png",
 			About:     "Nice to meet you, I'm Ashley!",
 		},
+		{
+			FirstName: "Anton",
+			LastName:  "Wiklund",
+			UserName:  "",
+			Email:     "anton.wiklund@gmail.com",
+			Password:  "Anton1234!",
+			Dob:       "1998-08-10",
+			Gender:    "Male",
+			NickName:  "AW",
+			Avatar:    "https://example.com/avatar/gin.png",
+			About:     "Nice to meet you, I'm Anton!",
+		},
 	}
 
 	for _, user := range dummyUsers {
@@ -169,7 +181,6 @@ func addDummyUserData(db *sql.DB) error {
 
 	return nil
 }
-
 
 func GetUserByEmail(email string) (*User, error) {
 	//fmt.Println("GetUserByEmail")
@@ -208,10 +219,10 @@ func GetUserByEmail(email string) (*User, error) {
 	)
 	if err != nil {
 		if err == sql.ErrNoRows {
-			//fmt.Println("user not found")
+			fmt.Println("user not found")
 			return nil, err // user not found
 		} else {
-			//fmt.Println("sth else error:", err)
+			fmt.Println("sth else error:", err)
 			return nil, err
 		}
 	}
@@ -547,7 +558,7 @@ func RemoveFollower(userA *User, userB *User) error {
 		return err
 	}
 	defer db.Close()
-	
+
 	followerUsernames := strings.Split(userA.FollowerUsernames, ",")
 	var updatedFollowerUsernames []string
 
@@ -579,7 +590,7 @@ func RemoveFollowing(userA *User, userB *User) error {
 		return err
 	}
 	defer db.Close()
-	
+
 	followingUsernames := strings.Split(userA.FollowingUsernames, ",")
 	var updatedFollowingUsernames []string
 
@@ -604,8 +615,6 @@ func RemoveFollowing(userA *User, userB *User) error {
 
 	return nil
 }
-
-
 
 func SentFollowerRequest(sender *User, receiver *User) error {
 	db, err := sql.Open("sqlite3", "./socialnetwork.db")

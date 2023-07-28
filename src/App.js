@@ -12,15 +12,15 @@ import Chat from "./views/Chat/Chat";
 import SingleGroup from "./views/Groups/SingleGroup";
 import AllGroups from "./views/Groups/AllGroups";
 import OthersProfile from "./views/Profile/OthersProfile";
-import CreatePost from "./components/CreatePost/CreatePost";
-import CreatePostModal from "./components/Modal/CreatePostModal";
-import Topnav from "./views/Topnav";
-import Error from "./views/Error/Error";
-import SingleGroupNonMember from "./views/Groups/SingleGroupNonMember";
-import GroupSidenav from "./views/Groups/GroupSidenav";
-import SingleEvent from "./views/Events/SingleEvent";
-import SearchbarGlobal from "./components/Searchbar/SearchbarGlobal";
-import { click } from "@testing-library/user-event/dist/click";
+// import CreatePost from "./components/CreatePost/CreatePost";
+// import CreatePostModal from "./components/Modal/CreatePostModal";
+// import Topnav from "./views/Topnav";
+// import Error from "./views/Error/Error";
+// import SingleGroupNonMember from "./views/Groups/SingleGroupNonMember";
+// import GroupSidenav from "./views/Groups/GroupSidenav";
+// import SingleEvent from "./views/Events/SingleEvent";
+// import SearchbarGlobal from "./components/Searchbar/SearchbarGlobal";
+// import { click } from "@testing-library/user-event/dist/click";
 
 //import { set } from "draft-js/lib/DefaultDraftBlockRenderMap";
 const eventStruct = {
@@ -64,6 +64,7 @@ function App() {
                 console.log(error);
               }
             };
+            fetchChatMessages();
           } else {
             // set chatNotification to true
             dispatch({ type: "SET_CHATNOTIFICATION", payload: true });
