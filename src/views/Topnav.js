@@ -18,10 +18,10 @@ function Topnav(props) {
   const myGroups = useSelector((state) => state.myGroups);
   const invitesbyadmin = useSelector((state) => state.invitesByAdmin);
   const invitesbymember = useSelector((state) => state.invitesByMember);
-  const followRequestsUsernames = userInfo.FollowerUsernamesReceived ? userInfo.FollowerUsernamesReceived.split(",") : [];
+  // const followRequestsUsernames = userInfo.FollowerUsernamesReceived ? userInfo.FollowerUsernamesReceived.split(",") : [];
   const [groupInvitesByAdmin, setGroupInvitesByAdmin] = useState([]);
   const [groupInvitesByMember, setGroupInvitesByMember] = useState([]);
-  const [followRequestsInfo, setFollowRequestsInfo] = useState([]);
+  // const [followRequestsInfo, setFollowRequestsInfo] = useState([]);
   const [joinRequests, setJoinRequests] = useState([]);
   const [isInvitedByMember, setIsInvitedByMember] = useState(false);
   const [isInvitedByAdmin, setIsInvitedByAdmin] = useState(false);
@@ -115,26 +115,29 @@ function Topnav(props) {
       return () => {
         setIsInvitedByMember(false)
       }
-  }, [allGroups]);
+  }, [allGroups, allusers, userInfo]);
 
-useEffect(() => {
-  if (followRequestsUsernames && Array.isArray(allusers)) {
-    const updatedFollowRequests = followRequestsUsernames.map((username) => {
-      const requestorInfo = allusers.find((user) => user.UserName === username);
-      const requestorAvatar = requestorInfo?.Avatar;
-      const requestorUsername = requestorInfo?.UserName;
-      const requestorDisplayname = requestorInfo?.FirstName + " " + requestorInfo?.LastName;
-
-      return {
-        type: "SET_FOLLOWNOTIFICATION",
-        requestorAvatar: requestorAvatar,
-        requestorDisplayname: requestorDisplayname,
-        requestorUsername: requestorUsername,
-      };
-    });
-    setFollowRequestsInfo(updatedFollowRequests);
-  }
-}, [allusers, followRequestsUsernames]);
+  // useEffect(() => {
+  //   if (Array.isArray(allusers)) {
+  //     if (followRequestsUsernames) {
+  //       const updatedFollowRequests = followRequestsUsernames.map((username) => {
+  //         const requestorInfo = allusers.find((user) => user.UserName === username);
+  //         const requestorAvatar = requestorInfo?.Avatar;
+  //         const requestorUsername = requestorInfo?.UserName;
+  //         const requestorDisplayname = requestorInfo?.FirstName + " " + requestorInfo?.LastName;
+  //         setFollowRequestsInfo(updatedFollowRequests);
+          
+  //         return {
+  //           type: "SET_FOLLOWNOTIFICATION",
+  //           requestorAvatar: requestorAvatar,
+  //           requestorDisplayname: requestorDisplayname,
+  //           requestorUsername: requestorUsername,
+  //         };
+  //       });
+  //     }
+  //   }
+  // }, [allusers, followRequestsUsernames]);
+  
 
 useEffect(() => {
   // fetch all events and check if userinfo.username is a member in the group and neither in going nor notgoing
@@ -201,7 +204,7 @@ useEffect(() => {
     ...newEventNotifications || [],
     ...groupInvitesByAdmin || [],
     ...groupInvitesByMember || [],
-    ...followRequestsInfo || [],
+    // ...followRequestsInfo || [],
     ...joinRequests || [],
   ]
   //handle logout

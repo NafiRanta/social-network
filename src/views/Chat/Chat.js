@@ -88,7 +88,7 @@ function Chat(props) {
     
   useEffect(() => {
     // set chatNotification to false
-    dispatch ({ type: "SET_CHATNOTIFICATION", payload: false });
+    // dispatch ({ type: "SET_CHATNOTIFICATION", payload: false });
     const fetchAllMessagesAndSortUsers = async () => {
 
     // save all users except the current user to a variable called otherUsers

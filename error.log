@@ -9773,3 +9773,9 @@ net/http.(*conn).serve(0xc0000b7860, {0x45ab450, 0xc000124000})
 	/usr/local/go/src/net/http/server.go:1966 +0x5d7
 created by net/http.(*Server).Serve
 	/usr/local/go/src/net/http/server.go:3071 +0x4db
+2023/07/28 23:24:31 failed to send message: websocket: close sent
+2023/07/28 23:24:35 writemsg error websocket: close sent
+2023/07/28 23:26:30 failed to send message: websocket: close sent
+2023/07/28 23:26:37 writemsg error websocket: close sent
+2023/07/28 23:52:01 failed to send message: write tcp [::1]:8080->[::1]:53262: use of closed network connection
+2023/07/28 23:52:02 writemsg error write tcp [::1]:8080->[::1]:53262: use of closed network connection
