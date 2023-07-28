@@ -122,7 +122,7 @@ func addDummyUserData(db *sql.DB) error {
 		},
 		{
 			FirstName: "Jacob",
-			LastName:  "Pensama",
+			LastName:  "Pesämaa",
 			UserName:  "",
 			Email:     "jacob.pesamaa@gmail.com",
 			Password:  "Jacob1234!",

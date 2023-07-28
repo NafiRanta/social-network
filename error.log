@@ -9786,3 +9786,5 @@ created by net/http.(*Server).Serve
 2023/07/29 00:18:35 [2023-07-29 00:18:35] ERROR: invalid token
 2023/07/29 00:18:35 failed to send message: websocket: close sent
 2023/07/29 00:18:37 writemsg error websocket: close sent
+2023/07/29 00:24:21 failed to send message: websocket: close sent
+2023/07/29 00:24:26 writemsg error websocket: close sent
