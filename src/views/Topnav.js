@@ -529,11 +529,11 @@ useEffect(() => {
                         <Dropdown.Item as="li" className="my-2 p-1">
                           <div className="d-flex justify-content-between">
                             <div className="d-flex align-items-center">
-                              <div className="rounded-circle d-flex align-items-center justify-content-center mx-2" id="avatar">
+                              {/* <div className="rounded-circle d-flex align-items-center justify-content-center mx-2" id="avatar"> */}
                                 {/* <img src={notification.groupAvatar} alt="avatar" className="rounded-circle me-2" /> */}
                                 {/* // default avatar */}
-                                <img src="https://res.cloudinary.com/dk-find-out/image/upload/q_80,w_1920,f_auto/DCTM_Penguin_UK_DK_AL432958_hxjx5o.jpg" alt="avatar" className="rounded-circle me-2" />
-                              </div>
+                                {/* <img src="https://res.cloudinary.com/dk-find-out/image/upload/q_80,w_1920,f_auto/DCTM_Penguin_UK_DK_AL432958_hxjx5o.jpg" alt="avatar" className="rounded-circle me-2" /> */}
+                              {/* </div> */}
                               <div>
                                 <p className="m-0">New event in {notification.groupName}</p>
                               </div>
