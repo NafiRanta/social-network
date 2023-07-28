@@ -9779,3 +9779,10 @@ created by net/http.(*Server).Serve
 2023/07/28 23:26:37 writemsg error websocket: close sent
 2023/07/28 23:52:01 failed to send message: write tcp [::1]:8080->[::1]:53262: use of closed network connection
 2023/07/28 23:52:02 writemsg error write tcp [::1]:8080->[::1]:53262: use of closed network connection
+2023/07/29 00:18:35 [2023-07-29 00:18:35] ERROR: invalid token
+2023/07/29 00:18:35 [2023-07-29 00:18:35] ERROR: invalid token
+2023/07/29 00:18:35 [2023-07-29 00:18:35] ERROR: invalid token
+2023/07/29 00:18:35 [2023-07-29 00:18:35] ERROR: invalid token
+2023/07/29 00:18:35 [2023-07-29 00:18:35] ERROR: invalid token
+2023/07/29 00:18:35 failed to send message: websocket: close sent
+2023/07/29 00:18:37 writemsg error websocket: close sent
