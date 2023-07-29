@@ -106,6 +106,13 @@ function rootReducer(state = initialState, action) {
         ...state,
         allChatMessagesSorted: action.payload,
       };
+    case "SHOW_NOTIFICATION_TEST":
+      return {
+        ...state,
+        message: action.payload.message,
+        type: action.payload.type,
+        show: true,
+      };
     default:
       return state; 
   }

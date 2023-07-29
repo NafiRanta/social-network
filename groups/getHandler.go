@@ -2,7 +2,7 @@ package groups
 
 import (
 	"encoding/json"
-	//"fmt"
+	"fmt"
 	"net/http"
 	a "socialnetwork/authentication"
 	d "socialnetwork/database"
@@ -35,7 +35,7 @@ func GetGroupsHandler(w http.ResponseWriter, r *http.Request) {
 	// get groups by username
 	userAdminGroups, err := d.GetGroupsByAdminUsername(username)
 	if err != nil {
-		//fmt.Println("error getting groups useradmin")
+		fmt.Println(err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
@@ -92,12 +92,8 @@ func GetSingleGroupHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	response := map[string]interface{}{
-		"group": group,
-	}
-
 	// Convert the response to JSON
-	responseJSON, err := json.Marshal(response)
+	responseJSON, err := json.Marshal(group)
 	if err != nil {
 		http.Error(w, "Failed to marshal response", http.StatusInternalServerError)
 		return

@@ -248,89 +248,44 @@ func GetAllGroups() ([]Group, error) {
 	return groups, nil
 }
 
-func GetGroupByID(groupID string) ([]GroupResponse, error) {
+func GetGroupByID(groupID string) (Group, error) {
 	//fmt.Println("groupID", groupID)
 	db, err := sql.Open("sqlite3", "./socialnetwork.db")
 	if err != nil {
-		return nil, err
+		return Group{}, err
 	}
 	defer db.Close()
+
 	query := `SELECT * FROM Groups WHERE GroupID = ?`
-	rows, err := db.Query(query, groupID)
+	row := db.QueryRow(query, groupID)
+
+	var group Group
+	err = row.Scan(
+		&group.GroupID,
+		&group.GroupName,
+		&group.GroupDescription,
+		&group.Admin,
+		&group.AdminInvitedUsernames,
+		&group.MemberInvitedUsernames,
+		&group.RequestUsernames,
+		&group.MemberUsernames,
+		&group.PostIDs,
+		&group.EventIDs,
+		&group.CreateAt,
+	)
+
 	if err != nil {
-		//fmt.Println("query error", err)
-		return nil, err
+		if err == sql.ErrNoRows {
+			// If no row is found, return an error to indicate that the group with the given ID was not found
+			return Group{}, fmt.Errorf("group with ID %s not found", groupID)
+		}
+		// For other errors, return the error
+		return Group{}, err
 	}
-	defer rows.Close()
-	var groups []GroupResponse
-	for rows.Next() {
-		var group GroupResponse
-		var memberUsernames string
-		var adminInvitedUsernames string
-		var memberInvitedUsernames string
-		var requestUsernames string
-		var postIDs string
-		var eventIDs string
-		err := rows.Scan(
-			&group.GroupID,
-			&group.GroupName,
-			&group.GroupDescription,
-			&group.Admin,
-			&adminInvitedUsernames,
-			&memberInvitedUsernames,
-			&requestUsernames,
-			&memberUsernames,
-			&postIDs,
-			&eventIDs,
-			&group.CreateAt,
-		)
-		if err != nil {
-			//fmt.Println("scan error", err)
-			return nil, err
-		}
-		// Convert the MemberUsernames string to a slice of strings
-		err = json.Unmarshal([]byte(memberUsernames), &group.MemberUsernames)
-		if err != nil {
-			//fmt.Println("unmarshal error", err)
-			return nil, err
-		}
 
-		// convert the InvitedUsernames string to a slice of strings
-		err = json.Unmarshal([]byte(adminInvitedUsernames), &group.AdminInvitedUsernames)
-		if err != nil {
-			//fmt.Println("unmarshal error", err)
-			return nil, err
-		}
-		// Convert the MemberInvitedUsernames string to a []InvitesByMember with username of invited as key and username of inviter as value
-		err = json.Unmarshal([]byte(memberInvitedUsernames), &group.MemberInvitedUsernames)
-		if err != nil {
-			//fmt.Println("unmarshal error", err)
-			return nil, err
-		}
-
-		// Convert the RequestUsernames string to a slice of strings
-		err = json.Unmarshal([]byte(requestUsernames), &group.RequestUsernames)
-		if err != nil {
-			//fmt.Println("unmarshal error", err)
-			return nil, err
-		}
-		// Convert the PostIDs string to a slice of strings
-		err = json.Unmarshal([]byte(postIDs), &group.PostIDs)
-		if err != nil {
-			//fmt.Println("unmarshal error", err)
-			return nil, err
-		}
-		// Convert the EventIDs string to a slice of strings
-		err = json.Unmarshal([]byte(eventIDs), &group.EventIDs)
-		if err != nil {
-			//fmt.Println("unmarshal error", err)
-			return nil, err
-		}
-
-		groups = append(groups, group)
-	}
-	return groups, nil
+	return group, nil
 }
+
 
 func AddUserToGroup(groupID string, username string) error {
 	//fmt.Println("username in addusertogroup", username)

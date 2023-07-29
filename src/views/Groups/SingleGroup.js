@@ -20,7 +20,7 @@ function SingleGroup(props) {
      const allgroups = useSelector((state) => state.allGroups);
      const userInfo = useSelector((state) => state.userInfo);
      const allusers = useSelector((state) => state.allUsers);
-    const [group, setGroup] = useState([]);
+    const [group, setGroup] = useState({});
     const [adminDisplayName, setAdminDisplayName] = useState([]);
     const [membersInfo, setMembersInfo] = useState([]);
     const groupID = window.location.pathname.split('/')[2];
@@ -38,12 +38,14 @@ function SingleGroup(props) {
 
    useEffect(() => {
      // check if user is a member of the group 
-     const groupmembers = JSON.parse(group?.[0]?.MemberUsernames ?? "[]");
-     const isGroupMember = Array.isArray(groupmembers) && groupmembers.includes(userInfo.UserName);
+     const groupmembers = membersInfo ?? "[]";
+     console.log('groupmembers', groupmembers)
+     const isGroupMember = Array.isArray(groupmembers) && groupmembers.some((user) => user.username === userInfo.UserName);
+     console.log('isGroupMember', isGroupMember)
     setIsGroupMember(isGroupMember);
     
      // check if user is the admin of the group
-     const isGroupAdmin = group.length > 0 && group[0].Admin === userInfo.UserName;
+     const isGroupAdmin = group.Admin === userInfo.UserName;
     setIsGroupAdmin(isGroupAdmin);
  
      // check if user is invited by admin
@@ -70,31 +72,65 @@ function SingleGroup(props) {
 
     useEffect(() => {
         // display group info
-        const group = allgroups.filter((group) => group.GroupID === groupID);
+        // const group = allgroups.find((group) => group.GroupID === groupID);
+        // console.log('group', group);
+        
         // Check if group exists and has MemberUsernames property
-        if (group.length > 0 && group[0].MemberUsernames) {
-          const membersUsernames = JSON.parse(group[0].MemberUsernames);
-          const adminUsername = group[0].Admin;
-          // get admin display name from allusers
-            const admin = allusers.find((user) => user.UserName === adminUsername);
-            setAdminDisplayName(admin.FirstName + " " + admin.LastName);
-      
-          // Proceed with mapping only if membersUsernames is an array
-          if (Array.isArray(membersUsernames) && Array.isArray(allusers)) {
-            const membersInfo = membersUsernames.map((username) => {
-                const member = allusers.find((user) => user.UserName === username);
-                return {
-                    username: username,
-                    displayName: member.FirstName + " " + member.LastName,
-                    avatar: member.Avatar,
-                };
-            });
-            setGroup(group);
-            setMembersInfo(membersInfo);
-          }
-        }
+        // if (group.length > 0 && group[0].MemberUsernames) {
+        //   const membersUsernames = JSON.parse(group[0].MemberUsernames);
+        //   const adminUsername = group[0].Admin;
+        //     const admin = allusers.find((user) => user.UserName === adminUsername);
+        //     setAdminDisplayName(admin.FirstName + " " + admin.LastName);
+        //   if (Array.isArray(membersUsernames) && Array.isArray(allusers)) {
+        //     const membersInfo = membersUsernames.map((username) => {
+        //         const member = allusers.find((user) => user.UserName === username);
+        //         return {
+        //             username: username,
+        //             displayName: member.FirstName + " " + member.LastName,
+        //             avatar: member.Avatar,
+        //         };
+        //     });
+        //     setGroup(group);
+        //     setMembersInfo(membersInfo);
+        //   }
+        // }
       }, [allgroups, groupID]);
-      
+    
+        useEffect(() => {
+            const fetchSingleGroup = async () => {
+                try {
+                    const response = await fetch(`http://localhost:8080/getsinglegroup?groupID=${groupID}`, {
+                        method: "GET",});
+                    const data = await response.json();
+                    console.log('data', data);
+                    setGroup(data);
+                    const admin = allusers.find((user) => user.UserName === data.Admin);
+                    console.log('admin', admin);
+                    setAdminDisplayName(admin.FirstName + " " + admin.LastName);
+                    if (data.MemberUsernames !== "") {
+                        const membersUsernames = data.MemberUsernames.split(",");
+                        console.log('membersUsernames', membersUsernames);
+                        if (Array.isArray(membersUsernames) && Array.isArray(allusers)) {
+                            const membersInfo = membersUsernames.map((username) => {
+                                const member = allusers.find((user) => user.UserName === username);
+                                return {
+                                    username: username,
+                                    displayName: member.FirstName + " " + member.LastName,
+                                    avatar: member.Avatar,
+                                };
+                            });
+                            setMembersInfo(membersInfo);
+                        }
+                    }
+                }
+                catch (error) {
+                    console.error('Error fetching group data:', error);
+                    // Handle the error as needed, e.g., navigate to an error page
+                  }
+                
+            };
+            fetchSingleGroup();
+        }, [allgroups, groupID])
 
     const openModal = () => {
         setModalOpen(true);
@@ -197,13 +233,13 @@ function SingleGroup(props) {
     return (
         <div>
             <Topnav userDisplayname={props.userDisplayname} allusers={props.allusers} socket={props.socket}/>
-            {group.map((groupItem) => (
-            <div className="container-fluid" key={groupItem.GroupID}>
+
+            <div className="container-fluid" key={group.GroupID}>
                 <div className="bg-white p-5" >
                     <div className="panel-group profile-cover p-5" >
                     <div className="profile-cover__info" id="coverContent">
-                            <h2><strong>{groupItem.GroupName}</strong></h2>
-                            <p className="card-description">{groupItem.GroupDescription}</p>
+                            <h2><strong>{group.GroupName}</strong></h2>
+                            <p className="card-description">{group.GroupDescription}</p>
                         {!(declineInvite && (!isGroupAdmin || !isGroupMember)) && ( // Check for isDecline and group membership conditions
                             <>
                             
@@ -294,7 +330,7 @@ function SingleGroup(props) {
                                         <div id="introText"> <i className="fas fa-user"> </i> Admin: <span className="name">{adminDisplayName}</span> </div>
                                     </li>
                                     <li className="dropdown-item p-1 rounded">
-                                        <div id="introText"> <i className="fas fa-birthday-cake"> </i> Created:  <span className="name">{new Date(groupItem.CreateAt).toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' })}</span></div>
+                                        <div id="introText"> <i className="fas fa-birthday-cake"> </i> Created:  <span className="name">{new Date(group.CreateAt).toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' })}</span></div>
                                     </li>
                                 </ul>
                             </div>
@@ -333,7 +369,7 @@ function SingleGroup(props) {
                     </div>
                 </div>
             </div>
-            ))}
+       
         </div>
     )
 }

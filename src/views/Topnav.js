@@ -16,6 +16,7 @@ function Topnav(props) {
   const userInfo = useSelector((state) => state.userInfo);
   const allGroups = useSelector((state) => state.allGroups);
   const myGroups = useSelector((state) => state.myGroups);
+  console.log(myGroups)
   const invitesbyadmin = useSelector((state) => state.invitesByAdmin);
   const invitesbymember = useSelector((state) => state.invitesByMember);
   // const followRequestsUsernames = userInfo.FollowerUsernamesReceived ? userInfo.FollowerUsernamesReceived.split(",") : [];
@@ -41,7 +42,6 @@ function Topnav(props) {
           const requestorAvatar = requestorInfo?.Avatar;
           const requestorUsername = requestorInfo?.UserName;
           const requestorDisplayname = requestorInfo?.FirstName + " " + requestorInfo?.LastName;
-    
           return {
             type: "SET_JOINREQUESTS",
             requestorAvatar: requestorAvatar,
@@ -69,8 +69,6 @@ function Topnav(props) {
             }
             setIsInvitedByMember(true)
             memberInvites.push(groupObj)
-          
-            // Return the extracted data as an object
             return {
               groupID: group.GroupID,
               groupName: group.GroupName,
@@ -81,13 +79,10 @@ function Topnav(props) {
           }
           return null;
         });
-        // console.log("filteredAllGroups 1234", filteredAllGroups);
         const matchedGroups = [];
-    
         filteredAllGroups.forEach((group) => {
           if (group ) {
             group.memberInvites.forEach((invite) => {
-              // console.log("inviteeeee", invite)
               invite.forEach((member) => {
                 console.log("member", member.InvitedUsernames, (member.InvitedUsernames.includes(userInfo.UserName)), userInfo.UserName)
                 if (member.InvitedUsernames.includes(userInfo.UserName)) {
@@ -110,7 +105,6 @@ function Topnav(props) {
           }
         }
         );
-        // console.log("matchedGroups", matchedGroups)
       }
       return () => {
         setIsInvitedByMember(false)
@@ -138,9 +132,26 @@ function Topnav(props) {
   //   }
   // }, [allusers, followRequestsUsernames]);
   
+// useEffect(() => {
+//   if (followRequestsUsernames && Array.isArray(allusers)) {
+//     const updatedFollowRequests = followRequestsUsernames.map((username) => {
+//       const requestorInfo = allusers.find((user) => user.UserName === username);
+//       const requestorAvatar = requestorInfo?.Avatar;
+//       const requestorUsername = requestorInfo?.UserName;
+//       const requestorDisplayname = requestorInfo?.FirstName + " " + requestorInfo?.LastName;
+
+//       return {
+//         type: "SET_FOLLOWNOTIFICATION",
+//         requestorAvatar: requestorAvatar,
+//         requestorDisplayname: requestorDisplayname,
+//         requestorUsername: requestorUsername,
+//       };
+//     });
+//     setFollowRequestsInfo(updatedFollowRequests);
+//   }
+// }, [allusers, followRequestsUsernames]);
 
 useEffect(() => {
-  // fetch all events and check if userinfo.username is a member in the group and neither in going nor notgoing
   const fetchAllEventNotifications = async () => {
     const token = localStorage.getItem("token");
     const headers = new Headers();
@@ -177,11 +188,7 @@ useEffect(() => {
   fetchAllEventNotifications();
 }, [allGroups]);
 
-
-  
-
   useEffect(() => {
-    // for Invites by Admin
     if (Array.isArray(invitesbyadmin?.groups) && Array.isArray(allusers)) {
       const updatedInvites = invitesbyadmin.groups.map((invite) => {
         const adminInfo = allusers.find((user) => user.UserName === invite.Admin);
@@ -331,7 +338,7 @@ useEffect(() => {
           </div>
           <div className="col d-flex align-items-center justify-content-end">
             <div className="mx-2">
-              <Dropdown>
+              {/* <Dropdown>
                 <Dropdown.Toggle
                   variant="light"
                   id="mainMenu"
@@ -381,7 +388,7 @@ useEffect(() => {
                     </div>
                   </div>
                 </Dropdown.Menu>
-              </Dropdown>
+              </Dropdown> */}
             </div>
             <div className="rounded-circle p-1 bg-gray d-flex align-items-center justify-content-center mx-2" type="button" id="groupMenu">
               <Link to="/groups" className="text-decoration-none text-dark">

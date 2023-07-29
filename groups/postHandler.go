@@ -51,8 +51,10 @@ func CreateGroupHandler(w http.ResponseWriter, r *http.Request) {
 	// Create a response object
 	response := struct {
 		GroupID string `json:"groupID"`
+		Admin   string `json:"admin"`
 	}{
 		GroupID: group.GroupID,
+		Admin:   group.Admin,
 	}
 
 	// Convert the response object to JSON
