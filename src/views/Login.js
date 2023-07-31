@@ -99,11 +99,8 @@ function Login() {
       });
       if (response.ok) {
         const data = await response.json();
-        console.log("Login successful");
         // Save session to local storage
         dispatch({ type: "SET_USER", payload: data });
-        //localStorage.setItem("userInfo", JSON.stringify(data));
-
         dispatch({ type: "SET_AUTH", payload: true });
         window.location.href = "/";
       } else {

@@ -29,12 +29,11 @@ type User struct {
 	FollowerUsernames         string
 	FollowingUsernames        string
 	FollowerUsernamesReceived string
-	FollowerUsernamesSent     string
+	FollowingUsernamesSent     string
 }
-
 // add users to users table
 func AddUser(db *sql.DB, FirstName string, LastName string, UserName string, Email string, Password string, Dob string, Gender string, NickName string, Avatar string, About string) error {
-	records := `INSERT INTO Users (UserID, FirstName, LastName, UserName, Email, Password, Privacy, Online, DateOfBirth, Gender, Avatar, Nickname, AboutMe, FollowerUsernames, FollowerUsernamesReceived, FollowerUsernamesSent, FollowingUsernames)
+	records := `INSERT INTO Users (UserID, FirstName, LastName, UserName, Email, Password, Privacy, Online, DateOfBirth, Gender, Avatar, Nickname, AboutMe, FollowerUsernames, FollowerUsernamesReceived, FollowingUsernamesSent, FollowingUsernames)
 	            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
 	query, err := db.Prepare(records)
 	if err != nil {
@@ -84,7 +83,7 @@ func GetUserByEmail(email string) (*User, error) {
 		&user.FollowerUsernames,
 		&user.FollowingUsernames,
 		&user.FollowerUsernamesReceived,
-		&user.FollowerUsernamesSent,
+		&user.FollowingUsernamesSent,
 	)
 	if err != nil {
 		if err == sql.ErrNoRows {
@@ -130,7 +129,7 @@ func GetUserByUsername(username string) (*User, error) {
 		&user.FollowerUsernames,
 		&user.FollowingUsernames,
 		&user.FollowerUsernamesReceived,
-		&user.FollowerUsernamesSent,
+		&user.FollowingUsernamesSent,
 	)
 	if err != nil {
 		if err == sql.ErrNoRows {
@@ -178,7 +177,7 @@ func GetUserByID(userID string) (*User, error) {
 		&user.FollowerUsernames,
 		&user.FollowingUsernames,
 		&user.FollowerUsernamesReceived,
-		&user.FollowerUsernamesSent,
+		&user.FollowingUsernamesSent,
 	)
 	if err != nil {
 		if err == sql.ErrNoRows {
@@ -230,7 +229,7 @@ func GetAllPublicUsers() ([]*User, error) {
 			&user.FollowerUsernames,
 			&user.FollowingUsernames,
 			&user.FollowerUsernamesReceived,
-			&user.FollowerUsernamesSent,
+			&user.FollowingUsernamesSent,
 		)
 		if err != nil {
 			return nil, err
@@ -283,7 +282,7 @@ func GetAllPrivateUsers() ([]*User, error) {
 			&user.FollowerUsernames,
 			&user.FollowingUsernames,
 			&user.FollowerUsernamesReceived,
-			&user.FollowerUsernamesSent,
+			&user.FollowingUsernamesSent,
 		)
 		if err != nil {
 			return nil, err
@@ -486,16 +485,17 @@ func RemoveFollowing(userA *User, userB *User) error {
 }
 
 func SentFollowerRequest(sender *User, receiver *User) error {
+	//when a sender sends a follower request to a receiver, the receiver's username is added to the sender's FollowingUsernamesSent
 	db, err := sql.Open("sqlite3", "./socialnetwork.db")
 	if err != nil {
 		return err
 	}
 	defer db.Close()
-	// Add receiver's username to sender's FollowerUsernamesSent
-	if sender.FollowerUsernamesSent == "" {
-		sender.FollowerUsernamesSent = receiver.UserName
+	// Add receiver's username to sender's FollowingUsernamesSent
+	if sender.FollowingUsernamesSent == "" {
+		sender.FollowingUsernamesSent = receiver.UserName
 	} else {
-		sender.FollowerUsernamesSent = sender.FollowerUsernamesSent + "," + receiver.UserName
+		sender.FollowingUsernamesSent = sender.FollowingUsernamesSent + "," + receiver.UserName
 	}
 
 	// Add sender's username to receiver's FollowerUsernamesReceived
@@ -505,7 +505,7 @@ func SentFollowerRequest(sender *User, receiver *User) error {
 		receiver.FollowerUsernamesReceived = receiver.FollowerUsernamesReceived + "," + sender.UserName
 	}
 	// Prepare and execute the update queries
-	stmtSender, err := db.Prepare("UPDATE Users SET FollowerUsernamesSent = ? WHERE UserID = ?")
+	stmtSender, err := db.Prepare("UPDATE Users SET FollowingUsernamesSent = ? WHERE UserID = ?")
 	if err != nil {
 		return err
 	}
@@ -517,7 +517,7 @@ func SentFollowerRequest(sender *User, receiver *User) error {
 	}
 	defer stmtReceiver.Close()
 
-	_, err = stmtSender.Exec(sender.FollowerUsernamesSent, sender.UserID)
+	_, err = stmtSender.Exec(sender.FollowingUsernamesSent, sender.UserID)
 	if err != nil {
 		return err
 	}
@@ -539,7 +539,6 @@ func RemoveFollowRequest(sender *User, receiver *User) error {
 
 	// Remove sender's username from receiver's FollowerUsernamesReceived
 	receiverFollowerUsernamesReceived := strings.Split(receiver.FollowerUsernamesReceived, ",")
-	fmt.Println("receiverFollowerUsernamesReceived1:", receiverFollowerUsernamesReceived)
 	var updatedReceiverFollowerUsernamesReceived []string
 	for _, username := range receiverFollowerUsernamesReceived {
 		if username != sender.UserName {
@@ -547,20 +546,18 @@ func RemoveFollowRequest(sender *User, receiver *User) error {
 		}
 	}
 	receiver.FollowerUsernamesReceived = strings.Join(updatedReceiverFollowerUsernamesReceived, ",")
-	fmt.Println("receiver.FollowerUsernamesReceived2:", receiver.FollowerUsernamesReceived)
-	// Remove receiver's username from sender's FollowerUsernamesSent
-	senderFollowerUsernameSent := strings.Split(sender.FollowerUsernamesSent, ",")
-	fmt.Println("senderFollowerUsernameSent1:", senderFollowerUsernameSent)
-	var updatedSenderFollowerUsernameSent []string
-	for _, username := range senderFollowerUsernameSent {
+	// Remove receiver's username from sender's FollowingUsernamesSent
+	senderFollowingUsernamesSent := strings.Split(sender.FollowingUsernamesSent, ",")
+	fmt.Println("senderFollowingUsernamesSent1:", senderFollowingUsernamesSent)
+	var updatedSenderFollowingUsernamesSent []string
+	for _, username := range senderFollowingUsernamesSent {
 		if username != receiver.UserName {
-			updatedSenderFollowerUsernameSent = append(updatedSenderFollowerUsernameSent, username)
+			updatedSenderFollowingUsernamesSent = append(updatedSenderFollowingUsernamesSent, username)
 		}
 	}
-	sender.FollowerUsernamesSent = strings.Join(updatedSenderFollowerUsernameSent, ",")
-	fmt.Println("sender.FollowerUsernamesSent2:", sender.FollowerUsernamesSent)
+	sender.FollowingUsernamesSent = strings.Join(updatedSenderFollowingUsernamesSent, ",")
 	// Prepare and execute the update queries
-	stmtSender, err := db.Prepare("UPDATE Users SET FollowerUsernamesSent = ? WHERE UserID = ?")
+	stmtSender, err := db.Prepare("UPDATE Users SET FollowingUsernamesSent = ? WHERE UserID = ?")
 	if err != nil {
 		return err
 	}
@@ -572,7 +569,7 @@ func RemoveFollowRequest(sender *User, receiver *User) error {
 	}
 	defer stmtReceiver.Close()
 
-	_, err = stmtSender.Exec(sender.FollowerUsernamesSent, sender.UserID)
+	_, err = stmtSender.Exec(sender.FollowingUsernamesSent, sender.UserID)
 	if err != nil {
 		return err
 	}

@@ -23,9 +23,9 @@ function OthersProfile(props) {
     const [clickedProfileInfo, setClickedProfileInfo] = useState({});
     const clickedProfileDisplayName = clickedProfileInfo.FirstName + " " + clickedProfileInfo.LastName;
     const clickedProfileFollowers = clickedProfileInfo.FollowerUsernames ? clickedProfileInfo.FollowerUsernames.split(",") : [];
-    const clickedProfileFollowerUsernamesSent = clickedProfileInfo.FollowerUsernamesSent ? clickedProfileInfo.FollowerUsernamesSent.split(",") : [];
+    const clickedProfileFollowingUsernamesSent = clickedProfileInfo.FollowingUsernamesSent ? clickedProfileInfo.FollowingUsernamesSent.split(",") : [];
     const [clickedProfileFollowersInfo, setClickedProfileFollowersInfo] = useState([]); // [ {username, avatar, displayname}
-    const [myfollowers, setFollowers] = useState([]);
+    const [myfollowings, setFollowings] = useState([]);
     const [followingUsernamesReceived, setFollowingUsernamesReceived] = useState([]);
     const [followingUsernamesSent, setFollowingUsernamesSent] = useState([]);
     const [isPrivate, setIsPrivate] = useState(false);
@@ -77,10 +77,10 @@ function OthersProfile(props) {
     useEffect(() => {
         // get all my followers
         if (userInfo.FollowerUsernames) {
-            const myFollowers = userInfo.FollowerUsernames.split(",");
-            setFollowers(myFollowers);
+            const myfollowings = userInfo.FollowingUsernames.split(",");
+            setFollowings(myfollowings);
         } else {
-            setFollowers([]);
+            setFollowings([]);
         }
 
         // check if current user has pending follow requests from clickedProfile
@@ -92,7 +92,7 @@ function OthersProfile(props) {
         }
 
         if (clickedProfileInfo.FollowingUsernamesSent) {
-            const followingSent = clickedProfileInfo.FollowerUsernamesSent.split(",");
+            const followingSent = clickedProfileInfo.FollowingUsernamesSent.split(",");
             setFollowingUsernamesSent(followingSent);
         } else {
             setFollowingUsernamesSent([]);
@@ -126,12 +126,12 @@ function OthersProfile(props) {
     // if username is found in followingUsernamesReceived or followingUsernamesSent, then the clicked profile follow request is pending
     useEffect(() => {
         const isPending = followingUsernamesReceived.includes(userInfo.UserName) || followingUsernamesSent.includes(userInfo.UserName);
-        const isPendingToAprove = clickedProfileFollowerUsernamesSent.includes(userInfo.UserName) 
-        const isFollowing = myfollowers.includes(clickedProfileInfo.UserName);
+        const isPendingToAprove = clickedProfileFollowingUsernamesSent.includes(userInfo.UserName) 
+        const isFollowing = myfollowings.includes(clickedProfileInfo.UserName);
         setPending(isPending);
         setIsPendingToAprove(isPendingToAprove);
         setIsFollowing(isFollowing);
-    }, [followingUsernamesReceived, followingUsernamesSent, userInfo.UserName, myfollowers]);
+    }, [followingUsernamesReceived, followingUsernamesSent, userInfo.UserName, myfollowings]);
 
     // handle follow button
     const handleFollow = async (event) => {
@@ -142,7 +142,7 @@ function OthersProfile(props) {
         }
 
         try{
-            const response = await fetch("http://localhost:8080/sendfollowreq", {
+            const response = await fetch("http://localhost:8080/follow", {
                 method: 'POST',
                 credentials: "include",
                 headers: {
@@ -170,9 +170,9 @@ function OthersProfile(props) {
                        dispatch({ type: "SET_FOLLOWNOTIFICATION", payload: notification.payload });
                     }
                 }
-             window.location.reload();
+            window.location.reload();
             } else {
-                console.log("Error sending follow request");
+                alert("Error sending follow request");
             }
         }
         catch(error){
@@ -187,7 +187,7 @@ function OthersProfile(props) {
         }
 
         try{
-            const response = await fetch("http://localhost:8080/removefollower", {
+            const response = await fetch("http://localhost:8080/unfollow", {
                 method: 'POST',
                 credentials: "include",
                 headers: {
@@ -202,7 +202,7 @@ function OthersProfile(props) {
                 setIsFollowing(false);
                 window.location.reload();
             } else {
-                console.log("Error declining follow request");
+                    alert("Error sending follow request");
             }
         }
         catch(error){
@@ -305,9 +305,9 @@ function OthersProfile(props) {
                                             <p className="m-0"><strong>Intro</strong></p>
                                         </div>
                                          {clickedProfileInfo.AboutMe && (
-                                            <li className="dropdown-item p-1 rounded text-center">
+                                            <h6 className="dropdown-item p-1 rounded text-center">
                                                 <p className="text-center">{clickedProfileInfo.AboutMe}</p>
-                                            </li>
+                                            </h6>
                                         )}
                                     </li>
                                         {clickedProfileInfo.Nickname && (

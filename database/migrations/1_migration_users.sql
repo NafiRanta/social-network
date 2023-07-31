@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS Users (
 	FollowerUsernames TEXT,
 	FollowingUsernames TEXT,
 	FollowerUsernamesReceived TEXT,
-	FollowerUsernamesSent TEXT
+	FollowingUsernamesSent TEXT
 );
 
 

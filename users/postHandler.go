@@ -9,6 +9,7 @@ import (
 	a "socialnetwork/authentication"
 	d "socialnetwork/database"
 	u "socialnetwork/utils"
+	"strings"
 )
 
 func ChangePrivacyofUser(w http.ResponseWriter, r *http.Request) {
@@ -189,8 +190,6 @@ func FollowHandler(w http.ResponseWriter, r *http.Request) {
 	var followReq FollowRequest
 	err := json.NewDecoder(r.Body).Decode(&followReq)
 
-	fmt.Println("followReq", followReq)
-
 	// frontend need to send in the r http.Request the sender username(the one who send request) and the receiver username
 	if err != nil {
 		http.Error(w, "Invalid request data", http.StatusBadRequest)
@@ -198,36 +197,44 @@ func FollowHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	senderUsername := followReq.SenderUsername
-	fmt.Println("senderUsername", senderUsername)
 	receiverUsername := followReq.ReceiverUsername
-	fmt.Println("receiverUsername", receiverUsername)
 
 	// check if sender and receiver names contains %C3%A4 , %C3%B6, %C3%A5, if so replace them with ä, ö, å
 	// check if sender and receiver names contain %C3%A4, %C3%B6, %C3%A5, if so replace them with ä, ö, å
 	decodedSender := u.SpecialCharDecode(senderUsername)
-	fmt.Println("Decoded sender username:", decodedSender)
 	decodedReceiver := u.SpecialCharDecode(receiverUsername)
-	fmt.Println("Decoded receiver username:", decodedReceiver)
-	// get sender user from db
+	// get both users from db
 	senderUser, err := d.GetUserByUsername(decodedSender)
+	fmt.Println("senderUser", senderUser.UserName)
 	if err != nil {
 		http.Error(w, "Sender not found", http.StatusNotFound)
 		return
 	}
-	//check receiver user privacy
 	receiverUser, err := d.GetUserByUsername(decodedReceiver)
+	fmt.Println("receiverUser", receiverUser.UserName)
+
 	if err != nil {
 		http.Error(w, "Receiver not found", http.StatusNotFound)
 		return
 	}
-
+	// Check if senderUser is already following receiverUser
+    if isFollower(senderUser, receiverUser) && isFollowing(senderUser, receiverUser) {
+        http.Error(w, "You are already following each other", http.StatusConflict)
+        return
+    }
+	
 	if receiverUser.Privacy == "private" {
 		fmt.Println("private")
+		if isFollowingSent(senderUser, receiverUser) && isFollowerReceived(senderUser, receiverUser) {
+			http.Error(w, "You already sent request", http.StatusConflict)
+			return
+		}
 		if err := d.SentFollowerRequest(senderUser, receiverUser); err != nil {
 			fmt.Println(err)
 			http.Error(w, "Failed to send following request", http.StatusInternalServerError)
 			return
 		}
+		fmt.Fprintf(w, "Successfully sent follow request to %s", followReq.ReceiverUsername)
 	}
 
 	if receiverUser.Privacy == "public" {
@@ -243,10 +250,10 @@ func FollowHandler(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "Failed to update sender's followers", http.StatusInternalServerError)
 			return
 		}
+		fmt.Fprintf(w, "Successfully followed %s", followReq.ReceiverUsername)
 		
 	}
 
-	fmt.Fprintf(w, "Successfully followed %s", followReq.ReceiverUsername)
 }
 
 func UnfollowHandler(w http.ResponseWriter, r *http.Request) {
@@ -335,15 +342,15 @@ func AcceptFollowRequestHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Remove sender's username from receiver's FollowerUsernamesReceived
-	// Remove receiver's username from sender's FollowerUsernamesSent
+	// Remove receiver's username from sender's FollowingUsernamesSent
 	if err := d.RemoveFollowRequest(senderUser, receiverUser); err != nil {
 		fmt.Println(err)
 		http.Error(w, "Failed to remove follow request", http.StatusInternalServerError)
 		return
 	}
 
-	// Add receiver username to sender's FollowerUsernames
-	if err := d.AddFollower(senderUser, receiverUser); err != nil {
+	// Add receiver username to sender's FollowingUsernames
+	if err := d.AddFollowing(senderUser, receiverUser); err != nil {
 		http.Error(w, "Failed to update sender's followers", http.StatusInternalServerError)
 		return
 	}
@@ -394,7 +401,7 @@ func DeclineFollowRequestHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Remove sender's username from receiver's FollowerUsernamesReceived
-	// Remove receiver's username from sender's FollowerUsernamesSent
+	// Remove receiver's username from sender's FollowingUsernamesSent
 	if err := d.RemoveFollowRequest(senderUser, receiverUser); err != nil {
 		fmt.Println(err)
 		http.Error(w, "Failed to remove follow request", http.StatusInternalServerError)
@@ -402,4 +409,50 @@ func DeclineFollowRequestHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	fmt.Fprintf(w, "Decline request successfully")
+}
+
+func isFollower(sender *d.User, receiver *d.User) bool {
+	fmt.Println("isFollower")
+	followerUsernames := strings.Split(receiver.FollowerUsernames, ",")
+    for _, username := range followerUsernames {
+        if username == sender.UserName {
+			fmt.Println("isFollower true")
+            return true
+        }
+    }
+	fmt.Println("isFollower false")
+    return false
+}
+
+func isFollowing(sender *d.User, receiver *d.User) bool {
+	followingUsernames := strings.Split(sender.FollowingUsernames, ",")
+    for _, username := range followingUsernames {
+        if username == receiver.UserName {
+			fmt.Println("isFollowing true")
+            return true
+        }
+    }
+	fmt.Println("isFollowing false")
+    return false
+}
+
+func isFollowingSent(sender *d.User, receiver *d.User) bool {
+	followingUsernamesSent := strings.Split(sender.FollowingUsernamesSent, ",")
+    for _, username := range followingUsernamesSent {
+        if username == receiver.UserName {
+            return true
+        }
+    }
+    return false
+}
+
+func isFollowerReceived(sender *d.User, receiver *d.User) bool {
+	followerUsernamesReceived := strings.Split(receiver.FollowerUsernamesReceived, ",")
+    fmt.Println("isFollowerReceived")
+    for _, username := range followerUsernamesReceived {
+        if username == sender.UserName {
+            return true
+        }
+    }
+    return false
 }

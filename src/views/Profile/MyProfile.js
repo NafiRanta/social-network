@@ -17,7 +17,11 @@ function MyProfile(props) {
   const userInfo = useSelector((state) => state.userInfo);
   const allusers = useSelector((state) => state.allUsers);
   const [myfollowers, setFollowers] = useState([]);
+  const [myfollowings, setFollowings] = useState([]);
+
   const [myfollowersInfo, setMyfollowersInfo] = useState([]);
+  const [myfollowingsInfo, setMyfollowingsInfo] = useState([]);
+
 
 
   // format date of birth to be displayed to dd month yyyy
@@ -43,6 +47,13 @@ function MyProfile(props) {
     } else {
         setFollowers([]);
     }
+    // get all my followings
+    if (userInfo.FollowingUsernames) {
+      const myFollowings = userInfo.FollowingUsernames.split(",");
+      setFollowings(myFollowings);
+    } else {
+      setFollowings([]);
+    }
   }, [userInfo]);
 
   useEffect(() => {
@@ -57,9 +68,22 @@ function MyProfile(props) {
       } else {
         console.log("missing")
         setMyfollowersInfo([]);
+      };
+      if (myfollowings && allusers) {
+        const myFollowingsInfo = [];
+        myfollowings.forEach((following) => {
+            const followingInfo = allusers.find((user) => user.UserName === following);
+            myFollowingsInfo.push(followingInfo);
+            
+        });
+        setMyfollowingsInfo(myFollowingsInfo);
+      } else {
+        console.log("missing")
+        setMyfollowingsInfo([]);
       }
+      
     }
-  , [myfollowers, allusers]);
+  , [myfollowers, myfollowings, allusers]);
 
 
   const handlePrivacyChange = (checked) => {
@@ -274,6 +298,31 @@ function MyProfile(props) {
                               </div>
                               <div className="fellows d-flex align-items-center">
                                 <p className="m-0">{follower.FirstName + " " + follower.LastName}</p>
+                              </div>
+                            </Link>
+                          </div>
+                      ))
+                  )}
+                </div>
+              </div>
+
+              <div className="bg-white rounded border shadow p-3">
+                <div className="p-2">
+                    <p className="m-0"><strong>Followings</strong></p>
+                </div>
+                <div className="follow-box-content p-1 m-0 d-flex">
+                  {myfollowingsInfo?.length === 0 ? (
+                      <p className="m-0">You have no followings</p>
+                  ) : (
+                      // If not empty, map over the followers
+                      myfollowingsInfo?.map((following) => (
+                          <div className="p-2" key={following.UserName}>
+                            <Link to={`/othersprofile/${following.UserName}`} className="text-decoration-none text-dark">
+                              <div className="fellows d-flex align-items-center">
+                                <AvatarSquare avatar={following.Avatar} />
+                              </div>
+                              <div className="fellows d-flex align-items-center">
+                                <p className="m-0">{following.FirstName + " " + following.LastName}</p>
                               </div>
                             </Link>
                           </div>
