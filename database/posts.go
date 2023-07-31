@@ -6,7 +6,7 @@ import (
 	"fmt"
 
 	//"fmt"
-	u "socialnetwork/utils"
+
 	"sort"
 	"time"
 
@@ -31,26 +31,6 @@ type PostResponse struct {
 	Content         string    `json:"content"`
 	Image           string    `json:"image"`
 	CreateAt        time.Time `json:"createAt"`
-}
-
-func CreatePostsTable(db *sql.DB) {
-	postsTable := `
-	CREATE TABLE IF NOT EXISTS Posts (
-		PostID CHAR(36) NOT NULL,
-		UserName CHAR(36) NOT NULL,
-		Privacy TEXT NOT NULL,
-		IncludedFriends TEXT NULL,
-		Content TEXT NOT NULL,
-		Image BLOB NULL,
-		CreateAt TIMESTAMP NOT NULL,
-		CommentCount INT DEFAULT 0,
-		LikeCount INT DEFAULT 0,
-		PRIMARY KEY (PostID)
-	);`
-
-	query, err := db.Prepare(postsTable)
-	u.CheckErr(err)
-	query.Exec()
 }
 
 func AddPost(post *PostResponse) error {

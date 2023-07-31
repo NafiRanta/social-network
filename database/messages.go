@@ -3,7 +3,7 @@ package database
 import (
 	"database/sql"
 	//"fmt"
-	u "socialnetwork/utils"
+
 	"time"
 
 	"github.com/google/uuid"
@@ -29,25 +29,6 @@ type MessageResponse struct {
 	Types            string    `json:"types"`
 	SentAt           time.Time `json:"sentAt"`
 	SeenAt           time.Time `json:"seenAt"`
-}
-
-func CreateMessagesTable(db *sql.DB) {
-	messagesTable := `
-	CREATE TABLE IF NOT EXISTS Messages (
-		MessageID CHAR(36) NOT NULL,
-		SenderUsername CHAR(36) NOT NULL,
-		ReceiverUsername CHAR(36) NOT NULL,
-		GroupChatID CHAR(36) NOT NULL,
-		Content TEXT NOT NULL,
-		Types TEXT NOT NULL,
-		SentAt TIMESTAMP NOT NULL,
-		SeenAt TIMESTAMP,
-		PRIMARY KEY (MessageID)
-	);`
-
-	query, err := db.Prepare(messagesTable)
-	u.CheckErr(err)
-	query.Exec()
 }
 
 func AddMessage(message *MessageResponse) error {

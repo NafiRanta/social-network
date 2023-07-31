@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 
 	"fmt"
-	u "socialnetwork/utils"
 	"time"
 
 	"github.com/google/uuid"
@@ -37,27 +36,6 @@ type GroupEventResponse struct {
 	CreateAt         time.Time `json:"createAt"`
 }
 
-func CreateGroupEventsTable(db *sql.DB) {
-	groupEventsTable := `
-	CREATE TABLE IF NOT EXISTS GroupEvents (
-		GroupEventID CHAR(36) NOT NULL,
-		GroupID CHAR(36) NOT NULL,
-		UserName CHAR(36) NOT NULL,
-		EventName TEXT NOT NULL,
-		EventDescription TEXT NOT NULL,
-		EventDate TEXT NOT NULL,
-		EventTime TEXT NOT NULL,
-		notGoingUsers TEXT,
-		GoingUsers TEXT,
-		CreateAt TIMESTAMP NOT NULL,
-		PRIMARY KEY (GroupEventID)
-	);`
-
-	query, err := db.Prepare(groupEventsTable)
-	u.CheckErr(err)
-	query.Exec()
-}
-
 func AddGroupEvent(groupEvent *GroupEventResponse) error {
 	db, err := sql.Open("sqlite3", "./socialnetwork.db")
 	if err != nil {
@@ -75,12 +53,12 @@ func AddGroupEvent(groupEvent *GroupEventResponse) error {
 	if err != nil {
 		return err
 	}
-	
+
 	goingJSON, err := json.Marshal(groupEvent.GoingUsers)
 	if err != nil {
 		return err
 	}
-	fmt.Println(invitedJSON,goingJSON)
+	fmt.Println(invitedJSON, goingJSON)
 	// when create event, th
 	_, err = db.Exec(query, groupEventID, groupEvent.GroupID, groupEvent.UserName, groupEvent.EventName, groupEvent.EventDescription, groupEvent.EventDate, groupEvent.EventTime, "", "", groupEvent.CreateAt)
 	if err != nil {
@@ -166,7 +144,6 @@ func GetGroupEventByID(groupEventID string) (GroupEvent, error) {
 
 	return result, nil
 }
-
 
 func AddGoingUsers(groupEvent *GroupEvent, username string) error {
 	// Check if GoingUsers is an empty string, if empty then add username, if not add "," then the username

@@ -4,9 +4,9 @@ package database
 import (
 	"database/sql"
 	"fmt"
-	"math/rand"
-	u "socialnetwork/utils"
-	"strconv"
+
+	//"fmt"
+
 	"strings"
 
 	"github.com/gofrs/uuid"
@@ -32,38 +32,6 @@ type User struct {
 	FollowerUsernamesSent     string
 }
 
-// create users table
-// 16 column
-func CreateUsersTable(db *sql.DB) {
-	usersTable := `CREATE TABLE IF NOT EXISTS Users (
-		UserID CHAR(36) NOT NULL PRIMARY KEY,
-		FirstName VARCHAR(255) NOT NULL,
-		LastName VARCHAR(255) NOT NULL,
-		UserName VARCHAR(255),
-		Email VARCHAR(255) NOT NULL UNIQUE,
-		Password CHAR(36) NOT NULL,
-		Privacy TEXT NOT NULL DEFAULT 'public',
-		Online TINYINT(1) NOT NULL DEFAULT 0,
-		DateOfBirth TEXT NOT NULL,
-		Gender TEXT NOT NULL,
-		Avatar BLOB,
-		Nickname TEXT,
-		AboutMe TEXT,
-		FollowerUsernames TEXT,
-		FollowingUsernames TEXT,
-		FollowerUsernamesReceived TEXT,
-		FollowerUsernamesSent TEXT
-		
-	);`
-	//FollowerUsernames TEXT, -- Column containing the string of usernames that you follow
-	//FollowingUsernames TEXT, -- Column containing the string of usernames that follow you
-	//FollowerIDsReceived TEXT, -- Column containing the string of user IDs that sent follow requests to you
-	//FollowerIDsSent TEXT, -- Column containing the string of user IDs that you sent follow requests to
-	query, err := db.Prepare(usersTable)
-	u.CheckErr(err)
-	query.Exec()
-}
-
 // add users to users table
 func AddUser(db *sql.DB, FirstName string, LastName string, UserName string, Email string, Password string, Dob string, Gender string, NickName string, Avatar string, About string) error {
 	records := `INSERT INTO Users (UserID, FirstName, LastName, UserName, Email, Password, Privacy, Online, DateOfBirth, Gender, Avatar, Nickname, AboutMe, FollowerUsernames, FollowerUsernamesReceived, FollowerUsernamesSent, FollowingUsernames)
@@ -80,105 +48,6 @@ func AddUser(db *sql.DB, FirstName string, LastName string, UserName string, Ema
 	if err != nil {
 		return err
 	}
-	return nil
-}
-
-func addDummyUserData(db *sql.DB) error {
-	dummyUsers := []struct {
-		FirstName string
-		LastName  string
-		UserName  string
-		Email     string
-		Password  string
-		Dob       string
-		Gender    string
-		NickName  string
-		Avatar    string
-		About     string
-	}{
-		{
-			FirstName: "Admin",
-			LastName:  "Admin",
-			UserName:  "",
-			Email:     "admin@example.com",
-			Password:  "Admin1234!",
-			Dob:       "1990-01-01",
-			Gender:    "Male",
-			NickName:  "AA",
-			Avatar:    "https://example.com/avatar/johndoe.png",
-			About:     "Hello, I'm Admin!",
-		},
-		{
-			FirstName: "Nafisah",
-			LastName:  "Rantasalmi",
-			UserName:  "",
-			Email:     "nafisah.rantasalmi@gmail.com",
-			Password:  "Nafi1234!",
-			Dob:       "1985-05-15",
-			Gender:    "Female",
-			NickName:  "NR",
-			Avatar:    "https://example.com/avatar/janesmith.png",
-			About:     "Hi there, I'm Nafisah!",
-		},
-		{
-			FirstName: "Jacob",
-			LastName:  "Pesämaa",
-			UserName:  "",
-			Email:     "jacob.pesamaa@gmail.com",
-			Password:  "Jacob1234!",
-			Dob:       "1988-09-30",
-			Gender:    "Male",
-			NickName:  "JP",
-			Avatar:    "https://example.com/avatar/bobjohnson.png",
-			About:     "Nice to meet you, I'm Jacob!",
-		},
-		{
-			FirstName: "Gin",
-			LastName:  "B",
-			UserName:  "",
-			Email:     "gin.thy@gmail.com",
-			Password:  "Gin1234!",
-			Dob:       "1999-04-30",
-			Gender:    "female",
-			NickName:  "GB",
-			Avatar:    "https://example.com/avatar/gin.png",
-			About:     "Nice to meet you, I'm Gin!",
-		},
-		{
-			FirstName: "Ashley",
-			LastName:  "Hgwtra",
-			UserName:  "",
-			Email:     "ashley.h@gmail.com",
-			Password:  "Ashley1234!",
-			Dob:       "1998-08-10",
-			Gender:    "female",
-			NickName:  "AH",
-			Avatar:    "https://example.com/avatar/gin.png",
-			About:     "Nice to meet you, I'm Ashley!",
-		},
-		{
-			FirstName: "Anton",
-			LastName:  "Wiklund",
-			UserName:  "",
-			Email:     "anton.wiklund@gmail.com",
-			Password:  "Anton1234!",
-			Dob:       "1998-08-10",
-			Gender:    "Male",
-			NickName:  "AW",
-			Avatar:    "https://example.com/avatar/gin.png",
-			About:     "Nice to meet you, I'm Anton!",
-		},
-	}
-
-	for _, user := range dummyUsers {
-		randomNumber := rand.Intn(100)
-		user.UserName = user.FirstName + `-` + user.LastName + `-` + strconv.Itoa(randomNumber)
-		err := AddUser(db, user.FirstName, user.LastName, user.UserName, user.Email, user.Password, user.Dob, user.Gender, user.NickName, user.Avatar, user.About)
-		if err != nil {
-			return err
-		}
-	}
-
 	return nil
 }
 

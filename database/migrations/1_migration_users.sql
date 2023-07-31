@@ -15,13 +15,10 @@ CREATE TABLE IF NOT EXISTS Users (
 	Nickname TEXT,
 	AboutMe TEXT,
 	FollowerUsernames TEXT,
+	FollowingUsernames TEXT,
 	FollowerUsernamesReceived TEXT,
 	FollowerUsernamesSent TEXT
 );
-
--- add Users to the list of tables
-INSERT INTO Migrations (Name) VALUES ('Users');
--- create default user name Jacob and password Jacob1234! and email jacob.pesamaa@gmail.com
 
 
 -- +migrate Down
