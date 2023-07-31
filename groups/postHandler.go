@@ -48,11 +48,20 @@ func CreateGroupHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	allGroups, err := d.GetAllGroups()
+	if err != nil {
+		//fmt.Println("error getting all groups")
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
 	// Create a response object
 	response := struct {
-		GroupID string `json:"groupID"`
+		GroupID   string    `json:"groupID"`
+		AllGroups []d.Group `json:"allGroups"`
 	}{
-		GroupID: group.GroupID,
+		GroupID:   group.GroupID,
+		AllGroups: allGroups,
 	}
 
 	// Convert the response object to JSON

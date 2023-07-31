@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import "./Modal.css";
 import Avatar from "../Avatar/Avatar";
+import { useDispatch } from 'react-redux';
 
 function CreateGroupModal(props) {
+  const dispatch = useDispatch();
   const userInfo = useSelector((state) => state.userInfo);
   const allusers = useSelector((state) => state.allUsers);
   const [myFriends, setMyFriends] = useState([]); // [{username: "John", displayname: "John Doe"}, {username: "Jane", displayname: "Jane Doe"}
@@ -103,9 +105,12 @@ function CreateGroupModal(props) {
 
       // fetch the group id
       const group = await response.json();
+      console.log("create group: ", group);
+      const allgroups = group.allGroups
+      dispatch({ type: "SET_ALLGROUPS", payload: allgroups });
       const groupId = group.groupID;
       alert("Group created");
-      window.location.href = `/singlegroup/${groupId}`;
+      window.location.href = `/singlegroup/${groupId}`; 
     } catch (error) {
       console.log(error);
     } 

@@ -6,12 +6,16 @@ import { useDispatch } from 'react-redux';
 
 function GroupInviteModal(props) {
   const dispatch = useDispatch();
+  console.log("props group invite modal", props)
   // define websocket connection from redux store websocket
   const websocket = useSelector((state) => state.websocket);
   const userInfo = useSelector((state) => state.userInfo);
   const allGroups = useSelector((state) => state.allGroups);
+  console.log("all groups", allGroups)
   const allusers = useSelector((state) => state.allUsers);
+  // get group info with props.groupID from allGroups
   const group = allGroups.find((group) => group.GroupID === props.groupID);
+  console.log("group group invite modal", group)
   const groupAdmin = group.Admin;
   const MemberInvitedUsernames = group.MemberInvitedUsernames
   const AdminInvitedUsernames = group.AdminInvitedUsernames
