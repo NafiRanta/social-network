@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./Modal.css";
 import { useSelector } from "react-redux";
 import Avatar from "../Avatar/Avatar";
@@ -8,10 +8,10 @@ function CreatePostModal(props) {
   const userInfo = useSelector((state) => state.userInfo);
   const allusers = useSelector ((state) => state.allUsers)
   const [selectedImage, setSelectedImage] = useState(null);
-  const [fileName, setFileName] = useState("");
   // const [includedFriends, setIncludedFriends] = useState("");
   const [privacy, setPrivacy] = useState(''); // Initialize the selected privacy option state
   const [selectedUsers, setSelectedUsers] = useState([]);
+  const fileInputRef = useRef();
 
   const handlePrivacyChange = (event) => {
     setPrivacy(event.target.value); // Update the selected privacy option
@@ -33,18 +33,24 @@ function CreatePostModal(props) {
     }
   };
  
-  const handleImageUpload = (event) => {
-    const file = event.target.files[0];
-    const reader = new FileReader();
 
-    reader.onloadend = () => {
-      setSelectedImage(reader.result);
-    };
-
+  const handleFileInputChange = (e) => {
+    const file = e.target.files[0];
     if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setSelectedImage(reader.result);
+      };
       reader.readAsDataURL(file);
-      setFileName(file.name);
     }
+  };
+
+  const handleUploadButtonClick = () => {
+    fileInputRef.current && fileInputRef.current.click();
+  };
+
+  const handleRemoveImage = () => {
+    setSelectedImage(null);
   };
 
   const handlePostSubmit = async (event) => {
@@ -163,6 +169,7 @@ function CreatePostModal(props) {
                   ></textarea>
                 </div>
                 {selectedImage && (
+                  <>
                   <div className="mt-3">
                     <img
                       src={selectedImage}
@@ -170,32 +177,28 @@ function CreatePostModal(props) {
                       className="img-fluid rounded"
                     />
                   </div>
+                  <div className="remove-btn text-center">
+                    <button type="button" className="btn btn-primary" onClick={handleRemoveImage}>Remove</button>
+                </div>
+                  </>
                 )}
-                {selectedImage && (
-                  <div className="mt-3">
-                    <button
-                      type="button"
-                      className="btn btn-secondary w-100"
-                      onClick={() => setSelectedImage(null)} // Set selectedImage to null on button click
-                    >
-                      Remove Picture
-                    </button>
-                  </div>
-                )}
+                {!selectedImage && (
                 <div className="d-flex justify-content-between border border-1 border-light rounded p-3 mt-3">
                   <p className="m-0">Add image to your post</p>
-                  <div>
-                    <label htmlFor="uploadImage">
+                  <div onClick={handleUploadButtonClick}>
                       <i className="fas fa-images fs-5 text-success pointer mx-1"></i>
-                    </label>
                     <input
                       type="file"
                       id="uploadImage"
                       style={{ display: "none" }}
-                      onChange={handleImageUpload}
+                      accept=".jpg, .jpeg, .png, .gif"
+                      max-size="1000000"
+                      ref={fileInputRef} 
+                      onChange={handleFileInputChange}
                     />
                   </div>
                 </div>
+                 )}
               </div>
             </div>
           </div>
