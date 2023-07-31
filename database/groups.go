@@ -4,7 +4,6 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
-	u "socialnetwork/utils"
 	"time"
 
 	"github.com/google/uuid"
@@ -51,28 +50,6 @@ type InvitesByMemberResponse struct {
 type AcceptJoinRequest struct {
 	GroupID  string `json:"groupID"`
 	UserName string `json:"userName"`
-}
-
-func CreateGroupsTable(db *sql.DB) {
-	groupsTable := `
-	CREATE TABLE IF NOT EXISTS Groups (
-		GroupID CHAR(36) NOT NULL,
-		GroupName TEXT NOT NULL,
-		GroupDescription TEXT NOT NULL,
-		Admin TEXT NOT NULL,
-		AdminInvitedUsernames TEXT,
-		MemberInvitedUsernames TEXT,
-		RequestUsernames TEXT,
-		MemberUsernames TEXT,
-		PostIDs TEXT,
-		EventIDs TEXT,
-		CreateAt TIMESTAMP NOT NULL,
-		PRIMARY KEY (GroupID)
-	);`
-
-	query, err := db.Prepare(groupsTable)
-	u.CheckErr(err)
-	query.Exec()
 }
 
 func AddGroup(group *GroupResponse) error {

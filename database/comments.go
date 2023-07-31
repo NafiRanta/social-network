@@ -29,23 +29,6 @@ type CommentResponse struct {
 	AuthorLastName  string    `json:"authorLastName"`
 }
 
-// CreateCommentsTable creates the Comments table in the database if it does not exist.
-func CreateCommentsTable(db *sql.DB) {
-	commentsTable := `
-	CREATE TABLE IF NOT EXISTS Comments (
-		CommentID CHAR(36) NOT NULL,
-		PostID CHAR(36) NOT NULL,
-		UserName CHAR(36) NOT NULL,
-		Content TEXT NOT NULL,
-		CreateAt TIMESTAMP NOT NULL,
-		PRIMARY KEY (CommentID)
-	);`
-
-	query, err := db.Prepare(commentsTable)
-	u.CheckErr(err)
-	query.Exec()
-}
-
 // AddComment adds a new comment to the database.
 func AddComment(comment *CommentResponse) error {
 	db, err := sql.Open("sqlite3", "./socialnetwork.db")

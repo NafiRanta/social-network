@@ -3,7 +3,7 @@ package database
 import (
 	"database/sql"
 	//"fmt"
-	u "socialnetwork/utils"
+
 	"time"
 
 	"github.com/google/uuid"
@@ -27,24 +27,6 @@ type GroupPostResponse struct {
 	Content     string    `json:"content"`
 	Image       string    `json:"image"`
 	CreateAt    time.Time `json:"createAt"`
-}
-
-// CreateGroupPostsTable creates the GroupPosts table in the database if it does not exist.
-func CreateGroupPostsTable(db *sql.DB) {
-	groupPostsTable := `
-	CREATE TABLE IF NOT EXISTS GroupPosts (
-		GroupPostID CHAR(36) NOT NULL,
-		GroupID CHAR(36) NOT NULL,
-		UserName CHAR(36) NOT NULL,
-		Content TEXT NOT NULL,
-		Image BLOB NULL,
-		CreateAt TIMESTAMP NOT NULL,
-		PRIMARY KEY (GroupPostID)
-	);`
-
-	query, err := db.Prepare(groupPostsTable)
-	u.CheckErr(err)
-	query.Exec()
 }
 
 // AddGroupPost adds a new group post to the database.

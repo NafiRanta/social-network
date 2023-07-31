@@ -2,8 +2,9 @@ package database
 
 import (
 	"database/sql"
-	//"fmt"
 	u "socialnetwork/utils"
+	//"fmt"
+
 	"time"
 
 	"github.com/google/uuid"

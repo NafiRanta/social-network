@@ -1,4 +1,4 @@
-package groupposts
+package groupPost
 
 import (
 	"encoding/json"
