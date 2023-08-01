@@ -199,10 +199,7 @@ function Chat(props) {
 
 
   const displayGroupChats = () => {
-      // set chatmate to null
-      dispatch ({ type: "SET_CHATMATEUSERNAME", payload: null });
-      // return ;
-    // }
+    console.log("displayGroupChats mygroups", mygroups);
     // save GroupName and GroupID to a variable called filteredData
     let filteredData = mygroups.map((group) => {
       return {
@@ -216,7 +213,6 @@ function Chat(props) {
     return filteredData.map((group) => {
       const chatMatedisplayName = group.GroupName;
       const chatMateusername = group.GroupID;
-      dispatch ({ type: "SET_CHATMATEUSERNAME", payload: chatMateusername });
       return (
         <div key={chatMateusername}>
           <ul className="users">

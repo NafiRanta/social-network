@@ -60,7 +60,6 @@ func GetEventNotificationsHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	// check authorization header token
-	fmt.Println("GetEventNotificationsHandler")
 	authHeader := r.Header.Get("Authorization")
 	if authHeader == "" {
 		//fmt.Println("Missing auth header")
@@ -135,5 +134,4 @@ func GetEventNotificationsHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	w.Write(responseJSON)
-	fmt.Println("GroupEventNotifications got successfully")
 }
