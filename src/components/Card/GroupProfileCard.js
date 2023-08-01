@@ -48,6 +48,9 @@ function GroupProfileCard(props) {
     
           if (res.ok) {
             setPendingJoinRequest(true);
+            const data = await res.json();
+            const allGroups = data.allGroups;
+            dispatch({ type: "SET_ALLGROUPS", payload: allGroups });
             setGroupsToDisplay((prevGroups) =>
               prevGroups.map((group) =>
                 group.GroupID === groupId
@@ -64,39 +67,40 @@ function GroupProfileCard(props) {
         }
       };
 
-      console.log("groupsToDisplay", groupsToDisplay);
-      console.log("pendingJoinRequest", pendingJoinRequest)
-      const renderGroupActions = (group) => {
-        if (window.location.pathname === "/allgroups") {
-          console.log("group rendergroupactions", group);
+    const renderGroupActions = (group) => {
+      if (window.location.pathname === "/allgroups") {
+        console.log("group rendergroupactions", group.GroupName, group);
+        
+        const memberUsernames = JSON.parse(group.MemberUsernames) || [];
+        const isMember = memberUsernames.includes(userInfo.UserName);
+        console.log("isMember", isMember)
+        const isAdmin = group.AdminID === userInfo.UserName;
+        const isPendingJoinRequest = group.RequestUsernames.includes(userInfo.UserName);
+        console.log("isPendingJoinRequest xxx", isPendingJoinRequest)
       
-          const memberUsernames = JSON.parse(group.MemberUsernames) || [];
-          const isMember = memberUsernames.includes(userInfo.UserName);
-          console.log("isMember", isMember)
-          const isAdmin = group.AdminID === userInfo.UserName;
-          const isPendingJoinRequest = pendingJoinRequest && !isMember && !isAdmin;
-      
-          if (isMember || isAdmin) {
-            return (
-              <Link
-                to={`/singlegroup/${group.GroupID}`}
-                className="btn btn-primary btn-sm d-flex justify-content-center align-items-center"
-              >
-                View
-              </Link>
-            );
-          } else {
-            return (
-              <button
-                className={`btn btn-primary btn-sm d-flex justify-content-center align-items-center ${isPendingJoinRequest ? "disabled" : ""}`}
-                id="joinbutton"
-                onClick={() => handleJoinGroup(group.GroupID)}
-                disabled={isPendingJoinRequest}
-              >
-                {isPendingJoinRequest ? "Pending Join" : "Join" ? "Join" : "Join"}
-              </button>
-            );
-          }
+    
+        if (isMember || isAdmin) {
+          return (
+            <Link
+              to={`/singlegroup/${group.GroupID}`}
+              className="btn btn-primary btn-sm d-flex justify-content-center align-items-center"
+            >
+              View
+            </Link>
+          );
+        } else {
+          return (
+            <button
+              className={`btn btn-primary btn-sm d-flex justify-content-center align-items-center ${isPendingJoinRequest ? "disabled" : ""}`}
+              id="joinbutton"
+              onClick={() => handleJoinGroup(group.GroupID)}
+              disabled={isPendingJoinRequest}
+            >
+              {isPendingJoinRequest ? "Pending Join" : "Join" ? "Join" : "Join"}
+            </button>
+          );
+        }
+
         } else {
           return (
             <Link
