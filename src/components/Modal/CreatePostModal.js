@@ -60,15 +60,12 @@ function CreatePostModal(props) {
     const postPrivacy = document.getElementById("postPrivacy").value;
     const now = new Date();
 
-    // Replace newline characters with <br> tags
-    const formattedContent = postContent.replace(/\n/g, "<br>");
-
     // Create an object with the required properties
     const postData = {
       username: userInfo.UserName,
       privacy: postPrivacy,
       IncludedFriends: [],
-      content: formattedContent,
+      content: postContent,
       image: selectedImage,
       createAt: now,
     };
