@@ -69,4 +69,19 @@
     margin-right: 0px !important;
 }
 
+.form-control {
+    height: 45px;
+}
 
+#pictureButton {
+    width: fit-content;
+    height: 55px;
+}
+
+#commentImg {
+    margin-top: 5px;
+}
+
+#commentAuthors {
+    margin-top: -5px !important;
+}

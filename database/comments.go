@@ -2,7 +2,8 @@ package database
 
 import (
 	"database/sql"
-	//"fmt"
+
+	// "log"
 	u "socialnetwork/utils"
 	"time"
 
@@ -15,6 +16,7 @@ type Comment struct {
 	PostID    string
 	UserName  string
 	Content   string
+	Image     string
 	CreateAt  time.Time
 }
 
@@ -24,9 +26,28 @@ type CommentResponse struct {
 	PostID          string    `json:"postID"`
 	UserName        string    `json:"userName"`
 	Content         string    `json:"content"`
+	Image           string    `json:"image"`
 	CreateAt        time.Time `json:"createAt"`
 	AuthorFirstName string    `json:"authorFirstName"`
 	AuthorLastName  string    `json:"authorLastName"`
+}
+
+// CreateCommentsTable creates the Comments table in the database if it does not exist.
+func CreateCommentsTable(db *sql.DB) {
+	commentsTable := `
+	CREATE TABLE IF NOT EXISTS Comments (
+		CommentID CHAR(36) NOT NULL,
+		PostID CHAR(36) NOT NULL,
+		UserName CHAR(36) NOT NULL,
+		Content TEXT NOT NULL,
+		Image BLOB NULL,
+		CreateAt TIMESTAMP NOT NULL,
+		PRIMARY KEY (CommentID)
+	);`
+
+	query, err := db.Prepare(commentsTable)
+	u.CheckErr(err)
+	query.Exec()
 }
 
 // AddComment adds a new comment to the database.
@@ -37,8 +58,8 @@ func AddComment(comment *CommentResponse) error {
 	}
 	defer db.Close()
 	query := `
-		INSERT INTO Comments (CommentID, PostID, UserName, Content, CreateAt)
-			VALUES (?, ?, ?, ?, ?);`
+		INSERT INTO Comments (CommentID, PostID, UserName, Content, Image, CreateAt)
+			VALUES (?, ?, ?, ?, ?, ?)`
 
 	// Generate UUID for commentID
 	comment.CommentID = uuid.New().String()
@@ -49,6 +70,7 @@ func AddComment(comment *CommentResponse) error {
 		comment.PostID,
 		comment.UserName,
 		comment.Content,
+		comment.Image,
 		comment.CreateAt,
 	)
 	u.CheckErr(err)
@@ -64,7 +86,7 @@ func GetCommentsByPostID(postID string) ([]CommentResponse, error) {
 	defer db.Close()
 
 	query := `
-		SELECT CommentID, PostID, UserName, Content, CreateAt
+		SELECT CommentID, PostID, UserName, Content, Image, CreateAt
 		FROM Comments
 		WHERE PostID = ?
 	`
@@ -82,6 +104,7 @@ func GetCommentsByPostID(postID string) ([]CommentResponse, error) {
 			&comment.PostID,
 			&comment.UserName,
 			&comment.Content,
+			&comment.Image,
 			&comment.CreateAt,
 		)
 		if err != nil {

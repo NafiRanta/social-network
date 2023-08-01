@@ -7,13 +7,28 @@ function CommentCard(props) {
   const userInfo = useSelector((state) => state.userInfo);
   const token = localStorage.getItem("token");
   const postId = props.PostID;
-
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [fileName, setFileName] = useState("");
   const [commentInput, setCommentInput] = useState("");
   const [comments, setComments] = useState([]);
   const [commentCount, setCommentCount] = useState(0);
 
   const handleInputChange = (e) => {
     setCommentInput(e.target.value);
+  };
+
+  const handleImageUpload = (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+
+    reader.onloadend = () => {
+      setSelectedImage(reader.result);
+    };
+
+    if (file) {
+      reader.readAsDataURL(file);
+      setFileName(file.name);
+    }
   };
 
   const getComments = async () => {
@@ -31,6 +46,7 @@ function CommentCard(props) {
         if (data.comments !== null) {
           setComments(data.comments);
           setCommentCount(data.comments.length);
+          setSelectedImage(data.selectedImage)
           comments.map((comment) => {
             console.log("comment", comment);
           })
@@ -62,6 +78,7 @@ function CommentCard(props) {
       content: comment,
       createAt: now,
       userName: userInfo.UserName,
+      image: selectedImage,
       postID: postId,
     };
 
@@ -83,6 +100,7 @@ function CommentCard(props) {
       if (res.ok) {
         getComments();
         setCommentInput("");
+        setSelectedImage(null);
       } else {
         throw new Error("Error occurred while creating the comment");
       }
@@ -146,34 +164,78 @@ function CommentCard(props) {
               {comments &&
                 comments.map((comment, index) => (
                   <div
-                    className="d-flex align-items-center my-1"
+                    className="d-flex align-items-start my-0"
                     key={`${comment.commentID}-${index}`}
                   >
                     <Avatar username={comment.AuthorID}/>
                     <div className="p-3 rounded comment__input w-100">
-                      <p className="fw-bold m-0">
+                      <p className="fw-bold m-1" id="commentAuthors">
                           {comment.authorFirstName} {comment.authorLastName}
                       </p>
-                      <p className="m-0 fs-7 bg-gray p-2 rounded">
+                      <p className="m-0 fs-6 bg-gray p-2 rounded">
                         {comment.content}
                       </p>
+                      {comment.image && (
+                        <img
+                          src={comment.image}
+                          alt="comment image"
+                          className="img-fluid rounded"
+                          id="commentImg"
+                        />
+                      )}
                       <p className="m-0 fs-7 text-muted">
                         {formatCommentDate(comment.createAt)}
                       </p>
                     </div>
                   </div>
                 ))}
-              <form className="d-flex my-1" onSubmit={handleCommentSubmit}>
+              <form className="d-flex my-1 align-items-start" onSubmit={handleCommentSubmit}>
                 <div>
                   <Avatar userDisplayname={props.userDisplayname} />
                 </div>
+                <div  id="commentBox" className="d-flex flex-column flex-grow-1">
                 <input
                   type="text"
-                  className="form-control border-0 rounded-pill bg-gray"
+                  className="form-control border-0 rounded-pill bg-gray w-500"
                   placeholder="Write a comment"
                   value={commentInput}
                   onChange={handleInputChange}
                 />
+                {/* Add image to comments */}
+                <div className="d-flex justify-content-left border border-1 border-light rounded p-3 mt-3" id="pictureButton">
+                  <div>
+                    <label htmlFor="uploadImageComment">
+                      <i className="fas fa-images fs-5 text-success pointer mx-1"></i>
+                    </label>
+                    <input
+                      type="file"
+                      id="uploadImageComment"
+                      style={{ display: "none" }}
+                      onChange={handleImageUpload}
+                    />
+                  </div>
+                </div>
+                {selectedImage && (
+                  <div className="mt-3">
+                    <img
+                      src={selectedImage}
+                      alt="Selected"
+                      className="img-fluid rounded"
+                    />
+                  </div>
+                )}
+                {selectedImage && (
+                  <div className="mt-3">
+                    <button
+                      type="button"
+                      className="btn btn-secondary w-100"
+                      onClick={() => setSelectedImage(null)} // Set selectedImage to null on button click
+                    >
+                      Remove Picture
+                    </button>
+                  </div>
+                )}
+                </div>
               </form>
             </div>
           </div>

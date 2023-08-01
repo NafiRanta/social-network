@@ -9022,6 +9022,7 @@ created by net/http.(*Server).Serve
 2023/07/25 14:11:29 writemsg error websocket: close sent
 2023/07/25 14:12:03 failed to send message: websocket: close sent
 2023/07/25 14:12:11 writemsg error websocket: close sent
+<<<<<<< Updated upstream
 2023/07/27 17:40:34 http: panic serving [::1]:65236: runtime error: invalid memory address or nil pointer dereference
 goroutine 67 [running]:
 net/http.(*conn).serve.func1()
@@ -9788,3 +9789,406 @@ created by net/http.(*Server).Serve
 2023/07/29 00:18:37 writemsg error websocket: close sent
 2023/07/29 00:24:21 failed to send message: websocket: close sent
 2023/07/29 00:24:26 writemsg error websocket: close sent
+=======
+2023/07/26 13:38:34 failed to send message: websocket: close sent
+2023/07/26 13:38:43 writemsg error websocket: close sent
+2023/07/26 13:54:35 failed to send message: websocket: close sent
+2023/07/26 13:54:38 writemsg error websocket: close sent
+2023/07/26 13:54:50 failed to send message: websocket: close sent
+2023/07/26 13:54:54 writemsg error websocket: close sent
+2023/07/26 14:16:56 failed to send message: write tcp [::1]:8080->[::1]:49802: use of closed network connection
+2023/07/26 14:17:04 writemsg error write tcp [::1]:8080->[::1]:49802: use of closed network connection
+2023/07/26 15:35:55 failed to send message: websocket: close sent
+2023/07/26 15:36:03 writemsg error websocket: close sent
+2023/07/28 14:22:01 failed to send message: websocket: close sent
+2023/07/28 14:22:09 writemsg error websocket: close sent
+2023/07/28 14:34:35 failed to send message: websocket: close sent
+2023/07/28 14:34:42 writemsg error websocket: close sent
+2023/07/28 14:34:51 [2023-07-28 14:34:51] ERROR: table Comments has no column named Image
+2023/07/28 14:34:51 http: panic serving [::1]:51114: runtime error: invalid memory address or nil pointer dereference
+goroutine 284 [running]:
+net/http.(*conn).serve.func1()
+	/usr/local/go/src/net/http/server.go:1802 +0xb9
+panic({0x4458000, 0x4774c60})
+	/usr/local/go/src/runtime/panic.go:1047 +0x266
+database/sql.(*Stmt).ExecContext(0x0, {0x452c0b0, 0xc0000a2000}, {0xc0001ab8c8, 0x6, 0x6})
+	/usr/local/go/src/database/sql/sql.go:2578 +0x82
+database/sql.(*Stmt).Exec(...)
+	/usr/local/go/src/database/sql/sql.go:2610
+socialnetwork/database.AddComment(0xc0002e23f0)
+	/Users/hgwtra/gritlab/social-network/database/comments.go:68 +0x34d
+socialnetwork/comments.AddCommentHandler({0x4529df0, 0xc00025c2a0}, 0xc00012a400)
+	/Users/hgwtra/gritlab/social-network/comments/postHandler.go:27 +0xe5
+net/http.HandlerFunc.ServeHTTP(0xc90000c00018c2d0, {0x4529df0, 0xc00025c2a0}, 0xc0001ab9f8)
+	/usr/local/go/src/net/http/server.go:2047 +0x2f
+net/http.(*ServeMux).ServeHTTP(0x4482de0, {0x4529df0, 0xc00025c2a0}, 0xc00012a400)
+	/usr/local/go/src/net/http/server.go:2425 +0x149
+socialnetwork/utils.CorsMiddleware.func1({0x4529df0, 0xc00025c2a0}, 0xc00012a400)
+	/Users/hgwtra/gritlab/social-network/utils/cors.go:23 +0x352
+net/http.HandlerFunc.ServeHTTP(0x0, {0x4529df0, 0xc00025c2a0}, 0x6d64a447b483)
+	/usr/local/go/src/net/http/server.go:2047 +0x2f
+net/http.serverHandler.ServeHTTP({0x4529040}, {0x4529df0, 0xc00025c2a0}, 0xc00012a400)
+	/usr/local/go/src/net/http/server.go:2879 +0x43b
+net/http.(*conn).serve(0xc0000b7040, {0x452c120, 0xc00009dda0})
+	/usr/local/go/src/net/http/server.go:1930 +0xb08
+created by net/http.(*Server).Serve
+	/usr/local/go/src/net/http/server.go:3034 +0x4e8
+2023/07/28 14:34:51 [2023-07-28 14:34:51] ERROR: table Comments has no column named Image
+2023/07/28 14:34:51 http: panic serving [::1]:52933: runtime error: invalid memory address or nil pointer dereference
+goroutine 418 [running]:
+net/http.(*conn).serve.func1()
+	/usr/local/go/src/net/http/server.go:1802 +0xb9
+panic({0x4458000, 0x4774c60})
+	/usr/local/go/src/runtime/panic.go:1047 +0x266
+database/sql.(*Stmt).ExecContext(0x0, {0x452c0b0, 0xc0000a2000}, {0xc0001af8c8, 0x6, 0x6})
+	/usr/local/go/src/database/sql/sql.go:2578 +0x82
+database/sql.(*Stmt).Exec(...)
+	/usr/local/go/src/database/sql/sql.go:2610
+socialnetwork/database.AddComment(0xc0001322d0)
+	/Users/hgwtra/gritlab/social-network/database/comments.go:68 +0x34d
+socialnetwork/comments.AddCommentHandler({0x4529df0, 0xc000102000}, 0xc000220100)
+	/Users/hgwtra/gritlab/social-network/comments/postHandler.go:27 +0xe5
+net/http.HandlerFunc.ServeHTTP(0x120000c0000120c0, {0x4529df0, 0xc000102000}, 0xc0001889f8)
+	/usr/local/go/src/net/http/server.go:2047 +0x2f
+net/http.(*ServeMux).ServeHTTP(0x4482de0, {0x4529df0, 0xc000102000}, 0xc000220100)
+	/usr/local/go/src/net/http/server.go:2425 +0x149
+socialnetwork/utils.CorsMiddleware.func1({0x4529df0, 0xc000102000}, 0xc000220100)
+	/Users/hgwtra/gritlab/social-network/utils/cors.go:23 +0x352
+net/http.HandlerFunc.ServeHTTP(0x0, {0x4529df0, 0xc000102000}, 0x6d64a6837a60)
+	/usr/local/go/src/net/http/server.go:2047 +0x2f
+net/http.serverHandler.ServeHTTP({0x4529040}, {0x4529df0, 0xc000102000}, 0xc000220100)
+	/usr/local/go/src/net/http/server.go:2879 +0x43b
+net/http.(*conn).serve(0xc0001f40a0, {0x452c120, 0xc00009dda0})
+	/usr/local/go/src/net/http/server.go:1930 +0xb08
+created by net/http.(*Server).Serve
+	/usr/local/go/src/net/http/server.go:3034 +0x4e8
+2023/07/28 14:35:19 [2023-07-28 14:35:19] ERROR: table Comments has no column named Image
+2023/07/28 14:35:19 http: panic serving [::1]:53042: runtime error: invalid memory address or nil pointer dereference
+goroutine 412 [running]:
+net/http.(*conn).serve.func1()
+	/usr/local/go/src/net/http/server.go:1802 +0xb9
+panic({0x4458000, 0x4774c60})
+	/usr/local/go/src/runtime/panic.go:1047 +0x266
+database/sql.(*Stmt).ExecContext(0x0, {0x452c0b0, 0xc0000a2000}, {0xc0001af8c8, 0x6, 0x6})
+	/usr/local/go/src/database/sql/sql.go:2578 +0x82
+database/sql.(*Stmt).Exec(...)
+	/usr/local/go/src/database/sql/sql.go:2610
+socialnetwork/database.AddComment(0xc0001325a0)
+	/Users/hgwtra/gritlab/social-network/database/comments.go:68 +0x34d
+socialnetwork/comments.AddCommentHandler({0x4529df0, 0xc0001022a0}, 0xc000220300)
+	/Users/hgwtra/gritlab/social-network/comments/postHandler.go:27 +0xe5
+net/http.HandlerFunc.ServeHTTP(0x2b0000c000012390, {0x4529df0, 0xc0001022a0}, 0xc0001889f8)
+	/usr/local/go/src/net/http/server.go:2047 +0x2f
+net/http.(*ServeMux).ServeHTTP(0x4482de0, {0x4529df0, 0xc0001022a0}, 0xc000220300)
+	/usr/local/go/src/net/http/server.go:2425 +0x149
+socialnetwork/utils.CorsMiddleware.func1({0x4529df0, 0xc0001022a0}, 0xc000220300)
+	/Users/hgwtra/gritlab/social-network/utils/cors.go:23 +0x352
+net/http.HandlerFunc.ServeHTTP(0x0, {0x4529df0, 0xc0001022a0}, 0x6d6b208252a0)
+	/usr/local/go/src/net/http/server.go:2047 +0x2f
+net/http.serverHandler.ServeHTTP({0x4529040}, {0x4529df0, 0xc0001022a0}, 0xc000220300)
+	/usr/local/go/src/net/http/server.go:2879 +0x43b
+net/http.(*conn).serve(0xc0001f4280, {0x452c120, 0xc00009dda0})
+	/usr/local/go/src/net/http/server.go:1930 +0xb08
+created by net/http.(*Server).Serve
+	/usr/local/go/src/net/http/server.go:3034 +0x4e8
+2023/07/28 14:35:20 [2023-07-28 14:35:20] ERROR: table Comments has no column named Image
+2023/07/28 14:35:20 http: panic serving [::1]:53047: runtime error: invalid memory address or nil pointer dereference
+goroutine 420 [running]:
+net/http.(*conn).serve.func1()
+	/usr/local/go/src/net/http/server.go:1802 +0xb9
+panic({0x4458000, 0x4774c60})
+	/usr/local/go/src/runtime/panic.go:1047 +0x266
+database/sql.(*Stmt).ExecContext(0x0, {0x452c0b0, 0xc0000a2000}, {0xc0001b38c8, 0x6, 0x6})
+	/usr/local/go/src/database/sql/sql.go:2578 +0x82
+database/sql.(*Stmt).Exec(...)
+	/usr/local/go/src/database/sql/sql.go:2610
+socialnetwork/database.AddComment(0xc0002e2240)
+	/Users/hgwtra/gritlab/social-network/database/comments.go:68 +0x34d
+socialnetwork/comments.AddCommentHandler({0x4529df0, 0xc000146000}, 0xc000266000)
+	/Users/hgwtra/gritlab/social-network/comments/postHandler.go:27 +0xe5
+net/http.HandlerFunc.ServeHTTP(0xe20000c00018c090, {0x4529df0, 0xc000146000}, 0xc0001829f8)
+	/usr/local/go/src/net/http/server.go:2047 +0x2f
+net/http.(*ServeMux).ServeHTTP(0x4482de0, {0x4529df0, 0xc000146000}, 0xc000266000)
+	/usr/local/go/src/net/http/server.go:2425 +0x149
+socialnetwork/utils.CorsMiddleware.func1({0x4529df0, 0xc000146000}, 0xc000266000)
+	/Users/hgwtra/gritlab/social-network/utils/cors.go:23 +0x352
+net/http.HandlerFunc.ServeHTTP(0x0, {0x4529df0, 0xc000146000}, 0x6d6b5ca3c37e)
+	/usr/local/go/src/net/http/server.go:2047 +0x2f
+net/http.serverHandler.ServeHTTP({0x4529040}, {0x4529df0, 0xc000146000}, 0xc000266000)
+	/usr/local/go/src/net/http/server.go:2879 +0x43b
+net/http.(*conn).serve(0xc0000b7040, {0x452c120, 0xc00009dda0})
+	/usr/local/go/src/net/http/server.go:1930 +0xb08
+created by net/http.(*Server).Serve
+	/usr/local/go/src/net/http/server.go:3034 +0x4e8
+2023/07/28 14:35:20 [2023-07-28 14:35:20] ERROR: table Comments has no column named Image
+2023/07/28 14:35:20 http: panic serving [::1]:53052: runtime error: invalid memory address or nil pointer dereference
+goroutine 415 [running]:
+net/http.(*conn).serve.func1()
+	/usr/local/go/src/net/http/server.go:1802 +0xb9
+panic({0x4458000, 0x4774c60})
+	/usr/local/go/src/runtime/panic.go:1047 +0x266
+database/sql.(*Stmt).ExecContext(0x0, {0x452c0b0, 0xc0000a2000}, {0xc0001af8c8, 0x6, 0x6})
+	/usr/local/go/src/database/sql/sql.go:2578 +0x82
+database/sql.(*Stmt).Exec(...)
+	/usr/local/go/src/database/sql/sql.go:2610
+socialnetwork/database.AddComment(0xc0001327e0)
+	/Users/hgwtra/gritlab/social-network/database/comments.go:68 +0x34d
+socialnetwork/comments.AddCommentHandler({0x4529df0, 0xc000102380}, 0xc000220500)
+	/Users/hgwtra/gritlab/social-network/comments/postHandler.go:27 +0xe5
+net/http.HandlerFunc.ServeHTTP(0xef0000c0000125b0, {0x4529df0, 0xc000102380}, 0xc0001889f8)
+	/usr/local/go/src/net/http/server.go:2047 +0x2f
+net/http.(*ServeMux).ServeHTTP(0x4482de0, {0x4529df0, 0xc000102380}, 0xc000220500)
+	/usr/local/go/src/net/http/server.go:2425 +0x149
+socialnetwork/utils.CorsMiddleware.func1({0x4529df0, 0xc000102380}, 0xc000220500)
+	/Users/hgwtra/gritlab/social-network/utils/cors.go:23 +0x352
+net/http.HandlerFunc.ServeHTTP(0x0, {0x4529df0, 0xc000102380}, 0x6d6b65cca464)
+	/usr/local/go/src/net/http/server.go:2047 +0x2f
+net/http.serverHandler.ServeHTTP({0x4529040}, {0x4529df0, 0xc000102380}, 0xc000220500)
+	/usr/local/go/src/net/http/server.go:2879 +0x43b
+net/http.(*conn).serve(0xc0001f4460, {0x452c120, 0xc00009dda0})
+	/usr/local/go/src/net/http/server.go:1930 +0xb08
+created by net/http.(*Server).Serve
+	/usr/local/go/src/net/http/server.go:3034 +0x4e8
+2023/07/28 14:35:20 [2023-07-28 14:35:20] ERROR: table Comments has no column named Image
+2023/07/28 14:35:20 http: panic serving [::1]:53053: runtime error: invalid memory address or nil pointer dereference
+goroutine 434 [running]:
+net/http.(*conn).serve.func1()
+	/usr/local/go/src/net/http/server.go:1802 +0xb9
+panic({0x4458000, 0x4774c60})
+	/usr/local/go/src/runtime/panic.go:1047 +0x266
+database/sql.(*Stmt).ExecContext(0x0, {0x452c0b0, 0xc0000a2000}, {0xc0002538c8, 0x6, 0x6})
+	/usr/local/go/src/database/sql/sql.go:2578 +0x82
+database/sql.(*Stmt).Exec(...)
+	/usr/local/go/src/database/sql/sql.go:2610
+socialnetwork/database.AddComment(0xc0000ce120)
+	/Users/hgwtra/gritlab/social-network/database/comments.go:68 +0x34d
+socialnetwork/comments.AddCommentHandler({0x4529df0, 0xc00020c000}, 0xc00012a000)
+	/Users/hgwtra/gritlab/social-network/comments/postHandler.go:27 +0xe5
+net/http.HandlerFunc.ServeHTTP(0x9a0000c00029a090, {0x4529df0, 0xc00020c000}, 0xc0000589f8)
+	/usr/local/go/src/net/http/server.go:2047 +0x2f
+net/http.(*ServeMux).ServeHTTP(0x4482de0, {0x4529df0, 0xc00020c000}, 0xc00012a000)
+	/usr/local/go/src/net/http/server.go:2425 +0x149
+socialnetwork/utils.CorsMiddleware.func1({0x4529df0, 0xc00020c000}, 0xc00012a000)
+	/Users/hgwtra/gritlab/social-network/utils/cors.go:23 +0x352
+net/http.HandlerFunc.ServeHTTP(0x0, {0x4529df0, 0xc00020c000}, 0x6d6b6fac51ae)
+	/usr/local/go/src/net/http/server.go:2047 +0x2f
+net/http.serverHandler.ServeHTTP({0x4529040}, {0x4529df0, 0xc00020c000}, 0xc00012a000)
+	/usr/local/go/src/net/http/server.go:2879 +0x43b
+net/http.(*conn).serve(0xc0002860a0, {0x452c120, 0xc00009dda0})
+	/usr/local/go/src/net/http/server.go:1930 +0xb08
+created by net/http.(*Server).Serve
+	/usr/local/go/src/net/http/server.go:3034 +0x4e8
+2023/07/28 14:35:25 failed to send message: websocket: close sent
+2023/07/28 14:35:29 writemsg error websocket: close sent
+2023/07/28 14:35:33 [2023-07-28 14:35:33] ERROR: table Comments has no column named Image
+2023/07/28 14:35:33 http: panic serving [::1]:53109: runtime error: invalid memory address or nil pointer dereference
+goroutine 483 [running]:
+net/http.(*conn).serve.func1()
+	/usr/local/go/src/net/http/server.go:1802 +0xb9
+panic({0x4458000, 0x4774c60})
+	/usr/local/go/src/runtime/panic.go:1047 +0x266
+database/sql.(*Stmt).ExecContext(0x0, {0x452c0b0, 0xc0000a2000}, {0xc0001b38c8, 0x6, 0x6})
+	/usr/local/go/src/database/sql/sql.go:2578 +0x82
+database/sql.(*Stmt).Exec(...)
+	/usr/local/go/src/database/sql/sql.go:2610
+socialnetwork/database.AddComment(0xc0002e2510)
+	/Users/hgwtra/gritlab/social-network/database/comments.go:68 +0x34d
+socialnetwork/comments.AddCommentHandler({0x4529df0, 0xc000102460}, 0xc0001e4800)
+	/Users/hgwtra/gritlab/social-network/comments/postHandler.go:27 +0xe5
+net/http.HandlerFunc.ServeHTTP(0x5f0000c00010e460, {0x4529df0, 0xc000102460}, 0xc0000579f8)
+	/usr/local/go/src/net/http/server.go:2047 +0x2f
+net/http.(*ServeMux).ServeHTTP(0x4482de0, {0x4529df0, 0xc000102460}, 0xc0001e4800)
+	/usr/local/go/src/net/http/server.go:2425 +0x149
+socialnetwork/utils.CorsMiddleware.func1({0x4529df0, 0xc000102460}, 0xc0001e4800)
+	/Users/hgwtra/gritlab/social-network/utils/cors.go:23 +0x352
+net/http.HandlerFunc.ServeHTTP(0x0, {0x4529df0, 0xc000102460}, 0x6d6e5ffc620a)
+	/usr/local/go/src/net/http/server.go:2047 +0x2f
+net/http.serverHandler.ServeHTTP({0x4529040}, {0x4529df0, 0xc000102460}, 0xc0001e4800)
+	/usr/local/go/src/net/http/server.go:2879 +0x43b
+net/http.(*conn).serve(0xc0001f4140, {0x452c120, 0xc00009dda0})
+	/usr/local/go/src/net/http/server.go:1930 +0xb08
+created by net/http.(*Server).Serve
+	/usr/local/go/src/net/http/server.go:3034 +0x4e8
+2023/07/28 14:36:04 [2023-07-28 14:36:04] ERROR: table Comments has no column named Image
+2023/07/28 14:36:04 http: panic serving [::1]:53243: runtime error: invalid memory address or nil pointer dereference
+goroutine 469 [running]:
+net/http.(*conn).serve.func1()
+	/usr/local/go/src/net/http/server.go:1802 +0xb9
+panic({0x4458000, 0x4774c60})
+	/usr/local/go/src/runtime/panic.go:1047 +0x266
+database/sql.(*Stmt).ExecContext(0x0, {0x452c0b0, 0xc0000a2000}, {0xc0001b18c8, 0x6, 0x6})
+	/usr/local/go/src/database/sql/sql.go:2578 +0x82
+database/sql.(*Stmt).Exec(...)
+	/usr/local/go/src/database/sql/sql.go:2610
+socialnetwork/database.AddComment(0xc0000ce1b0)
+	/Users/hgwtra/gritlab/social-network/database/comments.go:68 +0x34d
+socialnetwork/comments.AddCommentHandler({0x4529df0, 0xc00013a0e0}, 0xc000220300)
+	/Users/hgwtra/gritlab/social-network/comments/postHandler.go:27 +0xe5
+net/http.HandlerFunc.ServeHTTP(0x9a0000c000099030, {0x4529df0, 0xc00013a0e0}, 0xc0000559f8)
+	/usr/local/go/src/net/http/server.go:2047 +0x2f
+net/http.(*ServeMux).ServeHTTP(0x4482de0, {0x4529df0, 0xc00013a0e0}, 0xc000220300)
+	/usr/local/go/src/net/http/server.go:2425 +0x149
+socialnetwork/utils.CorsMiddleware.func1({0x4529df0, 0xc00013a0e0}, 0xc000220300)
+	/Users/hgwtra/gritlab/social-network/utils/cors.go:23 +0x352
+net/http.HandlerFunc.ServeHTTP(0x0, {0x4529df0, 0xc00013a0e0}, 0x6d75a9d7bec0)
+	/usr/local/go/src/net/http/server.go:2047 +0x2f
+net/http.serverHandler.ServeHTTP({0x4529040}, {0x4529df0, 0xc00013a0e0}, 0xc000220300)
+	/usr/local/go/src/net/http/server.go:2879 +0x43b
+net/http.(*conn).serve(0xc0000b70e0, {0x452c120, 0xc00009dda0})
+	/usr/local/go/src/net/http/server.go:1930 +0xb08
+created by net/http.(*Server).Serve
+	/usr/local/go/src/net/http/server.go:3034 +0x4e8
+2023/07/28 14:36:33 [2023-07-28 14:36:33] ERROR: table Comments has no column named Image
+2023/07/28 14:36:33 http: panic serving [::1]:53366: runtime error: invalid memory address or nil pointer dereference
+goroutine 494 [running]:
+net/http.(*conn).serve.func1()
+	/usr/local/go/src/net/http/server.go:1802 +0xb9
+panic({0x4458000, 0x4774c60})
+	/usr/local/go/src/runtime/panic.go:1047 +0x266
+database/sql.(*Stmt).ExecContext(0x0, {0x452c0b0, 0xc0000a2000}, {0xc0001b78c8, 0x6, 0x6})
+	/usr/local/go/src/database/sql/sql.go:2578 +0x82
+database/sql.(*Stmt).Exec(...)
+	/usr/local/go/src/database/sql/sql.go:2610
+socialnetwork/database.AddComment(0xc0002e2bd0)
+	/Users/hgwtra/gritlab/social-network/database/comments.go:68 +0x34d
+socialnetwork/comments.AddCommentHandler({0x4529df0, 0xc0001029a0}, 0xc0001e5300)
+	/Users/hgwtra/gritlab/social-network/comments/postHandler.go:27 +0xe5
+net/http.HandlerFunc.ServeHTTP(0x920000c00010edc0, {0x4529df0, 0xc0001029a0}, 0xc0000579f8)
+	/usr/local/go/src/net/http/server.go:2047 +0x2f
+net/http.(*ServeMux).ServeHTTP(0x4482de0, {0x4529df0, 0xc0001029a0}, 0xc0001e5300)
+	/usr/local/go/src/net/http/server.go:2425 +0x149
+socialnetwork/utils.CorsMiddleware.func1({0x4529df0, 0xc0001029a0}, 0xc0001e5300)
+	/Users/hgwtra/gritlab/social-network/utils/cors.go:23 +0x352
+net/http.HandlerFunc.ServeHTTP(0x0, {0x4529df0, 0xc0001029a0}, 0x6d7c743e218f)
+	/usr/local/go/src/net/http/server.go:2047 +0x2f
+net/http.serverHandler.ServeHTTP({0x4529040}, {0x4529df0, 0xc0001029a0}, 0xc0001e5300)
+	/usr/local/go/src/net/http/server.go:2879 +0x43b
+net/http.(*conn).serve(0xc0001f4500, {0x452c120, 0xc00009dda0})
+	/usr/local/go/src/net/http/server.go:1930 +0xb08
+created by net/http.(*Server).Serve
+	/usr/local/go/src/net/http/server.go:3034 +0x4e8
+2023/07/28 14:36:46 [2023-07-28 14:36:46] ERROR: table Comments has no column named Image
+2023/07/28 14:36:46 http: panic serving [::1]:53422: runtime error: invalid memory address or nil pointer dereference
+goroutine 516 [running]:
+net/http.(*conn).serve.func1()
+	/usr/local/go/src/net/http/server.go:1802 +0xb9
+panic({0x4458000, 0x4774c60})
+	/usr/local/go/src/runtime/panic.go:1047 +0x266
+database/sql.(*Stmt).ExecContext(0x0, {0x452c0b0, 0xc0000a2000}, {0xc0001b78c8, 0x6, 0x6})
+	/usr/local/go/src/database/sql/sql.go:2578 +0x82
+database/sql.(*Stmt).Exec(...)
+	/usr/local/go/src/database/sql/sql.go:2610
+socialnetwork/database.AddComment(0xc0000ce240)
+	/Users/hgwtra/gritlab/social-network/database/comments.go:68 +0x34d
+socialnetwork/comments.AddCommentHandler({0x4529df0, 0xc0001020e0}, 0xc000220400)
+	/Users/hgwtra/gritlab/social-network/comments/postHandler.go:27 +0xe5
+net/http.HandlerFunc.ServeHTTP(0x280000c00029a2d0, {0x4529df0, 0xc0001020e0}, 0xc0000549f8)
+	/usr/local/go/src/net/http/server.go:2047 +0x2f
+net/http.(*ServeMux).ServeHTTP(0x4482de0, {0x4529df0, 0xc0001020e0}, 0xc000220400)
+	/usr/local/go/src/net/http/server.go:2425 +0x149
+socialnetwork/utils.CorsMiddleware.func1({0x4529df0, 0xc0001020e0}, 0xc000220400)
+	/Users/hgwtra/gritlab/social-network/utils/cors.go:23 +0x352
+net/http.HandlerFunc.ServeHTTP(0x0, {0x4529df0, 0xc0001020e0}, 0x6d7f7803d12a)
+	/usr/local/go/src/net/http/server.go:2047 +0x2f
+net/http.serverHandler.ServeHTTP({0x4529040}, {0x4529df0, 0xc0001020e0}, 0xc000220400)
+	/usr/local/go/src/net/http/server.go:2879 +0x43b
+net/http.(*conn).serve(0xc000286140, {0x452c120, 0xc00009dda0})
+	/usr/local/go/src/net/http/server.go:1930 +0xb08
+created by net/http.(*Server).Serve
+	/usr/local/go/src/net/http/server.go:3034 +0x4e8
+2023/07/28 14:37:51 [2023-07-28 14:37:51] ERROR: table Comments has no column named Image
+2023/07/28 14:37:51 http: panic serving [::1]:53707: runtime error: invalid memory address or nil pointer dereference
+goroutine 28 [running]:
+net/http.(*conn).serve.func1()
+	/usr/local/go/src/net/http/server.go:1802 +0xb9
+panic({0x4458000, 0x4774c60})
+	/usr/local/go/src/runtime/panic.go:1047 +0x266
+database/sql.(*Stmt).ExecContext(0x0, {0x452c0b0, 0xc0000a2000}, {0xc00015f8c8, 0x6, 0x6})
+	/usr/local/go/src/database/sql/sql.go:2578 +0x82
+database/sql.(*Stmt).Exec(...)
+	/usr/local/go/src/database/sql/sql.go:2610
+socialnetwork/database.AddComment(0xc0002a6360)
+	/Users/hgwtra/gritlab/social-network/database/comments.go:68 +0x34d
+socialnetwork/comments.AddCommentHandler({0x4529df0, 0xc0001460e0}, 0xc00014c100)
+	/Users/hgwtra/gritlab/social-network/comments/postHandler.go:27 +0xe5
+net/http.HandlerFunc.ServeHTTP(0x5e0000c00029c1a0, {0x4529df0, 0xc0001460e0}, 0xc00013a9f8)
+	/usr/local/go/src/net/http/server.go:2047 +0x2f
+net/http.(*ServeMux).ServeHTTP(0x4482de0, {0x4529df0, 0xc0001460e0}, 0xc00014c100)
+	/usr/local/go/src/net/http/server.go:2425 +0x149
+socialnetwork/utils.CorsMiddleware.func1({0x4529df0, 0xc0001460e0}, 0xc00014c100)
+	/Users/hgwtra/gritlab/social-network/utils/cors.go:23 +0x352
+net/http.HandlerFunc.ServeHTTP(0x0, {0x4529df0, 0xc0001460e0}, 0x6d8e741f58e2)
+	/usr/local/go/src/net/http/server.go:2047 +0x2f
+net/http.serverHandler.ServeHTTP({0x4529040}, {0x4529df0, 0xc0001460e0}, 0xc00014c100)
+	/usr/local/go/src/net/http/server.go:2879 +0x43b
+net/http.(*conn).serve(0xc00014a0a0, {0x452c120, 0xc00009dda0})
+	/usr/local/go/src/net/http/server.go:1930 +0xb08
+created by net/http.(*Server).Serve
+	/usr/local/go/src/net/http/server.go:3034 +0x4e8
+2023/07/28 14:37:51 [2023-07-28 14:37:51] ERROR: table Comments has no column named Image
+2023/07/28 14:37:51 http: panic serving [::1]:53712: runtime error: invalid memory address or nil pointer dereference
+goroutine 31 [running]:
+net/http.(*conn).serve.func1()
+	/usr/local/go/src/net/http/server.go:1802 +0xb9
+panic({0x4458000, 0x4774c60})
+	/usr/local/go/src/runtime/panic.go:1047 +0x266
+database/sql.(*Stmt).ExecContext(0x0, {0x452c0b0, 0xc0000a2000}, {0xc0002bf8c8, 0x6, 0x6})
+	/usr/local/go/src/database/sql/sql.go:2578 +0x82
+database/sql.(*Stmt).Exec(...)
+	/usr/local/go/src/database/sql/sql.go:2610
+socialnetwork/database.AddComment(0xc0002a66c0)
+	/Users/hgwtra/gritlab/social-network/database/comments.go:68 +0x34d
+socialnetwork/comments.AddCommentHandler({0x4529df0, 0xc0001461c0}, 0xc00014c200)
+	/Users/hgwtra/gritlab/social-network/comments/postHandler.go:27 +0xe5
+net/http.HandlerFunc.ServeHTTP(0x140000c00029c3d0, {0x4529df0, 0xc0001461c0}, 0xc00013a9f8)
+	/usr/local/go/src/net/http/server.go:2047 +0x2f
+net/http.(*ServeMux).ServeHTTP(0x4482de0, {0x4529df0, 0xc0001461c0}, 0xc00014c200)
+	/usr/local/go/src/net/http/server.go:2425 +0x149
+socialnetwork/utils.CorsMiddleware.func1({0x4529df0, 0xc0001461c0}, 0xc00014c200)
+	/Users/hgwtra/gritlab/social-network/utils/cors.go:23 +0x352
+net/http.HandlerFunc.ServeHTTP(0x0, {0x4529df0, 0xc0001461c0}, 0x6d8e9a95cb7a)
+	/usr/local/go/src/net/http/server.go:2047 +0x2f
+net/http.serverHandler.ServeHTTP({0x4529040}, {0x4529df0, 0xc0001461c0}, 0xc00014c200)
+	/usr/local/go/src/net/http/server.go:2879 +0x43b
+net/http.(*conn).serve(0xc00014a1e0, {0x452c120, 0xc00009dda0})
+	/usr/local/go/src/net/http/server.go:1930 +0xb08
+created by net/http.(*Server).Serve
+	/usr/local/go/src/net/http/server.go:3034 +0x4e8
+2023/07/28 14:43:08 failed to send message: websocket: close sent
+2023/07/28 14:43:16 writemsg error websocket: close sent
+2023/07/28 14:54:35 failed to send message: websocket: close sent
+2023/07/28 14:54:41 writemsg error websocket: close sent
+2023/07/28 15:05:16 failed to send message: websocket: close sent
+2023/07/28 15:05:24 writemsg error websocket: close sent
+2023/07/28 15:10:02 failed to send message: websocket: close sent
+2023/07/28 15:10:04 writemsg error websocket: close sent
+2023/07/28 15:14:55 failed to send message: websocket: close sent
+2023/07/28 15:15:00 writemsg error websocket: close sent
+2023/07/28 15:42:31 failed to send message: websocket: close sent
+2023/07/28 15:42:31 failed to send message: websocket: close sent
+2023/07/28 15:42:31 failed to send message: websocket: close sent
+2023/07/28 15:42:32 writemsg error websocket: close sent
+2023/07/28 15:42:35 writemsg error websocket: close sent
+2023/07/28 15:43:26 failed to send message: websocket: close sent
+2023/07/28 15:43:27 failed to send message: websocket: close sent
+2023/07/28 15:43:34 writemsg error websocket: close sent
+2023/07/28 15:43:36 writemsg error websocket: close sent
+2023/07/28 15:44:25 failed to send message: websocket: close sent
+2023/07/28 15:44:32 writemsg error websocket: close sent
+2023/07/28 15:58:05 failed to send message: websocket: close sent
+2023/07/28 15:58:14 writemsg error websocket: close sent
+2023/07/28 16:09:14 failed to send message: websocket: close sent
+2023/07/28 16:09:21 writemsg error websocket: close sent
+2023/07/28 17:20:42 failed to send message: websocket: close sent
+2023/07/28 17:20:50 writemsg error websocket: close sent
+2023/07/28 17:21:05 failed to send message: websocket: close sent
+2023/07/28 17:21:10 writemsg error websocket: close sent
+2023/07/28 17:23:41 failed to send message: websocket: close sent
+2023/07/28 17:23:48 writemsg error websocket: close sent
+2023/07/28 17:26:33 failed to send message: websocket: close sent
+2023/07/28 17:26:42 writemsg error websocket: close sent
+2023/07/28 17:55:06 failed to send message: websocket: close sent
+2023/07/28 17:55:13 writemsg error websocket: close sent
+2023/08/01 13:32:48 failed to send message: websocket: close sent
+2023/08/01 13:32:54 writemsg error websocket: close sent
+>>>>>>> Stashed changes

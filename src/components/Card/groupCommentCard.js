@@ -7,8 +7,14 @@ import "./Card.css";
 function GroupCommentCard(props) {
     const userInfo = useSelector((state) => state.userInfo);
     const token = localStorage.getItem("token");
+<<<<<<< Updated upstream
     const groupPostId = props.groupPostID;
 
+=======
+    const groupPostId = props.GroupPostID;
+    const [selectedImage, setSelectedImage] = useState(null);
+    const [fileName, setFileName] = useState("");
+>>>>>>> Stashed changes
     const [groupCommentInput, setGroupCommentInput] = useState("");
     const [groupComments, setGroupComments] = useState([]);
     const [groupCommentCount, setGroupCommentCount] = useState(0);
@@ -16,6 +22,20 @@ function GroupCommentCard(props) {
     const handleInputChange = (e) => {
         setGroupCommentInput(e.target.value);
     }
+
+    const handleImageUpload = (event) => {
+      const file = event.target.files[0];
+      const reader = new FileReader();
+  
+      reader.onloadend = () => {
+        setSelectedImage(reader.result);
+      };
+  
+      if (file) {
+        reader.readAsDataURL(file);
+        setFileName(file.name);
+      }
+    };
 
     const getGroupComments = async () => {
         const url = `http://localhost:8080/getgroupcomments?groupPostID=${groupPostId}`;
@@ -32,6 +52,7 @@ function GroupCommentCard(props) {
                 if (data.comments !== null) {
                     setGroupComments(data.comments);
                     setGroupCommentCount(data.comments.length);
+                    setSelectedImage(data.selectedImage)
                     groupComments.map((comment) => {
                         console.log("comment", comment);
                     })
@@ -70,9 +91,14 @@ const handleGroupCommentSubmit = async (e) => {
         groupPostID: groupPostId,
         content: comment,
         createAt: now,
-        userName: userInfo.UserName
+        image: selectedImage,
+        userName: userInfo.UserName,
     };
     console.log("body", body);
+
+    const headers = new Headers();
+    headers.append("Authorization", "Bearer " + token);
+    headers.append("Content-Type", "application/json");
     try {
         const res = await fetch("http://localhost:8080/addgroupcomment", {
             method: "POST",
@@ -84,6 +110,7 @@ const handleGroupCommentSubmit = async (e) => {
             console.log("data", data);
             setGroupCommentInput("");
             getGroupComments();
+            setSelectedImage(null);
         } else {
             throw new Error("Error occurred while adding the comment");
         }
@@ -154,6 +181,14 @@ return (
                       <p className="m-0 fs-7 bg-gray p-2 rounded">
                         {groupComment.content}
                       </p>
+                      {groupComment.image && (
+                        <img
+                          src={groupComment.image}
+                          alt="comment image"
+                          className="img-fluid rounded"
+                          id="commentImg"
+                        />
+                      )}
                       <p className="m-0 fs-7 text-muted">
                         {formatCommentDate(groupComment.createAt)}
                       </p>
@@ -165,6 +200,7 @@ return (
                     <Avatar userDisplayname={props.userDisplayname} 
                     />
                   </div>
+                  <div  id="commentBox" className="d-flex flex-column flex-grow-1">
                   <input
                     type="text"
                     className="form-control border-0 rounded-pill bg-gray"
@@ -172,6 +208,41 @@ return (
                     value={groupCommentInput}
                     onChange={handleInputChange}
                   />
+                  {/* Add image to comments */}
+                <div className="d-flex justify-content-left border border-1 border-light rounded p-3 mt-3" id="pictureButton">
+                  <div>
+                    <label htmlFor="uploadImageGComment">
+                      <i className="fas fa-images fs-5 text-success pointer mx-1"></i>
+                    </label>
+                    <input
+                      type="file"
+                      id="uploadImageGComment"
+                      style={{ display: "none" }}
+                      onChange={handleImageUpload}
+                    />
+                  </div>
+                </div>
+                {selectedImage && (
+                  <div className="mt-3">
+                    <img
+                      src={selectedImage}
+                      alt="Selected"
+                      className="img-fluid rounded"
+                    />
+                  </div>
+                )}
+                {selectedImage && (
+                  <div className="mt-3">
+                    <button
+                      type="button"
+                      className="btn btn-secondary w-100"
+                      onClick={() => setSelectedImage(null)} // Set selectedImage to null on button click
+                    >
+                      Remove Picture
+                    </button>
+                  </div>
+                )}
+                </div>
                 </form>
             </div>
           </div>

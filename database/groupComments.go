@@ -3,6 +3,7 @@ package database
 import (
 	"database/sql"
 	u "socialnetwork/utils"
+
 	//"fmt"
 
 	"time"
@@ -15,6 +16,7 @@ type GroupComment struct {
 	GroupID        string
 	UserName       string
 	Content        string
+	Image          string
 	CreateAt       time.Time
 }
 
@@ -24,6 +26,7 @@ type GroupCommentResponse struct {
 	GroupID        string    `json:"groupID"`
 	UserName       string    `json:"userName"`
 	Content        string    `json:"content"`
+	Image          string    `json:"image"`
 	CreateAt       time.Time `json:"createAt"`
 }
 
@@ -34,6 +37,7 @@ func CreateGroupCommentsTable(db *sql.DB) {
 		GroupPostID CHAR(36) NOT NULL,
 		UserName CHAR(36) NOT NULL,
 		Content TEXT NOT NULL,
+		Image BLOB NULL,
 		CreateAt TIMESTAMP NOT NULL,
 		PRIMARY KEY (GroupCommentID)
 	);`
@@ -54,10 +58,10 @@ func AddGroupComment(groupComment *GroupCommentResponse) error {
 	groupComment.CreateAt = time.Now()
 
 	query := `
-		INSERT INTO GroupComments (GroupCommentID, GroupPostID ,UserName, Content, CreateAt)
-			VALUES (?, ?, ?, ?, ?);`
+		INSERT INTO GroupComments (GroupCommentID, GroupID, UserName, Content, Image, CreateAt)
+			VALUES (?, ?, ?, ?, ?, ?);`
 
-	_, err = db.Exec(query, groupComment.GroupCommentID, groupComment.UserName, groupComment.Content, groupComment.CreateAt)
+	_, err = db.Exec(query, groupComment.GroupCommentID, groupComment.GroupID, groupComment.UserName, groupComment.Content, groupComment.Image, groupComment.CreateAt)
 	if err != nil {
 		return err
 	}
@@ -85,7 +89,7 @@ func GetGroupCommentsByGroupPostID(groupID string) ([]GroupCommentResponse, erro
 	var allGroupComments []GroupCommentResponse
 	for rows.Next() {
 		var groupComment GroupCommentResponse
-		err := rows.Scan(&groupComment.GroupCommentID, &groupComment.GroupID, &groupComment.UserName, &groupComment.Content, &groupComment.CreateAt)
+		err := rows.Scan(&groupComment.GroupCommentID, &groupComment.GroupID, &groupComment.UserName, &groupComment.Content, &groupComment.Image, &groupComment.CreateAt)
 		if err != nil {
 			return nil, err
 		}
@@ -114,7 +118,7 @@ func GetGroupPostsComments(groupPostID string) ([]GroupCommentResponse, error) {
 	var allGroupComments []GroupCommentResponse
 	for rows.Next() {
 		var groupComment GroupCommentResponse
-		err := rows.Scan(&groupComment.GroupCommentID, &groupComment.GroupID, &groupComment.UserName, &groupComment.Content, &groupComment.CreateAt)
+		err := rows.Scan(&groupComment.GroupCommentID, &groupComment.GroupID, &groupComment.UserName, &groupComment.Content, &groupComment.Image, &groupComment.CreateAt)
 		if err != nil {
 			return nil, err
 		}

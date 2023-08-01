@@ -23,6 +23,3 @@ yarn-debug.log*
 yarn-error.log*
 
 
-# Ignore all SQLite database files (assuming they have .sqlite or .db extension)
-*.sqlite
-*.db
