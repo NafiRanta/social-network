@@ -7,8 +7,9 @@ import "./Card.css";
 function GroupCommentCard(props) {
     const userInfo = useSelector((state) => state.userInfo);
     const token = localStorage.getItem("token");
-    const groupPostId = props.GroupPostID;
+    const groupPostId = props.groupPostID;
     const [selectedImage, setSelectedImage] = useState(null);
+    const [fileName, setFileName] = useState("");
     const [groupCommentInput, setGroupCommentInput] = useState("");
     const [groupComments, setGroupComments] = useState([]);
     const [groupCommentCount, setGroupCommentCount] = useState(0);
@@ -27,6 +28,7 @@ function GroupCommentCard(props) {
   
       if (file) {
         reader.readAsDataURL(file);
+        setFileName(file.name);
       }
     };
 
@@ -46,8 +48,12 @@ function GroupCommentCard(props) {
                     setGroupComments(data.comments);
                     setGroupCommentCount(data.comments.length);
                     setSelectedImage(data.selectedImage)
+                    groupComments.map((comment) => {
+                        console.log("comment", comment);
+                    })
                 } else {
                     // Handle the case when data.comments is null
+                    console.log("No comments available");
                     setGroupComments([]);
                     setGroupCommentCount(0);
                 }
@@ -62,7 +68,7 @@ function GroupCommentCard(props) {
 
     useEffect(() => {
         getGroupComments();
-    }, [groupPostId]);
+    }, []);
 
 const handleGroupCommentSubmit = async (e) => {
     e.preventDefault();
@@ -166,7 +172,7 @@ return (
                       {groupComment.image && (
                         <img
                           src={groupComment.image}
-                          alt="comment"
+                          alt="comment image"
                           className="img-fluid rounded"
                           id="commentImg"
                         />
