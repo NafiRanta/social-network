@@ -8,6 +8,7 @@ import CreatePostModal from '../components/Modal/CreatePostModal';
 import SearchbarGlobal from '../components/Searchbar/SearchbarGlobal';
 import CreateGroupModal from '../components/Modal/CreateGroupModal';
 import './TopNav.css'
+import { is } from 'immutable';
 
 function Topnav(props) {
   const dispatch = useDispatch();
@@ -15,8 +16,8 @@ function Topnav(props) {
   const allusers = useSelector((state) => state.allUsers);
   const userInfo = useSelector((state) => state.userInfo);
   const allGroups = useSelector((state) => state.allGroups);
-  const myGroups = useSelector((state) => state.myGroups);
   const invitesbyadmin = useSelector((state) => state.invitesByAdmin);
+  console.log("invitesbyadmin topnav", invitesbyadmin)
   const invitesbymember = useSelector((state) => state.invitesByMember);
   // const followRequestsUsernames = userInfo.FollowerUsernamesReceived ? userInfo.FollowerUsernamesReceived.split(",") : [];
   const [groupInvitesByAdmin, setGroupInvitesByAdmin] = useState([]);
@@ -30,9 +31,10 @@ function Topnav(props) {
 
   useEffect(() => {
     // for Join Requests
-    if(Array.isArray(myGroups) && Array.isArray(allusers)) {
-      const filteredGroups = myGroups?.filter((group) => {
-        return group.Admin === userInfo.UserName && group.RequestUsernames !== "[]";
+    console.log("allGroups topnav", allGroups)
+    if(Array.isArray(allGroups) && Array.isArray(allusers)) {
+      const filteredGroups = allGroups?.filter((group) => {
+        return group.AdminID === userInfo.UserName && group.RequestUsernames !== "[]";
       });
       if (filteredGroups.length > 0 ) {
         const updatedJoinRequests = filteredGroups.map((group) => {
@@ -54,68 +56,72 @@ function Topnav(props) {
         setJoinRequests(updatedJoinRequests);
       }
     }
-  }, [myGroups, allusers, userInfo]);
+  }, [allGroups, allusers, userInfo]);
 
+  useEffect(() => {
+    // for Invites by Admin
+    if (Array.isArray(allGroups) ) {
+      const filteredAllGroups = allGroups.map((group) => {
+        if (group.AdminInvitedUsernames.includes(userInfo.UserName)) {
+          const adminInfo = allusers?.find((user) => user.UserName === group.AdminID);
+          const adminAvatar = adminInfo?.Avatar;
+          const adminDisplayname = adminInfo?.FirstName + " " + adminInfo?.LastName;
+          setIsInvitedByAdmin(true)
+          return {
+            type: "SET_INVITESBYADMIN",
+            adminAvatar: adminAvatar,
+            adminDisplayname: adminDisplayname,
+            groupName: group.GroupName,
+            groupID: group.GroupID,
+          };
+        }
+        return null
+
+      });
+      setGroupInvitesByAdmin(filteredAllGroups);
+    }
+  }, [allusers]);
 
   useEffect(() => {
     // for Invites by Member
-    let memberInvites = [];
+    let filteredGroups = []
       if (Array.isArray(allGroups)) {
-          const filteredAllGroups = allGroups.map((group) => {
-          if (!(group.AdminInvitedUsernames.includes(userInfo.UserName))) {
-            const groupObj = JSON.parse(group.MemberInvitedUsernames);
-            if (!groupObj || !Array.isArray(groupObj)) {
-              return null;
+         allGroups.map((group) => {
+            const memberInvitedUsernames = JSON.parse(group.MemberInvitedUsernames);
+            if (memberInvitedUsernames.length > 0 && memberInvitedUsernames[0].InvitedUsernames.includes(userInfo.UserName)){
+              setIsInvitedByMember(true)
+              const memberInvites = {
+                groupID: group.GroupID,
+                groupName: group.GroupName,
+                memberInvites: memberInvitedUsernames,
+                adminInvites: group.AdminInvitedUsernames,
+              };
+              filteredGroups.push(memberInvites)
             }
-            setIsInvitedByMember(true)
-            memberInvites.push(groupObj)
           
-            // Return the extracted data as an object
-            return {
-              groupID: group.GroupID,
-              groupName: group.GroupName,
-              memberInvites: memberInvites,
-              adminInvites: group.AdminInvitedUsernames,
-              invitor: memberInvites[0].Member,
-            };
-          }
-          return null;
+          return null; 
         });
-        // console.log("filteredAllGroups 1234", filteredAllGroups);
-        const matchedGroups = [];
-    
-        filteredAllGroups.forEach((group) => {
-          if (group ) {
-            group.memberInvites.forEach((invite) => {
-              // console.log("inviteeeee", invite)
-              invite.forEach((member) => {
-                console.log("member", member.InvitedUsernames, (member.InvitedUsernames.includes(userInfo.UserName)), userInfo.UserName)
-                if (member.InvitedUsernames.includes(userInfo.UserName)) {
-                  setIsInvitedByMember(true)
-                  const memberInfo = allusers?.find((user) => user.UserName === member.Member);
-                  const memberAvatar = memberInfo?.Avatar;
-                  const memberWhoInvited = memberInfo?.FirstName + " " + memberInfo?.LastName;
-                  console.log("memberWhoInvited", memberWhoInvited)
-                  matchedGroups.push({
-                    type: "SET_INVITESBYMEMBER",
-                    memberAvatar: memberAvatar,
-                    memberWhoInvited: memberWhoInvited,
-                    groupName: group.groupName,
-                    groupID: group.groupID,
-                  });
-                  setGroupInvitesByMember(matchedGroups);
-                }
-              });
+        let matchedGroups = []
+        if (Array.isArray(filteredGroups) && filteredGroups.length > 0) {
+          filteredGroups.forEach((group) => {
+            const memberWhoInvitedInfo = allusers?.find((user) => user.UserName === group.memberInvites[0].Member);
+            const memberWhoInvitedAvatar = memberWhoInvitedInfo?.Avatar;
+            const memberWhoInvitedDisplayName = memberWhoInvitedInfo?.FirstName + " " + memberWhoInvitedInfo?.LastName;
+            matchedGroups.push({
+              type: "SET_INVITESBYMEMBER",
+              memberWhoInvitedAvatar: memberWhoInvitedAvatar,
+              memberWhoInvitedDisplayName: memberWhoInvitedDisplayName,
+              groupName: group.groupName,
+              groupID: group.groupID,
             });
-          }
+          });
+          setGroupInvitesByMember(matchedGroups);
+
         }
-        );
-        // console.log("matchedGroups", matchedGroups)
-      }
-      return () => {
-        setIsInvitedByMember(false)
-      }
-  }, [allGroups, allusers, userInfo]);
+
+      } 
+  }, [allGroups]);
+
 
   // useEffect(() => {
   //   if (Array.isArray(allusers)) {
@@ -177,29 +183,6 @@ useEffect(() => {
   fetchAllEventNotifications();
 }, [allGroups]);
 
-
-  
-
-  useEffect(() => {
-    // for Invites by Admin
-    if (Array.isArray(invitesbyadmin?.groups) && Array.isArray(allusers)) {
-      const updatedInvites = invitesbyadmin.groups.map((invite) => {
-        const adminInfo = allusers.find((user) => user.UserName === invite.Admin);
-        const adminAvatar = adminInfo?.Avatar;
-        const adminDisplayname = adminInfo?.FirstName + " " + adminInfo?.LastName;
-        setIsInvitedByAdmin(true)
-        return {
-          type: "SET_INVITESBYADMIN",
-          adminAvatar: adminAvatar,
-          adminDisplayname: adminDisplayname,
-          groupName: invite.GroupName,
-          groupID: invite.GroupID,
-        };
-      });
-      setGroupInvitesByAdmin(updatedInvites);
-    }
-  }, [invitesbyadmin, allusers, invitesbymember]);
-
   Notifications = [
     ...newEventNotifications || [],
     ...groupInvitesByAdmin || [],
@@ -207,6 +190,8 @@ useEffect(() => {
     // ...followRequestsInfo || [],
     ...joinRequests || [],
   ]
+
+  console.log("Notifications", Notifications)
   //handle logout
   const handleLogout = () => {
     // clear redux and user info and token from local storage and session storage
@@ -256,7 +241,8 @@ useEffect(() => {
         throw new Error("Failed to accept the join request.");
       }
       const data = await response.json();
-      console.log("data", data);
+      const allGroups = data.allGroups;
+      dispatch({ type: "SET_ALLGROUPS", allGroups: allGroups });
       // remove the join request from the join requests array
       const updatedJoinRequests = joinRequests.filter((joinRequest) => {
         return joinRequest.requestorUsername !== requestorUsername;
@@ -303,6 +289,7 @@ useEffect(() => {
       }
       const data = await response.json();
       console.log("data", data);
+      dispatch({ type: "SET_ALLGROUPS", allGroups: data.allGroups });
       // remove the join request from the join requests array
       const updatedJoinRequests = joinRequests.filter((joinRequest) => {
         return joinRequest.requestorUsername !== requestorUsername;
@@ -475,10 +462,10 @@ useEffect(() => {
                           <div className="d-flex justify-content-between">
                             <div className="d-flex align-items-center">
                               <div className="rounded-circle d-flex align-items-center justify-content-center mx-2" id="avatar">
-                                <img src={notification.memberAvatar} alt="avatar" className="rounded-circle me-2" />
+                                <img src={notification.memberWhoInvitedAvatar} alt="avatar" className="rounded-circle me-2" />
                               </div>
                             <div>
-                              <p className="m-0">{notification.memberWhoInvited} invited you to join {notification.groupName}</p>
+                              <p className="m-0">{notification.memberWhoInvitedDisplayName} invited you to join {notification.groupName}</p>
                             </div>
                           </div>
                           <div>

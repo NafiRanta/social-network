@@ -3,29 +3,81 @@ import { useSelector } from 'react-redux';
 import "./Modal.css";
 import Avatar from "../Avatar/Avatar";
 import { useDispatch } from 'react-redux';
+import { set } from 'draft-js/lib/DefaultDraftBlockRenderMap';
 
 function GroupInviteModal(props) {
   const dispatch = useDispatch();
-  console.log("props group invite modal", props)
   // define websocket connection from redux store websocket
   const websocket = useSelector((state) => state.websocket);
   const userInfo = useSelector((state) => state.userInfo);
   const allGroups = useSelector((state) => state.allGroups);
-  console.log("all groups", allGroups)
   const allusers = useSelector((state) => state.allUsers);
+  const groupID = props.groupID;
+  const [group, setGroup] = useState([]);
   // get group info with props.groupID from allGroups
-  const group = allGroups.find((group) => group.GroupID === props.groupID);
-  console.log("group group invite modal", group)
-  const groupAdmin = group.Admin;
-  const MemberInvitedUsernames = group.MemberInvitedUsernames
-  const AdminInvitedUsernames = group.AdminInvitedUsernames
-  const MemberUsernames = group.MemberUsernames
+ 
   const [myFriends, setMyFriends] = useState([]); 
   const [selectedNames, setSelectedNames] = useState([]);
   const [selectedName, setSelectedName] = useState('');
   const names = myFriends.map((friend) => friend.displayname);
+  const [groupAdmin, setGroupAdmin] = useState('');
+  const [MemberInvitedUsernames, setMemberInvitedUsernames] = useState([]);
+  const [AdminInvitedUsernames, setAdminInvitedUsernames] = useState([]);
+  const [MemberUsernames, setMemberUsernames] = useState([]);
+
 
   useEffect(() => {
+    if (allGroups === undefined  || allGroups.length === 0) {
+      const fetchSingleGroup = async () => {
+        try {
+            const response = await fetch(`http://localhost:8080/getsinglegroup?groupID=${groupID}`, {
+                method: "GET",});
+            const data = await response.json();
+            const group = data.group[0];
+            console.log('group in fetch', group);
+            setGroup(group);
+
+            const membersUsernames = group.MemberUsernames;
+            console.log('membersUsernames in xxx', membersUsernames);
+            setMemberUsernames(MemberUsernames);
+
+            const groupAdmin = group.AdminID;
+            setGroupAdmin(groupAdmin);
+
+            const MemberInvitedUsernames = group.MemberInvitedUsernames;
+            setMemberInvitedUsernames(MemberInvitedUsernames);
+             
+            console.log('MemberInvitedUsernames in xxx', MemberInvitedUsernames);
+
+            const AdminInvitedUsernames = group.AdminInvitedUsernames;
+            console.log('AdminInvitedUsernames in xxx', AdminInvitedUsernames);
+            setAdminInvitedUsernames(AdminInvitedUsernames);
+        }
+        catch (error) {
+            console.error('Error fetching group data:', error);
+          }
+        
+    };
+    fetchSingleGroup();
+    } else {
+        const group = allGroups?.find((group) => group.GroupID === props.groupID);
+        const groupAdmin = group?.AdminID;
+          setGroupAdmin(groupAdmin);
+          const MemberInvitedUsernames = (group?.MemberInvitedUsernames)
+          console.log("MemberInvitedUsernames groupinvitemodal", MemberInvitedUsernames);
+
+          setMemberInvitedUsernames(MemberInvitedUsernames);
+          const AdminInvitedUsernames = (group?.AdminInvitedUsernames)
+          console.log("AdminInvitedUsernames groupinvitemodal", AdminInvitedUsernames);
+          setAdminInvitedUsernames(AdminInvitedUsernames);
+          const MemberUsernames = (group?.MemberUsernames)
+          console.log("MemberUsernames groupinvitemodal", MemberUsernames);
+          setMemberUsernames(MemberUsernames);  
+    }
+  }, [allGroups, props.groupID]);
+
+
+ useEffect(() => {
     let filteredData = allusers?.filter((user) => user.UserName !== userInfo.UserName);
     filteredData = filteredData.filter((user) => user.UserName !== groupAdmin);
     filteredData = filteredData.filter((user) => !MemberInvitedUsernames.includes(user.UserName));
@@ -36,7 +88,7 @@ function GroupInviteModal(props) {
       displayname: friend.FirstName + " " + friend.LastName,
     }));
     setMyFriends(updatedFriends);
-  }, [allusers, userInfo.UserName]);
+  }, [allusers, userInfo.UserName]); 
   
   const handleNameChange = (event) => {
     // get username of the selected name
@@ -58,7 +110,6 @@ function GroupInviteModal(props) {
 
   // Handle Invite Submit: handleInviteSubmit
   const handleMemberInviteSubmit = async (event) => {
-    console.log("handleMemberInviteSubmit")
     event.preventDefault();
     const token = localStorage.getItem('token');
     const headers = new Headers();
@@ -100,10 +151,10 @@ function GroupInviteModal(props) {
         body: JSON.stringify(groupData)
       });
       const data = await response.json();
+      console.log("data: ", data)
       const status = response.status;
-      console.log("data: ", data);
-      dispatch({ type: "SET_INVITESBYMEMBER", payload: data });
-      console.log("status: ", status);
+      dispatch({ type: "SET_INVITESBYMEMBER", payload: data.invitesByMemberResponse });
+      dispatch({ type: "SET_ALLGROUPS", payload: data.allGroups });
       if ( status === 200) {
         alert("Invite Sent!");
         window.location.href = `/singlegroup/${groupID}`;

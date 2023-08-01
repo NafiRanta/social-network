@@ -40,7 +40,7 @@ func CreateGroupHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Failed to get user", http.StatusInternalServerError)
 		return
 	}
-	group.Admin = user.UserName
+	group.AdminID = user.UserName
 	err = d.AddGroup(&group)
 	if err != nil {
 		//fmt.Println("error from addgroup:", err)
@@ -125,15 +125,17 @@ func AddUserToGroupHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	group, err := d.GetGroupByID(groupID)
+	allGroups, err := d.GetAllGroups()
 	if err != nil {
 		//fmt.Println("error getting group")
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	// Create a response object
-	response := map[string]interface{}{
-		"group": group,
+
+	response := struct {
+		AllGroups []d.Group `json:"allGroups"`
+	}{
+		AllGroups: allGroups,
 	}
 
 	// Convert the response object to JSON
@@ -192,7 +194,23 @@ func AddUsersToMemberInvited(w http.ResponseWriter, r *http.Request) {
 	invitedUsernames := response.InvitedUsernames
 	// Convert the response to JSON
 	//fmt.Println("invitedUsernames:", invitedUsernames)
-	responseJSON, err := json.Marshal(response)
+
+	allGroups, err := d.GetAllGroups()
+	if err != nil {
+		//fmt.Println("error getting group")
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	response2 := struct {
+		AllGroups                 []d.Group `json:"allGroups"`
+		d.InvitesByMemberResponse `json:"invitesByMemberResponse"`
+	}{
+		AllGroups:               allGroups,
+		InvitesByMemberResponse: response,
+	}
+
+	responseJSON, err := json.Marshal(response2)
 	if err != nil {
 		//fmt.Println("error from json.Marshal:", err)
 		http.Error(w, "Failed to marshal response", http.StatusInternalServerError)
@@ -254,14 +272,20 @@ func DeclineGroupInviteHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	// get all groups
-	groups, err := d.GetAllGroups()
+	allGroups, err := d.GetAllGroups()
 	if err != nil {
 		//fmt.Println("error from getgroups:", err)
 		http.Error(w, "Failed to get groups", http.StatusInternalServerError)
 		return
 	}
+
+	response := struct {
+		AllGroups []d.Group `json:"allGroups"`
+	}{
+		AllGroups: allGroups,
+	}
 	// write groups to response
-	responseJSON, err := json.Marshal(groups)
+	responseJSON, err := json.Marshal(response)
 	if err != nil {
 		//fmt.Println("error from json.Marshal:", err)
 		http.Error(w, "Failed to marshal response", http.StatusInternalServerError)
@@ -329,14 +353,20 @@ func JoinRequestHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// get all groups
-	groups, err := d.GetAllGroups()
+	allGroups, err := d.GetAllGroups()
 	if err != nil {
 		//fmt.Println("error from getgroups:", err)
 		http.Error(w, "Failed to get groups", http.StatusInternalServerError)
 		return
 	}
+
+	response := struct {
+		AllGroups []d.Group `json:"allGroups"`
+	}{
+		AllGroups: allGroups,
+	}
 	// write groups to response
-	responseJSON, err := json.Marshal(groups)
+	responseJSON, err := json.Marshal(response)
 	if err != nil {
 		//fmt.Println("error from json.Marshal:", err)
 		http.Error(w, "Failed to marshal response", http.StatusInternalServerError)
@@ -375,11 +405,23 @@ func AcceptJoinRequestHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Failed to add group", http.StatusInternalServerError)
 		return
 	}
-	// write response
-	response := map[string]interface{}{
-		"groupID": groupID,
-		"message": "user added to group successfully",
+
+	allGroups, err := d.GetAllGroups()
+	if err != nil {
+		//fmt.Println("error from getgroups:", err)
+		http.Error(w, "Failed to get groups", http.StatusInternalServerError)
+		return
 	}
+
+	// write response
+	response := struct {
+		AllGroups []d.Group `json:"allGroups"`
+		GroupID   string    `json:"groupID"`
+	}{
+		AllGroups: allGroups,
+		GroupID:   groupID,
+	}
+
 	responseJSON, err := json.Marshal(response)
 	if err != nil {
 		fmt.Println("error from json.Marshal:", err)
@@ -417,10 +459,18 @@ func DeclineJoinRequestHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Failed to delete group", http.StatusInternalServerError)
 		return
 	}
+
+	allGroups, err := d.GetAllGroups()
+	if err != nil {
+		//fmt.Println("error from getgroups:", err)
+		http.Error(w, "Failed to get groups", http.StatusInternalServerError)
+		return
+	}
 	// write response
 	response := map[string]interface{}{
-		"groupID": groupID,
-		"message": "user added to group successfully",
+		"groupID":   groupID,
+		"allGroups": allGroups,
+		"message":   "user added to group successfully",
 	}
 	responseJSON, err := json.Marshal(response)
 	if err != nil {

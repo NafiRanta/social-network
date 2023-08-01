@@ -13,7 +13,7 @@ type Group struct {
 	GroupID                string
 	GroupName              string
 	GroupDescription       string
-	Admin                  string
+	AdminID                string
 	AdminInvitedUsernames  string
 	MemberInvitedUsernames string
 	RequestUsernames       string
@@ -24,17 +24,17 @@ type Group struct {
 }
 
 type GroupResponse struct {
-	GroupID                string            `json:"groupID"`
-	GroupName              string            `json:"groupName"`
-	GroupDescription       string            `json:"groupDescription"`
-	Admin                  string            `json:"adminID"`
-	AdminInvitedUsernames  []string          `json:"adminInvitedUsernames"`
-	MemberInvitedUsernames []InvitesByMember `json:"memberInvitedUsernames"` // map with invited as key and member as value
-	RequestUsernames       []string          `json:"requestUsernames"`
-	MemberUsernames        []string          `json:"memberUsernames"`
-	PostIDs                []string          `json:"postIDs"`
-	EventIDs               []string          `json:"eventIDs"`
-	CreateAt               time.Time         `json:"createAt"`
+	GroupID                string            `json:"GroupID"`
+	GroupName              string            `json:"GroupName"`
+	GroupDescription       string            `json:"GroupDescription"`
+	AdminID                string            `json:"AdminID"`
+	AdminInvitedUsernames  []string          `json:"AdminInvitedUsernames"`
+	MemberInvitedUsernames []InvitesByMember `json:"MemberInvitedUsernames"` // map with invited as key and member as value
+	RequestUsernames       []string          `json:"RequestUsernames"`
+	MemberUsernames        []string          `json:"MemberUsernames"`
+	PostIDs                []string          `json:"PostIDs"`
+	EventIDs               []string          `json:"EventIDs"`
+	CreateAt               time.Time         `json:"CreateAt"`
 }
 
 type InvitesByMember struct {
@@ -99,7 +99,7 @@ func AddGroup(group *GroupResponse) error {
 		group.GroupID,
 		group.GroupName,
 		group.GroupDescription,
-		group.Admin,
+		group.AdminID,
 		string(adminInvitedJSON),
 		string(memberInvitedJSON),
 		string(requestJSON),
@@ -133,7 +133,7 @@ func GetGroupsByAdminUsername(username string) ([]Group, error) {
 			&group.GroupID,
 			&group.GroupName,
 			&group.GroupDescription,
-			&group.Admin,
+			&group.AdminID,
 			&group.AdminInvitedUsernames,
 			&group.MemberInvitedUsernames,
 			&group.RequestUsernames,
@@ -172,7 +172,7 @@ func GetGroupsByMembersUsername(username string) ([]Group, error) {
 			&group.GroupID,
 			&group.GroupName,
 			&group.GroupDescription,
-			&group.Admin,
+			&group.AdminID,
 			&group.AdminInvitedUsernames,
 			&group.MemberInvitedUsernames,
 			&group.RequestUsernames,
@@ -208,7 +208,7 @@ func GetAllGroups() ([]Group, error) {
 			&group.GroupID,
 			&group.GroupName,
 			&group.GroupDescription,
-			&group.Admin,
+			&group.AdminID,
 			&group.AdminInvitedUsernames,
 			&group.MemberInvitedUsernames,
 			&group.RequestUsernames,
@@ -252,7 +252,7 @@ func GetGroupByID(groupID string) ([]GroupResponse, error) {
 			&group.GroupID,
 			&group.GroupName,
 			&group.GroupDescription,
-			&group.Admin,
+			&group.AdminID,
 			&adminInvitedUsernames,
 			&memberInvitedUsernames,
 			&requestUsernames,
@@ -391,7 +391,7 @@ func GetGroupsByAdminInvitedUsername(username string) ([]Group, error) {
 			&group.GroupID,
 			&group.GroupName,
 			&group.GroupDescription,
-			&group.Admin,
+			&group.AdminID,
 			&group.AdminInvitedUsernames,
 			&group.MemberInvitedUsernames,
 			&group.RequestUsernames,

@@ -119,6 +119,7 @@ const store = configureStore({
 store.subscribe(() => {
   const state = store.getState();
   localStorage.setItem("reduxState", JSON.stringify(state));
+  console.log('user:', state.userInfo)
 });
 
 export default store;

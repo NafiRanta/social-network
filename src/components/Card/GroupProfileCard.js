@@ -3,17 +3,32 @@ import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import './Card.css';
 import { Link } from 'react-router-dom';
+import { set } from "draft-js/lib/EditorState";
 //import { set } from "draft-js/lib/DefaultDraftBlockRenderMap";
 function GroupProfileCard(props) {
     const dispatch = useDispatch();
     const [groupsToDisplay, setGroupsToDisplay] = useState([]);
     const currentPath = window.location.pathname;
     const allgroups = useSelector((state) => state.allGroups);
-    const mygroups = useSelector((state) => state.myGroups);
+    const userInfo = useSelector((state) => state.userInfo);
+    const [mygroups, setMyGroups] = useState([]);
     const [pendingJoinRequest, setPendingJoinRequest] = useState(false);
     
     useEffect(() => {
       if (currentPath === "/mygroups") {
+        let mygroups = [];
+        // get groups where user is a member or admin and push to mygroups
+        allgroups.forEach((group) => {
+          const memberUsernames = JSON.parse(group.MemberUsernames) || [];
+          console.log("memberUsernames", memberUsernames)
+          const isAdmin = group.AdminID === userInfo.UserName;
+          const isMember =(memberUsernames.includes(userInfo.UserName));
+          if (isAdmin || isMember) {
+            mygroups.push(group);
+          }
+          setMyGroups(mygroups);
+        });
+        console.log("mygroups", mygroups);
           setGroupsToDisplay(mygroups);
         } else if (currentPath === "/allgroups") {
           setGroupsToDisplay(allgroups);
@@ -56,10 +71,10 @@ function GroupProfileCard(props) {
         if (window.location.pathname === "/allgroups") {
           console.log("group rendergroupactions", group);
       
-          const memberUsernames = group.MemberUsernames || [];
-          const isMember = memberUsernames.includes(props.username);
+          const memberUsernames = JSON.parse(group.MemberUsernames) || [];
+          const isMember = memberUsernames.includes(userInfo.UserName);
           console.log("isMember", isMember)
-          const isAdmin = props.username && group.Admin === props.username;
+          const isAdmin = group.AdminID === userInfo.UserName;
           const isPendingJoinRequest = pendingJoinRequest && !isMember && !isAdmin;
       
           if (isMember || isAdmin) {
