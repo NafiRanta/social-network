@@ -12,10 +12,9 @@ function useChatMessages(
   handleMessageSubmit,
   activeTab,
   allusers,
-  // chatMessages
 ) {
   const [chatMessages, setChatMessages] = useState([]);
-  useEffect(() => {
+  // useEffect(() => {
     const fetchChatMessages = async () => {
       const headers = new Headers();
       headers.append("Authorization", "Bearer " + token);
@@ -51,7 +50,6 @@ function useChatMessages(
                   const updatedMessage = { ...message };
                   // Check if the senderUsername of the current message matches the user's username
                   if (updatedMessage.senderUsername === user.UserName) {
-                    // Add senderDisplayname and senderAvatar properties to the message
                     updatedMessage.senderDisplayname = user.FirstName + " " + user.LastName;
                     updatedMessage.senderAvatar = user.Avatar;
                     updatedMessages.push(updatedMessage);
@@ -78,7 +76,7 @@ function useChatMessages(
           if (response.ok) {
             const data = await response.json();
             if (!data) {
-              return null;
+              return chatMessages;
             }
             // if group tab is selected, filter the data to display only the messages sent to the current group
             const filteredData = data.filter(
@@ -113,7 +111,7 @@ function useChatMessages(
       }
     };
     fetchChatMessages();
-  }, [selectedChatMateUsername, senderUsername, token, handleMessageSubmit]);
+  // }, [selectedChatMateUsername, senderUsername, token, handleMessageSubmit]);
 
   return chatMessages;
 }
@@ -204,8 +202,22 @@ function Chat(props) {
   };
 
   const displayGroupChats = () => {
-    if (!mygroups) {
-      return null;
+    console.log("mygroups", mygroups);
+    if (mygroups.length === 0) {
+      dispatch ({ type: "SET_CHATMATEUSERNAME", payload: "" });
+      // set chatmateusername to empty string
+      console.log("no groups found");
+      return (
+      <div key={"no users"}>
+        <ul className="users">
+          <li
+            className="text-right"
+            data-chat="person1">
+            <p>No groups found</p>
+          </li>
+        </ul>
+      </div>
+      );
     }
     // save GroupName and GroupID to a variable called filteredData
     let filteredData = mygroups.map((group) => {
