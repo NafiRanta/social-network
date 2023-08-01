@@ -82,6 +82,7 @@ func Start() error {
 
 	//handle messages
 	router.HandleFunc("/messages", m.GetMessagesHandler)
+	router.HandleFunc("/groupmessages", m.GetMessagesByGroupIDHandler)
 	router.HandleFunc("/sendmessage", m.AddMessagesHandler)
 
 	//handle groups

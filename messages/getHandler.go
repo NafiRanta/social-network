@@ -12,7 +12,6 @@ import (
 
 // getMessagesHandler handles the get messages request
 func GetMessagesHandler(w http.ResponseWriter, r *http.Request) {
-
 	if r.Method != http.MethodGet {
 		//fmt.Println("method not allowed")
 		w.WriteHeader(http.StatusMethodNotAllowed)
@@ -69,6 +68,46 @@ func GetMessagesHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(responseJSON)
+}
+
+func GetMessagesByGroupIDHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		//fmt.Println("method not allowed")
+		w.WriteHeader(http.StatusMethodNotAllowed)
+		fmt.Fprint(w, "Method not allowed")
+		return
+	}
+	authHeader := r.Header.Get("Authorization")
+	if authHeader == "" {
+		//fmt.Println("Missing Authorization header")
+		http.Error(w, "Missing Authorization header", http.StatusUnauthorized)
+		return
+	}
+	// get groupID from url
+	groupID := r.URL.Query().Get("groupID")
+	// get all messages with groupID as receiver
+	messages, err := d.GetMessagesByGroupID(groupID)
+	if err != nil {
+		u.CheckErr(err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	// mark messages as seen
+	err = d.MarkMessagesByGroupIDAsSeen(groupID)
+	if err != nil {
+		u.CheckErr(err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	// return messages
+	responseJSON, err := json.Marshal(messages)
+	if err != nil {
+		u.CheckErr(err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(responseJSON)
 }

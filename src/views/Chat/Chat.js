@@ -9,7 +9,9 @@ function useChatMessages(
   selectedChatMateUsername,
   senderUsername,
   token,
-  handleMessageSubmit
+  handleMessageSubmit,
+  activeTab,
+  allusers
 ) {
   const [chatMessages, setChatMessages] = useState([]);
   useEffect(() => {
@@ -17,34 +19,78 @@ function useChatMessages(
       const headers = new Headers();
       headers.append("Authorization", "Bearer " + token);
       headers.append("Content-Type", "application/json");
-      try {
-        const response = await fetch(
-          `http://localhost:8080/messages?username=${senderUsername}`,
-          {
-            method: "GET",
-            headers: headers,
-          }
-        );
-
-        if (response.ok) {
-          const data = await response.json();
-          if (!data) {
-            return null;
-          }
-          const filteredData = data.filter(
-            (message) =>
-              (message.senderUsername === senderUsername &&
-                message.receiverUsername === selectedChatMateUsername) ||
-              (message.senderUsername === selectedChatMateUsername &&
-                message.receiverUsername === senderUsername)
+      if (activeTab === "inbox") {
+        try {
+          const response = await fetch(
+            `http://localhost:8080/messages?username=${senderUsername}`,
+            {
+              method: "GET",
+              headers: headers,
+            }
           );
-          filteredData.sort((a, b) => (a.sentAt > b.sentAt ? 1 : -1));
-          setChatMessages(filteredData);
+
+          if (response.ok) {
+            const data = await response.json();
+            if (!data) {
+              return null;
+            }
+            // if inbox tab is selected, filter the data to display only the messages sent to the current user
+
+            if (activeTab === "inbox") {
+              const filteredData = data.filter(
+                (message) =>
+                  (message.senderUsername === senderUsername &&
+                    message.receiverUsername === selectedChatMateUsername) ||
+                  (message.senderUsername === selectedChatMateUsername &&
+                    message.receiverUsername === senderUsername)
+              );
+              filteredData.sort((a, b) => (a.sentAt > b.sentAt ? 1 : -1));
+              setChatMessages(filteredData);
+            } 
+          }
+        } catch (error) {
+          console.log(error);
         }
-      } catch (error) {
-        console.log(error);
+      } else if (activeTab === "communities") {
+        try {
+          const response = await fetch(
+            `http://localhost:8080/groupmessages?groupID=${selectedChatMateUsername}`,
+            {
+              method: "GET",
+              headers: headers,
+            }
+          );
+          if (response.ok) {
+            const data = await response.json();
+            if (!data) {
+              return null;
+            }
+            // if group tab is selected, filter the data to display only the messages sent to the current group
+            const filteredData = data.filter(
+              (message) => message.receiverUsername === selectedChatMateUsername
+            );
+            filteredData.sort((a, b) => (a.sentAt > b.sentAt ? 1 : -1));
+            // setChatMessages(filteredData);
+          }
+        } catch (error) {
+          console.log(error);
+        }
       }
     };
+    // loop through the chatMessages array and add senderDisplayname and senderAvatar to each message
+    const addSenderInfo = async () => {
+      allusers.forEach((user) => {
+        chatMessages.forEach((message) => {
+          if (message.senderUsername === user.UserName) {
+            message.senderDisplayname = user.firstName + " " + user.lastName;
+            message.senderAvatar = user.Avatar;
+          }
+        });
+        console.log(chatMessages);
+        setChatMessages(chatMessages);
+      });
+    };
+    addSenderInfo();
 
     fetchChatMessages();
   }, [selectedChatMateUsername, senderUsername, token, handleMessageSubmit]);
@@ -54,6 +100,12 @@ function useChatMessages(
 
 function Chat(props) {
   const dispatch = useDispatch();
+  const activeTab = useSelector((state) => state.activeTab);
+
+  const handleTabChange = (tab) => {
+    dispatch ({ type: "SET_ACTIVE_TAB", payload: tab });
+  };
+
   const userInfo = useSelector((state) => state.userInfo);
   const allusers = useSelector((state) => state.allUsers);
   const loggedinUsers = useSelector((state) => state.loggedinUsers);
@@ -178,7 +230,6 @@ function Chat(props) {
     });
   };
   
-
   const handleMessageSubmit = async (e) => {
     e.preventDefault();
     // if no chatmate is selected or if message is empty, return
@@ -228,7 +279,9 @@ function Chat(props) {
     selectedChatMateUsername,
     senderUsername,
     token,
-    handleMessageSubmit
+    handleMessageSubmit,
+    activeTab,
+    allusers
   );
     
   // get chatMate avatar
@@ -273,6 +326,7 @@ function Chat(props) {
                       role="tab"
                       aria-controls="pills-inbox"
                       aria-selected="false"
+                      onClick={() => handleTabChange("inbox")}
                     >
                       Inbox
                     </a>
@@ -286,6 +340,7 @@ function Chat(props) {
                       role="tab"
                       aria-controls="pills-communities"
                       aria-selected="false"
+                      onClick={() => handleTabChange("communities")}
                     >
                       Communities
                     </a>
@@ -367,7 +422,7 @@ function Chat(props) {
                           <div className="chat-avatar">
                             <img src={chatMateAvatar} alt="avatar" className="rounded-circle me-2" id="avatar"/>
                             <div className="chat-name">
-                              {selectedChatMateDisplayname}
+                              {message.senderDisplayname}
                             </div>
                           </div>
                           <div className="chat-text">{message.content}</div>
