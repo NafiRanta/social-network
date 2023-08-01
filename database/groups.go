@@ -47,6 +47,18 @@ type InvitesByMemberResponse struct {
 	GroupID          string   `json:"groupID"`
 	InvitedUsernames []string `json:"memberInvitedUsernames"`
 }
+
+/* type InvitesByAdmin struct {
+	AdminUsername    string
+	InvitedUsernames []string
+} */
+
+type InvitesByAdminResponse struct {
+	AdminUsername    string   `json:"adminUsername"`
+	GroupID          string   `json:"groupID"`
+	InvitedUsernames []string `json:"adminInvitedUsernames"`
+}
+
 type AcceptJoinRequest struct {
 	GroupID  string `json:"groupID"`
 	UserName string `json:"userName"`
@@ -734,6 +746,64 @@ func AddUserToMemberInvite(groupID string, memberUsername string, invitedUsernam
 		return err
 	}
 	_, err = updateStmt.Exec(string(newMemberInvitedUsernames), groupID)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func AddUserToAdminInvite(invitesByAdminUsername []string, groupID string, username string) error {
+	fmt.Println("invitesByAdminUsername", invitesByAdminUsername)
+	fmt.Println("groupID", groupID)
+	fmt.Println("username", username)
+	db, err := sql.Open("sqlite3", "./socialnetwork.db")
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+
+	// invitesByAdminUsername is a slice of usernames that the admin has invited
+	// to the group
+	// Convert the slice to a JSON array
+	invitesByAdminUsernameJSON, err := json.Marshal(invitesByAdminUsername)
+	if err != nil {
+		return err
+	}
+
+	// check if there are any existing AdminInvitedUsernames for the group
+	var adminInvitedUsernames string
+	checkQuery := "SELECT AdminInvitedUsernames FROM Groups WHERE GroupID = ?"
+	err = db.QueryRow(checkQuery, groupID).Scan(&adminInvitedUsernames)
+	if err != nil {
+		return err
+	}
+
+	// Parse the JSON array into a slice
+	var existingUsernames []string
+	err = json.Unmarshal([]byte(adminInvitedUsernames), &existingUsernames)
+	if err != nil {
+		return err
+	}
+
+	// Add the adminInvitedUsernames to the existingUsernames slice in the Groups table
+	for _, u := range invitesByAdminUsername {
+		existingUsernames = append(existingUsernames, u)
+	}
+
+	// Convert the slice back to a JSON array
+	invitesByAdminUsernameJSON, err = json.Marshal(existingUsernames)
+	if err != nil {
+		return err
+	}
+
+	// add the usernames to the AdminInvitedUsernames slice in the Groups table
+	updateQuery := "UPDATE Groups SET AdminInvitedUsernames = ? WHERE GroupID = ?"
+	updateStmt, err := db.Prepare(updateQuery)
+	if err != nil {
+		return err
+	}
+	_, err = updateStmt.Exec(string(invitesByAdminUsernameJSON), groupID)
 	if err != nil {
 		return err
 	}

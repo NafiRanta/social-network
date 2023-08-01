@@ -262,7 +262,7 @@ function App() {
       headers.append("Content-Type", "application/json");
       const fetchInvitesByAdmin = async () => {
         try {
-          const res = await fetch("http://localhost:8080/invitesbyadmin", {
+          const res = await fetch("http://localhost:8080/getinvitesbyadmin", {
             method: "GET",
             headers: headers,
           });

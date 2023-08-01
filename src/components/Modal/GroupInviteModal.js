@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import "./Modal.css";
 import Avatar from "../Avatar/Avatar";
 import { useDispatch } from 'react-redux';
+import { set } from 'draft-js/lib/DefaultDraftBlockRenderMap';
 
 function GroupInviteModal(props) {
   const dispatch = useDispatch();
@@ -23,6 +24,8 @@ function GroupInviteModal(props) {
   const [MemberInvitedUsernames, setMemberInvitedUsernames] = useState([]);
   const [AdminInvitedUsernames, setAdminInvitedUsernames] = useState([]);
   const [MemberUsernames, setMemberUsernames] = useState([]);
+  const [groupData, setGroupData] = useState({});
+  const [url, setUrl] = useState('');
 
 
   useEffect(() => {
@@ -108,25 +111,45 @@ function GroupInviteModal(props) {
   };
 
   // Handle Invite Submit: handleInviteSubmit
-  const handleMemberInviteSubmit = async (event) => {
+  const handleInviteSubmit = async (event) => {
     event.preventDefault();
     const token = localStorage.getItem('token');
     const headers = new Headers();
     headers.append('Authorization', 'Bearer ' + token);
     headers.append('Content-Type', 'application/json');
     const groupID = props.groupID;
+    const isGroupAdmin = props.isGroupAdmin;
+    const isGroupMember = props.isGroupMember;
     const selectedUserNames = [];
-    const url = "http://localhost:8080/invitesbymember?groupID=" + groupID;
+    console.log("isMember", isGroupMember);
+    console.log("isAdmin", isGroupAdmin);
+    let url = '';
+    let groupData = {};
     selectedNames.forEach((name) => {
       const user = myFriends.find((friend) => friend.displayname === name);
       selectedUserNames.push(user.username);
     });
-    const now = new Date();
-    const groupData = {
-      groupID: groupID,
-      memberInvitedUsernames: selectedUserNames,
-      memberUsername : userInfo.UserName,
-    };
+    if (isGroupMember){
+       url = "http://localhost:8080/invitesbymember?groupID=" + groupID;
+       setUrl(url);
+        groupData = {
+        groupID: groupID,
+        memberInvitedUsernames: selectedUserNames,
+        memberUsername : userInfo.UserName,
+      };
+      setGroupData(groupData);
+    } else if (isGroupAdmin){
+        url = "http://localhost:8080/invitesbyadmin?groupID=" + groupID;
+        setUrl(url);
+       groupData = {
+        groupID: groupID,
+        adminInvitedUsernames: selectedUserNames,
+        adminUsername : userInfo.UserName,
+      };
+      setGroupData(groupData);
+    }
+    
+    console.log("groupData", groupData);
     // loop through selectedUserNames and send notification to each user through ws
     if (selectedUserNames) {
       selectedUserNames.forEach((username) => {
@@ -143,7 +166,8 @@ function GroupInviteModal(props) {
         }
       });
     }
-    try {
+    console.log("url in handleInviteSubmit", url)
+  try {
       const response = await fetch(url, {
         method: 'POST',
         headers: headers,
@@ -152,8 +176,12 @@ function GroupInviteModal(props) {
       const data = await response.json();
       console.log("data: ", data)
       const status = response.status;
+      if (isGroupMember){
       dispatch({ type: "SET_INVITESBYMEMBER", payload: data.invitesByMemberResponse });
       dispatch({ type: "SET_ALLGROUPS", payload: data.allGroups });
+    } else if (isGroupAdmin){
+      dispatch({ type: "SET_ALLGROUPS", payload: data.allGroups });
+      }
       if ( status === 200) {
         alert("Invite Sent!");
         window.location.href = `/singlegroup/${groupID}`;
@@ -162,7 +190,7 @@ function GroupInviteModal(props) {
       }
     } catch (error) {
       console.log(error);
-    }
+    }  
   }
 
   return (
@@ -214,7 +242,7 @@ function GroupInviteModal(props) {
                 <button 
                   type="button" 
                   className="btn btn-primary w-100"
-                  onClick={handleMemberInviteSubmit}
+                  onClick={handleInviteSubmit}
                   >
                   Invite
                 </button>
