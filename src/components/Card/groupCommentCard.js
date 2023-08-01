@@ -7,14 +7,9 @@ import "./Card.css";
 function GroupCommentCard(props) {
     const userInfo = useSelector((state) => state.userInfo);
     const token = localStorage.getItem("token");
-<<<<<<< Updated upstream
     const groupPostId = props.groupPostID;
-
-=======
-    const groupPostId = props.GroupPostID;
     const [selectedImage, setSelectedImage] = useState(null);
     const [fileName, setFileName] = useState("");
->>>>>>> Stashed changes
     const [groupCommentInput, setGroupCommentInput] = useState("");
     const [groupComments, setGroupComments] = useState([]);
     const [groupCommentCount, setGroupCommentCount] = useState(0);
@@ -83,6 +78,8 @@ const handleGroupCommentSubmit = async (e) => {
     headers.append("Authorization", "Bearer " + token);
     headers.append("Content-Type", "application/json");
 
+    console.log("groupPostId:", groupPostId);
+    console.log("comment:", comment);
     const body = {
         groupPostID: groupPostId,
         content: comment,
