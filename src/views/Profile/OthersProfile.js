@@ -78,7 +78,6 @@ function OthersProfile(props) {
         // get all my followers
         if (userInfo.FollowingUsernames) {
             const myfollowings = userInfo.FollowingUsernames.split(",");
-            console.log()
             setFollowings(myfollowings);
         } else {
             setFollowings([]);
@@ -129,8 +128,6 @@ function OthersProfile(props) {
         const isPending = followingUsernamesReceived.includes(userInfo.UserName) || followingUsernamesSent.includes(userInfo.UserName);
         const isPendingToAprove = clickedProfileFollowingUsernamesSent.includes(userInfo.UserName) 
         const isFollowing = myfollowings.includes(clickedProfileInfo.UserName);
-        console.log(clickedProfileInfo.UserName)
-        console.log("isFollowing", isFollowing)
         setPending(isPending);
         setIsPendingToAprove(isPendingToAprove);
         setIsFollowing(isFollowing);
@@ -154,16 +151,15 @@ function OthersProfile(props) {
                 body: JSON.stringify(data)
             });
             if (response.ok) {
-                console.log("Follow request sent");
                 // send notification to clickedProfileUsername through ws if clickedProfileUsername is private
                 console.log("clickedProfileInfo", clickedProfileInfo);
-                if (clickedProfileInfo.Privacy == 'private') {
+                if (clickedProfileInfo.Privacy === 'private') {
                     alert("Follow request sent");
                     const notification = {
                         type: "notification",
                         payload: {
                             senderUsername : userInfo.UserName,
-                            receiverUsername : clickedProfileUsername,
+                            receiverUsername : clickedProfileInfo.UserName,
                         }
                     };
                     console.log("notification", notification);

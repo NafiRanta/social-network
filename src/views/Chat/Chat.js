@@ -3,8 +3,8 @@ import { useSelector } from 'react-redux';
 import "../Chat/Chat.css";
 import Avatar from "../../components/Avatar/Avatar";
 import Topnav from "../Topnav";
-import { decodeJwt } from "../../components/Card/PostCard";
 import { useDispatch } from "react-redux";
+import { act } from "react-dom/test-utils";
 
 function useChatMessages(
   selectedChatMateUsername,
@@ -62,10 +62,8 @@ function Chat(props) {
   const [selectedChatMateUsername, setSelectedChatMateUsername] = useState("");
   const [selectedChatMateDisplayname, setSelectedChatMateDisplayname] =
     useState("");
-  const [senderUsername, setSenderUsername] = useState(userInfo.UserName);
-  const [senderDisplayname, setSenderDisplayname] = useState(
-    props.userDisplayname
-  );
+  const senderUsername = userInfo.UserName;
+  const senderDisplayname = userInfo.FirstName + " " + userInfo.LastName;
   const mygroups = useSelector((state) => state.myGroups);
   const [activeTab, setActiveTab] = useState("inbox");
   
@@ -91,7 +89,7 @@ function Chat(props) {
     dispatch ({ type: "SET_CHATNOTIFICATION", payload: false });
     const fetchAllMessagesAndSortUsers = async () => {
       console.log("activeTab", activeTab)
-      if (activeTab == "communities") {
+      if (activeTab === "communities") {
         console.log("fetchAllMessagesAndSortUsers activeTab", activeTab);
         return;
       }
@@ -160,7 +158,7 @@ function Chat(props) {
       }
     };
     fetchAllMessagesAndSortUsers();
-}, [allusers, userInfo, token]);
+}, [allusers, userInfo, token, dispatch, activeTab]);
 
   const displayAllUsers = () => {   
     return otherUsers.map((user) => {
@@ -172,11 +170,12 @@ function Chat(props) {
       }
       return (
 
-        <div key={chatMateusername}>
+        <div>
           <ul className="users">
             <li
               className="person"
               data-chat="person1"
+              key={chatMateusername}
               onClick={() =>
                 handleUserClick(chatMatedisplayName, chatMateusername)
               }
@@ -199,38 +198,28 @@ function Chat(props) {
     });
   };
 
+  // displayGroupChats is like displayAllUsers but for groups
   const displayGroupChats = () => {
-    // save GroupName and GroupID to a variable called filteredData
-    let filteredData = mygroups.map((group) => {
-      return {
-        GroupName: group.GroupName,
-        GroupID: group.GroupID,
-      };
-    });
-    // sort the filteredData by GroupName
-    filteredData.sort((a, b) => (a.GroupName > b.GroupName ? 1 : -1));
-    // map the filteredData to display all groups
-    return filteredData.map((group) => {
+    return mygroups.map((group) => {
       const chatMatedisplayName = group.GroupName;
-      const chatMateusername = group.GroupID;
+      const chatMateusername = group.GroupId;
       return (
-        <div key={chatMateusername}>
+        <div>
           <ul className="users">
             <li
               className="person"
               data-chat="person1"
+              key={chatMateusername}
               onClick={() =>
                 handleGroupClick(chatMatedisplayName, chatMateusername)
               }
             >
               <div className="user">
-              <img
-                src={process.env.PUBLIC_URL + '/defaultImg/default-avatar.jpeg'}
-                alt="avatar"
-                className="rounded-circle me-2"
+                <img
+                  src={group.GroupAvatar}
+                  alt="avatar"
+                  className="rounded-circle me-2"
                 />
-
-                <span className="status busy"></span>
               </div>
               <p className="name-time">
                 <span className="name">{chatMatedisplayName}</span>
@@ -293,7 +282,7 @@ function Chat(props) {
     
   // get chatMate avatar
   const chatMateUser = allusers.filter(
-    (user) => user.UserName == selectedChatMateUsername
+    (user) => user.UserName === selectedChatMateUsername
   );
   let chatMateAvatar = process.env.PUBLIC_URL + '/defaultImg/default-avatar.jpeg';
   if (chatMateUser) {
@@ -328,7 +317,7 @@ function Chat(props) {
                   id="pills-tab"
                   role="tablist"
                 >
-                  <li className="nav-item" role="presentation">
+                  <li className="nav-item" role="presentation" key={"inbox"}>
                     <a
                       className={`nav-link ${activeTab === "inbox" ? "active" : ""}`}
                       id="pills-inbox-tab"
@@ -342,7 +331,7 @@ function Chat(props) {
                       Inbox
                     </a>
                   </li>
-                  <li className="nav-item" role="presentation">
+                  <li className="nav-item" role="presentation" key={"communities"}>
                     <a
                       className={`nav-link ${activeTab === "communities" ? "active" : ""}`}
                       id="pills-communities-tab"
@@ -375,7 +364,7 @@ function Chat(props) {
                     aria-labelledby="pills-communities-tab"
                   >
                     <div className="container" id="chatUsers">
-                      {displayGroupChats()}
+                    ${activeTab === "communities" ? displayGroupChats() : ""}
                     </div>
                   </div>
                 </div>
@@ -410,7 +399,7 @@ function Chat(props) {
                         className="chatview-box chatContainerScroll"
                         id="chatmessagesSelectedChatMate"
                       >
-                        <li className="chat-right">
+                        <li className="chat-right" key={message.messageId}>
                           <div className="chat-avatar">
                             <Avatar />
                             <div className="chat-name">{senderDisplayname}</div>
@@ -429,7 +418,7 @@ function Chat(props) {
                         className="chatview-box chatContainerScroll"
                         id="chatmessagesSelectedChatMate"
                       >
-                        <li className="chat-left">
+                        <li className="chat-left" key={message.messageId}>
                           <div className="chat-avatar">
                             <img src={chatMateAvatar} alt="avatar" className="rounded-circle me-2" id="avatar"/>
                             <div className="chat-name">
