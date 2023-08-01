@@ -90,6 +90,11 @@ function Chat(props) {
     // set chatNotification to false
     dispatch ({ type: "SET_CHATNOTIFICATION", payload: false });
     const fetchAllMessagesAndSortUsers = async () => {
+      console.log("activeTab", activeTab)
+      if (activeTab == "communities") {
+        console.log("fetchAllMessagesAndSortUsers activeTab", activeTab);
+        return;
+      }
 
     // save all users except the current user to a variable called otherUsers
     let otherUsers = allusers.filter(
@@ -193,13 +198,8 @@ function Chat(props) {
       );
     });
   };
-  
-
-  
-
 
   const displayGroupChats = () => {
-    console.log("displayGroupChats mygroups", mygroups);
     // save GroupName and GroupID to a variable called filteredData
     let filteredData = mygroups.map((group) => {
       return {
@@ -302,6 +302,7 @@ function Chat(props) {
     }
   }
   const handleTabChange = (tab) => {
+    console.log("handleTabChange tab", tab);
     setActiveTab(tab);
   };
 
