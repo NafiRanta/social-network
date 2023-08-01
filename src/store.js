@@ -15,7 +15,6 @@ let defaultInitialState = {
   notification : false,
   clickedProfileInfo: [],
   followNotification: [],
-  clickedProfileInfo: [],
 };
 let serializedState = localStorage.getItem("reduxState");
 let initialState = serializedState || defaultInitialState;
