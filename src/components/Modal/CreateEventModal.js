@@ -62,7 +62,7 @@ const handleEventSubmit = async (event) => {
     const groupData = await group.json();
     const groupMembers = groupData.group[0].memberUsernames;
     // loop through groupMembers and broadcast to all users in the group a notification through websocket
-    groupMembers.forEach((member) => {
+    groupMembers?.forEach((member) => {
       if (member !== userInfo.UserName) {
         const notification = {
           type: "notification",

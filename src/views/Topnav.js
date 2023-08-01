@@ -16,12 +16,8 @@ function Topnav(props) {
   const allusers = useSelector((state) => state.allUsers);
   const userInfo = useSelector((state) => state.userInfo);
   const allGroups = useSelector((state) => state.allGroups);
-  const invitesbyadmin = useSelector((state) => state.invitesByAdmin);
-  const invitesbymember = useSelector((state) => state.invitesByMember);
-  // const followRequestsUsernames = userInfo.FollowerUsernamesReceived ? userInfo.FollowerUsernamesReceived.split(",") : [];
   const [groupInvitesByAdmin, setGroupInvitesByAdmin] = useState([]);
   const [groupInvitesByMember, setGroupInvitesByMember] = useState([]);
-  // const [followRequestsInfo, setFollowRequestsInfo] = useState([]);
   const [joinRequests, setJoinRequests] = useState([]);
   const [isInvitedByMember, setIsInvitedByMember] = useState(false);
   const [isInvitedByAdmin, setIsInvitedByAdmin] = useState(false);
@@ -79,7 +75,7 @@ function Topnav(props) {
       });
       setGroupInvitesByAdmin(filteredAllGroups);
     }
-  }, [allusers]);
+  }, [allusers, userInfo, allGroups]);
 
   useEffect(() => {
     // for Invites by Member
@@ -119,7 +115,7 @@ function Topnav(props) {
         }
 
       } 
-  }, [allGroups]);
+  }, [allGroups, allusers, userInfo]);
 
 
   // useEffect(() => {
@@ -303,7 +299,11 @@ useEffect(() => {
     }
   };
 
-      
+      console.log("Notifications.length", Notifications.length)
+      console.log("Notifications", Notifications)
+    Notifications = Notifications.filter((notification) => {
+      return notification !== null;
+    });
 
   return (
     <div className="bg-white d-flex align-items-center fixed-top shadow" >
@@ -385,7 +385,6 @@ useEffect(() => {
                 <Dropdown.Toggle
                   variant="light"
                   id="notMenu"
-                  // if notification is true, set to bg-red, else bg-gray dont change color if hover dispatch notification to false onclick and open dropdown
                   className={`rounded-circle ${Notifications.length > 0 ? "bg-red" : "bg-gray"} border-0`}
                   onMouseDown={() => dispatch({ type: "SET_NOTIFICATION", payload: false }) }
                   >
@@ -518,11 +517,6 @@ useEffect(() => {
                         <Dropdown.Item as="li" className="my-2 p-1">
                           <div className="d-flex justify-content-between">
                             <div className="d-flex align-items-center">
-                              {/* <div className="rounded-circle d-flex align-items-center justify-content-center mx-2" id="avatar"> */}
-                                {/* <img src={notification.groupAvatar} alt="avatar" className="rounded-circle me-2" /> */}
-                                {/* // default avatar */}
-                                {/* <img src="https://res.cloudinary.com/dk-find-out/image/upload/q_80,w_1920,f_auto/DCTM_Penguin_UK_DK_AL432958_hxjx5o.jpg" alt="avatar" className="rounded-circle me-2" /> */}
-                              {/* </div> */}
                               <div>
                                 <p className="m-0">New event in {notification.groupName}</p>
                               </div>
@@ -569,12 +563,9 @@ useEffect(() => {
                     </Link>
                   </Dropdown.Item>
                   <Dropdown.Item as="li" className="my-2 p-1">
-                    <a href="#" className="text-decoration-none text-dark d-flex align-items-center" onClick={handleLogout}>
-                      <div className="rounded-circle p-1 bg-gray d-flex align-items-center justify-content-center mx-2">
-                        <i className="fas fa-power-off"></i>
-                      </div>
+                    <button className="p-1 bg-gray d-flex align-items-center justify-content-center mx-2" onClick={handleLogout}>
                       <p className="m-0">Log Out</p>
-                    </a>
+                    </button>
                   </Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
