@@ -79,10 +79,6 @@ const handleGroupCommentSubmit = async (e) => {
     e.preventDefault();
     const comment = groupCommentInput;
     const now = new Date();
-
-    console.log("groupPostId:", groupPostId);
-    console.log("comment:", comment);
-
     const headers = new Headers();
     headers.append("Authorization", "Bearer " + token);
     headers.append("Content-Type", "application/json");
@@ -94,11 +90,6 @@ const handleGroupCommentSubmit = async (e) => {
         image: selectedImage,
         userName: userInfo.UserName,
     };
-    console.log("body", body);
-
-    const headers = new Headers();
-    headers.append("Authorization", "Bearer " + token);
-    headers.append("Content-Type", "application/json");
     try {
         const res = await fetch("http://localhost:8080/addgroupcomment", {
             method: "POST",
