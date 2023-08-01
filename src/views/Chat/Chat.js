@@ -61,11 +61,12 @@ function Chat(props) {
   const [selectedChatMateUsername, setSelectedChatMateUsername] = useState("");
   const [selectedChatMateDisplayname, setSelectedChatMateDisplayname] =
     useState("");
-  const senderUsername = userInfo.UserName;
-  const senderDisplayname = userInfo.FirstName + " " + userInfo.LastName;
+  const [senderUsername, setSenderUsername] = useState(userInfo.UserName);
+  const [senderDisplayname, setSenderDisplayname] = useState(
+    props.userDisplayname
+  );
   const mygroups = useSelector((state) => state.myGroups);
-  const [activeTab, setActiveTab] = useState("inbox");
-  
+
   const handleUserClick = (chatMateDisplayName, chatMateUsername) => {
     const chatMate = allusers.find(
       (chatMate) => chatMate.UserName === chatMateUsername
@@ -81,84 +82,20 @@ function Chat(props) {
     dispatch ({ type: "SET_CHATMATEUSERNAME", payload: chatMateUsername });
   };
 
-  const [otherUsers, setOtherUsers] = useState([]);
-    
-  useEffect(() => {
+  const displayAllUsers = () => {
     // set chatNotification to false
     dispatch ({ type: "SET_CHATNOTIFICATION", payload: false });
-    const fetchAllMessagesAndSortUsers = async () => {
-
-    // save all users except the current user to a variable called otherUsers
-    let otherUsers = allusers.filter(
+    if (!allusers) {
+      return null;
+    }
+    // save all users except the current user to a variable called filteredData
+    let filteredData = allusers.filter(
       (user) => user.UserName !== userInfo.UserName
     );
-    // fetch all messages from the database
-      const headers = new Headers();
-      headers.append("Authorization", "Bearer " + token);
-      headers.append("Content-Type", "application/json");
-      try {
-        const response = await fetch(
-          `http://localhost:8080/messages?username=${userInfo.UserName}`,
-          {
-            method: "GET",
-            headers: headers,
-          }
-        );
-        if (response.ok) {
-          const allMessages = await response.json();
-          console.log("allMessages", allMessages);
-            if (allMessages) {
-              // sort otherUsers by allMessages sentAt 
-              otherUsers?.sort((a, b) => {
-                const aMessages = allMessages?.filter(
-                  (message) =>
-                    (message?.senderUsername === a?.UserName &&
-                      message?.receiverUsername === userInfo?.UserName) ||
-                    (message?.senderUsername === userInfo?.UserName &&
-                      message?.receiverUsername === a?.UserName)
-                );
-                const bMessages = allMessages?.filter(
-                  (message) =>
-                    (message?.senderUsername === b?.UserName &&
-                      message?.receiverUsername === userInfo?.UserName) ||
-                    (message?.senderUsername === userInfo?.UserName &&
-                      message?.receiverUsername === b?.UserName)
-                );
-                const aLastMessage = aMessages[aMessages?.length - 1];
-                const bLastMessage = bMessages[bMessages?.length - 1];
-          
-                // If a user has no messages, move them to the end
-                if (!aLastMessage) return 1;
-                if (!bLastMessage) return -1;
-          
-                // Sort by sentAt if both users have messages
-                return aLastMessage?.sentAt > bLastMessage?.sentAt ? -1 : 1;
-            });
-          }
-          setOtherUsers(otherUsers);
-        } else {
-          throw new Error("Error occurred while fetching messages");
-        }
-      } catch (error) {
-        console.log(error);
-      }
-      // set the first user in otherUsers as the selectedChatMate
-      if (otherUsers[0]) {
-        setSelectedChatMateUsername(otherUsers[0].UserName);
-        setSelectedChatMateDisplayname(
-          otherUsers[0].FirstName + " " + otherUsers[0].LastName
-        );
-        dispatch ({ type: "SET_CHATMATEUSERNAME", payload: otherUsers[0].UserName });
-      }
-    };
-    fetchAllMessagesAndSortUsers();
-}, [allusers, userInfo, token, dispatch, activeTab]);
-
-  const displayAllUsers = () => {   
-      if (activeTab === "communities") {
-        return;
-      }
-    return otherUsers.map((user) => {
+    // sort the filteredData by firstname
+    filteredData.sort((a, b) => (a.FirstName > b.FirstName ? 1 : -1));
+    // map the filteredData to display all users except the current user
+    return filteredData.map((user) => {
       const chatMatedisplayName = user.FirstName + " " + user.LastName;
       const chatMateusername = user.UserName;
       let isUserLoggedIn
@@ -167,12 +104,11 @@ function Chat(props) {
       }
       return (
 
-        <div>
+        <div key={chatMateusername}>
           <ul className="users">
             <li
               className="person"
               data-chat="person1"
-              key={chatMateusername}
               onClick={() =>
                 handleUserClick(chatMatedisplayName, chatMateusername)
               }
@@ -195,34 +131,45 @@ function Chat(props) {
     });
   };
 
-  // displayGroupChats is like displayAllUsers but for groups
   const displayGroupChats = () => {
-    console.log("mygroups", mygroups);
-    return mygroups.map((group) => {
-      setSelectedChatMateUsername(group.GroupName);
-      setSelectedChatMateDisplayname(group.GroupName);
-      console.log("chatMateusername", group.GroupName);
-      console.log("chatMatedisplayName", group.GroupName);
+    if (!mygroups) {
+      return null;
+    }
+    // save GroupName and GroupID to a variable called filteredData
+    let filteredData = mygroups.map((group) => {
+      return {
+        GroupName: group.GroupName,
+        GroupID: group.GroupID,
+      };
+    });
+    // sort the filteredData by GroupName
+    filteredData.sort((a, b) => (a.GroupName > b.GroupName ? 1 : -1));
+    // map the filteredData to display all groups
+    return filteredData.map((group) => {
+      const chatMatedisplayName = group.GroupName;
+      const chatMateusername = group.GroupID;
+      dispatch ({ type: "SET_CHATMATEUSERNAME", payload: chatMateusername });
       return (
-        <div>
+        <div key={chatMateusername}>
           <ul className="users">
             <li
               className="person"
               data-chat="person1"
-              key={group.GroupName}
               onClick={() =>
-                handleGroupClick(group.GroupName, group.GroupName)
+                handleGroupClick(chatMatedisplayName, chatMateusername)
               }
             >
               <div className="user">
-                <img
-                  src={group.GroupAvatar}
-                  alt="avatar"
-                  className="rounded-circle me-2"
+              <img
+                src={process.env.PUBLIC_URL + '/defaultImg/default-avatar.jpeg'}
+                alt="avatar"
+                className="rounded-circle me-2"
                 />
+
+                <span className="status busy"></span>
               </div>
               <p className="name-time">
-                <span className="name">{group.GroupName}</span>
+                <span className="name">{chatMatedisplayName}</span>
               </p>
             </li>
           </ul>
@@ -230,13 +177,17 @@ function Chat(props) {
       );
     });
   };
-
+  
 
   const handleMessageSubmit = async (e) => {
     e.preventDefault();
+    // if no chatmate is selected or if message is empty, return
     const content = document.getElementById(
       `submitMessageBtn${selectedChatMateUsername}`
-    ).value;
+      ).value;
+    if (!selectedChatMateUsername || !content) {
+      return;
+    }
     const sentAt = new Date();
     const headers = new Headers();
     headers.append("Authorization", "Bearer " + token);
@@ -282,7 +233,7 @@ function Chat(props) {
     
   // get chatMate avatar
   const chatMateUser = allusers.filter(
-    (user) => user.UserName === selectedChatMateUsername
+    (user) => user.UserName == selectedChatMateUsername
   );
   let chatMateAvatar = process.env.PUBLIC_URL + '/defaultImg/default-avatar.jpeg';
   if (chatMateUser) {
@@ -290,10 +241,6 @@ function Chat(props) {
       chatMateAvatar = chatMateUser[0].Avatar;
     }
   }
-  const handleTabChange = (tab) => {
-    console.log("handleTabChange tab", tab);
-    setActiveTab(tab);
-  };
 
   return (
     <div>
@@ -317,30 +264,28 @@ function Chat(props) {
                   id="pills-tab"
                   role="tablist"
                 >
-                  <li className="nav-item" role="presentation" key={"inbox"}>
+                  <li className="nav-item" role="presentation">
                     <a
-                      className={`nav-link ${activeTab === "inbox" ? "active" : ""}`}
+                      className="nav-link"
                       id="pills-inbox-tab"
                       data-toggle="pill"
                       href="#pills-inbox"
                       role="tab"
                       aria-controls="pills-inbox"
-                      aria-selected="true"
-                      onClick={() => handleTabChange("inbox")}
+                      aria-selected="false"
                     >
                       Inbox
                     </a>
                   </li>
-                  <li className="nav-item" role="presentation" key={"communities"}>
+                  <li className="nav-item" role="presentation">
                     <a
-                      className={`nav-link ${activeTab === "communities" ? "active" : ""}`}
+                      className="nav-link"
                       id="pills-communities-tab"
                       data-toggle="pill"
                       href="#pills-communities"
                       role="tab"
                       aria-controls="pills-communities"
                       aria-selected="false"
-                      onClick={() => handleTabChange("communities")}
                     >
                       Communities
                     </a>
@@ -348,7 +293,7 @@ function Chat(props) {
                 </ul>
                 <div className="tab-content" id="pills-tabContent">
                   <div
-                    className={`tab-pane fade ${activeTab === "inbox" ? "show active" : ""}`}
+                    className="tab-pane fade"
                     id="pills-inbox"
                     role="tabpanel"
                     aria-labelledby="pills-inbox-tab"
@@ -358,13 +303,13 @@ function Chat(props) {
                     </div>
                   </div>
                   <div
-                    className={`tab-pane fade `}//${activeTab === "communities" ? "show active" : ""}`}
+                    className="tab-pane fade"
                     id="pills-communities"
                     role="tabpanel"
                     aria-labelledby="pills-communities-tab"
                   >
                     <div className="container" id="chatUsers">
-                    ${activeTab === "communities" ? displayGroupChats() : ""}
+                      {displayGroupChats()}
                     </div>
                   </div>
                 </div>
@@ -399,7 +344,7 @@ function Chat(props) {
                         className="chatview-box chatContainerScroll"
                         id="chatmessagesSelectedChatMate"
                       >
-                        <li className="chat-right" key={message.messageId}>
+                        <li className="chat-right">
                           <div className="chat-avatar">
                             <Avatar />
                             <div className="chat-name">{senderDisplayname}</div>
@@ -418,7 +363,7 @@ function Chat(props) {
                         className="chatview-box chatContainerScroll"
                         id="chatmessagesSelectedChatMate"
                       >
-                        <li className="chat-left" key={message.messageId}>
+                        <li className="chat-left">
                           <div className="chat-avatar">
                             <img src={chatMateAvatar} alt="avatar" className="rounded-circle me-2" id="avatar"/>
                             <div className="chat-name">
