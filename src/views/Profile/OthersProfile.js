@@ -76,8 +76,9 @@ function OthersProfile(props) {
 
     useEffect(() => {
         // get all my followers
-        if (userInfo.FollowerUsernames) {
+        if (userInfo.FollowingUsernames) {
             const myfollowings = userInfo.FollowingUsernames.split(",");
+            console.log()
             setFollowings(myfollowings);
         } else {
             setFollowings([]);
@@ -128,6 +129,8 @@ function OthersProfile(props) {
         const isPending = followingUsernamesReceived.includes(userInfo.UserName) || followingUsernamesSent.includes(userInfo.UserName);
         const isPendingToAprove = clickedProfileFollowingUsernamesSent.includes(userInfo.UserName) 
         const isFollowing = myfollowings.includes(clickedProfileInfo.UserName);
+        console.log(clickedProfileInfo.UserName)
+        console.log("isFollowing", isFollowing)
         setPending(isPending);
         setIsPendingToAprove(isPendingToAprove);
         setIsFollowing(isFollowing);
