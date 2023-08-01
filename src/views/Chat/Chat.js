@@ -4,7 +4,6 @@ import "../Chat/Chat.css";
 import Avatar from "../../components/Avatar/Avatar";
 import Topnav from "../Topnav";
 import { useDispatch } from "react-redux";
-import { act } from "react-dom/test-utils";
 
 function useChatMessages(
   selectedChatMateUsername,
@@ -88,11 +87,6 @@ function Chat(props) {
     // set chatNotification to false
     dispatch ({ type: "SET_CHATNOTIFICATION", payload: false });
     const fetchAllMessagesAndSortUsers = async () => {
-      console.log("activeTab", activeTab)
-      if (activeTab === "communities") {
-        console.log("fetchAllMessagesAndSortUsers activeTab", activeTab);
-        return;
-      }
 
     // save all users except the current user to a variable called otherUsers
     let otherUsers = allusers.filter(
@@ -161,6 +155,9 @@ function Chat(props) {
 }, [allusers, userInfo, token, dispatch, activeTab]);
 
   const displayAllUsers = () => {   
+      if (activeTab === "communities") {
+        return;
+      }
     return otherUsers.map((user) => {
       const chatMatedisplayName = user.FirstName + " " + user.LastName;
       const chatMateusername = user.UserName;
@@ -200,18 +197,21 @@ function Chat(props) {
 
   // displayGroupChats is like displayAllUsers but for groups
   const displayGroupChats = () => {
+    console.log("mygroups", mygroups);
     return mygroups.map((group) => {
-      const chatMatedisplayName = group.GroupName;
-      const chatMateusername = group.GroupId;
+      setSelectedChatMateUsername(group.GroupName);
+      setSelectedChatMateDisplayname(group.GroupName);
+      console.log("chatMateusername", group.GroupName);
+      console.log("chatMatedisplayName", group.GroupName);
       return (
         <div>
           <ul className="users">
             <li
               className="person"
               data-chat="person1"
-              key={chatMateusername}
+              key={group.GroupName}
               onClick={() =>
-                handleGroupClick(chatMatedisplayName, chatMateusername)
+                handleGroupClick(group.GroupName, group.GroupName)
               }
             >
               <div className="user">
@@ -222,7 +222,7 @@ function Chat(props) {
                 />
               </div>
               <p className="name-time">
-                <span className="name">{chatMatedisplayName}</span>
+                <span className="name">{group.GroupName}</span>
               </p>
             </li>
           </ul>
