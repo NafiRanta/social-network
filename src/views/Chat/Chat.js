@@ -11,7 +11,8 @@ function useChatMessages(
   token,
   handleMessageSubmit,
   activeTab,
-  allusers
+  allusers,
+  // chatMessages
 ) {
   const [chatMessages, setChatMessages] = useState([]);
   useEffect(() => {
@@ -35,18 +36,32 @@ function useChatMessages(
               return null;
             }
             // if inbox tab is selected, filter the data to display only the messages sent to the current user
-
-            if (activeTab === "inbox") {
-              const filteredData = data.filter(
-                (message) =>
-                  (message.senderUsername === senderUsername &&
-                    message.receiverUsername === selectedChatMateUsername) ||
-                  (message.senderUsername === selectedChatMateUsername &&
-                    message.receiverUsername === senderUsername)
-              );
-              filteredData.sort((a, b) => (a.sentAt > b.sentAt ? 1 : -1));
-              setChatMessages(filteredData);
-            } 
+            const filteredData = data.filter(
+              (message) =>
+                (message.senderUsername === senderUsername &&
+                  message.receiverUsername === selectedChatMateUsername) ||
+                (message.senderUsername === selectedChatMateUsername &&
+                  message.receiverUsername === senderUsername)
+            );
+            filteredData.sort((a, b) => (a.sentAt > b.sentAt ? 1 : -1));
+            const addSenderInfo = (chatMessages) => {
+              let updatedMessages = [];
+              allusers.forEach((user) => {
+                chatMessages?.forEach((message) => {
+                  const updatedMessage = { ...message };
+                  // Check if the senderUsername of the current message matches the user's username
+                  if (updatedMessage.senderUsername === user.UserName) {
+                    // Add senderDisplayname and senderAvatar properties to the message
+                    updatedMessage.senderDisplayname = user.FirstName + " " + user.LastName;
+                    updatedMessage.senderAvatar = user.Avatar;
+                    updatedMessages.push(updatedMessage);
+                  }
+                });
+              });
+              return updatedMessages;
+            };
+            const moreFilteredData = addSenderInfo(filteredData);
+            setChatMessages(moreFilteredData);
           }
         } catch (error) {
           console.log(error);
@@ -69,29 +84,34 @@ function useChatMessages(
             const filteredData = data.filter(
               (message) => message.receiverUsername === selectedChatMateUsername
             );
-            filteredData.sort((a, b) => (a.sentAt > b.sentAt ? 1 : -1));
-            // setChatMessages(filteredData);
+
+             // loop through the chatMessages array and add senderDisplayname and senderAvatar to each message
+            const addSenderInfo = (chatMessages) => {
+              let updatedMessages = [];
+              allusers.forEach((user) => {
+                chatMessages?.forEach((message) => {
+                  const updatedMessage = { ...message };
+                  // Check if the senderUsername of the current message matches the user's username
+                  if (updatedMessage.senderUsername === user.UserName) {
+                    // Add senderDisplayname and senderAvatar properties to the message
+                    updatedMessage.senderDisplayname = user.FirstName + " " + user.LastName;
+                    updatedMessage.senderAvatar = user.Avatar;
+                    updatedMessages.push(updatedMessage);
+                  }
+                });
+              });
+              updatedMessages.sort((a, b) => (a.sentAt > b.sentAt ? 1 : -1))
+
+              return updatedMessages;
+            };
+            const moreFilteredData = addSenderInfo(filteredData);
+            setChatMessages(moreFilteredData);
           }
         } catch (error) {
           console.log(error);
         }
       }
     };
-    // loop through the chatMessages array and add senderDisplayname and senderAvatar to each message
-    const addSenderInfo = async () => {
-      allusers.forEach((user) => {
-        chatMessages.forEach((message) => {
-          if (message.senderUsername === user.UserName) {
-            message.senderDisplayname = user.firstName + " " + user.lastName;
-            message.senderAvatar = user.Avatar;
-          }
-        });
-        console.log(chatMessages);
-        setChatMessages(chatMessages);
-      });
-    };
-    addSenderInfo();
-
     fetchChatMessages();
   }, [selectedChatMateUsername, senderUsername, token, handleMessageSubmit]);
 
@@ -281,7 +301,8 @@ function Chat(props) {
     token,
     handleMessageSubmit,
     activeTab,
-    allusers
+    allusers,
+    // chatMessages
   );
     
   // get chatMate avatar
@@ -325,7 +346,7 @@ function Chat(props) {
                       href="#pills-inbox"
                       role="tab"
                       aria-controls="pills-inbox"
-                      aria-selected="false"
+                      aria-selected="true"
                       onClick={() => handleTabChange("inbox")}
                     >
                       Inbox
@@ -420,7 +441,7 @@ function Chat(props) {
                       >
                         <li className="chat-left">
                           <div className="chat-avatar">
-                            <img src={chatMateAvatar} alt="avatar" className="rounded-circle me-2" id="avatar"/>
+                            <img src={message.senderAvatar} alt="avatar" className="rounded-circle me-2" id="avatar"/>
                             <div className="chat-name">
                               {message.senderDisplayname}
                             </div>
