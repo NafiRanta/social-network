@@ -14,7 +14,7 @@ function useChatMessages(
   allusers,
 ) {
   const [chatMessages, setChatMessages] = useState([]);
-  // useEffect(() => {
+  useEffect(() => {
     const fetchChatMessages = async () => {
       const headers = new Headers();
       headers.append("Authorization", "Bearer " + token);
@@ -111,7 +111,7 @@ function useChatMessages(
       }
     };
     fetchChatMessages();
-  // }, [selectedChatMateUsername, senderUsername, token, handleMessageSubmit]);
+  }, [selectedChatMateUsername, senderUsername, token, handleMessageSubmit]);
 
   return chatMessages;
 }
@@ -131,8 +131,8 @@ function Chat(props) {
   const [selectedChatMateUsername, setSelectedChatMateUsername] = useState("");
   const [selectedChatMateDisplayname, setSelectedChatMateDisplayname] =
     useState("");
-  const [senderUsername, setSenderUsername] = useState(userInfo.UserName);
-  const [senderDisplayname, setSenderDisplayname] = useState(
+  const [senderUsername] = useState(userInfo.UserName);
+  const [senderDisplayname] = useState(
     props.userDisplayname
   );
   const mygroups = useSelector((state) => state.myGroups);
@@ -153,12 +153,10 @@ function Chat(props) {
   };
 
   const displayAllUsers = () => {
-    // set chatNotification to false
     dispatch ({ type: "SET_CHATNOTIFICATION", payload: false });
     if (!allusers) {
       return null;
     }
-    // save all users except the current user to a variable called filteredData
     let filteredData = allusers.filter(
       (user) => user.UserName !== userInfo.UserName
     );
@@ -314,7 +312,6 @@ function Chat(props) {
     handleMessageSubmit,
     activeTab,
     allusers,
-    // chatMessages
   );
     
   // get chatMate avatar
