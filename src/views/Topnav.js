@@ -8,7 +8,6 @@ import CreatePostModal from '../components/Modal/CreatePostModal';
 import SearchbarGlobal from '../components/Searchbar/SearchbarGlobal';
 import CreateGroupModal from '../components/Modal/CreateGroupModal';
 import './TopNav.css'
-// import { is } from 'immutable';
 
 function Topnav(props) {
   const dispatch = useDispatch();
@@ -26,7 +25,6 @@ function Topnav(props) {
 
   useEffect(() => {
     // for Join Requests
-    console.log("allGroups topnav", allGroups)
     if(Array.isArray(allGroups) && Array.isArray(allusers)) {
       const filteredGroups = allGroups?.filter((group) => {
         return group.AdminID === userInfo.UserName && group.RequestUsernames !== "[]";
@@ -186,7 +184,6 @@ useEffect(() => {
     ...joinRequests || [],
   ]
 
-  console.log("Notifications", Notifications)
   //handle logout
   const handleLogout = () => {
     // clear redux and user info and token from local storage and session storage
@@ -298,9 +295,7 @@ useEffect(() => {
       console.error("Error declining the join request:", error);
     }
   };
-
-      console.log("Notifications.length", Notifications.length)
-      console.log("Notifications", Notifications)
+    // rm empty elements from Notifications array
     Notifications = Notifications.filter((notification) => {
       return notification !== null;
     });
