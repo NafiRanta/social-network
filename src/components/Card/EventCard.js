@@ -96,7 +96,7 @@ function EventCard(props) {
                 <p className="card-text">Time: {event.EventTime}</p>
                 {/* Check if user is going and render appropriate content */}
                 {goingUsersArray.includes(userInfo.UserName) ? (
-                  <p class="text-success">See you there!</p>
+                  <p className="text-success">See you there!</p>
                 ) : notGoingUsersArray.includes(userInfo.UserName) ? (
                   <p className="text-warning"> No big deal! We don't need you anyway.</p>
                 ) : (
