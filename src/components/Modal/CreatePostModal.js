@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from "react";
 import "./Modal.css";
 import { useSelector } from "react-redux";
 import Avatar from "../Avatar/Avatar";
-import { decodeJwt } from "../Card/PostCard";
 
 function CreatePostModal(props) {
   const userInfo = useSelector((state) => state.userInfo);

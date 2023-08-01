@@ -8,7 +8,7 @@ import CreatePostModal from '../components/Modal/CreatePostModal';
 import SearchbarGlobal from '../components/Searchbar/SearchbarGlobal';
 import CreateGroupModal from '../components/Modal/CreateGroupModal';
 import './TopNav.css'
-import { is } from 'immutable';
+// import { is } from 'immutable';
 
 function Topnav(props) {
   const dispatch = useDispatch();
@@ -17,7 +17,6 @@ function Topnav(props) {
   const userInfo = useSelector((state) => state.userInfo);
   const allGroups = useSelector((state) => state.allGroups);
   const invitesbyadmin = useSelector((state) => state.invitesByAdmin);
-  console.log("invitesbyadmin topnav", invitesbyadmin)
   const invitesbymember = useSelector((state) => state.invitesByMember);
   // const followRequestsUsernames = userInfo.FollowerUsernamesReceived ? userInfo.FollowerUsernamesReceived.split(",") : [];
   const [groupInvitesByAdmin, setGroupInvitesByAdmin] = useState([]);

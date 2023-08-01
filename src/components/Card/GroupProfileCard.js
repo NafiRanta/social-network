@@ -3,8 +3,7 @@ import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import './Card.css';
 import { Link } from 'react-router-dom';
-import { set } from "draft-js/lib/EditorState";
-//import { set } from "draft-js/lib/DefaultDraftBlockRenderMap";
+
 function GroupProfileCard(props) {
     const dispatch = useDispatch();
     const [groupsToDisplay, setGroupsToDisplay] = useState([]);

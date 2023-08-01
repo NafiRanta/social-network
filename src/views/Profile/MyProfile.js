@@ -7,10 +7,8 @@ import PostCard from "../../components/Card/PostCard";
 import AvatarSquare from "../../components/Avatar/AvatarSquare";
 import "./Profile.css";
 import ChangeProfilePicModal from "../../components/Modal/ChangeProfilePicModal";
-import UpdateProfileSettingsModal from "../../components/Modal/UpdateProfileSettingsModal";
 import Topnav from "../Topnav";
 import { Link } from 'react-router-dom';
-//import { set } from 'draft-js/lib/DefaultDraftBlockRenderMap';
 
 function MyProfile(props) {
   const dispatch = useDispatch();

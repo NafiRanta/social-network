@@ -7,7 +7,7 @@ import "./Card.css";
 function GroupCommentCard(props) {
     const userInfo = useSelector((state) => state.userInfo);
     const token = localStorage.getItem("token");
-    const groupPostId = props.groupPostID;
+    const groupPostId = props.GroupPostID;
     const [selectedImage, setSelectedImage] = useState(null);
     const [fileName, setFileName] = useState("");
     const [groupCommentInput, setGroupCommentInput] = useState("");

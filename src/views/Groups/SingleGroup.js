@@ -11,9 +11,6 @@ import EventCard from '../../components/Card/EventCard';
 import '../../views/Profile/Profile.css';
 import '../../components/Card/Card.css';
 import './Groups.css'
-import { set } from 'draft-js/lib/DefaultDraftBlockRenderMap';
-//import { set } from 'draft-js/lib/DefaultDraftBlockRenderMap';
-//import { set } from 'draft-js/lib/DefaultDraftBlockRenderMap';
 
 function SingleGroup(props) {
      // from redux store
@@ -263,7 +260,7 @@ function SingleGroup(props) {
                 throw new Error('Failed to decline invite.');
             } else {
                 const data = await res.json();
-                console.log(response);
+                console.log(res);
                 dispatch({ type: 'SET_ALLGROUPS', payload: data.allGroups });
                 setDeclineInvite(true);
                 alert('You have declined the invite.');

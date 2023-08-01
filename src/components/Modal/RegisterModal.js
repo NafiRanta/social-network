@@ -1,10 +1,8 @@
 import React, { useState, useRef } from "react";
-import { useDispatch } from 'react-redux';
 import "./Modal.css";
 import { ValidateEmail, ValidatePassword} from "../../views/Login.js";
 
 function RegisterModal({ openModal }) {
-  const dispatch = useDispatch();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");

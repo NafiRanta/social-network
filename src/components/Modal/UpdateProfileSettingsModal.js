@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import "./Modal.css";
+// import { useSelector } from 'react-redux';
 
 function UpdateProfileSettingsModal(props) {
   const navigate = useNavigate();

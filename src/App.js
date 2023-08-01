@@ -12,22 +12,6 @@ import Chat from "./views/Chat/Chat";
 import SingleGroup from "./views/Groups/SingleGroup";
 import AllGroups from "./views/Groups/AllGroups";
 import OthersProfile from "./views/Profile/OthersProfile";
-// import CreatePost from "./components/CreatePost/CreatePost";
-// import CreatePostModal from "./components/Modal/CreatePostModal";
-// import Topnav from "./views/Topnav";
-// import Error from "./views/Error/Error";
-// import SingleGroupNonMember from "./views/Groups/SingleGroupNonMember";
-// import GroupSidenav from "./views/Groups/GroupSidenav";
-// import SingleEvent from "./views/Events/SingleEvent";
-// import SearchbarGlobal from "./components/Searchbar/SearchbarGlobal";
-// import { click } from "@testing-library/user-event/dist/click";
-
-//import { set } from "draft-js/lib/DefaultDraftBlockRenderMap";
-const eventStruct = {
-  type: String,
-  payload: Object,
-};
-
 
 function App() {
   const dispatch = useDispatch();
@@ -38,22 +22,18 @@ function App() {
         : {
           // if the user is in the chat page, then update the chat page
           if (window.location.pathname === "/chat") {
-            // render chat messages
             dispatch({ type: "SET_CHATMESSAGES", payload: event.payload });
           } else {
-            // set chatNotification to true
             dispatch({ type: "SET_CHATNOTIFICATION", payload: true });
             break;
           }
         }
       case "acknowledgement"
         : {
-          // dispatch event.data.loggedinUsers to redux store
           if (event) {
             if (event.payload.loggedInUsers) {
               let loggedinUsers = event.payload.loggedInUsers;
               dispatch({ type: "SET_LOGGEDINUSERS", payload: loggedinUsers });
-              // console.log("loggedinUsers", loggedinUsers);
             }
           }
           break;
