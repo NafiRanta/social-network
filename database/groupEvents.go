@@ -64,13 +64,10 @@ func AddGroupEvent(groupEvent *GroupEventResponse) error {
 	if err != nil {
 		return err
 	}
-
-	//fmt.Println("Added group event to database.")
 	return nil
 }
 
 func GetGroupEvents(groupID string) ([]GroupEvent, error) {
-	//fmt.Println("groupID:", groupID)
 	db, err := sql.Open("sqlite3", "./socialnetwork.db")
 	if err != nil {
 		return nil, err

@@ -9,7 +9,6 @@ import (
 )
 
 func CreateGroupHandler(w http.ResponseWriter, r *http.Request) {
-	//fmt.Println("AddGroupHandler")
 	// Check if the request method is POST
 	if r.Method != http.MethodPost {
 		w.WriteHeader(http.StatusMethodNotAllowed)
@@ -33,7 +32,6 @@ func CreateGroupHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
 		return
 	}
-	//fmt.Println("group:", group)
 	user, err := d.GetUserByID(userID)
 	if err != nil {
 		//fmt.Println("error from getuserbyid:", err)
@@ -76,12 +74,10 @@ func CreateGroupHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)
 	w.Write(jsonData)
-	//fmt.Println("Group added successfully")
 }
 
 // add user to group memberUsernames
 func AddUserToGroupHandler(w http.ResponseWriter, r *http.Request) {
-	//fmt.Println("AddUserToGroupHandler")
 	// Check if the request method is POST
 	if r.Method != http.MethodPost {
 		w.WriteHeader(http.StatusMethodNotAllowed)
@@ -150,12 +146,10 @@ func AddUserToGroupHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)
 	w.Write(jsonData)
-	//fmt.Println("user added to group successfully")
 }
 
 // add users to group MemberInvitedUsernames
 func AddUsersToMemberInvited(w http.ResponseWriter, r *http.Request) {
-	//fmt.Println("AddUsersToMemberInvited")
 	authHeader := r.Header.Get("Authorization")
 	if authHeader == "" {
 		//fmt.Println("error from authheader:")
@@ -181,7 +175,6 @@ func AddUsersToMemberInvited(w http.ResponseWriter, r *http.Request) {
 
 	groupID := r.URL.Query().Get("groupID")
 
-	// get response from the r.body
 	var response d.InvitesByMemberResponse
 	err = json.NewDecoder(r.Body).Decode(&response)
 	if err != nil {
@@ -189,11 +182,8 @@ func AddUsersToMemberInvited(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
 		return
 	}
-	//fmt.Println("response:", response)
 	// get invitedUsernames from response
 	invitedUsernames := response.InvitedUsernames
-	// Convert the response to JSON
-	//fmt.Println("invitedUsernames:", invitedUsernames)
 
 	allGroups, err := d.GetAllGroups()
 	if err != nil {
@@ -216,7 +206,6 @@ func AddUsersToMemberInvited(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Failed to marshal response", http.StatusInternalServerError)
 		return
 	}
-	//fmt.Println("responseJSON:", responseJSON)
 
 	err = d.AddUserToMemberInvite(groupID, username, invitedUsernames)
 	if err != nil {
@@ -225,17 +214,13 @@ func AddUsersToMemberInvited(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	// Set the Content-Type header to application/json
-	// 200
 	w.WriteHeader(http.StatusOK)
 	w.Header().Set("Content-Type", "application/json")
 
 	w.Write(responseJSON)
-
-	//fmt.Println("users added to group successfully")
 }
 
 func AddUsersToAdminInvited(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("AddUsersToAdminInvited")
 	authHeader := r.Header.Get("Authorization")
 	if authHeader == "" {
 		fmt.Println("error from authheader:")
@@ -269,7 +254,6 @@ func AddUsersToAdminInvited(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
 		return
 	}
-	fmt.Println("response:", invitesByAdminResponse)
 	// get invitedUsernames from response
 	invitedUsernames := invitesByAdminResponse.InvitedUsernames
 
@@ -304,7 +288,6 @@ func AddUsersToAdminInvited(w http.ResponseWriter, r *http.Request) {
 }
 
 func DeclineGroupInviteHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("DeclineGroupInviteHandler")
 	// Check if the request method is POST
 	if r.Method != http.MethodPost {
 		w.WriteHeader(http.StatusMethodNotAllowed)
@@ -363,11 +346,9 @@ func DeclineGroupInviteHandler(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(responseJSON)
-	fmt.Println("users added to group successfully")
 }
 
 func JoinRequestHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("JoinRequestHandler")
 	// Check if the request method is POST
 	if r.Method != http.MethodPost {
 		w.WriteHeader(http.StatusMethodNotAllowed)
@@ -445,12 +426,9 @@ func JoinRequestHandler(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(responseJSON)
-	fmt.Println("users added to group successfully")
-
 }
 
 func AcceptJoinRequestHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("AcceptJoinRequestHandler")
 	// Check if the request method is POST
 	if r.Method != http.MethodPost {
 		w.WriteHeader(http.StatusMethodNotAllowed)
@@ -500,11 +478,9 @@ func AcceptJoinRequestHandler(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(responseJSON)
-	fmt.Println("users added to group successfully")
 }
 
 func DeclineJoinRequestHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("DeclineJoinRequestHandler")
 	// Check if the request method is POST
 	if r.Method != http.MethodPost {
 		w.WriteHeader(http.StatusMethodNotAllowed)
@@ -550,5 +526,4 @@ func DeclineJoinRequestHandler(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(responseJSON)
-	fmt.Println("users added to group successfully")
 }

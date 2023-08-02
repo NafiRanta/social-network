@@ -32,8 +32,8 @@ type UserResponse struct {
 	Nickname                  string `json:"Nickname"`
 	AboutMe                   string `json:"AboutMe"`
 	FollowerUsernames         string `json:"FollowerUsernames"`
-	FollowingUsernames         string `json:"FollowingUsernames"`
-	FollowingUsernamesSent     string `json:"FollowingUsernamesSent"`
+	FollowingUsernames        string `json:"FollowingUsernames"`
+	FollowingUsernamesSent    string `json:"FollowingUsernamesSent"`
 	FollowerUsernamesReceived string `json:"FollowerUsernamesReceived"`
 }
 
@@ -87,7 +87,6 @@ func LogIn(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 			token, err := GenerateJWT(user.UserID)
-			fmt.Println("token:", token)
 			if err != nil {
 				u.CheckErr(err)
 				http.Error(w, "Failed to generate JWT", http.StatusInternalServerError)
@@ -120,7 +119,7 @@ func LogIn(w http.ResponseWriter, r *http.Request) {
 				AboutMe:                   user.AboutMe,
 				FollowerUsernames:         user.FollowerUsernames,
 				FollowingUsernames:        user.FollowingUsernames,
-				FollowingUsernamesSent:     user.FollowingUsernamesSent,
+				FollowingUsernamesSent:    user.FollowingUsernamesSent,
 				FollowerUsernamesReceived: user.FollowerUsernamesReceived,
 			}
 			userJSON, err := json.Marshal(userResponse)
@@ -190,7 +189,6 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		if err == sql.ErrNoRows {
 			if user.Avatar == "" {
 				user.Avatar = "data:image/jpeg;base64," + base64.StdEncoding.EncodeToString(SetDefaultImg("defaultImg/default-avatar.jpeg"))
-				//fmt.Println(user.Avatar)
 			}
 			// generate unique username
 			rand.Seed(time.Now().UnixNano())

@@ -9,7 +9,6 @@ import (
 )
 
 func GetGroupsHandler(w http.ResponseWriter, r *http.Request) {
-	//fmt.Println("getUserGroupsHandler")
 	authHeader := r.Header.Get("Authorization")
 	if authHeader == "" {
 		//fmt.Println("error from authheader:")
@@ -71,14 +70,10 @@ func GetGroupsHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Set the Content-Type header to application/json
 	w.Header().Set("Content-Type", "application/json")
-
-	// Write the JSON response to the HTTP response writer
 	w.Write(responseJSON)
 }
 
 func GetSingleGroupHandler(w http.ResponseWriter, r *http.Request) {
-	//fmt.Println("getSingleGroupHandler")
-
 	groupID := r.URL.Query().Get("groupID")
 	if groupID == "" {
 		http.Error(w, "Missing groupID", http.StatusBadRequest)
@@ -110,7 +105,6 @@ func GetSingleGroupHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetAdminGroupInvitesHandler(w http.ResponseWriter, r *http.Request) {
-	//fmt.Println("getAdminGroupInvitesHandler")
 	authHeader := r.Header.Get("Authorization")
 	if authHeader == "" {
 		//fmt.Println("error from authheader:")

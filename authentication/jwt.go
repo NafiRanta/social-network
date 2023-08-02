@@ -39,7 +39,7 @@ func ExtractUserIDFromAuthHeader(authHeader string) (string, error) {
 	})
 
 	if err != nil || token == nil {
-		// fmt.Println("error in extractuseridfromauthheader is", err)
+		fmt.Println("error in extractuseridfromauthheader is", err)
 		return "", fmt.Errorf("invalid token")
 	}
 

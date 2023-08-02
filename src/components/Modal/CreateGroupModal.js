@@ -67,7 +67,6 @@ function CreateGroupModal(props) {
       eventIDs: groupEventID,
       createAt: now
     };
-    console.log("groupData: ", groupData);
     if (groupData.adminInvitedUsernames.length > 0) {
       groupData.adminInvitedUsernames.forEach((username) => {
         // send notification to invited users
@@ -78,8 +77,6 @@ function CreateGroupModal(props) {
             receiverUsername: username,
           }
         };
-        console.log("props: ", props)
-        // console.log("props.socket: ", props.socket)
         if (props.socket) {
           props.socket.send(JSON.stringify(notification));
           console.log("notification sent");
@@ -87,7 +84,6 @@ function CreateGroupModal(props) {
       });
     }
 
-    console.log("groupData: ", groupData);
     const headers = new Headers();
     headers.append('Authorization', 'Bearer ' + token);
     headers.append('Content-Type', 'application/json');
@@ -105,7 +101,6 @@ function CreateGroupModal(props) {
 
       // fetch the group id
       const group = await response.json();
-      console.log("create group: ", group);
       const allgroups = group.allGroups
       dispatch({ type: "SET_ALLGROUPS", payload: allgroups });
       const groupId = group.groupID;

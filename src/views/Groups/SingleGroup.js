@@ -44,10 +44,8 @@ function SingleGroup(props) {
                     const group = data.group[0];
                     setGroup(group);
                     const admin = allusers?.find((user) => user.UserName === data.group[0].AdminID);
-                    console.log('admin in fetch', admin);
                     setAdminDisplayName(admin.FirstName + " " + admin.LastName);
                     const membersUsernames = data.group[0].MemberUsernames;
-                    console.log('membersUsernames in fetch', membersUsernames);
                     if (Array.isArray(membersUsernames) && Array.isArray(allusers)) {
                         const membersInfo = membersUsernames.map((username) => {
                             const member = allusers.find((user) => user.UserName === username);
@@ -63,41 +61,32 @@ function SingleGroup(props) {
                     // check if user is the admin of the group
                     const isGroupAdmin = group?.AdminID === userInfo.UserName;
                     setIsGroupAdmin(isGroupAdmin);
-                    console.log('isGroupAdmin in fetch', isGroupAdmin)
     
                     // check if user is a member of the group
                     const isGroupMember = Array.isArray(membersUsernames) && membersUsernames.includes(userInfo.UserName);
                     setIsGroupMember(isGroupMember);
-                    console.log('isGroupMember in fetch', isGroupMember)
     
                     // check if user is invited by admin
                     const adminInvitedUsers = (group?.AdminInvitedUsernames ?? "[]");
-                    console.log('adminInvitedUsers in fetch', adminInvitedUsers)
                     setAdminInvitedUsers(adminInvitedUsers);
     
                     const isInvitedByAdmin = Array.isArray(adminInvitedUsers) && adminInvitedUsers.includes(userInfo.UserName);
                     setIsInvitedByAdmin(isInvitedByAdmin);
-                    console.log("hello isInvitedByAdmin in fetch", isInvitedByAdmin)
     
                     // check if user is invited by member
                     const memberInvitedUsers = (group?.MemberInvitedUsernames ?? "[]");
-                    console.log('memberInvitedUsers in fetch', memberInvitedUsers)
                     setMemberInvitedUsers(memberInvitedUsers);
                     if (Array.isArray(memberInvitedUsers) && memberInvitedUsers.length > 0){
                         const isInvitedByMember = memberInvitedUsers.map ((memberInvitedUser) => memberInvitedUser.InvitedUsernames.includes(userInfo.UserName));
                         setIsInvitedByMember(isInvitedByMember);
                     } 
-                    
-                    console.log("hello isInvitedByMember in fetch", isInvitedByMember)
                 }
                 catch (error) {
                     console.error('Error fetching group data:', error);
-                  }
-                
+                  }              
             };
             fetchSingleGroup();
-        } 
-       
+        }     
     }, [allgroups, groupID])
 
  /*    useEffect(() => {
@@ -107,13 +96,10 @@ function SingleGroup(props) {
                     method: "GET",});
                 const data = await response.json();
                 const group = data.group[0];
-                console.log('group in fetch', group);
                 setGroup(group);
                 const admin = allusers?.find((user) => user.UserName === data.group[0].AdminID);
-                console.log('admin in fetch', admin);
                 setAdminDisplayName(admin.FirstName + " " + admin.LastName);
                 const membersUsernames = data.group[0].MemberUsernames;
-                console.log('membersUsernames in fetch', membersUsernames);
                 if (Array.isArray(membersUsernames) && Array.isArray(allusers)) {
                     const membersInfo = membersUsernames.map((username) => {
                         const member = allusers.find((user) => user.UserName === username);
@@ -129,37 +115,29 @@ function SingleGroup(props) {
                 // check if user is the admin of the group
                 const isGroupAdmin = group?.AdminID === userInfo.UserName;
                 setIsGroupAdmin(isGroupAdmin);
-                console.log('isGroupAdmin in fetch', isGroupAdmin)
 
                 // check if user is a member of the group
                 const isGroupMember = Array.isArray(membersUsernames) && membersUsernames.includes(userInfo.UserName);
                 setIsGroupMember(isGroupMember);
-                console.log('isGroupMember in fetch', isGroupMember)
 
                 // check if user is invited by admin
                 const adminInvitedUsers = (group?.AdminInvitedUsernames ?? "[]");
-                console.log('adminInvitedUsers in fetch', adminInvitedUsers)
                 setAdminInvitedUsers(adminInvitedUsers);
 
                 const isInvitedByAdmin = Array.isArray(adminInvitedUsers) && adminInvitedUsers.includes(userInfo.UserName);
                 setIsInvitedByAdmin(isInvitedByAdmin);
-                console.log("hello isInvitedByAdmin in fetch", isInvitedByAdmin)
 
                 // check if user is invited by member
                 const memberInvitedUsers = (group?.MemberInvitedUsernames ?? "[]");
-                console.log('memberInvitedUsers in fetch', memberInvitedUsers)
                 setMemberInvitedUsers(memberInvitedUsers);
                 if (Array.isArray(memberInvitedUsers) && memberInvitedUsers.length > 0){
                     const isInvitedByMember = memberInvitedUsers.map ((memberInvitedUser) => memberInvitedUser.InvitedUsernames.includes(userInfo.UserName));
                     setIsInvitedByMember(isInvitedByMember);
                 } 
-                
-                console.log("hello isInvitedByMember in fetch", isInvitedByMember)
             }
             catch (error) {
                 console.error('Error fetching group data:', error);
               }
-            
         };
         fetchSingleGroup();
     }, [groupID, allusers]); */
@@ -207,7 +185,6 @@ function SingleGroup(props) {
             } else {
                 alert('You have joined the group.');
                 const data = await res.json();
-                console.log('data', data);
                 const allgroups = data.allgroups;
                 dispatch({ type: 'SET_ALLGROUPS', payload: allgroups });
                 window.location.reload();
@@ -232,9 +209,7 @@ function SingleGroup(props) {
             if (!res.ok) {
                 throw new Error('Failed to accept invite.');
             } else {
-                
                 const data = await res.json();
-                console.log('data', data);
                 const allgroups = data.allGroups;
                 dispatch({ type: 'SET_ALLGROUPS', payload: allgroups });
                 alert('Pending admin approval.');
@@ -260,7 +235,6 @@ function SingleGroup(props) {
                 throw new Error('Failed to decline invite.');
             } else {
                 const data = await res.json();
-                console.log(res);
                 dispatch({ type: 'SET_ALLGROUPS', payload: data.allGroups });
                 setDeclineInvite(true);
                 alert('You have declined the invite.');

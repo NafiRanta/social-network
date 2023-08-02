@@ -45,7 +45,6 @@ function Login() {
   const validLoginForm = () => {
     // Check if email is empty
     if (email.trim() === "") {
-      console.log("Email is required");
       document.getElementById("loginUsernameErrMsg").innerHTML =
         "Email is required";
       setValid({ ...valid, Email: false });
@@ -53,7 +52,6 @@ function Login() {
 
     // Check if the email is in the correct format
     if (!ValidateEmail(email)) {
-      console.log("Invalid email format");
       document.getElementById("loginUsernameErrMsg").innerHTML =
         "Invalid email format";
       setValid({ ...valid, email: false });
@@ -61,7 +59,6 @@ function Login() {
 
     // Check if the password is empty
     if (password.trim() === "") {
-      console.log("Password is required");
       document.getElementById("loginPasswordErrMsg").innerHTML =
         "Password is required";
       setValid({ ...valid, password: false });
@@ -69,7 +66,6 @@ function Login() {
 
     // Check if the password is in the correct format
     if (!ValidatePassword(password)) {
-      console.log("Invalid password format");
       document.getElementById("loginPasswordErrMsg").innerHTML =
         "Invalid password format, password has to be at least 5 characters, containing uppercase, lowercase, number, and special character";
       setValid({ ...valid, password: false });
@@ -105,7 +101,6 @@ function Login() {
         window.location.href = "/";
       } else {
         // show error message from response
-        console.log(response);
         if (response.status === 401) {
           document.getElementById("loginUsernameErrMsg").innerHTML =
             "Incorrect username or password";

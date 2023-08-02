@@ -19,7 +19,6 @@ function GroupProfileCard(props) {
         // get groups where user is a member or admin and push to mygroups
         allgroups.forEach((group) => {
           const memberUsernames = JSON.parse(group.MemberUsernames) || [];
-          console.log("memberUsernames", memberUsernames)
           const isAdmin = group.AdminID === userInfo.UserName;
           const isMember =(memberUsernames.includes(userInfo.UserName));
           if (isAdmin || isMember) {
@@ -27,7 +26,6 @@ function GroupProfileCard(props) {
           }
           setMyGroups(mygroups);
         });
-        console.log("mygroups", mygroups);
           setGroupsToDisplay(mygroups);
         } else if (currentPath === "/allgroups") {
           setGroupsToDisplay(allgroups);
@@ -68,16 +66,11 @@ function GroupProfileCard(props) {
       };
 
     const renderGroupActions = (group) => {
-      if (window.location.pathname === "/allgroups") {
-        console.log("group rendergroupactions", group.GroupName, group);
-        
+      if (window.location.pathname === "/allgroups") {        
         const memberUsernames = JSON.parse(group.MemberUsernames) || [];
         const isMember = memberUsernames.includes(userInfo.UserName);
-        console.log("isMember", isMember)
         const isAdmin = group.AdminID === userInfo.UserName;
-        const isPendingJoinRequest = group.RequestUsernames.includes(userInfo.UserName);
-        console.log("isPendingJoinRequest xxx", isPendingJoinRequest)
-      
+        const isPendingJoinRequest = group.RequestUsernames.includes(userInfo.UserName);      
     
         if (isMember || isAdmin) {
           return (

@@ -91,11 +91,9 @@ function UpdateProfileSettingsModal(props) {
     if (isNicknameEditMode) {
       if (nicknameInput.value === "") {
         setNicknameLabel(nickname);
-        console.log("line 82");
       } else {
         setNicknameLabel(nicknameInput.value);
         setNickname(nicknameInput.value);
-        console.log("line 92");
       }
     }
   };
@@ -199,7 +197,6 @@ const handleRemoveAbout = () => {
     const headers = new Headers();
     headers.append('Authorization', 'Bearer ' + token);
     headers.append('Content-Type', 'application/json');
-    console.log("nickname handleUPdate", nickname);
     try{
       const res = await fetch("http://localhost:8080/updatebio", {
         method: 'POST',
@@ -208,7 +205,6 @@ const handleRemoveAbout = () => {
       });
       if (res.ok) {
         const data = await res.json();
-          console.log("data update user response data", data);
           dispatch({ type: 'SET_USER', payload: data });
           alert("Profile updated");
           window.location.href = `/profile/${userInfo.UserName}`;
@@ -252,9 +248,6 @@ const handleRemoveAbout = () => {
                             {!isNicknameEditMode && (
                               <i className="fas fa-pen" onClick={handleNicknameEditToggle}></i>
                             )}
-                            {/* {(!isNicknameEditMode && nicknameLabel !== "Add a nickname" && nicknameLabel.innerHTML !== nickname && nicknameLabel !== "Add a nickname" )&& (
-                              <i className="fas fa-times" onClick={handleRemoveNickname}></i>
-                            )} */}
                           </div>
                           {isNicknameEditMode ? (
                             <>

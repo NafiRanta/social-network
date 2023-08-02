@@ -280,7 +280,6 @@ useEffect(() => {
         throw new Error("Failed to decline the join request.");
       }
       const data = await response.json();
-      console.log("data", data);
       dispatch({ type: "SET_ALLGROUPS", allGroups: data.allGroups });
       // remove the join request from the join requests array
       const updatedJoinRequests = joinRequests.filter((joinRequest) => {

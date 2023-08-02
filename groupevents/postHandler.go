@@ -8,13 +8,12 @@ import (
 )
 
 type eventReqResponse struct {
-	GroupEventID    string `json:"groupEventID"`
-	EventName       string `json:"eventName"`
-	UserName        string `json:"userName"`
+	GroupEventID string `json:"groupEventID"`
+	EventName    string `json:"eventName"`
+	UserName     string `json:"userName"`
 }
 
 func AddGroupEventHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("AddGroupEventHandler")
 	// Check if the request method is POST
 	if r.Method != http.MethodPost {
 		w.WriteHeader(http.StatusMethodNotAllowed)
@@ -39,11 +38,9 @@ func AddGroupEventHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Return a success response
 	w.WriteHeader(http.StatusCreated)
-	fmt.Println("GroupEvent added successfully")
 }
 
 func AcceptGoingEventHandler(w http.ResponseWriter, r *http.Request) {
-	// Check if the request method is POST
 	if r.Method != http.MethodPost {
 		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
 		return

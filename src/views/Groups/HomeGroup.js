@@ -8,7 +8,6 @@ import CommentCard from "../../components/Card/CommentCard";
 function HomeGroup(props) {
   const userInfo = useSelector((state) => state.userInfo);
   const mygroups = useSelector((state) => state.myGroups);
-  // console.log("mygroups", mygroups);
   const [myGroupsPosts, setMyGroupsPosts] = useState([]);
   const [expandedPosts, setExpandedPosts] = useState({}); // Added state for expanded posts
 
@@ -27,7 +26,6 @@ function HomeGroup(props) {
         if (res.ok) {
           const data = await res.json();
           // get group names using data.GroupID from mygroups and add to data
-          // console.log("data", data);
           let updatedData
           if (data.allMyGroupsPosts) {
             data.allMyGroupsPosts.map((post) => {
@@ -39,10 +37,8 @@ function HomeGroup(props) {
             });
           }
           setMyGroupsPosts(updatedData);
-          // console.log("updatedData", updatedData);
         } else {
           console.log("error");
-          // alert("Something went wrong. Please try again later.");
         }
       } catch (error) {
         // Handle error

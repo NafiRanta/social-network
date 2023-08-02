@@ -41,8 +41,6 @@ function SearchbarGlobal(props) {
   };
 
   const handleButtonClick = (username) => {
-    //e.stopPropagation();
-    console.log( "username:", username);
     // link to user profile
     navigate(`/othersprofile/${username}`);
   };

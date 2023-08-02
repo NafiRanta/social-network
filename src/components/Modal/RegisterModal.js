@@ -75,66 +75,54 @@ function RegisterModal({ openModal }) {
     const validRegisterForm = () => {
       let validBool = true;
       if (firstName.trim() === '') {
-        console.log("Firstname is required");
         document.getElementById("registerFirstnameErrMsg").innerHTML = "Firstname is required";
         validBool = false;
       } else if (!validateFirstname(firstName)) {
-        console.log("Invalid firstname format");
         document.getElementById("registerFirstnameErrMsg").innerHTML = "Invalid Firstname format";
         validBool = false;
       } else {
         document.getElementById("registerFirstnameErrMsg").innerHTML = "";
       }
       if (lastName.trim() === '') {
-        console.log("Lastname is required");
         document.getElementById("registerLastnameErrMsg").innerHTML = "Lastname is required";
         validBool = false;
       } else if (!validateLastname(lastName)) {
-        console.log("Invalid Lastname format");
         document.getElementById("registerLastnameErrMsg").innerHTML = "Invalid Lastname format";
         validBool = false;
       } else {
         document.getElementById("registerLastnameErrMsg").innerHTML = "";
       }
       if (email.trim() === '') {
-        console.log("Email is required");
         document.getElementById("registerUsernameErrMsg").innerHTML = "Email is required";
         validBool = false;
       } else if (!ValidateEmail(email)) {
-        console.log("Invalid email format");
         document.getElementById("registerUsernameErrMsg").innerHTML = "Invalid email format";
         validBool = false;
       } else {
         document.getElementById("registerUsernameErrMsg").innerHTML = "";
       }
       if (password.trim() === '') {
-        console.log("Password is required");
         document.getElementById("registerPasswordErrMsg").innerHTML = "Password is required";
         validBool = false;
       } else if (!ValidatePassword(password)) {
-        console.log("Invalid password format");
         document.getElementById("registerPasswordErrMsg").innerHTML = "Invalid password format";
         validBool = false;
       } else {
         document.getElementById("registerPasswordErrMsg").innerHTML = "";
       }
       if (!dob.trim() === '') {
-        console.log("Date of birth is required");
         document.getElementById("registerDobErrMsg").innerHTML = "Date of birth is required";
         validBool = false;
       } else if (!validateDob(dob)) {
-        console.log("Invalid date of birth format");
         document.getElementById("registerDobErrMsg").innerHTML = "You have to be at least 16 years old";
         validBool = false;
       } else {
         document.getElementById("registerDobErrMsg").innerHTML = "";
       }
       if (!gender.trim() === '') {
-        console.log("Gender is required");
         document.getElementById("registerGenderErrMsg").innerHTML = "Gender is required";
         validBool = false;
       } else if (!validateGender(gender)) {
-        console.log("Invalid gender")
         document.getElementById("registerGenderErrMsg").innerHTML = "Invalid gender";
         // setValid(valid.gender = false);
         validBool = false;
@@ -143,7 +131,6 @@ function RegisterModal({ openModal }) {
       }
       // if nickname is longer than 20 characters
       if (nickname.length > 20) {
-        console.log("Nickname is too long");
         document.getElementById("registerNicknameErrMsg").innerHTML = "Nickname is too long";
         validBool = false;
       } else {
@@ -151,7 +138,6 @@ function RegisterModal({ openModal }) {
       }
       // if about is longer than 100 characters
       if (about.length > 100) {
-        console.log("About is too long");
         document.getElementById("registerAboutErrMsg").innerHTML = "Exceeds the limit of 100 characters";
         validBool = false;
       } else {
@@ -162,8 +148,6 @@ function RegisterModal({ openModal }) {
     
     const HandleRegister = async (event) => {
       event.preventDefault();
-      console.log("Register");
-      console.log("dob 1", dob)
       if (!validRegisterForm()) {
         console.log("Invalid register form");
         return;

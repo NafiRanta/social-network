@@ -13,8 +13,6 @@ import (
 )
 
 func GetGroupEventsHandler(w http.ResponseWriter, r *http.Request) {
-	//fmt.Println("GetGroupEventHandler")
-	// Check if the request method is POST
 	if r.Method != http.MethodGet {
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		//fmt.Println("Method not allowed")
@@ -22,7 +20,6 @@ func GetGroupEventsHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	// get groupEventID from url
 	groupID := r.URL.Query().Get("groupID")
-	//fmt.Println("groupEventID:", groupID)
 	//get groupEvent
 	groupEvent, err := d.GetGroupEvents(groupID)
 	if err != nil {
@@ -42,18 +39,15 @@ func GetGroupEventsHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Failed to marshal groupEvent", http.StatusInternalServerError)
 		return
 	}
-
 	// Write content-type, statuscode, payload
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	w.Write(responseJSON)
-	//fmt.Println("GroupEvent got successfully")
 }
 
 // returns a slice of groupIDs for all groups that has events that user has not responded to
 func GetEventNotificationsHandler(w http.ResponseWriter, r *http.Request) {
 	var groupIDEventNotifications []string
-	// Check if the request method is POST
 	if r.Method != http.MethodPost {
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		fmt.Println("Method not allowed")
@@ -82,7 +76,6 @@ func GetEventNotificationsHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	username := user.UserName
 	// get all groups where user is a member
-	// get groups user is a member of
 	userMemberGroups, err := d.GetGroupsByMembersUsername(username)
 	if err != nil {
 		//fmt.Println("error getting groups userinvited")
@@ -90,9 +83,7 @@ func GetEventNotificationsHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	// get all groupEvents for groups user is a member of
-	// loop through userMemberGroups
 	for _, group := range userMemberGroups {
-		// get groupEvents for group
 		groupEvents, err := d.GetGroupEvents(group.GroupID)
 		if err != nil {
 			//fmt.Println("error getting groupEvents")
@@ -103,11 +94,9 @@ func GetEventNotificationsHandler(w http.ResponseWriter, r *http.Request) {
 		for _, groupEvent := range groupEvents {
 			var notGoingUsers []string
 			var goingUsers []string
-			// split notGoingUsers by comma for groupEvent to array
 			if groupEvent.NotGoingUsers != "" {
 				notGoingUsers = strings.Split(groupEvent.NotGoingUsers, ",")
 			}
-			// split goingUsers by comma for groupEvent to array
 			if groupEvent.GoingUsers != "" {
 				goingUsers = strings.Split(groupEvent.GoingUsers, ",")
 			}

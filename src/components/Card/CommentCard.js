@@ -48,11 +48,9 @@ function CommentCard(props) {
           setCommentCount(data.comments.length);
           setSelectedImage(data.selectedImage)
           comments.map((comment) => {
-            console.log("comment", comment);
           })
         } else {
           // Handle the case when data.comments is null
-          console.log("No comments available");
           setComments([]);
           setCommentCount(0);
         }

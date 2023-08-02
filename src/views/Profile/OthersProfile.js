@@ -152,7 +152,6 @@ function OthersProfile(props) {
             });
             if (response.ok) {
                 // send notification to clickedProfileUsername through ws if clickedProfileUsername is private
-                console.log("clickedProfileInfo", clickedProfileInfo);
                 if (clickedProfileInfo.Privacy === 'private') {
                     alert("Follow request sent");
                     const notification = {
@@ -162,10 +161,8 @@ function OthersProfile(props) {
                             receiverUsername : clickedProfileInfo.UserName,
                         }
                     };
-                    console.log("notification", notification);
                     if (props.socket) {
                         props.socket.send(JSON.stringify(notification));
-                        console.log("notification sent");
                        dispatch({ type: "SET_FOLLOWNOTIFICATION", payload: notification.payload });
                     }
                 }
@@ -194,7 +191,6 @@ function OthersProfile(props) {
                     },
                 body: JSON.stringify(data)
             });
-            console.log("response", response)
             if (response.ok) {
                 console.log("Unfollow");
                 alert("You unfollowed " + clickedProfileDisplayName + "");

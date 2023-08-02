@@ -10,7 +10,6 @@ import (
 
 // get group posts
 func GetMyGroupsPostsHandler(w http.ResponseWriter, r *http.Request) {
-	//fmt.Println("GetGroupPostsHandler")
 	authHeader := r.Header.Get("Authorization")
 	if authHeader == "" {
 		//fmt.Println("Missing auth header")
@@ -59,8 +58,6 @@ func GetMyGroupsPostsHandler(w http.ResponseWriter, r *http.Request) {
 
 // get group posts by groupID
 func GetGroupPostsByGroupIDHandler(w http.ResponseWriter, r *http.Request) {
-	//fmt.Println("GetGroupPostsByGroupIDHandler")
-
 	// get groupID from url
 	groupID := r.URL.Query().Get("groupID")
 	if groupID == "" {

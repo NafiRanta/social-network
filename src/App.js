@@ -40,7 +40,6 @@ function App() {
         }
         case "notification"
         : {
-          console.log("notification event", event);
           if (event) {
             if (event.payload) {
               if (event.payload.receiverUsername === userInfo.UserName) {
@@ -117,7 +116,6 @@ function App() {
               routeEvent(eventData);
             };
           } else {
-            console.log("user is null");
              // clear redux and user info and token from local storage and session storage
             localStorage.removeItem("reduxState");
             sessionStorage.removeItem("userInfo");

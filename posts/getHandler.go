@@ -53,8 +53,6 @@ func GetPostsHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetPostsByUserNameHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("getPostsByUserNameHandler")
-
 	username := r.URL.Query().Get("username")
 	fmt.Println("username: ", username)
 
@@ -71,8 +69,6 @@ func GetPostsByUserNameHandler(w http.ResponseWriter, r *http.Request) {
 		"privatePosts": privatePosts,
 		"customPosts":  customPosts,
 	}
-
-	fmt.Println("response: ", response)
 
 	// Convert the response to JSON
 	responseJSON, err := json.Marshal(response)

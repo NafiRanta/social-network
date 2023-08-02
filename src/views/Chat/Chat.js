@@ -200,7 +200,6 @@ function Chat(props) {
   };
 
   const displayGroupChats = () => {
-    console.log("mygroups", mygroups);
     if (mygroups.length === 0) {
       dispatch ({ type: "SET_CHATMATEUSERNAME", payload: "" });
       // set chatmateusername to empty string

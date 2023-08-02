@@ -9,7 +9,6 @@ import (
 )
 
 func AddPostHandler(w http.ResponseWriter, r *http.Request) {
-	//fmt.Println("AddPostHandler")
 	// Check if the request method is POST
 	if r.Method != http.MethodPost {
 		w.WriteHeader(http.StatusMethodNotAllowed)
@@ -54,5 +53,4 @@ func AddPostHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Return a success response
 	w.WriteHeader(http.StatusCreated)
-	//fmt.Println("Post added successfully")
 }

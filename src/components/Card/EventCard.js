@@ -22,23 +22,16 @@ function EventCard(props) {
       headers: headers,
     });
     const data = await response.json();
-    // console.log("ALL GROUPS: ", data);
     setEvents(data.groupEvent);
   };
 
   const handleGoingClick = async (GroupEventID, EventName) => {
-    // const token = localStorage.getItem("token");
-    // const headers = new Headers();
-    // headers.append("Authorization", "Bearer " + token);
-    // headers.append("Content-Type", "application/json");
-  
     const requestBody = {
       groupEventID: GroupEventID,
       eventName: EventName,
       userName: userInfo.UserName,
     };
 
-    console.log(requestBody)
     try {
       const response = await fetch("http://localhost:8080/going", {
         method: "POST",

@@ -29,8 +29,9 @@ type User struct {
 	FollowerUsernames         string
 	FollowingUsernames        string
 	FollowerUsernamesReceived string
-	FollowingUsernamesSent     string
+	FollowingUsernamesSent    string
 }
+
 // add users to users table
 func AddUser(db *sql.DB, FirstName string, LastName string, UserName string, Email string, Password string, Dob string, Gender string, NickName string, Avatar string, About string) error {
 	records := `INSERT INTO Users (UserID, FirstName, LastName, UserName, Email, Password, Privacy, Online, DateOfBirth, Gender, Avatar, Nickname, AboutMe, FollowerUsernames, FollowerUsernamesReceived, FollowingUsernamesSent, FollowingUsernames)
@@ -51,7 +52,6 @@ func AddUser(db *sql.DB, FirstName string, LastName string, UserName string, Ema
 }
 
 func GetUserByEmail(email string) (*User, error) {
-	//fmt.Println("GetUserByEmail")
 	db, err := sql.Open("sqlite3", "./socialnetwork.db")
 	if err != nil {
 		return nil, err
@@ -133,10 +133,9 @@ func GetUserByUsername(username string) (*User, error) {
 	)
 	if err != nil {
 		if err == sql.ErrNoRows {
-			//fmt.Println("user not found")
 			return nil, err // user not found
 		} else {
-			//fmt.Println("sth else error:", err)
+			fmt.Println("sth else error:", err)
 			return nil, err
 		}
 	}
@@ -144,7 +143,6 @@ func GetUserByUsername(username string) (*User, error) {
 }
 
 func GetUserByID(userID string) (*User, error) {
-	// If the user is not found, return nil, nil
 	db, err := sql.Open("sqlite3", "./socialnetwork.db")
 	if err != nil {
 		return nil, err
@@ -181,10 +179,9 @@ func GetUserByID(userID string) (*User, error) {
 	)
 	if err != nil {
 		if err == sql.ErrNoRows {
-			//fmt.Println("user not found")
 			return nil, nil // User not found
 		} else {
-			//fmt.Println("something else error:", err)
+			fmt.Println("something else error:", err)
 			return nil, err
 		}
 	}
@@ -241,12 +238,10 @@ func GetAllPublicUsers() ([]*User, error) {
 	if err = rows.Err(); err != nil {
 		return nil, err
 	}
-
 	return users, nil
 }
 
 func GetAllPrivateUsers() ([]*User, error) {
-	// Open a connection to the SQL database
 	db, err := sql.Open("sqlite3", "./socialnetwork.db")
 	if err != nil {
 		return nil, err
@@ -315,7 +310,6 @@ func UpdateUserPrivacy(user *User) error {
 	if err != nil {
 		return err
 	}
-
 	return nil
 }
 
@@ -338,7 +332,6 @@ func UpdateUserInfo(user *User) error {
 		//fmt.Println("error from exec:", err)
 		return err
 	}
-
 	return nil
 }
 
@@ -361,7 +354,6 @@ func UpdateUserAvatar(user *User) error {
 		//fmt.Println("error from exec:", err)
 		return err
 	}
-
 	return nil
 }
 
@@ -388,9 +380,7 @@ func AddFollower(userA *User, userB *User) error {
 	if err != nil {
 		return err
 	}
-
 	return nil
-
 }
 
 func AddFollowing(userA *User, userB *User) error {
@@ -416,7 +406,6 @@ func AddFollowing(userA *User, userB *User) error {
 	if err != nil {
 		return err
 	}
-
 	return nil
 }
 
@@ -448,7 +437,6 @@ func RemoveFollower(userA *User, userB *User) error {
 	if err != nil {
 		return err
 	}
-
 	return nil
 }
 
@@ -480,7 +468,6 @@ func RemoveFollowing(userA *User, userB *User) error {
 	if err != nil {
 		return err
 	}
-
 	return nil
 }
 
@@ -548,7 +535,6 @@ func RemoveFollowRequest(sender *User, receiver *User) error {
 	receiver.FollowerUsernamesReceived = strings.Join(updatedReceiverFollowerUsernamesReceived, ",")
 	// Remove receiver's username from sender's FollowingUsernamesSent
 	senderFollowingUsernamesSent := strings.Split(sender.FollowingUsernamesSent, ",")
-	fmt.Println("senderFollowingUsernamesSent1:", senderFollowingUsernamesSent)
 	var updatedSenderFollowingUsernamesSent []string
 	for _, username := range senderFollowingUsernamesSent {
 		if username != receiver.UserName {
@@ -578,7 +564,5 @@ func RemoveFollowRequest(sender *User, receiver *User) error {
 	if err != nil {
 		return err
 	}
-
 	return nil
-
 }

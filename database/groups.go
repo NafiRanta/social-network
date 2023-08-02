@@ -238,7 +238,6 @@ func GetAllGroups() ([]Group, error) {
 }
 
 func GetGroupByID(groupID string) ([]GroupResponse, error) {
-	//fmt.Println("groupID", groupID)
 	db, err := sql.Open("sqlite3", "./socialnetwork.db")
 	if err != nil {
 		return nil, err
@@ -322,7 +321,6 @@ func GetGroupByID(groupID string) ([]GroupResponse, error) {
 }
 
 func AddUserToGroup(groupID string, username string) error {
-	//fmt.Println("username in addusertogroup", username)
 	db, err := sql.Open("sqlite3", "./socialnetwork.db")
 	if err != nil {
 		//fmt.Println("open error", err)
@@ -382,7 +380,6 @@ func AddUserToGroup(groupID string, username string) error {
 }
 
 func GetGroupsByAdminInvitedUsername(username string) ([]Group, error) {
-	//fmt.Println("username in getgroupsbyadmininvitedusername", username)
 	db, err := sql.Open("sqlite3", "./socialnetwork.db")
 	if err != nil {
 		//fmt.Println("open error", err)
@@ -423,8 +420,6 @@ func GetGroupsByAdminInvitedUsername(username string) ([]Group, error) {
 }
 
 func DeleteUserFromAdminInvite(groupID string, username string) error {
-	//fmt.Println("groupID in deleteuserfromadmininvite", groupID)
-	//fmt.Println("username in deleteuserfromadmininvite", username)
 	db, err := sql.Open("sqlite3", "./socialnetwork.db")
 	if err != nil {
 		//fmt.Println("open error", err)
@@ -763,8 +758,6 @@ func AddUserToAdminInvite(invitesByAdminUsername []string, groupID string, usern
 	}
 	defer db.Close()
 
-	// invitesByAdminUsername is a slice of usernames that the admin has invited
-	// to the group
 	// Convert the slice to a JSON array
 	invitesByAdminUsernameJSON, err := json.Marshal(invitesByAdminUsername)
 	if err != nil {

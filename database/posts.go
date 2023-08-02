@@ -193,7 +193,6 @@ func GetCustomPosts(userID string) ([]Post, error) {
 	defer rows.Close()
 	var posts []Post
 	for rows.Next() {
-		//fmt.Println("this is inside rows")
 		var post Post
 		err := rows.Scan(
 			&post.PostID,
@@ -212,25 +211,20 @@ func GetCustomPosts(userID string) ([]Post, error) {
 		if test != nil {
 			fmt.Println("Error:", err)
 		}
-		//fmt.Println(includedFriends)
 		sort.Strings(includedFriends)
 
 		index := sort.SearchStrings(includedFriends, userEmail)
 
 		if index < len(includedFriends) && includedFriends[index] == userEmail {
-			//fmt.Println("Found")
 			posts = append(posts, post)
 		} else {
-			//fmt.Println("Not found")
+			// fmt.Println("Not found")
 			continue
 		}
-
 	}
-	// //fmt.Println("posts: ", posts)
 	if err := rows.Err(); err != nil {
 		return nil, err
 	}
-
 	return posts, nil
 }
 

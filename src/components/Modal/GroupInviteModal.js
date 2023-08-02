@@ -35,11 +35,9 @@ function GroupInviteModal(props) {
                 method: "GET",});
             const data = await response.json();
             const group = data.group[0];
-            console.log('group in fetch', group);
             setGroup(group);
 
             const membersUsernames = group.MemberUsernames;
-            console.log('membersUsernames in xxx', membersUsernames);
             setMemberUsernames(MemberUsernames);
 
             const groupAdmin = group.AdminID;
@@ -48,10 +46,7 @@ function GroupInviteModal(props) {
             const MemberInvitedUsernames = group.MemberInvitedUsernames;
             setMemberInvitedUsernames(MemberInvitedUsernames);
              
-            console.log('MemberInvitedUsernames in xxx', MemberInvitedUsernames);
-
             const AdminInvitedUsernames = group.AdminInvitedUsernames;
-            console.log('AdminInvitedUsernames in xxx', AdminInvitedUsernames);
             setAdminInvitedUsernames(AdminInvitedUsernames);
         }
         catch (error) {
@@ -65,14 +60,10 @@ function GroupInviteModal(props) {
         const groupAdmin = group?.AdminID;
           setGroupAdmin(groupAdmin);
           const MemberInvitedUsernames = (group?.MemberInvitedUsernames)
-          console.log("MemberInvitedUsernames groupinvitemodal", MemberInvitedUsernames);
-
           setMemberInvitedUsernames(MemberInvitedUsernames);
           const AdminInvitedUsernames = (group?.AdminInvitedUsernames)
-          console.log("AdminInvitedUsernames groupinvitemodal", AdminInvitedUsernames);
           setAdminInvitedUsernames(AdminInvitedUsernames);
           const MemberUsernames = (group?.MemberUsernames)
-          console.log("MemberUsernames groupinvitemodal", MemberUsernames);
           setMemberUsernames(MemberUsernames);  
     }
   }, [allGroups, props.groupID]);
@@ -120,8 +111,6 @@ function GroupInviteModal(props) {
     const isGroupAdmin = props.isGroupAdmin;
     const isGroupMember = props.isGroupMember;
     const selectedUserNames = [];
-    console.log("isMember", isGroupMember);
-    console.log("isAdmin", isGroupAdmin);
     let url = '';
     let groupData = {};
     selectedNames.forEach((name) => {
@@ -148,7 +137,6 @@ function GroupInviteModal(props) {
       setGroupData(groupData);
     }
     
-    console.log("groupData", groupData);
     // loop through selectedUserNames and send notification to each user through ws
     if (selectedUserNames) {
       selectedUserNames.forEach((username) => {
@@ -160,12 +148,10 @@ function GroupInviteModal(props) {
           }
         }
         if (props.socket) {
-          console.log("sending notification through ws: ", props.socket, notification)
           props.socket.send(JSON.stringify(notification));
         }
       });
     }
-    console.log("url in handleInviteSubmit", url)
   try {
       const response = await fetch(url, {
         method: 'POST',
@@ -173,7 +159,6 @@ function GroupInviteModal(props) {
         body: JSON.stringify(groupData)
       });
       const data = await response.json();
-      console.log("data: ", data)
       const status = response.status;
       if (isGroupMember){
       dispatch({ type: "SET_INVITESBYMEMBER", payload: data.invitesByMemberResponse });

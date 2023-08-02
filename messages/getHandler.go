@@ -85,9 +85,7 @@ func GetMessagesByGroupIDHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Missing Authorization header", http.StatusUnauthorized)
 		return
 	}
-	// get groupID from url
 	groupID := r.URL.Query().Get("groupID")
-	// get all messages with groupID as receiver
 	messages, err := d.GetMessagesByGroupID(groupID)
 	if err != nil {
 		u.CheckErr(err)

@@ -47,13 +47,10 @@ func AddGroupPost(groupPost *GroupPostResponse) error {
 	if err != nil {
 		return err
 	}
-
-	//fmt.Println("GroupPost added successfully")
 	return nil
 }
 
 func GetGroupPostsByGroupID(groupID string) ([]GroupPostResponse, error) {
-	//fmt.Println("GetGroupPostsByGroupID")
 	db, err := sql.Open("sqlite3", "./socialnetwork.db")
 	if err != nil {
 		return nil, err

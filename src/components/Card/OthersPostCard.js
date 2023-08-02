@@ -98,13 +98,6 @@ function OthersPostCard(props) {
   const sortedPosts = allPosts.sort(
     (a, b) => new Date(a.CreateAt) - new Date(b.CreateAt)
   );
-  // console.log("sortedPosts", sortedPosts)
-
-  
-  // get all posts
-
-  // console.log("userPosts: ", allPosts);
-
 
   const displayAllPosts = () => {
     // display all posts of that matched with userID

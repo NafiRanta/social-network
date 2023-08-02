@@ -8,7 +8,6 @@ import (
 )
 
 func GetCommentsHandler(w http.ResponseWriter, r *http.Request) {
-	//fmt.Println("GetCommentsHandler")
 
 	postID := r.URL.Query().Get("postID")
 	if postID == "" {

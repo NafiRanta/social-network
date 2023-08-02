@@ -8,7 +8,6 @@ import (
 )
 
 func AddCommentHandler(w http.ResponseWriter, r *http.Request) {
-	//fmt.Println("AddCommentHandler")
 	// Check if the request method is POST
 	if r.Method != http.MethodPost {
 		w.WriteHeader(http.StatusMethodNotAllowed)

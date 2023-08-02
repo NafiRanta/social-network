@@ -48,12 +48,7 @@ function GroupCommentCard(props) {
                     setGroupComments(data.comments);
                     setGroupCommentCount(data.comments.length);
                     setSelectedImage(data.selectedImage)
-                    groupComments.map((comment) => {
-                        console.log("comment", comment);
-                    })
                 } else {
-                    // Handle the case when data.comments is null
-                    console.log("No comments available");
                     setGroupComments([]);
                     setGroupCommentCount(0);
                 }
@@ -77,9 +72,6 @@ const handleGroupCommentSubmit = async (e) => {
     const headers = new Headers();
     headers.append("Authorization", "Bearer " + token);
     headers.append("Content-Type", "application/json");
-
-    console.log("groupPostId:", groupPostId);
-    console.log("comment:", comment);
     const body = {
         groupPostID: groupPostId,
         content: comment,
@@ -95,7 +87,6 @@ const handleGroupCommentSubmit = async (e) => {
         });
         if (res.ok) {
             const data = await res.json();
-            console.log("data", data);
             setGroupCommentInput("");
             getGroupComments();
             setSelectedImage(null);

@@ -9,7 +9,6 @@ import (
 
 // add group post
 func AddGroupPostHandler(w http.ResponseWriter, r *http.Request) {
-	//fmt.Println("AddGroupPostHandler")
 	// Check if the request method is POST
 	if r.Method != http.MethodPost {
 		w.WriteHeader(http.StatusMethodNotAllowed)
@@ -34,5 +33,4 @@ func AddGroupPostHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Return a success response
 	w.WriteHeader(http.StatusCreated)
-	//fmt.Println("GroupPost added successfully")
 }

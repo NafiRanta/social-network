@@ -52,7 +52,6 @@ func ChangePrivacyofUser(w http.ResponseWriter, r *http.Request) {
 
 // change nickname, bio, dob
 func UpdateBioOfUser(w http.ResponseWriter, r *http.Request) {
-	//fmt.Println("update bio of user")
 	if r.Method != "POST" {
 		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
 		return
@@ -71,7 +70,6 @@ func UpdateBioOfUser(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Error retrieving user", http.StatusInternalServerError)
 		return
 	}
-	//fmt.Println("userID", userID)
 	// Parse the request body
 	var requestBody struct {
 		Nickname    string `json:"nickname"`
@@ -114,13 +112,10 @@ func UpdateBioOfUser(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	w.Write(jsonData)
 	// Send a success response
-	//fmt.Println("User bio updated successfully")
-
 }
 
 // change avatar
 func UpdateAvatarOfUser(w http.ResponseWriter, r *http.Request) {
-	//fmt.Println("change avatar of user")
 	if r.Method != "POST" {
 		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
 		return
@@ -138,7 +133,6 @@ func UpdateAvatarOfUser(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Error retrieving user", http.StatusInternalServerError)
 		return
 	}
-	//fmt.Println("userID", userID)
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
@@ -156,8 +150,6 @@ func UpdateAvatarOfUser(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
 		return
 	}
-	//fmt.Println("Request Body:", string(body))
-	////fmt.Println("&requestBody", &requestBody)
 	if requestBody.Avatar == "" {
 		user.Avatar = requestBody.Avatar
 	}
@@ -169,7 +161,6 @@ func UpdateAvatarOfUser(w http.ResponseWriter, r *http.Request) {
 	}
 	updatedUser, _ := d.GetUserByID(userID)
 	jsonData, _ := json.Marshal(updatedUser)
-	// Respond with success message
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	w.Write(jsonData)
@@ -182,7 +173,6 @@ type FollowRequest struct {
 }
 
 func FollowHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("send follow request")
 	if r.Method != "POST" {
 		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
 		return
@@ -199,32 +189,27 @@ func FollowHandler(w http.ResponseWriter, r *http.Request) {
 	senderUsername := followReq.SenderUsername
 	receiverUsername := followReq.ReceiverUsername
 
-	// check if sender and receiver names contains %C3%A4 , %C3%B6, %C3%A5, if so replace them with ä, ö, å
-	// check if sender and receiver names contain %C3%A4, %C3%B6, %C3%A5, if so replace them with ä, ö, å
 	decodedSender := u.SpecialCharDecode(senderUsername)
 	decodedReceiver := u.SpecialCharDecode(receiverUsername)
 	// get both users from db
 	senderUser, err := d.GetUserByUsername(decodedSender)
-	fmt.Println("senderUser", senderUser.UserName)
 	if err != nil {
 		http.Error(w, "Sender not found", http.StatusNotFound)
 		return
 	}
 	receiverUser, err := d.GetUserByUsername(decodedReceiver)
-	fmt.Println("receiverUser", receiverUser.UserName)
 
 	if err != nil {
 		http.Error(w, "Receiver not found", http.StatusNotFound)
 		return
 	}
 	// Check if senderUser is already following receiverUser
-    if isFollower(senderUser, receiverUser) && isFollowing(senderUser, receiverUser) {
-        http.Error(w, "You are already following each other", http.StatusConflict)
-        return
-    }
-	
+	if isFollower(senderUser, receiverUser) && isFollowing(senderUser, receiverUser) {
+		http.Error(w, "You are already following each other", http.StatusConflict)
+		return
+	}
+
 	if receiverUser.Privacy == "private" {
-		fmt.Println("private")
 		if isFollowingSent(senderUser, receiverUser) && isFollowerReceived(senderUser, receiverUser) {
 			http.Error(w, "You already sent request", http.StatusConflict)
 			return
@@ -251,7 +236,7 @@ func FollowHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		fmt.Fprintf(w, "Successfully followed %s", followReq.ReceiverUsername)
-		
+
 	}
 
 }
@@ -272,7 +257,6 @@ func UnfollowHandler(w http.ResponseWriter, r *http.Request) {
 	senderUsername := followReq.SenderUsername
 	receiverUsername := followReq.ReceiverUsername
 
-	// Check if sender and receiver names contain %C3%A4, %C3%B6, %C3%A5, if so replace them with ä, ö, å
 	decodedSender := u.SpecialCharDecode(senderUsername)
 	decodedReceiver := u.SpecialCharDecode(receiverUsername)
 
@@ -296,7 +280,7 @@ func UnfollowHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Remove the following relationship from the receiver's side
-	if err := d.RemoveFollowing(senderUser, receiverUser ); err != nil {
+	if err := d.RemoveFollowing(senderUser, receiverUser); err != nil {
 		fmt.Println(err)
 		http.Error(w, "Failed to unfollow", http.StatusInternalServerError)
 		return
@@ -307,7 +291,6 @@ func UnfollowHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func AcceptFollowRequestHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("Accept follow request")
 	if r.Method != "POST" {
 		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
 		return
@@ -323,7 +306,6 @@ func AcceptFollowRequestHandler(w http.ResponseWriter, r *http.Request) {
 	senderUsername := followReq.SenderUsername
 	receiverUsername := followReq.ReceiverUsername
 
-	// Check if sender and receiver names contain %C3%A4, %C3%B6, %C3%A5, if so replace them with ä, ö, å
 	decodedSender := u.SpecialCharDecode(senderUsername)
 	decodedReceiver := u.SpecialCharDecode(receiverUsername)
 
@@ -341,8 +323,6 @@ func AcceptFollowRequestHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Remove sender's username from receiver's FollowerUsernamesReceived
-	// Remove receiver's username from sender's FollowingUsernamesSent
 	if err := d.RemoveFollowRequest(senderUser, receiverUser); err != nil {
 		fmt.Println(err)
 		http.Error(w, "Failed to remove follow request", http.StatusInternalServerError)
@@ -360,13 +340,11 @@ func AcceptFollowRequestHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Failed to update receiver's followers", http.StatusInternalServerError)
 		return
 	}
-	fmt.Println(senderUser.FollowerUsernames)
 	// Return a success response
 	fmt.Fprintf(w, "Follow request accepted successfully")
 }
 
 func DeclineFollowRequestHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("Decline follow request")
 	if r.Method != "POST" {
 		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
 		return
@@ -382,7 +360,6 @@ func DeclineFollowRequestHandler(w http.ResponseWriter, r *http.Request) {
 	senderUsername := followReq.SenderUsername
 	receiverUsername := followReq.ReceiverUsername
 
-	// Check if sender and receiver names contain %C3%A4, %C3%B6, %C3%A5, if so replace them with ä, ö, å
 	decodedSender := u.SpecialCharDecode(senderUsername)
 	decodedReceiver := u.SpecialCharDecode(receiverUsername)
 
@@ -400,59 +377,50 @@ func DeclineFollowRequestHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Remove sender's username from receiver's FollowerUsernamesReceived
-	// Remove receiver's username from sender's FollowingUsernamesSent
 	if err := d.RemoveFollowRequest(senderUser, receiverUser); err != nil {
 		fmt.Println(err)
 		http.Error(w, "Failed to remove follow request", http.StatusInternalServerError)
 		return
 	}
-
 	fmt.Fprintf(w, "Decline request successfully")
 }
 
 func isFollower(sender *d.User, receiver *d.User) bool {
-	fmt.Println("isFollower")
 	followerUsernames := strings.Split(receiver.FollowerUsernames, ",")
-    for _, username := range followerUsernames {
-        if username == sender.UserName {
-			fmt.Println("isFollower true")
-            return true
-        }
-    }
-	fmt.Println("isFollower false")
-    return false
+	for _, username := range followerUsernames {
+		if username == sender.UserName {
+			return true
+		}
+	}
+	return false
 }
 
 func isFollowing(sender *d.User, receiver *d.User) bool {
 	followingUsernames := strings.Split(sender.FollowingUsernames, ",")
-    for _, username := range followingUsernames {
-        if username == receiver.UserName {
-			fmt.Println("isFollowing true")
-            return true
-        }
-    }
-	fmt.Println("isFollowing false")
-    return false
+	for _, username := range followingUsernames {
+		if username == receiver.UserName {
+			return true
+		}
+	}
+	return false
 }
 
 func isFollowingSent(sender *d.User, receiver *d.User) bool {
 	followingUsernamesSent := strings.Split(sender.FollowingUsernamesSent, ",")
-    for _, username := range followingUsernamesSent {
-        if username == receiver.UserName {
-            return true
-        }
-    }
-    return false
+	for _, username := range followingUsernamesSent {
+		if username == receiver.UserName {
+			return true
+		}
+	}
+	return false
 }
 
 func isFollowerReceived(sender *d.User, receiver *d.User) bool {
 	followerUsernamesReceived := strings.Split(receiver.FollowerUsernamesReceived, ",")
-    fmt.Println("isFollowerReceived")
-    for _, username := range followerUsernamesReceived {
-        if username == sender.UserName {
-            return true
-        }
-    }
-    return false
+	for _, username := range followerUsernamesReceived {
+		if username == sender.UserName {
+			return true
+		}
+	}
+	return false
 }

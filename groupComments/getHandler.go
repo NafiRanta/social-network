@@ -8,11 +8,9 @@ import (
 
 // get group comments
 func GetGroupCommentsHandler(w http.ResponseWriter, r *http.Request) {
-	//fmt.Println("GetGroupCommentsHandler")
 
 	groupPostID := r.URL.Query().Get("groupPostID")
 	if groupPostID == "" {
-		//fmt.Println("Missing groupPostID")
 		http.Error(w, "Missing groupPostID", http.StatusBadRequest)
 		return
 	}

@@ -68,7 +68,6 @@ function CreatePostModal(props) {
       image: selectedImage,
       createAt: now,
     };
-    console.log("postData: ", postData);
 
     const headers = new Headers();
     headers.append("Authorization", "Bearer " + token);
