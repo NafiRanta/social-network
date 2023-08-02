@@ -142,7 +142,7 @@ function PostCard(props) {
       ));
 
       const isExpanded = isPostExpanded(post.PostID);
-        console.log("userinfo.Avatar", userInfo.Avatar)
+      
       return (
         <div
           key={`${post.PostID}-${index}`}

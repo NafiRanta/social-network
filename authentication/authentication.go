@@ -72,7 +72,6 @@ func LogIn(w http.ResponseWriter, r *http.Request) {
 			u.CheckErr(err)
 			fmt.Println("user not found by email, error:", err)
 		}
-		fmt.Println("user when login:", user.FollowingUsernames)
 		// Get the stored password from the database
 		storedPassword = user.Password
 		// Compare the stored password with the password received from the front-end
@@ -125,7 +124,6 @@ func LogIn(w http.ResponseWriter, r *http.Request) {
 				FollowerUsernamesReceived: user.FollowerUsernamesReceived,
 			}
 			userJSON, err := json.Marshal(userResponse)
-			fmt.Println("userJSON:", userResponse.FollowingUsernames)
 			if err != nil {
 				u.CheckErr(err)
 				http.Error(w, "Failed to encode user", http.StatusInternalServerError)

@@ -2,7 +2,7 @@ package comments
 
 import (
 	"encoding/json"
-	//"fmt"
+	"fmt"
 	"net/http"
 	d "socialnetwork/database"
 )
@@ -19,6 +19,7 @@ func GetCommentsHandler(w http.ResponseWriter, r *http.Request) {
 	// get comments from database
 	comments, err := d.GetCommentsByPostID(postID)
 	if err != nil {
+		fmt.Println("error from getcommentsbyPostID:", err)
 		//fmt.Println("error from getcommentsbyPostID:", err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
