@@ -2,7 +2,6 @@ package posts
 
 import (
 	"encoding/json"
-	"fmt"
 
 	//"fmt"
 	"net/http"
@@ -54,7 +53,6 @@ func GetPostsHandler(w http.ResponseWriter, r *http.Request) {
 
 func GetPostsByUserNameHandler(w http.ResponseWriter, r *http.Request) {
 	username := r.URL.Query().Get("username")
-	fmt.Println("username: ", username)
 
 	//public posts
 	publicPosts, _ := d.GetPublicPostsByUserName(username)

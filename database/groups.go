@@ -751,7 +751,6 @@ func AddUserToMemberInvite(groupID string, memberUsername string, invitedUsernam
 func AddUserToAdminInvite(invitesByAdminUsername []string, groupID string, username string) error {
 	fmt.Println("invitesByAdminUsername", invitesByAdminUsername)
 	fmt.Println("groupID", groupID)
-	fmt.Println("username", username)
 	db, err := sql.Open("sqlite3", "./socialnetwork.db")
 	if err != nil {
 		return err

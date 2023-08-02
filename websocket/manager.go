@@ -75,7 +75,6 @@ func SendNotification(event Event, c *Client) error {
 	}
 	for client := range c.manager.clients {
 		if c.manager.loggedinUsers[client.otp] == notificationevent.Receiver {
-			fmt.Println("sent to client.otp", client.otp)
 			client.egress <- outgoingEvent
 		}
 	}

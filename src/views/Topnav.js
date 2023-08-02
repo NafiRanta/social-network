@@ -21,7 +21,34 @@ function Topnav(props) {
   const [isInvitedByMember, setIsInvitedByMember] = useState(false);
   const [isInvitedByAdmin, setIsInvitedByAdmin] = useState(false);
   const [newEventNotifications, setNewEventNotification] = useState(false);
+  const [followRequests, setFollowRequests] = useState(false);
   let Notifications = []
+
+  useEffect(() => {
+    // for allUsers compare if userInfo.UserName is in FollowerUsernamesReceived and add followNotification
+    if (Array.isArray(allusers) && userInfo.UserName) {
+      const filteredAllUsers = allusers.filter((user) => {
+        return userInfo.FollowerUsernamesReceived.includes(user.UserName);
+      });
+      if (filteredAllUsers.length > 0) {
+        const updatedFollowNotifications = filteredAllUsers.map((user) => {
+          const userAvatar = user.Avatar;
+          const userDisplayname = user.FirstName + " " + user.LastName;
+          const username = user.UserName;
+          return {
+            type: "SET_FOLLOWNOTIFICATION",
+            requestorAvatar: userAvatar,
+            requestorDisplayname: userDisplayname,
+            requestorUsername: username,
+          };
+        });
+        dispatch({ type: "SET_NOTIFICATION", payload: true });
+        setFollowRequests(updatedFollowNotifications);
+        console.log("updatedFollowNotifications", updatedFollowNotifications)
+      }
+    }
+  }, [userInfo]);
+
 
   useEffect(() => {
     // for Join Requests
@@ -109,33 +136,9 @@ function Topnav(props) {
             });
           });
           setGroupInvitesByMember(matchedGroups);
-
-        }
-
-      } 
+      }
+    } 
   }, [allGroups, allusers, userInfo]);
-
-
-  // useEffect(() => {
-  //   if (Array.isArray(allusers)) {
-  //     if (followRequestsUsernames) {
-  //       const updatedFollowRequests = followRequestsUsernames.map((username) => {
-  //         const requestorInfo = allusers.find((user) => user.UserName === username);
-  //         const requestorAvatar = requestorInfo?.Avatar;
-  //         const requestorUsername = requestorInfo?.UserName;
-  //         const requestorDisplayname = requestorInfo?.FirstName + " " + requestorInfo?.LastName;
-  //         setFollowRequestsInfo(updatedFollowRequests);
-          
-  //         return {
-  //           type: "SET_FOLLOWNOTIFICATION",
-  //           requestorAvatar: requestorAvatar,
-  //           requestorDisplayname: requestorDisplayname,
-  //           requestorUsername: requestorUsername,
-  //         };
-  //       });
-  //     }
-  //   }
-  // }, [allusers, followRequestsUsernames]);
   
 
 useEffect(() => {
@@ -180,7 +183,7 @@ useEffect(() => {
     ...newEventNotifications || [],
     ...groupInvitesByAdmin || [],
     ...groupInvitesByMember || [],
-    // ...followRequestsInfo || [],
+    ...followRequests || [],
     ...joinRequests || [],
   ]
 
@@ -527,6 +530,34 @@ useEffect(() => {
                         </Dropdown.Item>
                       </div>
                     );
+                  } else if (notification.type === "SET_FOLLOWNOTIFICATION") {
+                    return (
+                      // show follow notification, with avatar, displayname and username of the requestor + "wants to follow you" + button to view profile
+                      <div key={notification.type}>
+                        <Dropdown.Item as="li" className="my-2 p-1">
+                          <div className="d-flex justify-content-between">
+                            <div className="d-flex align-items-center">
+                              <div className="rounded-circle d-flex align-items-center justify-content-center mx-2" id="avatar">
+                                <img src={notification.requestorAvatar} alt="avatar" className="rounded-circle me-2" />
+                              </div>
+                              <div>
+                                <p className="m-0">{notification.requestorDisplayname} wants to follow you</p>
+                              </div>
+                            </div>
+                            <div>
+                              <Link
+
+                                to={`/othersprofile/${notification.requestorUsername}`}
+                                className="btn btn-primary btn-sm d-flex justify-content-center align-items-center"
+                              >
+                                View
+                              </Link>
+                            </div>
+                          </div>
+                        </Dropdown.Item>
+                      </div>
+                    );
+
                   } else {
                     return null;
                   }
