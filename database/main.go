@@ -2,10 +2,12 @@ package database
 
 import (
 	"database/sql"
+	"fmt"
 	"log"
 	"math/rand"
 	u "socialnetwork/utils"
 	"strconv"
+	"time"
 
 	_ "github.com/mattn/go-sqlite3"
 	migrate "github.com/rubenv/sql-migrate"
@@ -134,5 +136,45 @@ func addDummyUserData(db *sql.DB) error {
 			return err
 		}
 	}
+	// add welcome message to user from admin to db insert to messages table
+	// get admin UserName by email: admin@example.com
+	admin, err := GetUserByEmail("admin@example.com")
+	if err != nil {
+		u.CheckErr(err)
+		fmt.Println("user not found by email, error:", err)
+	}
+	publicUsers, err := GetAllPublicUsers()
+	if err != nil {
+		return nil
+	}
+
+	privateUsers, err := GetAllPrivateUsers()
+	if err != nil {
+		return nil
+	}
+
+	// Combine public and private users
+	allUsers := append(publicUsers, privateUsers...)
+
+	var dummyUserNames []string
+	for _, user := range allUsers {
+		dummyUserNames = append(dummyUserNames, user.UserName)
+	}
+	addWelcomeMessageToAllUsers(admin.UserName, "Welcome to Social Network!", db, dummyUserNames)
+	// add welcome message to every user from admin to db insert to messages table
+
 	return nil
+}
+
+func addWelcomeMessageToAllUsers(senderUsername, content string, db *sql.DB, dummyUserNames []string) {
+	for _, userName := range dummyUserNames {
+		var welcomeMessage MessageResponse
+		welcomeMessage.SenderUsername = senderUsername
+		welcomeMessage.ReceiverUsername = userName
+		welcomeMessage.Content = content
+		welcomeMessage.SentAt = time.Now()
+
+		// insert welcome message to user from admin to db
+		AddMessage(&welcomeMessage)
+	}
 }
