@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux';
 import "./Modal.css";
 import Avatar from "../Avatar/Avatar";
 import { useDispatch } from 'react-redux';
-import { set } from 'draft-js/lib/DefaultDraftBlockRenderMap';
 
 function GroupInviteModal(props) {
   const dispatch = useDispatch();
