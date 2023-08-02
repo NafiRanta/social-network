@@ -143,17 +143,17 @@ function Chat(props) {
     );
     setSelectedChatMateDisplayname(chatMateDisplayName);
     setSelectedChatMateUsername(chatMate.UserName);
-    dispatch ({ type: "SET_CHATMATEUSERNAME", payload: chatMate.UserName });
+    // dispatch ({ type: "SET_CHATMATEUSERNAME", payload: chatMate.UserName });
   };
 
   const handleGroupClick = (chatMateDisplayName, chatMateUsername) => {
     setSelectedChatMateDisplayname(chatMateDisplayName);
     setSelectedChatMateUsername(chatMateUsername);
-    dispatch ({ type: "SET_CHATMATEUSERNAME", payload: chatMateUsername });
+    // dispatch ({ type: "SET_CHATMATEUSERNAME", payload: chatMateUsername });
   };
 
   const displayAllUsers = () => {
-    dispatch ({ type: "SET_CHATNOTIFICATION", payload: false });
+    // dispatch ({ type: "SET_CHATNOTIFICATION", payload: false });
     if (!allusers) {
       return null;
     }
@@ -201,7 +201,7 @@ function Chat(props) {
 
   const displayGroupChats = () => {
     if (mygroups.length === 0) {
-      dispatch ({ type: "SET_CHATMATEUSERNAME", payload: "" });
+      // dispatch ({ type: "SET_CHATMATEUSERNAME", payload: "" });
       // set chatmateusername to empty string
       console.log("no groups found");
       return (
@@ -229,7 +229,7 @@ function Chat(props) {
     return filteredData.map((group) => {
       const chatMatedisplayName = group.GroupName;
       const chatMateusername = group.GroupID;
-      dispatch ({ type: "SET_CHATMATEUSERNAME", payload: chatMateusername });
+      // dispatch ({ type: "SET_CHATMATEUSERNAME", payload: chatMateusername });
       return (
         <div key={chatMateusername}>
           <ul className="users">
