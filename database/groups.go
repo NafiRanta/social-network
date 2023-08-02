@@ -506,7 +506,6 @@ func DeleteUserFromRequestUsernames(groupID string, username string) error {
 		fmt.Println("scan error", err)
 		return err
 	}
-	fmt.Println("requestUsernames", requestUsernames)
 	// Parse the JSON array into a slice
 	var usernames []string
 	err = json.Unmarshal([]byte(requestUsernames), &usernames)
@@ -514,7 +513,6 @@ func DeleteUserFromRequestUsernames(groupID string, username string) error {
 		fmt.Println("unmarshal error", err)
 		return err
 	}
-	fmt.Println("usernames", usernames)
 	// Find and remove the specified username from the slice
 	for i, u := range usernames {
 		if u == username {
@@ -567,8 +565,6 @@ func DeleteUserFromMemberInvite(groupID string, username string) error {
 		return err
 	}
 
-	fmt.Println("memberInvitedUsernames", memberInvitedUsernames)
-
 	// Parse the JSON array into a slice of InvitesByMember
 	var invitesByMember []map[string]interface{}
 	err = json.Unmarshal([]byte(memberInvitedUsernames), &invitesByMember)
@@ -597,8 +593,6 @@ func DeleteUserFromMemberInvite(groupID string, username string) error {
 	if err != nil {
 		return err
 	}
-
-	fmt.Println("newMemberInvitedUsernames", string(newMemberInvitedUsernames))
 
 	// Update the Groups table with the new JSON array
 	updateQuery := "UPDATE Groups SET MemberInvitedUsernames = ? WHERE GroupID = ?"
