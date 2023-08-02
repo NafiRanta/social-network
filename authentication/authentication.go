@@ -200,50 +200,34 @@ func Register(w http.ResponseWriter, r *http.Request) {
 				http.Error(w, err.Error(), http.StatusInternalServerError)
 				return
 			}
+			// add welcome message to user from admin to db insert to messages table
+			// get admin UserName by email: admin@example.com
+			admin, err := d.GetUserByEmail("admin@example.com")
+			if err != nil {
+				u.CheckErr(err)
+				fmt.Println("user not found by email, error:", err)
+			}
+			// get user id by email
+			user, err := d.GetUserByEmail(user.Email)
+			if err != nil {
+				u.CheckErr(err)
+				fmt.Println("user not found by email, error:", err)
+			}
+			var welcomeMessage d.MessageResponse
+			welcomeMessage.SenderUsername = admin.UserName
+			welcomeMessage.ReceiverUsername = user.UserName
+			welcomeMessage.Content = "Welcome to Social Network!"
+			welcomeMessage.SentAt = time.Now()
 
-			// publicUsers, err := d.GetAllPublicUsers()
-			// if err != nil {
-			// 	w.WriteHeader(http.StatusInternalServerError)
-			// 	fmt.Fprintf(w, "Error retrieving public user data: %v", err)
-			// 	return
-			// }
+			// insert welcome message to user from admin to db
+			d.AddMessage(&welcomeMessage)
+			if err != nil {
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+				return
+			}
 
-			// privateUsers, err := d.GetAllPrivateUsers()
-			// if err != nil {
-			// 	w.WriteHeader(http.StatusInternalServerError)
-			// 	fmt.Fprintf(w, "Error retrieving private user data: %v", err)
-			// 	return
-			// }
-
-			// // Combine public and private users
-			// allUsers := append(publicUsers, privateUsers...)
-
-			// // Create a slice of UserResponse with the desired fields
-			// response := make([]UserProfile, len(allUsers))
-			// for i, user := range allUsers {
-			// 	response[i] = UserProfile{
-			// 		FirstName: user.FirstName,
-			// 		LastName:  user.LastName,
-			// 		UserName:  user.UserName,
-			// 		Privacy:   user.Privacy,
-			// 		Avatar:    user.Avatar,
-			// 	}
-			// }
-
-			// Marshal the response to JSON and send it in the response
-			// responseJSON, err := json.Marshal(response)
-			// if err != nil {
-			// 	http.Error(w, err.Error(), http.StatusInternalServerError)
-			// 	return
-			// }
-
-			// Set the Content-Type header to application/json
 			w.Header().Set("Content-Type", "application/json")
-
-			// Send the response JSON with a status code of 200 (OK)
 			w.WriteHeader(http.StatusOK)
-			//w.Write(responseJSON)
-
 		} else {
 			fmt.Println("different error")
 		}
@@ -257,6 +241,4 @@ func SetDefaultImg(imgDefaultPath string) []byte {
 		log.Println("Error reading image file:", err)
 	}
 	return imgData
-	// Use the default image data
-
 }

@@ -152,112 +152,8 @@ function Chat(props) {
     // dispatch ({ type: "SET_CHATMATEUSERNAME", payload: chatMateUsername });
   };
 
-  const displayAllUsers = () => {
-    // dispatch ({ type: "SET_CHATNOTIFICATION", payload: false });
-    if (!allusers) {
-      return null;
-    }
-    let filteredData = allusers.filter(
-      (user) => user.UserName !== userInfo.UserName
-    );
-    // sort the filteredData by firstname
-    filteredData.sort((a, b) => (a.FirstName > b.FirstName ? 1 : -1));
-    // map the filteredData to display all users except the current user
-    return filteredData.map((user) => {
-      const chatMatedisplayName = user.FirstName + " " + user.LastName;
-      const chatMateusername = user.UserName;
-      let isUserLoggedIn
-      if (loggedinUsers) {
-       isUserLoggedIn = loggedinUsers.includes(chatMateusername);
-      }
-      return (
-
-        <div key={chatMateusername}>
-          <ul className="users">
-            <li
-              className="person"
-              data-chat="person1"
-              onClick={() =>
-                handleUserClick(chatMatedisplayName, chatMateusername)
-              }
-            >
-              <div className="user">
-                <img
-                  src={user.Avatar}
-                  alt="avatar"
-                  className="rounded-circle me-2"
-                />
-                <span className={`status ${isUserLoggedIn ? 'online' : 'offline'}`}></span>
-              </div>
-              <p className="name-time">
-                <span className="name">{chatMatedisplayName}</span>
-              </p>
-            </li>
-          </ul>
-        </div>
-      );
-    });
-  };
-
-  const displayGroupChats = () => {
-    if (mygroups.length === 0) {
-      // dispatch ({ type: "SET_CHATMATEUSERNAME", payload: "" });
-      // set chatmateusername to empty string
-      console.log("no groups found");
-      return (
-      <div key={"no users"}>
-        <ul className="users">
-          <li
-            className="text-right"
-            data-chat="person1">
-            <p>No groups found</p>
-          </li>
-        </ul>
-      </div>
-      );
-    }
-    // save GroupName and GroupID to a variable called filteredData
-    let filteredData = mygroups.map((group) => {
-      return {
-        GroupName: group.GroupName,
-        GroupID: group.GroupID,
-      };
-    });
-    // sort the filteredData by GroupName
-    filteredData.sort((a, b) => (a.GroupName > b.GroupName ? 1 : -1));
-    // map the filteredData to display all groups
-    return filteredData.map((group) => {
-      const chatMatedisplayName = group.GroupName;
-      const chatMateusername = group.GroupID;
-      // dispatch ({ type: "SET_CHATMATEUSERNAME", payload: chatMateusername });
-      return (
-        <div key={chatMateusername}>
-          <ul className="users">
-            <li
-              className="person"
-              data-chat="person1"
-              onClick={() =>
-                handleGroupClick(chatMatedisplayName, chatMateusername)
-              }
-            >
-              <div className="user">
-              <img
-                src={process.env.PUBLIC_URL + '/defaultImg/default-avatar.jpeg'}
-                alt="avatar"
-                className="rounded-circle me-2"
-                />
-
-                <span className="status busy"></span>
-              </div>
-              <p className="name-time">
-                <span className="name">{chatMatedisplayName}</span>
-              </p>
-            </li>
-          </ul>
-        </div>
-      );
-    });
-  };
+// useEffect(() => {  
+// }, [mygroups]);
   
   const handleMessageSubmit = async (e) => {
     e.preventDefault();
@@ -383,9 +279,59 @@ function Chat(props) {
                     aria-labelledby="pills-inbox-tab"
                   >
                     <div className="container" id="chatUsers">
-                      {displayAllUsers()}
+                      {/* {displayAllUsers()} */}
+                      {allusers.length === 0 ? (
+                        <div key={"no users"}>
+                          <ul className="users">
+                            <li className="text-right" data-chat="person1">
+                              <p>No users found</p>
+                            </li>
+                          </ul>
+                        </div>
+                      ) : (
+                        allusers.map((user) => {
+                          // if the user is the current user, return
+                          if (user.UserName === userInfo.UserName) {
+                            return;
+                          }
+                          const chatMatedisplayName = user.FirstName + " " + user.LastName;
+                          const chatMateusername = user.UserName;
+                          let isUserLoggedIn
+                          if (loggedinUsers) {
+                           isUserLoggedIn = loggedinUsers.includes(chatMateusername);
+                          }
+                          return (
+                    
+                            <div key={chatMateusername}>
+                              <ul className="users">
+                                <li
+                                  className="person"
+                                  data-chat="person1"
+                                  onClick={() =>
+                                    handleUserClick(chatMatedisplayName, chatMateusername)
+                                  }
+                                >
+                                  <div className="user">
+                                    <img
+                                      src={user.Avatar}
+                                      alt="avatar"
+                                      className="rounded-circle me-2"
+                                    />
+                                    <span className={`status ${isUserLoggedIn ? 'online' : 'offline'}`}></span>
+                                  </div>
+                                  <p className="name-time">
+                                    <span className="name">{chatMatedisplayName}</span>
+                                  </p>
+                                </li>
+                              </ul>
+                            </div>
+                          );
+                        })
+                      )}
+                      
                     </div>
                   </div>
+
                   <div
                     className="tab-pane fade"
                     id="pills-communities"
@@ -393,7 +339,47 @@ function Chat(props) {
                     aria-labelledby="pills-communities-tab"
                   >
                     <div className="container" id="chatUsers">
-                      {displayGroupChats()}
+                      {mygroups.length === 0 ? (
+                          <div key={"no groups"}>
+                            <ul className="users">
+                              <li className="text-right" data-chat="person1">
+                                <p>No groups found</p>
+                              </li>
+                            </ul>
+                          </div>
+                        ) : (
+                          mygroups.map((group) => {
+                            const chatMatedisplayName = group.GroupName;
+                            const chatMateusername = group.GroupID;
+
+                            return (
+                              <div key={chatMateusername}>
+                                <ul className="users">
+                                  <li
+                                    className="person"
+                                    data-chat="person1"
+                                    onClick={() =>
+                                      handleGroupClick(chatMatedisplayName, chatMateusername)
+                                    }
+                                  >
+                                    <div className="user">
+                                    <img
+                                      src={process.env.PUBLIC_URL + '/defaultImg/default-avatar.jpeg'}
+                                      alt="avatar"
+                                      className="rounded-circle me-2"
+                                      />
+                      
+                                      <span className="status busy"></span>
+                                    </div>
+                                    <p className="name-time">
+                                      <span className="name">{chatMatedisplayName}</span>
+                                    </p>
+                                  </li>
+                                </ul>
+                              </div>
+                            );
+                          })
+                        )}
                     </div>
                   </div>
                 </div>

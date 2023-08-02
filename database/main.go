@@ -56,7 +56,7 @@ func addDummyUserData(db *sql.DB) error {
 		{
 			FirstName: "Admin",
 			LastName:  "Admin",
-			UserName:  "",
+			UserName:  "Admin",
 			Email:     "admin@example.com",
 			Password:  "Admin1234!",
 			Dob:       "1990-01-01",

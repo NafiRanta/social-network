@@ -173,8 +173,6 @@ function RegisterModal({ openModal }) {
             avatar: profilePicture}),
         });
         if (response.ok) {
-          // const data = await response.json();
-          // dispatch({ type: "FETCH_ALLUSERS", payload: data });
           document.getElementById("registerForm").reset();
           alert("Register successful");
            window.location.href = "/login";
