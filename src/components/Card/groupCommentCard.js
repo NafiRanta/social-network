@@ -44,10 +44,14 @@ function GroupCommentCard(props) {
             });
             if (res.ok) {
                 const data = await res.json();
-                if (data.comments !== null) {
-                    setGroupComments(data.comments);
-                    setGroupCommentCount(data.comments.length);
-                    setSelectedImage(data.selectedImage)
+                console.log('gr post comment: ', data)
+                if (data.groupComments !== null) {
+                    setGroupComments(data.groupComments);
+                    setGroupCommentCount(data.groupComments.length);
+                    // setSelectedImage(data.selectedImage)
+                    // groupComments.map((comment) => {
+                    //     console.log("comment", comment);
+                    // })
                 } else {
                     setGroupComments([]);
                     setGroupCommentCount(0);
@@ -86,7 +90,7 @@ const handleGroupCommentSubmit = async (e) => {
             body: JSON.stringify(body),
         });
         if (res.ok) {
-            const data = await res.json();
+          alert("Comment added successfully");
             setGroupCommentInput("");
             getGroupComments();
             setSelectedImage(null);
@@ -155,7 +159,7 @@ return (
                 className="d-flex align-items-center my-1"
                 key={`${groupComment.groupCommentID}-${index}`}
                 >
-                <Avatar userName={groupComment.AuthorID}/>
+                <Avatar userName={groupComment.userName}/>
                 <div className="p-3 rounded comment__input w-100">
                       <p className="m-0 fs-7 bg-gray p-2 rounded">
                         {groupComment.content}

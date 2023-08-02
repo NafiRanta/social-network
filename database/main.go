@@ -126,7 +126,6 @@ func addDummyUserData(db *sql.DB) error {
 			About:     "Nice to meet you, I'm Anton!",
 		},
 	}
-
 	for _, user := range dummyUsers {
 		randomNumber := rand.Intn(100)
 		user.UserName = user.FirstName + `-` + user.LastName + `-` + strconv.Itoa(randomNumber)
@@ -135,6 +134,5 @@ func addDummyUserData(db *sql.DB) error {
 			return err
 		}
 	}
-
 	return nil
 }

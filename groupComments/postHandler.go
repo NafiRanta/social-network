@@ -2,7 +2,7 @@ package groupcomments
 
 import (
 	"encoding/json"
-
+"fmt"
 	"net/http"
 	d "socialnetwork/database"
 )
@@ -27,7 +27,7 @@ func AddGroupCommentPostHandler(w http.ResponseWriter, r *http.Request) {
 	// add group comment to database
 	err = d.AddGroupComment(&groupComment)
 	if err != nil {
-		//fmt.Println("error from addgroupcomment:", err)
+		fmt.Println("error from addgroupcomment:", err)
 		http.Error(w, "Failed to add group comment", http.StatusInternalServerError)
 		return
 	}

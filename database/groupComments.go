@@ -2,7 +2,6 @@ package database
 
 import (
 	"database/sql"
-	u "socialnetwork/utils"
 
 	//"fmt"
 
@@ -30,22 +29,22 @@ type GroupCommentResponse struct {
 	CreateAt       time.Time `json:"createAt"`
 }
 
-func CreateGroupCommentsTable(db *sql.DB) {
-	groupCommentsTable := `
-	CREATE TABLE IF NOT EXISTS GroupComments (
-		GroupCommentID CHAR(36) NOT NULL,
-		GroupPostID CHAR(36) NOT NULL,
-		UserName CHAR(36) NOT NULL,
-		Content TEXT NOT NULL,
-		Image BLOB NULL,
-		CreateAt TIMESTAMP NOT NULL,
-		PRIMARY KEY (GroupCommentID)
-	);`
+// func CreateGroupCommentsTable(db *sql.DB) {
+// 	groupCommentsTable := `
+// 	CREATE TABLE IF NOT EXISTS GroupComments (
+// 		GroupCommentID CHAR(36) NOT NULL,
+// 		GroupPostID CHAR(36) NOT NULL,
+// 		UserName CHAR(36) NOT NULL,
+// 		Content TEXT NOT NULL,
+// 		Image BLOB NULL,
+// 		CreateAt TIMESTAMP NOT NULL,
+// 		PRIMARY KEY (GroupCommentID)
+// 	);`
 
-	query, err := db.Prepare(groupCommentsTable)
-	u.CheckErr(err)
-	query.Exec()
-}
+// 	query, err := db.Prepare(groupCommentsTable)
+// 	u.CheckErr(err)
+// 	query.Exec()
+// }
 
 func AddGroupComment(groupComment *GroupCommentResponse) error {
 	db, err := sql.Open("sqlite3", "./socialnetwork.db")
@@ -58,10 +57,10 @@ func AddGroupComment(groupComment *GroupCommentResponse) error {
 	groupComment.CreateAt = time.Now()
 
 	query := `
-		INSERT INTO GroupComments (GroupCommentID, GroupID, UserName, Content, Image, CreateAt)
+		INSERT INTO GroupComments (GroupCommentID, GroupPostID, UserName, Content, Image, CreateAt)
 			VALUES (?, ?, ?, ?, ?, ?);`
 
-	_, err = db.Exec(query, groupComment.GroupCommentID, groupComment.GroupID, groupComment.UserName, groupComment.Content, groupComment.Image, groupComment.CreateAt)
+	_, err = db.Exec(query, groupComment.GroupCommentID, groupComment.GroupPostID, groupComment.UserName, groupComment.Content, groupComment.Image, groupComment.CreateAt)
 	if err != nil {
 		return err
 	}
@@ -69,7 +68,7 @@ func AddGroupComment(groupComment *GroupCommentResponse) error {
 	return nil
 }
 
-func GetGroupCommentsByGroupPostID(groupID string) ([]GroupCommentResponse, error) {
+func GetGroupCommentsByGroupPostID(grouppostid string) ([]GroupCommentResponse, error) {
 
 	db, err := sql.Open("sqlite3", "./socialnetwork.db")
 	if err != nil {
@@ -78,9 +77,9 @@ func GetGroupCommentsByGroupPostID(groupID string) ([]GroupCommentResponse, erro
 	defer db.Close()
 
 	query := `
-		SELECT * FROM GroupComments WHERE GroupID=?;`
+		SELECT * FROM GroupComments WHERE GroupPostID=?;`
 
-	rows, err := db.Query(query, groupID)
+	rows, err := db.Query(query, grouppostid)
 	if err != nil {
 		return nil, err
 	}
@@ -89,7 +88,7 @@ func GetGroupCommentsByGroupPostID(groupID string) ([]GroupCommentResponse, erro
 	var allGroupComments []GroupCommentResponse
 	for rows.Next() {
 		var groupComment GroupCommentResponse
-		err := rows.Scan(&groupComment.GroupCommentID, &groupComment.GroupID, &groupComment.UserName, &groupComment.Content, &groupComment.Image, &groupComment.CreateAt)
+		err := rows.Scan(&groupComment.GroupCommentID, &groupComment.GroupPostID, &groupComment.UserName, &groupComment.Content, &groupComment.Image, &groupComment.CreateAt)
 		if err != nil {
 			return nil, err
 		}
@@ -118,7 +117,7 @@ func GetGroupPostsComments(groupPostID string) ([]GroupCommentResponse, error) {
 	var allGroupComments []GroupCommentResponse
 	for rows.Next() {
 		var groupComment GroupCommentResponse
-		err := rows.Scan(&groupComment.GroupCommentID, &groupComment.GroupID, &groupComment.UserName, &groupComment.Content, &groupComment.Image, &groupComment.CreateAt)
+		err := rows.Scan(&groupComment.GroupCommentID, &groupComment.GroupPostID, &groupComment.UserName, &groupComment.Content, &groupComment.Image, &groupComment.CreateAt)
 		if err != nil {
 			return nil, err
 		}

@@ -24,6 +24,7 @@ function OthersProfile(props) {
     const clickedProfileDisplayName = clickedProfileInfo.FirstName + " " + clickedProfileInfo.LastName;
     const clickedProfileFollowers = clickedProfileInfo.FollowerUsernames ? clickedProfileInfo.FollowerUsernames.split(",") : [];
     const clickedProfileFollowingUsernamesSent = clickedProfileInfo.FollowingUsernamesSent ? clickedProfileInfo.FollowingUsernamesSent.split(",") : [];
+    console.log('CLICKPROFILEFOLLOWINGUSERNAMESSENT: ', clickedProfileFollowingUsernamesSent)
     const [clickedProfileFollowersInfo, setClickedProfileFollowersInfo] = useState([]); // [ {username, avatar, displayname}
     const [myfollowings, setFollowings] = useState([]);
     const [followingUsernamesReceived, setFollowingUsernamesReceived] = useState([]);
