@@ -44,7 +44,6 @@ function Topnav(props) {
         });
         dispatch({ type: "SET_NOTIFICATION", payload: true });
         setFollowRequests(updatedFollowNotifications);
-        console.log("updatedFollowNotifications", updatedFollowNotifications)
       }
     }
   }, [userInfo]);
