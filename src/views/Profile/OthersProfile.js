@@ -225,7 +225,7 @@ function OthersProfile(props) {
             });
             if (response.ok) {
                 alert("Follow request accepted");
-                window.location.reload();
+                window.location.href = "/profile/" + userInfo.UserName;
             } else {
                 alert("Error accepting follow request");
             }
@@ -251,7 +251,7 @@ function OthersProfile(props) {
             });
             if (response.ok) {
                 alert("Follow request declined");
-                window.location.reload();
+                window.location.href = "/profile/" + userInfo.UserName;
             } else {
                 alert("Error declined follow request");
             }
