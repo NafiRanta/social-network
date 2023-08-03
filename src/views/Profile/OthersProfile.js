@@ -24,15 +24,15 @@ function OthersProfile(props) {
     const clickedProfileDisplayName = clickedProfileInfo.FirstName + " " + clickedProfileInfo.LastName;
     const clickedProfileFollowers = clickedProfileInfo.FollowerUsernames ? clickedProfileInfo.FollowerUsernames.split(",") : [];
     const clickedProfileFollowingUsernamesSent = clickedProfileInfo.FollowingUsernamesSent ? clickedProfileInfo.FollowingUsernamesSent.split(",") : [];
-    console.log('CLICKPROFILEFOLLOWINGUSERNAMESSENT: ', clickedProfileFollowingUsernamesSent)
     const [clickedProfileFollowersInfo, setClickedProfileFollowersInfo] = useState([]); // [ {username, avatar, displayname}
     const [myfollowings, setFollowings] = useState([]);
+    const [myfollowers, setFollowers] = useState([]);
     const [followingUsernamesReceived, setFollowingUsernamesReceived] = useState([]);
     const [followingUsernamesSent, setFollowingUsernamesSent] = useState([]);
     const [isPrivate, setIsPrivate] = useState(false);
     const [isPublic, setIsPublic] = useState(false);
-    const [isPending, setPending] = useState([]);
-    const [isPendingToAprove, setIsPendingToAprove] = useState([]);
+    const [isPending, setPending] = useState(false);
+    const [isPendingToAprove, setIsPendingToAprove] = useState(false);
     const [isFollowing, setIsFollowing] = useState(false);
 
     const dob = new Date(clickedProfileInfo.DateOfBirth).toLocaleDateString("en-US", {
@@ -78,7 +78,7 @@ function OthersProfile(props) {
     useEffect(() => {
         // get all my followers
         if (userInfo.FollowingUsernames) {
-            const myfollowings = userInfo.FollowingUsernames.split(",");
+            const myfollowings = userInfo.FollowerUsernames.split(",");
             setFollowings(myfollowings);
         } else {
             setFollowings([]);
@@ -126,13 +126,15 @@ function OthersProfile(props) {
   
     // if username is found in followingUsernamesReceived or followingUsernamesSent, then the clicked profile follow request is pending
     useEffect(() => {
-        const isPending = followingUsernamesReceived.includes(userInfo.UserName) || followingUsernamesSent.includes(userInfo.UserName);
-        const isPendingToAprove = clickedProfileFollowingUsernamesSent.includes(userInfo.UserName) 
+        console.log("my followerS:", userInfo.FollowerUsernames)
+        const isPending = followingUsernamesReceived.includes(userInfo.UserName);
+        const isPendingToAprove = clickedProfileFollowingUsernamesSent.includes(userInfo.UserName)
+        console.log(myfollowings)
         const isFollowing = myfollowings.includes(clickedProfileInfo.UserName);
         setPending(isPending);
         setIsPendingToAprove(isPendingToAprove);
         setIsFollowing(isFollowing);
-    }, [followingUsernamesReceived, followingUsernamesSent, userInfo.UserName, myfollowings]);
+    }, [myfollowings]);
 
     // handle follow button
     const handleFollow = async (event) => {
@@ -206,6 +208,59 @@ function OthersProfile(props) {
         }
     }
 
+    const handleAcceptFollowRequest = async (event) => {
+        console.log("Accept follow request");
+        const data = {
+            sender_username: clickedProfileUsername,
+            receiver_username: userInfo.UserName
+        };
+        try {
+            const response = await fetch("http://localhost:8080/acceptfollowreq", {
+                method: 'POST',
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json",
+                  },
+                body: JSON.stringify(data)
+            });
+            if (response.ok) {
+                alert("Follow request accepted");
+                window.location.reload();
+            } else {
+                alert("Error accepting follow request");
+            }
+        }
+        catch(error) {
+            console.log(error);
+        }
+    };
+    const handleDeclineFollowRequest = async (event) => {
+        console.log("Decline follow request");
+        const data = {
+            sender_username: clickedProfileUsername,
+            receiver_username: userInfo.UserName
+        };
+        try {
+            const response = await fetch("http://localhost:8080/declinefollowreq", {
+                method: 'POST',
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json",
+                  },
+                body: JSON.stringify(data)
+            });
+            if (response.ok) {
+                alert("Follow request declined");
+                window.location.reload();
+            } else {
+                alert("Error declined follow request");
+            }
+        }
+        catch(error) {
+            console.log(error);
+        }
+    };
+
   return (
         <div>
            <Topnav userDisplayname={props.userDisplayname} socket={props.socket}/>
@@ -264,16 +319,17 @@ function OthersProfile(props) {
                                             <div className="row">
                                                 <div className="col">
                                                 <div className="btn-group" role="group" aria-label="Follow Request Actions">
-                                                    <button type="button" className="btn btn-primary mr-2">
+                                                    <button type="button" className="btn btn-primary mr-2" onClick={handleAcceptFollowRequest}>
                                                     Accept
                                                     </button>
-                                                    <button type="button" className="btn btn-danger">
+                                                    <button type="button" className="btn btn-danger" onClick={handleDeclineFollowRequest}>
                                                     Decline
                                                     </button>
                                                 </div>
                                                 </div>
                                             </div>
                                         </div>
+                                        
                                     ) : (
                                         <button type="button" className="btn btn-primary flex-grow-1" onClick={handleFollow}>
                                         Follow
