@@ -20,12 +20,8 @@ function App() {
     switch (event.type) {
       case "message_notification"
         : {
-          // if the user is in the chat page, then update the chat page
-          if (window.location.pathname === "/chat") {
-            dispatch({ type: "SET_CHATMESSAGES", payload: event.payload });
-          } else {
+          if (event.payload.receiverUsername === userInfo.UserName) {
             dispatch({ type: "SET_CHATNOTIFICATION", payload: true });
-            break;
           }
         }
       case "acknowledgement"

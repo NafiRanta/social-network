@@ -138,6 +138,7 @@ function Chat(props) {
   const mygroups = useSelector((state) => state.myGroups);
 
   const handleUserClick = (chatMateDisplayName, chatMateUsername) => {
+    dispatch({ type: "SET_CHATNOTIFICATION", payload: false });
     const chatMate = allusers.find(
       (chatMate) => chatMate.UserName === chatMateUsername
     );
