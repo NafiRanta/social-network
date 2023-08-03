@@ -99,7 +99,6 @@ function useChatMessages(
                 });
               });
               updatedMessages.sort((a, b) => (a.sentAt > b.sentAt ? 1 : -1))
-
               return updatedMessages;
             };
             const moreFilteredData = addSenderInfo(filteredData);
@@ -152,9 +151,6 @@ function Chat(props) {
     setSelectedChatMateUsername(chatMateUsername);
     // dispatch ({ type: "SET_CHATMATEUSERNAME", payload: chatMateUsername });
   };
-
-// useEffect(() => {  
-// }, [mygroups]);
   
   const handleMessageSubmit = async (e) => {
     e.preventDefault();
@@ -220,7 +216,8 @@ function Chat(props) {
       chatMateAvatar = chatMateUser[0].Avatar;
     }
   }
-
+  chatMessages.sort((a, b) => (a.sentAt > b.sentAt ? 1 : -1));
+  
   return (
     <div>
       <Topnav
