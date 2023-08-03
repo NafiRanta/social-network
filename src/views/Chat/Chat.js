@@ -243,7 +243,7 @@ function Chat(props) {
                   id="pills-tab"
                   role="tablist"
                 >
-                  <li className="nav-item" role="presentation">
+                  <li className="nav-item" role="presentation" key={"inbox"}>
                     <a
                       className="nav-link"
                       id="pills-inbox-tab"
@@ -257,7 +257,7 @@ function Chat(props) {
                       Inbox
                     </a>
                   </li>
-                  <li className="nav-item" role="presentation">
+                  <li className="nav-item" role="presentation" key={"communities"}>
                     <a
                       className="nav-link"
                       id="pills-communities-tab"
@@ -284,7 +284,7 @@ function Chat(props) {
                       {allusers.length === 0 ? (
                         <div key={"no users"}>
                           <ul className="users">
-                            <li className="text-right" data-chat="person1">
+                            <li className="text-right" data-chat="person1" key={"no users"}>
                               <p>No users found</p>
                             </li>
                           </ul>
@@ -306,6 +306,7 @@ function Chat(props) {
                             <div key={chatMateusername}>
                               <ul className="users">
                                 <li
+                                  key={user.UserName + "li"}
                                   className="person"
                                   data-chat="person1"
                                   onClick={() =>
@@ -343,7 +344,7 @@ function Chat(props) {
                       {mygroups.length === 0 ? (
                           <div key={"no groups"}>
                             <ul className="users">
-                              <li className="text-right" data-chat="person1">
+                              <li className="text-right" data-chat="person1" key={"no groups"}>
                                 <p>No groups found</p>
                               </li>
                             </ul>
@@ -357,6 +358,7 @@ function Chat(props) {
                               <div key={chatMateusername}>
                                 <ul className="users">
                                   <li
+                                    key={group.GroupID + "li"}
                                     className="person"
                                     data-chat="person1"
                                     onClick={() =>
@@ -414,6 +416,7 @@ function Chat(props) {
                       <ul
                         className="chatview-box chatContainerScroll"
                         id="chatmessagesSelectedChatMate"
+                        key={message.sentAt}
                       >
                         <li className="chat-right">
                           <div className="chat-avatar">
@@ -433,6 +436,7 @@ function Chat(props) {
                       <ul
                         className="chatview-box chatContainerScroll"
                         id="chatmessagesSelectedChatMate"
+                        key={message.sentAt}
                       >
                         <li className="chat-left">
                           <div className="chat-avatar">
