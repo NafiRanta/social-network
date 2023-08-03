@@ -178,8 +178,8 @@ function RegisterModal({ openModal }) {
            window.location.href = "/login";
         }
         if (response.status === 409) {
-          console.log("Email already exists");
-          document.getElementById("registerUsernameErrMsg").innerHTML = "Email already exists";
+          console.log("You already have an account");
+          document.getElementById("registerUsernameErrMsg").innerHTML = "You already have an account";
         }
       } catch (error) {
         console.error("Error:", error);
