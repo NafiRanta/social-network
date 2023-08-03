@@ -198,13 +198,14 @@ function OthersProfile(props) {
     }, [userInfo]); 
   
     useEffect(() => {
+        console.log('SET')
         const isFollowing = userInfoFollowings.includes(clickedProfileInfo.UserName);
         const isPending = userInfoFollowingUsernamesSent.includes(clickedProfileInfo.UserName);
         const isPendingToAprove = userInfoFollowerUsernamesReceived.includes(clickedProfileInfo.UserName)   
         setPending(isPending);
         setIsPendingToAprove(isPendingToAprove);
         setIsFollowing(isFollowing);
-    }, [userInfoFollowings, userInfoFollowers]);
+    }, [clickedProfileInfo]);
 
     // handle follow button
     const handleFollow = async (event) => {
