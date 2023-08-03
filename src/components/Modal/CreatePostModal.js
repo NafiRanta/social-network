@@ -146,8 +146,8 @@ function CreatePostModal(props) {
                       value={selectedUsers} 
                       onChange={handleUserSelect}
                       >
-                        {allusers.map((user) => (
-                          <option id="allusers" key={user.id} value={user.id}>
+                        {userInfo.FollowerUserNames.split(',').map((user, index) => (
+                          <option id="allusers" key={index} value={user.id}>
                             {user.FirstName}
                           </option>
                         ))}

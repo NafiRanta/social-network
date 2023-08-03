@@ -2,35 +2,38 @@ import {React, useState, useEffect} from 'react';
 import Topnav from '../../views/Topnav';    
 import OthersPostCard from '../../components/Card/OthersPostCard';
 import AvatarSquare from '../../components/Avatar/AvatarSquare';
-import { useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import './Profile.css';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 function OthersProfile(props) {
-    const location = useLocation();
     const dispatch = useDispatch();
-    const { pathname } = location;
     const allusers = useSelector((state) => state.allUsers);
     const userInfo = useSelector((state) => state.userInfo);
+
     const clickedProfileUsername = decodeURIComponent(window.location.pathname.split("/")[2]);
     // if own profile, redirect to /profile/username
     if (clickedProfileUsername == userInfo.UserName) {
         window.location.href = "/profile/" + userInfo.UserName;
     }
-
     const [clickedProfileInfo, setClickedProfileInfo] = useState({});
+    //everything related to the clicked profile
     const clickedProfileDisplayName = clickedProfileInfo.FirstName + " " + clickedProfileInfo.LastName;
-    const clickedProfileFollowers = clickedProfileInfo.FollowerUsernames ? clickedProfileInfo.FollowerUsernames.split(",") : [];
-    const clickedProfileFollowingUsernamesSent = clickedProfileInfo.FollowingUsernamesSent ? clickedProfileInfo.FollowingUsernamesSent.split(",") : [];
+    const [clickedProfileFollowers, setClickedProfileFollowers] = useState([]); 
+    const [clickedProfileFollowings, setclickedProfileFollowings] = useState([]); 
+    const [clickedProfileFollowingUsernamesSent, setClickedProfileFollowingUsernamesSent] = useState([]);
+    const [clickedProfileFollowerUsernamesReceived, setClickedProfileFollowerUsernamesReceived] = useState([]);
+
     const [clickedProfileFollowersInfo, setClickedProfileFollowersInfo] = useState([]); // [ {username, avatar, displayname}
-    const [myfollowings, setFollowings] = useState([]);
-    const [myfollowers, setFollowers] = useState([]);
-    const [followingUsernamesReceived, setFollowingUsernamesReceived] = useState([]);
-    const [followingUsernamesSent, setFollowingUsernamesSent] = useState([]);
+    const [clickedProfileFollowingsInfo, setclickedProfileFollowingsInfo] = useState([]); // [ {username, avatar, displayname}
+
+   
+    
+    
     const [isPrivate, setIsPrivate] = useState(false);
     const [isPublic, setIsPublic] = useState(false);
+    
     const [isPending, setPending] = useState(false);
     const [isPendingToAprove, setIsPendingToAprove] = useState(false);
     const [isFollowing, setIsFollowing] = useState(false);
@@ -45,9 +48,9 @@ function OthersProfile(props) {
       const year = dob.split(" ")[2];
       const formattedDOB = `${day} ${month} ${year}`.replace(/,/g, ""); // remove comma from date
     
-      
+      // get clickedProfileInfo from /users database
     useEffect(() => {
-        // get clickedProfileInfo from /users database
+        console.log('GET clickedProfileInfo')
         const getClickedProfileInfo = async () => {
             const token = localStorage.getItem('token');
             const header = new Headers();
@@ -63,6 +66,7 @@ function OthersProfile(props) {
                 if (response.ok) {
                     const data = await response.json();
                     setClickedProfileInfo(data);
+                    
                     dispatch ({type: "SET_CLICKEDPROFILEINFO", payload: data});
 
                 } else {
@@ -73,46 +77,60 @@ function OthersProfile(props) {
             }
         };
         getClickedProfileInfo();
-    }, [clickedProfileUsername]);
-
+    }, []);
     useEffect(() => {
-        // get all my followers
-        if (userInfo.FollowingUsernames) {
-            const myfollowings = userInfo.FollowerUsernames.split(",");
-            setFollowings(myfollowings);
-        } else {
-            setFollowings([]);
-        }
+        //set everything related to the clicked profile
+                        //check private or public
+                        if (clickedProfileInfo.Privacy === 'public') {
+                            setIsPublic(true);
+                        }else{
+                            setIsPublic(false);
+                        }
+                        
+                        if (clickedProfileInfo.Privacy === 'private') {
+                            setIsPrivate(true);
+                        } else{
+                            setIsPrivate(false);
+                        }
+                        //check there is followers and followings
+                        if (clickedProfileInfo.FollowerUsernames != "" && clickedProfileInfo.FollowerUsernames != undefined) {
+                            const followerUserNamesArray = clickedProfileInfo.FollowerUsernames.includes(',')
+                                ? clickedProfileInfo.FollowerUsernames.split(',')
+                                : [clickedProfileInfo.FollowerUsernames];
+                                setClickedProfileFollowers(followerUserNamesArray);
+                        } else {
+                            setClickedProfileFollowers([]);
+                        }
 
-        // check if current user has pending follow requests from clickedProfile
-        if (clickedProfileInfo.FollowerUsernamesReceived) {
-            const followingReceived = clickedProfileInfo.FollowerUsernamesReceived.split(",");
-            setFollowingUsernamesReceived(followingReceived);
-        } else {
-            setFollowingUsernamesReceived([]);
-        }
-
-        if (clickedProfileInfo.FollowingUsernamesSent) {
-            const followingSent = clickedProfileInfo.FollowingUsernamesSent.split(",");
-            setFollowingUsernamesSent(followingSent);
-        } else {
-            setFollowingUsernamesSent([]);
-        } 
-
-        // get clickedProfile privacy
-        if (clickedProfileInfo.Privacy === 'public') {
-            setIsPublic(true);
-        }else{
-            setIsPublic(false);
-        }
-         
-        if (clickedProfileInfo.Privacy === 'private') {
-            setIsPrivate(true);
-        } else{
-            setIsPrivate(false);
-        }
-
-        if (clickedProfileFollowers) {
+                        if (clickedProfileInfo.FollowingUsernames != "" && clickedProfileInfo.FollowingUsernames != undefined) {
+                            const followingUserNamesArray = clickedProfileInfo.FollowingUsernames.includes(',')
+                                ? clickedProfileInfo.FollowingUsernames.split(',')
+                                : [clickedProfileInfo.FollowingUsernames];
+                                setClickedProfileFollowers(followingUserNamesArray);
+                        } else {
+                            setclickedProfileFollowings([]);
+                        }
+                        //check if there is FollowingUsernamesSent and FollowerUsernamesReceived
+                        if (clickedProfileInfo.FollowingUsernamesSent != "" && clickedProfileInfo.FollowingUsernamesSent != undefined) {
+                            const followingUsernamesSentArray = clickedProfileInfo.FollowingUsernamesSent.includes(',')
+                                ? clickedProfileInfo.FollowingUsernamesSent.split(',')
+                                : [clickedProfileInfo.FollowingUsernamesSent];
+                                setClickedProfileFollowingUsernamesSent(followingUsernamesSentArray);
+                        }else {
+                            setClickedProfileFollowingUsernamesSent([]);
+                        }
+                        if (clickedProfileInfo.FollowerUsernamesReceived != "" && clickedProfileInfo.FollowerUsernamesReceived != undefined ) {
+                            const followerUsernamesReceivedArray = clickedProfileInfo.FollowerUsernamesReceived.includes(',')
+                                ? clickedProfileInfo.FollowerUsernamesReceived.split(',')
+                                : [clickedProfileInfo.FollowerUsernamesReceived];
+                                setClickedProfileFollowerUsernamesReceived(followerUsernamesReceivedArray);
+                        } else {
+                            setClickedProfileFollowerUsernamesReceived([]);
+                        }
+    }, [clickedProfileInfo]);
+    //map the followers and followings of clicked profile to get the avatar and displayname
+    useEffect(() => {
+        if (clickedProfileFollowers.length > 0) {
             const clickedProfileFollowersInfo = [];
             clickedProfileFollowers.forEach((follower) => {
                 const followerInfo = allusers?.find((user) => user.UserName === follower);
@@ -122,19 +140,71 @@ function OthersProfile(props) {
         } else {
             setClickedProfileFollowersInfo([]);
         }
-    }, [userInfo, clickedProfileInfo]); 
-  
-    // if username is found in followingUsernamesReceived or followingUsernamesSent, then the clicked profile follow request is pending
+
+        if (clickedProfileFollowings.length > 0) {
+            const clickedProfileFollowingsInfo = [];
+            clickedProfileFollowings.forEach((follower) => {
+                const followingInfo = allusers?.find((user) => user.UserName === follower);
+                clickedProfileFollowingsInfo.push(followingInfo);
+            });
+            setclickedProfileFollowingsInfo(clickedProfileFollowingsInfo);
+        } else {
+            setclickedProfileFollowingsInfo([]);
+        }
+    }, [clickedProfileFollowers, clickedProfileFollowings]);
+
+
+    const [userInfoFollowings, setFollowings] = useState([]);
+    const [userInfoFollowers, setFollowers] = useState([]);
+    const [userInfoFollowingUsernamesSent, setfollowingUsernamesSent] = useState([]);
+    const [userInfoFollowerUsernamesReceived, setFollowerUsernamesReceived] = useState([]);
+
     useEffect(() => {
-        console.log("my followerS:", userInfo.FollowerUsernames)
-        const isPending = followingUsernamesReceived.includes(userInfo.UserName);
-        const isPendingToAprove = clickedProfileFollowingUsernamesSent.includes(userInfo.UserName)
-        console.log(myfollowings)
-        const isFollowing = myfollowings.includes(clickedProfileInfo.UserName);
+        console.log("USERINFO: ", userInfo);
+        if (userInfo.FollowingUsernames!= "") {
+            const followingUserNamesArray = userInfo.FollowingUsernames.includes(',')
+            ? userInfo.FollowingUsernames.split(',')
+            : [userInfo.FollowingUsernames];
+            setFollowings(followingUserNamesArray);
+            
+        } else {
+            setFollowings([]);
+        }
+        if (userInfo.FollowerUsernames != "") {
+            const followerUserNamesArray = userInfo.FollowerUsernames.includes(',')
+            ? userInfo.FollowerUsernames.split(',')
+            : [userInfo.FollowerUsernames];
+            setFollowers(followerUserNamesArray);
+            
+        } else {
+            setFollowers([]);
+        }
+        if (userInfo.FollowingUsernamesSent != "") {
+            const followingUsernamesSentArray = userInfo.FollowingUsernamesSent.includes(',')
+            ? userInfo.FollowingUsernamesSent.split(',')
+            : [userInfo.FollowingUsernamesSent];
+            setfollowingUsernamesSent(followingUsernamesSentArray);
+        } else {
+            setfollowingUsernamesSent([]);
+        }
+        if (userInfo.FollowerUsernamesReceived != "") {
+            const followerUsernamesReceivedArray = userInfo.FollowerUsernamesReceived.includes(',')
+            ? userInfo.FollowerUsernamesReceived.split(',')
+            : [userInfo.FollowerUsernamesReceived];
+            setFollowerUsernamesReceived(followerUsernamesReceivedArray);
+        } else {
+            setFollowerUsernamesReceived([]);
+        }
+    }, [userInfo]); 
+  
+    useEffect(() => {
+        const isFollowing = userInfoFollowings.includes(clickedProfileInfo.UserName);
+        const isPending = userInfoFollowingUsernamesSent.includes(clickedProfileInfo.UserName);
+        const isPendingToAprove = userInfoFollowerUsernamesReceived.includes(clickedProfileInfo.UserName)   
         setPending(isPending);
         setIsPendingToAprove(isPendingToAprove);
         setIsFollowing(isFollowing);
-    }, [myfollowings]);
+    }, [userInfoFollowings, userInfoFollowers]);
 
     // handle follow button
     const handleFollow = async (event) => {
@@ -300,6 +370,7 @@ function OthersProfile(props) {
                                             <p className="mb-0">{clickedProfileInfo.Privacy}</p>
                                         </div>
                                     </div>
+                                    {/* check from userInfo  */}
                                     <div className="d-flex pt-1">
                                     {isFollowing ? (
                                         <button type="button" className="btn btn-primary flex-grow-1" onClick={handleUnfollow}>
@@ -345,6 +416,7 @@ function OthersProfile(props) {
                         </div>
                     </div>
                 </section>
+                {/* check from clickedProfileInfo */}
                 {isPublic || (isPrivate && isFollowing) ? (
                 <div className="row justify-content-evenly">
                     <div className="col-12 col-lg-3">
@@ -379,8 +451,9 @@ function OthersProfile(props) {
                                 <div className="p-2">
                                     <p className="m-0"><strong>Followers</strong></p>
                                 </div>
+                                {/* followers box */}
                                 <div className="follow-box-content p-1 m-0 d-flex">
-                                    {clickedProfileFollowersInfo.length === 0 ? (
+                                    {clickedProfileFollowers.length === 0 ? (
                                         <p className="m-0">{clickedProfileDisplayName} has no followers</p>
                                     ) : (
                                         // If not empty, map over the followers
@@ -392,6 +465,32 @@ function OthersProfile(props) {
                                                 </div>
                                                 <div className="fellows d-flex align-items-center">
                                                   <p className="m-0">{follower.FirstName + " " + follower.LastName}</p>
+                                                </div>
+                                              </Link>
+                                            </div>
+                                        ))
+                                    )}
+                                </div>
+                            </div>
+
+                            <div className="bg-white rounded border shadow p-3">
+                                <div className="p-2">
+                                    <p className="m-0"><strong>Followings</strong></p>
+                                </div>
+                                {/* followings box */}
+                                <div className="follow-box-content p-1 m-0 d-flex">
+                                    {clickedProfileFollowings.length === 0 ? (
+                                        <p className="m-0">{clickedProfileDisplayName} has no followings</p>
+                                    ) : (
+                                        // If not empty, map over the followings
+                                        clickedProfileFollowingsInfo.map((following) => (
+                                            <div className="p-2" key={following.UserName}>
+                                              <Link to={`/othersprofile/${following.UserName}`} className="text-decoration-none text-dark">
+                                                <div className="fellows d-flex align-items-center">
+                                                  <AvatarSquare avatar={following.Avatar} />
+                                                </div>
+                                                <div className="fellows d-flex align-items-center">
+                                                  <p className="m-0">{following.FirstName + " " + following.LastName}</p>
                                                 </div>
                                               </Link>
                                             </div>

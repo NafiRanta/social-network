@@ -547,6 +547,7 @@ useEffect(() => {
                               <Link
 
                                 to={`/othersprofile/${notification.requestorUsername}`}
+                                onMouseDown={window.location.reload}
                                 className="btn btn-primary btn-sm d-flex justify-content-center align-items-center"
                               >
                                 View
