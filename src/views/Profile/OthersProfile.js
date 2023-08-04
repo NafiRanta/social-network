@@ -94,6 +94,7 @@ function OthersProfile(props) {
                         }
                         //check there is followers and followings
                         if (clickedProfileInfo.FollowerUsernames != "" && clickedProfileInfo.FollowerUsernames != undefined) {
+                            console.log('I HAVE A FOLLOWER!')
                             const followerUserNamesArray = clickedProfileInfo.FollowerUsernames.includes(',')
                                 ? clickedProfileInfo.FollowerUsernames.split(',')
                                 : [clickedProfileInfo.FollowerUsernames];
@@ -103,10 +104,11 @@ function OthersProfile(props) {
                         }
 
                         if (clickedProfileInfo.FollowingUsernames != "" && clickedProfileInfo.FollowingUsernames != undefined) {
+                            console.log('I HAVE A FOLLOWING! DO STH')
                             const followingUserNamesArray = clickedProfileInfo.FollowingUsernames.includes(',')
                                 ? clickedProfileInfo.FollowingUsernames.split(',')
                                 : [clickedProfileInfo.FollowingUsernames];
-                                setClickedProfileFollowers(followingUserNamesArray);
+                                setclickedProfileFollowings(followingUserNamesArray);
                         } else {
                             setclickedProfileFollowings([]);
                         }
@@ -130,7 +132,9 @@ function OthersProfile(props) {
     }, [clickedProfileInfo]);
     //map the followers and followings of clicked profile to get the avatar and displayname
     useEffect(() => {
+        console.log('IS STH CHANGE?')
         if (clickedProfileFollowers.length > 0) {
+            console.log('I HAVE A FOLLOWER! LOOK FOR AVA')
             const clickedProfileFollowersInfo = [];
             clickedProfileFollowers.forEach((follower) => {
                 const followerInfo = allusers?.find((user) => user.UserName === follower);
@@ -142,6 +146,7 @@ function OthersProfile(props) {
         }
 
         if (clickedProfileFollowings.length > 0) {
+            console.log('I HAVE A FOLLOWING! LOOK FOR AVA')
             const clickedProfileFollowingsInfo = [];
             clickedProfileFollowings.forEach((follower) => {
                 const followingInfo = allusers?.find((user) => user.UserName === follower);
@@ -160,7 +165,6 @@ function OthersProfile(props) {
     const [userInfoFollowerUsernamesReceived, setFollowerUsernamesReceived] = useState([]);
 
     useEffect(() => {
-        console.log("USERINFO: ", userInfo);
         if (userInfo.FollowingUsernames!= "") {
             const followingUserNamesArray = userInfo.FollowingUsernames.includes(',')
             ? userInfo.FollowingUsernames.split(',')
@@ -199,6 +203,8 @@ function OthersProfile(props) {
   
     useEffect(() => {
         console.log('SET')
+        console.log("CLICKED USERINFO: ", clickedProfileInfo);
+        console.log("USERINFO: ", userInfo);
         const isFollowing = userInfoFollowings.includes(clickedProfileInfo.UserName);
         const isPending = userInfoFollowingUsernamesSent.includes(clickedProfileInfo.UserName);
         const isPendingToAprove = userInfoFollowerUsernamesReceived.includes(clickedProfileInfo.UserName)   
