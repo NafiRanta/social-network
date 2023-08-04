@@ -30,7 +30,7 @@ function GroupProfileCard(props) {
         } else if (currentPath === "/allgroups") {
           setGroupsToDisplay(allgroups);
         }
-    }, [mygroups, allgroups, currentPath]);
+    }, [allgroups, currentPath]);
     
     const handleJoinGroup = async (groupId) => {
         try {
