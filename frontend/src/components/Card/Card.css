@@ -1,0 +1,87 @@
+.cols{
+    padding: 3px;
+}
+
+.card img{
+    height: 175px;
+    object-fit: cover;
+}
+
+@media (max-width: 600px) {
+ .card img{
+     height: 200px;
+       margin-bottom: -20px;
+          object-fit: cover;
+       max-width: 800px;
+   }
+}
+
+/* comment */
+.post__comment .accordion-button::after {
+    margin-left: 0 !important;
+    display: none !important;
+}
+.post__comment .accordion-button:hover {
+    background: transparent !important;
+    border-color: transparent !important;
+}
+.post__comment .accordion-button:not(.collapsed) {
+    background: transparent !important;
+}
+.post__comment .accordion-button:not(.collapsed) {
+    box-shadow: none !important;
+}
+#d-flex-comments{
+    height: 50px; 
+    z-index: 5;
+}
+
+#card {
+    margin-top: 20px;
+    width: 100%;
+    height: 100%;
+}
+
+.card-body {
+    width: 100% !important;
+    overflow: scroll;
+
+}
+.card-text {
+    width: 100% !important;
+    margin-top: 10px;
+    overflow: scroll;
+    font-size: 15px !important;
+}
+
+
+#viewbutton {
+    width: 85%;
+    margin-bottom: 20px;
+    margin-left: 10px !important;
+    margin-right: 10px !important;
+}
+
+#joinbutton {
+    width: 100%;
+    margin-bottom: 0px;
+    margin-left: 0px !important;
+    margin-right: 0px !important;
+}
+
+.form-control {
+    height: 45px;
+}
+
+#pictureButton {
+    width: fit-content;
+    height: 55px;
+}
+
+#commentImg {
+    margin-top: 5px;
+}
+
+#commentAuthors {
+    margin-top: -5px !important;
+}

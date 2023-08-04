@@ -1,0 +1,49 @@
+#topNavBox {
+    margin-bottom: 3px !important;
+    margin-top: 3px !important;
+}
+
+#groupMenu {
+    width: 48px;
+    height: 48px;
+}
+
+#chatMenu {
+    width: 48px;
+    height: 48px;
+}
+
+#mainMenu {
+    width: 48px;
+    height: 48px;
+}
+
+#notMenu {
+    width: 48px;
+    height: 48px;
+}
+
+#avatar {
+    width: 44px;
+    height: 44px;
+}
+
+.fa-users {
+    font-size: 20px;
+}
+
+.fa-comment {
+    font-size: 20px;
+}
+
+.fa-bell {
+    font-size: 20px;
+}
+
+.bg-red {
+    background-color: #4267B2 !important;
+}
+
+.bg-red i {
+    color:whitesmoke;
+}

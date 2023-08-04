@@ -1,0 +1,135 @@
+.modal-dialog modal-sm position-absolute bottom-0 end-0 w-17{
+    transform: translateX(-80px);
+}
+
+.modal-body p-0 overflow-auto{
+    max-height: 300px;
+}
+  
+  /* chat box */
+.modal-content:hover .fa-phone-alt {
+    color: #0d6efd !important;
+}
+
+.modal-content:hover .fa-video {
+    color: #0d6efd !important;
+}
+
+.modal-content:hover .fa-file-image {
+    color: #0d6efd !important;
+}
+
+.modal-content:hover .fa-plus-circle {
+    color: #0d6efd !important;
+}
+
+.modal-content:hover .fa-portrait {
+    color: #0d6efd !important;
+}
+
+.modal-content:hover .fa-adjust {
+    color: #0d6efd !important;
+}
+
+.modal-content:hover .fa-thumbs-up {
+    color: #0d6efd !important;
+}
+
+.smallLetters {
+	font-size: 80%;
+	font-style: italic;
+	margin-bottom: 1%;
+	margin-left: 1%;
+}
+
+#DOB {
+	margin-left: 1% !important;
+	margin-top: 10px;
+}
+
+/* .avatar-wrapper {
+	position: relative;
+	display: inline-block;
+	overflow: hidden;
+
+  }
+  
+  .profile-pic {
+	width: 150px;
+	height: 150px;
+	object-fit: cover;
+  }
+  
+  .remove-button {
+	position: absolute;
+	top: 5px;
+	right: 5px
+  } */
+	/* /*  */
+.avatar-wrapper{
+	position: relative;
+	height: 170px;
+	width: 170px;
+	margin: 15px auto;
+	margin-top: 50px;
+	border-radius: 50%;
+	overflow: hidden;
+	box-shadow: 1px 1px 15px -5px black;
+	transition: all .3s ease;
+	&:hover{
+		transform: scale(1.05);
+		cursor: pointer;
+	}
+	&:hover .profile-pic{
+		opacity: .5;
+	}
+	.profile-pic {
+    height: 100%;
+		width: 100%;
+		transition: all .3s ease;
+		&:after{
+			font-family: FontAwesome;
+			content: "\f007";
+			top: 0; left: 0;
+			width: 100%;
+			height: 100%;
+			position: absolute;
+			font-size: 190px;
+			background: #ecf0f1;
+			color: #34495e;
+			text-align: center;
+		}
+	}
+	.upload-button {
+		position: absolute;
+		top: 0; left: 0;
+		height: 100%;
+		width: 100%;
+		.fa-arrow-circle-up{
+			position: center;
+			font-size: 200px;
+			margin-top: -16px;
+			left: 0;
+			text-align: center;
+			transition: all .3s ease;
+			color: #34495e;
+		}
+	}
+}
+#registerForm{
+    margin-top: -49px;
+}
+
+#customOptions {
+	margin-top: 10px;
+	width: 100%;
+}
+
+select#customOptions option#allusers {
+	color: black !important;
+  }
+
+#postPrivacy {
+	position: relative;
+	margin-top: 5px;
+}
