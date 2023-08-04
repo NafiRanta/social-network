@@ -285,9 +285,9 @@ function SingleGroup(props) {
                                             left: '55%',
                                         }}
                                         >
-                                        <button className="dropdown-item" type="button">
+                                        {/* <button className="dropdown-item" type="button">
                                             Leave
-                                        </button>
+                                        </button> */}
                                         <button
                                             className="dropdown-item"
                                             type="button"

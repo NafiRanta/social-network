@@ -93,14 +93,14 @@ function SearchbarGlobal(props) {
       </Dropdown.Toggle>
       <Dropdown.Menu className="overflow-auto border-0 shadow p-1" aria-labelledby="searchMenu" id ="searchBarDropdown">
         <Dropdown.Item>
-          <input
+          {/* <input
             type="text"
             className="border-0 bg-gray dropdown-item"
             id="searchBox"
             placeholder="Type here to search ..."
             onClick={handleInputClick}
             ref={inputRef}
-          />
+          /> */}
         </Dropdown.Item>
         <Dropdown.Item className="my-4">
           {displayAllUsers()}
