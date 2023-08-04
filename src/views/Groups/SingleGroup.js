@@ -89,59 +89,6 @@ function SingleGroup(props) {
         }     
     }, [allgroups, groupID])
 
- /*    useEffect(() => {
-        const fetchSingleGroup = async () => {
-            try {
-                const response = await fetch(`http://localhost:8080/getsinglegroup?groupID=${groupID}`, {
-                    method: "GET",});
-                const data = await response.json();
-                const group = data.group[0];
-                setGroup(group);
-                const admin = allusers?.find((user) => user.UserName === data.group[0].AdminID);
-                setAdminDisplayName(admin.FirstName + " " + admin.LastName);
-                const membersUsernames = data.group[0].MemberUsernames;
-                if (Array.isArray(membersUsernames) && Array.isArray(allusers)) {
-                    const membersInfo = membersUsernames.map((username) => {
-                        const member = allusers.find((user) => user.UserName === username);
-                        return {
-                            username: username,
-                            displayName: member.FirstName + " " + member.LastName,
-                            avatar: member.Avatar,
-                        };
-                    });
-                    setMembersInfo(membersInfo);
-                }
-
-                // check if user is the admin of the group
-                const isGroupAdmin = group?.AdminID === userInfo.UserName;
-                setIsGroupAdmin(isGroupAdmin);
-
-                // check if user is a member of the group
-                const isGroupMember = Array.isArray(membersUsernames) && membersUsernames.includes(userInfo.UserName);
-                setIsGroupMember(isGroupMember);
-
-                // check if user is invited by admin
-                const adminInvitedUsers = (group?.AdminInvitedUsernames ?? "[]");
-                setAdminInvitedUsers(adminInvitedUsers);
-
-                const isInvitedByAdmin = Array.isArray(adminInvitedUsers) && adminInvitedUsers.includes(userInfo.UserName);
-                setIsInvitedByAdmin(isInvitedByAdmin);
-
-                // check if user is invited by member
-                const memberInvitedUsers = (group?.MemberInvitedUsernames ?? "[]");
-                setMemberInvitedUsers(memberInvitedUsers);
-                if (Array.isArray(memberInvitedUsers) && memberInvitedUsers.length > 0){
-                    const isInvitedByMember = memberInvitedUsers.map ((memberInvitedUser) => memberInvitedUser.InvitedUsernames.includes(userInfo.UserName));
-                    setIsInvitedByMember(isInvitedByMember);
-                } 
-            }
-            catch (error) {
-                console.error('Error fetching group data:', error);
-              }
-        };
-        fetchSingleGroup();
-    }, [groupID, allusers]); */
-
     const openModal = () => {
         setModalOpen(true);
     };
