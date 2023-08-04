@@ -18,6 +18,7 @@ function CreatePostModal(props) {
 
   const handleUserSelect = (event) => {
     const selectedValue = event.target.value;
+    console.log("SELECTED VALUE: ", selectedValue)
     // Check if the user is already selected
     const alreadySelected = selectedUsers.includes(selectedValue);
 
@@ -63,12 +64,17 @@ function CreatePostModal(props) {
     const postData = {
       username: userInfo.UserName,
       privacy: postPrivacy,
-      IncludedFriends: [],
+      includedFriends: selectedUsers,
       content: postContent,
       image: selectedImage,
       createAt: now,
     };
 
+    console.log("post data: ", postData)
+    if (postData.privacy == "custom" &&postData.includedFriends.length == 0) {
+      alert("Please select at least one friend to share the post with");
+      return;
+    }
     const headers = new Headers();
     headers.append("Authorization", "Bearer " + token);
     headers.append("Content-Type", "application/json");
@@ -134,24 +140,31 @@ function CreatePostModal(props) {
                       <optgroup label="Choose privacy">
                         <option value="public">Public</option>
                         <option value="private">Private</option>
-                        <option value="custom">Custom</option>
+                        {userInfo.FollowerUsernames !== undefined && (
+                          <option value="custom">Custom</option>
+                        )}
                       </optgroup>
                     </select>
                     {/* When custom is selected */}
                     {privacy === 'custom' && (
-                      <select multiple
-                      className="form-select border-0 bg-gray w-100 fs-7"
-                      id="customOptions"
-                      size={3}
-                      value={selectedUsers} 
-                      onChange={handleUserSelect}
-                      >
-                        {userInfo.FollowerUserNames.split(',').map((user, index) => (
-                          <option id="allusers" key={index} value={user.id}>
-                            {user.FirstName}
-                          </option>
-                        ))}
-                      </select>
+                      <div className="form-check">
+                      {userInfo.FollowerUsernames.split(',').map((userName, index) => (
+                        <div key={index} className="form-check form-check-inline">
+                          <input
+                            type="checkbox"
+                            className="form-check-input"
+                            id={`userCheckbox${index}`}
+                            name="selectedUsers"
+                            value={userName}
+                            checked={selectedUsers.includes(userName)}
+                            onChange={handleUserSelect}
+                          />
+                          <label className="form-check-label" htmlFor={`userCheckbox${index}`}>
+                            {userName}
+                          </label>
+                        </div>
+                      ))}
+                    </div>
                     )}
                   </div>
                 </div>

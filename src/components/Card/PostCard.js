@@ -23,13 +23,15 @@ function PostCard(props) {
       headers.append("Content-Type", "application/json");
 
       try {
-        const res = await fetch("http://localhost:8080/posts", {
+        const res = await fetch(`http://localhost:8080/getpostsbyusername?username=${userInfo.UserName}`, {
           method: "GET",
           headers: headers,
         });
 
         if (res.ok) {
+          
           const data = await res.json();
+          console.log('POSTS', data)
           const publicPosts = data.publicPosts;
           const privatePosts = data.privatePosts;
           const customPosts = data.customPosts;

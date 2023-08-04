@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import CreatePost from '../../components/CreatePost/CreatePost'
-import PostCard from '../../components/Card/PostCard';
+import HomePostCard from '../../components/Card/HomePostCard';
 import Avatar from '../../components/Avatar/Avatar';
 import './Home.css'
 import Topnav from '../Topnav';
@@ -56,7 +56,7 @@ function Home(props) {
                     <div className="col-12 col-lg-6 pb-5">
                         <div className="d-flex flex-column justify-content-center w-100 mx-auto" id="d-flex-postcontainer-myhomepage">
                             <CreatePost userDisplayname={props.userDisplayname}/>
-                            <PostCard userDisplayname={props.userDisplayname} />
+                            <HomePostCard userDisplayname={props.userDisplayname} />
                         </div>
                     </div>
                     <div className="col-12 col-lg-3">
@@ -72,7 +72,7 @@ function Home(props) {
                                         </div>
                                     </div>
                                     <hr />
-                                    <p className="text-muted fs-5 m-0">Contacts</p>
+                                    <p className="text-muted fs-5 m-0">Online</p>
                                     {/* <span className={`status ${isUserOnline ? 'online' : 'offline'}`}></span> */}
                                     {displayChatUsers()}
                                 </div>

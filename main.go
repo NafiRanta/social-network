@@ -72,9 +72,10 @@ func Start() error {
 	router.HandleFunc("/unfollow", user.UnfollowHandler)
 
 	//handle post
-	router.HandleFunc("/posts", p.GetPostsHandler)
+	// router.HandleFunc("/posts", p.GetPostsHandler)
 	router.HandleFunc("/createpost", p.AddPostHandler)
 	router.HandleFunc("/getpostsbyusername", p.GetPostsByUserNameHandler)
+	router.HandleFunc("/getallpublicposts", p.GetAllPublicPostsHandler)
 
 	//handle comments
 	router.HandleFunc("/addcomment", c.AddCommentHandler)

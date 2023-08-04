@@ -24,7 +24,7 @@ func AddPostHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	//getuserName from UserID
-
+	fmt.Println("userID:", userID)
 	// Parse the request body to get the post information
 	var post d.PostResponse
 	err = json.NewDecoder(r.Body).Decode(&post)
@@ -33,6 +33,7 @@ func AddPostHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
 		return
 	}
+	fmt.Println("post:", post)
 
 	// get userName from userID
 	user, err := d.GetUserByID(userID)
@@ -43,7 +44,8 @@ func AddPostHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	post.UserName = user.UserName
 
-	// Add the post to the database
+	//Add the post to the database
+
 	err = d.AddPost(&post)
 	if err != nil {
 		//fmt.Println("error from addpost:", err)
