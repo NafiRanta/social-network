@@ -207,7 +207,7 @@ function MyProfile(props) {
                             </span>
                           )}
                         </div>
-                        <button
+                        {/* <button
                           href="#"
                           className="btn btn-primary btn-sm d-flex justify-content-center align-items-center"
                           id="ChangeProfilePic"
@@ -215,7 +215,7 @@ function MyProfile(props) {
                           data-bs-target="#changeProfilePicModal"
                           >
                           <i className="fa fa-picture-o fa-lg" aria-hidden="true"></i>
-                        </button>
+                        </button> */}
                       </div>
                     </div>
                   </div>
