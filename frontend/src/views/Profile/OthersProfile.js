@@ -237,7 +237,9 @@ function OthersProfile(props) {
                        dispatch({ type: "SET_FOLLOWNOTIFICATION", payload: notification.payload });
                     }
                 }
-            window.location.reload();
+            setTimeout(() => {
+                window.location.reload();
+            }, 100);
             } else {
                 alert("Error sending follow request");
             }
