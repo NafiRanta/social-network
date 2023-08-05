@@ -3,8 +3,8 @@ package groupcomments
 import (
 	"encoding/json"
 	"net/http"
-	"fmt"
 	d "socialnetwork/database"
+	u "socialnetwork/utils"
 )
 
 // get group comments
@@ -18,7 +18,7 @@ func GetGroupCommentsHandler(w http.ResponseWriter, r *http.Request) {
 	// get group comments from database
 	groupComments, err := d.GetGroupCommentsByGroupPostID(groupPostID)
 	if err != nil {
-		fmt.Println("error from getGroupCommentsByGroupPostID:", err)
+		u.CheckErr(err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
@@ -29,7 +29,7 @@ func GetGroupCommentsHandler(w http.ResponseWriter, r *http.Request) {
 
 	responseJSON, err := json.Marshal(response)
 	if err != nil {
-		//fmt.Println("error from marshal response:", err)
+		u.CheckErr(err)
 		http.Error(w, "Failed to marshal response", http.StatusInternalServerError)
 		return
 	}

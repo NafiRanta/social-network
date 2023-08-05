@@ -210,11 +210,11 @@ const handleRemoveAbout = () => {
           window.location.href = `/profile/${userInfo.UserName}`;
 
       } else {
-        console.log("Error:", res.status);
+        console.log("error:", res.status);
       }
     }
     catch (err) {
-      console.log("err", err);
+      console.log("error", err);
     }
   }; 
   

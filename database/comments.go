@@ -113,7 +113,6 @@ func GetCommentsByPostID(postID string) ([]CommentResponse, error) {
 
 		author, err := GetUserByUsername(comment.UserName)
 		if err != nil {
-			//fmt.Println("Error fetching user information for comment author.")
 			return nil, err
 		}
 

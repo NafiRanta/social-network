@@ -47,8 +47,6 @@ function ChangeProfilePicModal({ closeModal }, props) {
         dispatch({ type: 'SET_USER', payload: data });
         alert("Profile updated");
         window.location.href = `/profile/${props.userDisplayname}`;
-      } else {
-        console.log("Error updating profile picture");
       }
     }
     catch (err) {

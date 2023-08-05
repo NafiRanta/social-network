@@ -2,9 +2,9 @@ package groupevents
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 	d "socialnetwork/database"
+	u "socialnetwork/utils"
 )
 
 type eventReqResponse struct {
@@ -14,29 +14,27 @@ type eventReqResponse struct {
 }
 
 func AddGroupEventHandler(w http.ResponseWriter, r *http.Request) {
-	// Check if the request method is POST
 	if r.Method != http.MethodPost {
 		w.WriteHeader(http.StatusMethodNotAllowed)
-		fmt.Println("Method not allowed")
+		u.LogErrorString("Invalid request method")
 		return
 	}
 
 	var groupEvent d.GroupEventResponse
 	err := json.NewDecoder(r.Body).Decode(&groupEvent)
 	if err != nil {
-		//fmt.Println("error from decode:", err)
+		u.CheckErr(err)
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
 		return
 	}
 
 	err = d.AddGroupEvent(&groupEvent)
 	if err != nil {
-		//fmt.Println("error from addgroupEvent:", err)
+		u.CheckErr(err)
 		http.Error(w, "Failed to add groupEvent", http.StatusInternalServerError)
 		return
 	}
 
-	// Return a success response
 	w.WriteHeader(http.StatusCreated)
 }
 
@@ -64,7 +62,7 @@ func AcceptGoingEventHandler(w http.ResponseWriter, r *http.Request) {
 	// Call the AddGoingUsers function to add the username to the GoingUsers field
 	err = d.AddGoingUsers(&groupEvent, eventReqResponse.UserName)
 	if err != nil {
-		fmt.Println(err)
+		u.CheckErr(err)
 		http.Error(w, "Failed to add going user", http.StatusInternalServerError)
 		return
 	}
@@ -75,7 +73,6 @@ func AcceptGoingEventHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func DeclineGoingHandler(w http.ResponseWriter, r *http.Request) {
-	// Check if the request method is POST
 	if r.Method != http.MethodPost {
 		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
 		return
@@ -99,12 +96,11 @@ func DeclineGoingHandler(w http.ResponseWriter, r *http.Request) {
 	// Call the AddNotGoingUsers function to add the username to the NotGoingUsers field
 	err = d.AddNotGoingUsers(&groupEvent, eventReqResponse.UserName)
 	if err != nil {
-		fmt.Println(err)
+		u.CheckErr(err)
 		http.Error(w, "Failed to add not going user", http.StatusInternalServerError)
 		return
 	}
 
-	// Send a response indicating success
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte("Successfully added not going user"))
 }

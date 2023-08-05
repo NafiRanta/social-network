@@ -31,7 +31,6 @@ function PostCard(props) {
         if (res.ok) {
           
           const data = await res.json();
-          console.log('POSTS', data)
           const publicPosts = data.publicPosts;
           const privatePosts = data.privatePosts;
           const customPosts = data.customPosts;

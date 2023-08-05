@@ -3,7 +3,7 @@ package database
 import (
 	"database/sql"
 	"encoding/json"
-	"fmt"
+	u "socialnetwork/utils"
 	"time"
 
 	"github.com/google/uuid"
@@ -173,7 +173,7 @@ func GetGroupsByMembersUsername(username string) ([]Group, error) {
 	query := `SELECT * FROM Groups WHERE MemberUsernames LIKE '%' || ? || '%'`
 	rows, err := db.Query(query, username)
 	if err != nil {
-		//fmt.Println("query error", err)
+		u.CheckErr(err)
 		return nil, err
 	}
 	defer rows.Close()
@@ -246,7 +246,7 @@ func GetGroupByID(groupID string) ([]GroupResponse, error) {
 	query := `SELECT * FROM Groups WHERE GroupID = ?`
 	rows, err := db.Query(query, groupID)
 	if err != nil {
-		//fmt.Println("query error", err)
+		u.CheckErr(err)
 		return nil, err
 	}
 	defer rows.Close()
@@ -273,45 +273,45 @@ func GetGroupByID(groupID string) ([]GroupResponse, error) {
 			&group.CreateAt,
 		)
 		if err != nil {
-			//fmt.Println("scan error", err)
+			u.CheckErr(err)
 			return nil, err
 		}
 		// Convert the MemberUsernames string to a slice of strings
 		err = json.Unmarshal([]byte(memberUsernames), &group.MemberUsernames)
 		if err != nil {
-			//fmt.Println("unmarshal error", err)
+			u.CheckErr(err)
 			return nil, err
 		}
 
 		// convert the InvitedUsernames string to a slice of strings
 		err = json.Unmarshal([]byte(adminInvitedUsernames), &group.AdminInvitedUsernames)
 		if err != nil {
-			//fmt.Println("unmarshal error", err)
+			u.CheckErr(err)
 			return nil, err
 		}
 		// Convert the MemberInvitedUsernames string to a []InvitesByMember with username of invited as key and username of inviter as value
 		err = json.Unmarshal([]byte(memberInvitedUsernames), &group.MemberInvitedUsernames)
 		if err != nil {
-			//fmt.Println("unmarshal error", err)
+			u.CheckErr(err)
 			return nil, err
 		}
 
 		// Convert the RequestUsernames string to a slice of strings
 		err = json.Unmarshal([]byte(requestUsernames), &group.RequestUsernames)
 		if err != nil {
-			//fmt.Println("unmarshal error", err)
+			u.CheckErr(err)
 			return nil, err
 		}
 		// Convert the PostIDs string to a slice of strings
 		err = json.Unmarshal([]byte(postIDs), &group.PostIDs)
 		if err != nil {
-			//fmt.Println("unmarshal error", err)
+			u.CheckErr(err)
 			return nil, err
 		}
 		// Convert the EventIDs string to a slice of strings
 		err = json.Unmarshal([]byte(eventIDs), &group.EventIDs)
 		if err != nil {
-			//fmt.Println("unmarshal error", err)
+			u.CheckErr(err)
 			return nil, err
 		}
 
@@ -323,7 +323,7 @@ func GetGroupByID(groupID string) ([]GroupResponse, error) {
 func AddUserToGroup(groupID string, username string) error {
 	db, err := sql.Open("sqlite3", "./socialnetwork.db")
 	if err != nil {
-		//fmt.Println("open error", err)
+		u.CheckErr(err)
 		return err
 	}
 	DeleteUserFromAdminInvite(groupID, username)
@@ -336,21 +336,21 @@ func AddUserToGroup(groupID string, username string) error {
 	checkQuery := "SELECT MemberUsernames FROM Groups WHERE GroupID = ?"
 	err = db.QueryRow(checkQuery, groupID).Scan(&usernamesJSON)
 	if err != nil {
-		//fmt.Println("query error", err)
+		u.CheckErr(err)
 		return err
 	}
 
 	var existingUsernames []string
 	err = json.Unmarshal([]byte(usernamesJSON), &existingUsernames)
 	if err != nil {
-		//fmt.Println("unmarshal error", err)
+		u.CheckErr(err)
 		return err
 	}
 
 	// Check if the username is already in the existingUsernames slice
 	for _, existingUsername := range existingUsernames {
 		if existingUsername == username {
-			//fmt.Println("Username already exists in the MemberUsernames list")
+			u.LogErrorString("User is already in the group")
 			return nil // Return early if the username is already in the list
 		}
 	}
@@ -359,20 +359,20 @@ func AddUserToGroup(groupID string, username string) error {
 	newUsernames := append(existingUsernames, username)
 	newUsernamesJSON, err := json.Marshal(newUsernames)
 	if err != nil {
-		//fmt.Println("marshal error", err)
+		u.CheckErr(err)
 		return err
 	}
 
 	query := "UPDATE Groups SET MemberUsernames = ? WHERE GroupID = ?"
 	stmt, err := db.Prepare(query)
 	if err != nil {
-		//fmt.Println("prepare error", err)
+		u.CheckErr(err)
 		return err
 	}
 
 	_, err = stmt.Exec(newUsernamesJSON, groupID)
 	if err != nil {
-		//fmt.Println("exec error", err)
+		u.CheckErr(err)
 		return err
 	}
 
@@ -382,14 +382,14 @@ func AddUserToGroup(groupID string, username string) error {
 func GetGroupsByAdminInvitedUsername(username string) ([]Group, error) {
 	db, err := sql.Open("sqlite3", "./socialnetwork.db")
 	if err != nil {
-		//fmt.Println("open error", err)
+		u.CheckErr(err)
 		return nil, err
 	}
 	defer db.Close()
 	query := `SELECT * FROM Groups WHERE AdminInvitedUsernames LIKE '%' || ? || '%'`
 	rows, err := db.Query(query, username)
 	if err != nil {
-		fmt.Print("query error", err)
+		u.CheckErr(err)
 		return nil, err
 	}
 	defer rows.Close()
@@ -410,7 +410,7 @@ func GetGroupsByAdminInvitedUsername(username string) ([]Group, error) {
 			&group.CreateAt,
 		)
 		if err != nil {
-			//fmt.Println("scan error", err)
+			u.CheckErr(err)
 			return nil, err
 		}
 		groups = append(groups, group)
@@ -422,7 +422,7 @@ func GetGroupsByAdminInvitedUsername(username string) ([]Group, error) {
 func DeleteUserFromAdminInvite(groupID string, username string) error {
 	db, err := sql.Open("sqlite3", "./socialnetwork.db")
 	if err != nil {
-		//fmt.Println("open error", err)
+		u.CheckErr(err)
 		return err
 	}
 	defer db.Close()
@@ -431,7 +431,7 @@ func DeleteUserFromAdminInvite(groupID string, username string) error {
 	query := "SELECT AdminInvitedUsernames FROM Groups WHERE GroupID = ?"
 	stmt, err := db.Prepare(query)
 	if err != nil {
-		//fmt.Println("prepare error", err)
+		u.CheckErr(err)
 		return err
 	}
 	row := stmt.QueryRow(groupID)
@@ -439,7 +439,7 @@ func DeleteUserFromAdminInvite(groupID string, username string) error {
 	var adminInvitedUsernames string
 	err = row.Scan(&adminInvitedUsernames)
 	if err != nil {
-		//fmt.Println("scan error", err)
+		u.CheckErr(err)
 		return err
 	}
 
@@ -447,7 +447,7 @@ func DeleteUserFromAdminInvite(groupID string, username string) error {
 	var usernames []string
 	err = json.Unmarshal([]byte(adminInvitedUsernames), &usernames)
 	if err != nil {
-		//fmt.Println("unmarshal error", err)
+		u.CheckErr(err)
 		return err
 	}
 
@@ -462,7 +462,7 @@ func DeleteUserFromAdminInvite(groupID string, username string) error {
 	// Convert the slice back to a JSON array
 	newAdminInvitedUsernames, err := json.Marshal(usernames)
 	if err != nil {
-		//fmt.Println("marshal error", err)
+		u.CheckErr(err)
 		return err
 	}
 
@@ -470,16 +470,15 @@ func DeleteUserFromAdminInvite(groupID string, username string) error {
 	updateQuery := "UPDATE Groups SET AdminInvitedUsernames = ? WHERE GroupID = ?"
 	updateStmt, err := db.Prepare(updateQuery)
 	if err != nil {
-		//fmt.Println("prepare error", err)
+		u.CheckErr(err)
 		return err
 	}
 	_, err = updateStmt.Exec(string(newAdminInvitedUsernames), groupID)
 	if err != nil {
-		//fmt.Println("exec error", err)
+		u.CheckErr(err)
 		return err
 	}
 
-	//fmt.Println("Deleted user from admin invite")
 	return nil
 }
 
@@ -487,7 +486,7 @@ func DeleteUserFromRequestUsernames(groupID string, username string) error {
 	// delete username from the RequestUsernames slice in the Groups table if it exists
 	db, err := sql.Open("sqlite3", "./socialnetwork.db")
 	if err != nil {
-		fmt.Println("open error", err)
+		u.CheckErr(err)
 		return err
 	}
 	defer db.Close()
@@ -495,7 +494,7 @@ func DeleteUserFromRequestUsernames(groupID string, username string) error {
 	query := "SELECT RequestUsernames FROM Groups WHERE GroupID = ?"
 	stmt, err := db.Prepare(query)
 	if err != nil {
-		fmt.Println("prepare error", err)
+		u.CheckErr(err)
 		return err
 	}
 	row := stmt.QueryRow(groupID)
@@ -503,14 +502,14 @@ func DeleteUserFromRequestUsernames(groupID string, username string) error {
 	var requestUsernames string
 	err = row.Scan(&requestUsernames)
 	if err != nil {
-		fmt.Println("scan error", err)
+		u.CheckErr(err)
 		return err
 	}
 	// Parse the JSON array into a slice
 	var usernames []string
 	err = json.Unmarshal([]byte(requestUsernames), &usernames)
 	if err != nil {
-		fmt.Println("unmarshal error", err)
+		u.CheckErr(err)
 		return err
 	}
 	// Find and remove the specified username from the slice
@@ -523,19 +522,19 @@ func DeleteUserFromRequestUsernames(groupID string, username string) error {
 	// Convert the slice back to a JSON array
 	newRequestUsernames, err := json.Marshal(usernames)
 	if err != nil {
-		fmt.Println("marshal error", err)
+		u.CheckErr(err)
 		return err
 	}
 	// Update the Groups table with the new JSON array
 	updateQuery := "UPDATE Groups SET RequestUsernames = ? WHERE GroupID = ?"
 	updateStmt, err := db.Prepare(updateQuery)
 	if err != nil {
-		fmt.Println("prepare error", err)
+		u.CheckErr(err)
 		return err
 	}
 	_, err = updateStmt.Exec(string(newRequestUsernames), groupID)
 	if err != nil {
-		fmt.Println("exec error", err)
+		u.CheckErr(err)
 		return err
 	}
 	return nil
@@ -552,7 +551,7 @@ func DeleteUserFromMemberInvite(groupID string, username string) error {
 	query := "SELECT MemberInvitedUsernames FROM Groups WHERE GroupID = ?"
 	stmt, err := db.Prepare(query)
 	if err != nil {
-		fmt.Println("prepare error", err)
+		u.CheckErr(err)
 		return err
 	}
 
@@ -561,7 +560,7 @@ func DeleteUserFromMemberInvite(groupID string, username string) error {
 	var memberInvitedUsernames string
 	err = row.Scan(&memberInvitedUsernames)
 	if err != nil {
-		fmt.Println("scan error", err)
+		u.CheckErr(err)
 		return err
 	}
 
@@ -569,7 +568,7 @@ func DeleteUserFromMemberInvite(groupID string, username string) error {
 	var invitesByMember []map[string]interface{}
 	err = json.Unmarshal([]byte(memberInvitedUsernames), &invitesByMember)
 	if err != nil {
-		fmt.Println("unmarshal error", err)
+		u.CheckErr(err)
 		return err
 	}
 
@@ -743,8 +742,6 @@ func AddUserToMemberInvite(groupID string, memberUsername string, invitedUsernam
 }
 
 func AddUserToAdminInvite(invitesByAdminUsername []string, groupID string, username string) error {
-	fmt.Println("invitesByAdminUsername", invitesByAdminUsername)
-	fmt.Println("groupID", groupID)
 	db, err := sql.Open("sqlite3", "./socialnetwork.db")
 	if err != nil {
 		return err
@@ -800,7 +797,7 @@ func AddUserToAdminInvite(invitesByAdminUsername []string, groupID string, usern
 func AddUserToJoinRequest(groupID string, username string) error {
 	db, err := sql.Open("sqlite3", "./socialnetwork.db")
 	if err != nil {
-		fmt.Println("open error", err)
+		u.CheckErr(err)
 		return err
 	}
 	defer db.Close()
@@ -810,21 +807,21 @@ func AddUserToJoinRequest(groupID string, username string) error {
 	checkQuery := "SELECT RequestUsernames FROM Groups WHERE GroupID = ?"
 	err = db.QueryRow(checkQuery, groupID).Scan(&usernamesJSON)
 	if err != nil {
-		fmt.Println("query error", err)
+		u.CheckErr(err)
 		return err
 	}
 
 	var existingUsernames []string
 	err = json.Unmarshal([]byte(usernamesJSON), &existingUsernames)
 	if err != nil {
-		fmt.Println("unmarshal error", err)
+		u.CheckErr(err)
 		return err
 	}
 
 	// Check if the username is already in the existingUsernames slice
 	for _, existingUsername := range existingUsernames {
 		if existingUsername == username {
-			fmt.Println("Username already exists in the RequestUsernames list")
+			u.LogErrorString("User is already in the group")
 			return nil // Return early if the username is already in the list
 		}
 	}
@@ -833,7 +830,7 @@ func AddUserToJoinRequest(groupID string, username string) error {
 	newUsernames := append(existingUsernames, username)
 	newUsernamesJSON, err := json.Marshal(newUsernames)
 	if err != nil {
-		fmt.Println("marshal error", err)
+		u.CheckErr(err)
 		return err
 	}
 
@@ -841,13 +838,13 @@ func AddUserToJoinRequest(groupID string, username string) error {
 	updateQuery := "UPDATE Groups SET RequestUsernames = ? WHERE GroupID = ?"
 	updateStmt, err := db.Prepare(updateQuery)
 	if err != nil {
-		fmt.Println("prepare error", err)
+		u.CheckErr(err)
 		return err
 	}
 
 	_, err = updateStmt.Exec(string(newUsernamesJSON), groupID)
 	if err != nil {
-		fmt.Println("exec error", err)
+		u.CheckErr(err)
 		return err
 	}
 

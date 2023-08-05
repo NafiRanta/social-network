@@ -21,7 +21,6 @@ function PostCard(props) {
       const headers = new Headers();
       headers.append("Authorization", "Bearer " + token);
       headers.append("Content-Type", "application/json");
-
       try {
         const res = await fetch("http://localhost:8080/posts", {
           method: "GET",

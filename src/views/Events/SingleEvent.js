@@ -14,7 +14,6 @@ function SingleEvent(props) {
     const dropdownRef = useRef(null);
     const [modalOpen, setModalOpen] = useState(false);
     const openModal = () => {
-        console.log("open create group modal");
         setModalOpen(true);
     };
   

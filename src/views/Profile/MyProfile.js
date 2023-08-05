@@ -64,7 +64,6 @@ function MyProfile(props) {
         });
         setMyfollowersInfo(myFollowersInfo);
       } else {
-        console.log("missing")
         setMyfollowersInfo([]);
       };
       if (myfollowings && allusers) {
@@ -76,7 +75,6 @@ function MyProfile(props) {
         });
         setMyfollowingsInfo(myFollowingsInfo);
       } else {
-        console.log("missing")
         setMyfollowingsInfo([]);
       }
       
@@ -123,7 +121,6 @@ function MyProfile(props) {
       });
 
       if (response.ok) {
-        console.log("Privacy updated successfully");
         const data = await response.json();
         dispatch({ type: "SET_USER", payload: data });
       } else {

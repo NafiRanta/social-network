@@ -7,7 +7,6 @@ function Avatar(props) {
     const allUsers = useSelector((state) => state.allUsers);
 
     if (props.userName != null) {
-        console.log("props.userName: ", props.userName);
         const matchedUser = allUsers.find((user) => user.UserName === props.userName);
         if (matchedUser) {
             return (

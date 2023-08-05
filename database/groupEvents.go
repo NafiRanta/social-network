@@ -2,9 +2,7 @@ package database
 
 import (
 	"database/sql"
-	"encoding/json"
 
-	"fmt"
 	"time"
 
 	"github.com/google/uuid"
@@ -49,17 +47,6 @@ func AddGroupEvent(groupEvent *GroupEventResponse) error {
 
 	groupEventID := uuid.New().String()
 
-	invitedJSON, err := json.Marshal(groupEvent.NotGoingUsers)
-	if err != nil {
-		return err
-	}
-
-	goingJSON, err := json.Marshal(groupEvent.GoingUsers)
-	if err != nil {
-		return err
-	}
-	fmt.Println(invitedJSON, goingJSON)
-	// when create event, th
 	_, err = db.Exec(query, groupEventID, groupEvent.GroupID, groupEvent.UserName, groupEvent.EventName, groupEvent.EventDescription, groupEvent.EventDate, groupEvent.EventTime, "", "", groupEvent.CreateAt)
 	if err != nil {
 		return err

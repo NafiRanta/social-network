@@ -6,11 +6,8 @@ import CommentCard from './CommentCard';
 function OthersPostCard(props) {
   const clickedProfileInfo = useSelector((state) => state.clickedProfileInfo);
   const userInfo = useSelector((state) => state.userInfo);
-  console.log('CLICKED PROFILE INFO IN POSTCARD: ', clickedProfileInfo) // Get the user info from redux store
-  console.log(props.isFollowing)
   const isFollowing = props.isFollowing;
   const [publicPosts, setPublicPosts] = useState([]);
-  console.log('PUBLIC POSTS: ', publicPosts)
   const [privatePosts, setPrivatePosts] = useState([]);
   const [customPosts, setCustomPosts] = useState([]);
   const [isIncluded, setIsIncluded] = useState(false);
@@ -18,18 +15,18 @@ function OthersPostCard(props) {
 
   useEffect(() => {
     const GetUserPosts = async (e) => {
-      //e.preventDefault();
+      const token = localStorage.getItem("token");
+      const headers = new Headers();
+      headers.append("Authorization", "Bearer " + token);
+      headers.append("Content-Type", "application/json");
       try {
         const res = await fetch(`http://localhost:8080/getpostsbyusername?username=${clickedProfileInfo.UserName}`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
+          method: "GET",
+          headers: headers,
         });
         
         if (res.ok) {
           const data = await res.json();
-          console.log("DATA ALL POSTS:", data)
           // get all posts of that matched with userID
           const publicPosts = data.publicPosts ;
           if (publicPosts != null) {
@@ -73,10 +70,6 @@ function OthersPostCard(props) {
               post.CreateAt = formattedDate;
             });
           }
-        console.log('PUBLIC POSTS: ', publicPosts)
-        console.log('PRIVATE POSTS: ', privatePosts)
-        console.log('CUSTOM POSTS: ', customPosts)
-        console.log('IS INCLUDED: ', isIncluded)
           setPublicPosts(publicPosts);
           setPrivatePosts(privatePosts);
           setCustomPosts(customPosts);
@@ -151,7 +144,6 @@ function OthersPostCard(props) {
     // display all posts of that matched with userID
     
     return allPosts.map((post) => {
-      // format createAt 2023-06-20T13:13:30.343Z to 20 Jun 2023 13:13
       const date = new Date(post.CreateAt);
       const formattedDate = date.toLocaleDateString("en-GB", {
         day: "numeric",
@@ -161,18 +153,6 @@ function OthersPostCard(props) {
         minute: "numeric",
       });
 
-      //const content = post.Content;
-      // const truncatedContent = truncateContent(content, 300);
-      // const shouldShowMoreButton = content.length > 300;
-
-      // const contentLines = post.Content.split("<br>").map((line, index) => (
-      //   <p key={index}>
-      //     {line}
-      //     <br />
-      //   </p>
-      // ));
-
-      // const isExpanded = isPostExpanded(post.PostID);
       return (
         <div key={`${post.Privacy + post.PostID}`} className="bg-white p-4 rounded shadow mt-3">
           <div className="d-flex justify-content-between">

@@ -13,6 +13,7 @@ import (
 	"time"
 
 	d "socialnetwork/database"
+	u "socialnetwork/utils"
 
 	"github.com/gorilla/websocket"
 )
@@ -186,7 +187,7 @@ func (m *Manager) ServeWS(w http.ResponseWriter, r *http.Request) {
 	// get username from database according to otp witch is equal to userId
 	user, err := d.GetUserByID(otp)
 	if err != nil {
-		//fmt.Println("error getting user", err)
+		u.CheckErr(err)
 	}
 	// add user to loggedinUsers
 	m.addLoggedInUser(user.UserName, otp)
@@ -263,7 +264,7 @@ func (m *Manager) routeEvent(event Event, c *Client) error {
 	// check if the event type is in the map and if it is, call the handler
 	if handler, ok := m.handlers[event.Type]; ok {
 		if err := handler(event, c); err != nil {
-			//fmt.Println("error handler", err)
+			u.CheckErr(err)
 			return err
 		}
 		return nil

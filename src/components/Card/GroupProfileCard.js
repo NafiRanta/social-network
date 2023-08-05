@@ -61,7 +61,7 @@ function GroupProfileCard(props) {
             throw new Error("Failed to join the group.");
           }
         } catch (error) {
-          console.log("ERROR",error);
+          console.log("error",error);
         }
       };
 

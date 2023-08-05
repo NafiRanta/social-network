@@ -18,8 +18,6 @@ function CreatePostModal(props) {
 
   const handleUserSelect = (event) => {
     const selectedValue = event.target.value;
-    console.log("SELECTED VALUE: ", selectedValue)
-    // Check if the user is already selected
     const alreadySelected = selectedUsers.includes(selectedValue);
 
     if (alreadySelected) {
@@ -70,7 +68,6 @@ function CreatePostModal(props) {
       createAt: now,
     };
 
-    console.log("post data: ", postData)
     if (postData.privacy == "custom" &&postData.includedFriends.length == 0) {
       alert("Please select at least one friend to share the post with");
       return;
@@ -84,7 +81,7 @@ function CreatePostModal(props) {
         method: "POST",
         credentials: "include",
         headers: headers,
-        body: JSON.stringify(postData), // Stringify the entire object
+        body: JSON.stringify(postData)
       });
       if (!response.ok) {
         throw new Error("Error occurred while creating the post");
@@ -92,7 +89,7 @@ function CreatePostModal(props) {
       alert("Post created");
       window.location.href = `/profile/${props.userDisplayname}`;
     } catch (error) {
-      console.log("Error:", error);
+      console.log("error:", error);
     }
   };
 
@@ -158,9 +155,9 @@ function CreatePostModal(props) {
                             value={userName}
                             checked={selectedUsers.includes(userName)}
                             onChange={handleUserSelect}
-                          />
+                            />
                           <label className="form-check-label" htmlFor={`userCheckbox${index}`}>
-                            {userName}
+                            {allusers.filter((user) => user.UserName === userName).map((user) => user.FirstName + " " + user.LastName)}
                           </label>
                         </div>
                       ))}

@@ -116,7 +116,6 @@ function SingleGroup(props) {
     }, []);
 
     const handleAdminAcceptInvite = async() => {
-        console.log('handleAdminAcceptInvite')
         try {
             const token = localStorage.getItem('token');
             const headers = new Headers();

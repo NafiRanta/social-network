@@ -79,7 +79,6 @@ function CreateGroupModal(props) {
         };
         if (props.socket) {
           props.socket.send(JSON.stringify(notification));
-          console.log("notification sent");
         }
       });
     }

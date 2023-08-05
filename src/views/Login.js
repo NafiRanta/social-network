@@ -27,7 +27,6 @@ function Login() {
   const [valid, setValid] = useState({ email: true, password: true });
   const [modalOpen, setModalOpen] = useState(false);
   const openModal = () => {
-    console.log("open modal");
     setModalOpen(true);
   };
 
@@ -108,12 +107,10 @@ function Login() {
           document.getElementById("loginUsernameErrMsg").innerHTML =
             "Something went wrong. Please try again later.";
         }
-        // Login failed, handle error
-        console.log("Login failed");
       }
     } catch (error) {
       // Handle error
-      console.error("Error:", error);
+      console.error("error:", error);
     }
   };
   return (

@@ -20,7 +20,11 @@ func LogError(err error) {
 	log.Printf("[%s] ERROR: %v\n", time.Now().Format("2006-01-02 15:04:05"), err)
 }
 
-//decode special character
+func LogErrorString(text string) {
+	log.Printf("[%s] ERROR: %v\n", time.Now().Format("2006-01-02 15:04:05"), text)
+}
+
+// decode special character
 func SpecialCharDecode(input string) string {
 	decoded, err := url.PathUnescape(input)
 	if err != nil {

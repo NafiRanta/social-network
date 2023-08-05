@@ -2,13 +2,10 @@ package database
 
 import (
 	"database/sql"
-	
-
-	"fmt"
 
 	//"sort"
-	"time"
 	"strings"
+	"time"
 
 	"github.com/google/uuid"
 )
@@ -44,12 +41,11 @@ func AddPost(post *PostResponse) error {
 		VALUES (?, ?, ?, ?, ?, ?, ?)`
 
 	post.PostID = uuid.New().String()
-	fmt.Println(post.PostID)
 	var includedFriendsString string
 	if len(post.IncludedFriends) != 0 {
-	includedFriendsString = strings.Join(post.IncludedFriends, ",")
+		includedFriendsString = strings.Join(post.IncludedFriends, ",")
 	} else {
-	includedFriendsString = ""
+		includedFriendsString = ""
 	}
 
 	stmt, err := db.Prepare(query)
@@ -74,7 +70,6 @@ func AddPost(post *PostResponse) error {
 
 	return nil
 }
-
 
 func GetPublicPosts() ([]Post, error) {
 	db, err := sql.Open("sqlite3", "./socialnetwork.db")

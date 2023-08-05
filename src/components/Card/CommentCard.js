@@ -165,7 +165,7 @@ function CommentCard(props) {
                     className="d-flex align-items-start my-0"
                     key={`${comment.commentID}-${index}`}
                   >
-                    <Avatar username={comment.AuthorID}/>
+                    <Avatar username={comment.userName}/>
                     <div className="p-3 rounded comment__input w-100">
                       <p className="fw-bold m-1" id="commentAuthors">
                           {comment.authorFirstName} {comment.authorLastName}

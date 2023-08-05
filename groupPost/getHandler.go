@@ -2,31 +2,31 @@ package groupPost
 
 import (
 	"encoding/json"
-	//"fmt"
 	"net/http"
 	a "socialnetwork/authentication"
 	d "socialnetwork/database"
+	u "socialnetwork/utils"
 )
 
 // get group posts
 func GetMyGroupsPostsHandler(w http.ResponseWriter, r *http.Request) {
 	authHeader := r.Header.Get("Authorization")
 	if authHeader == "" {
-		//fmt.Println("Missing auth header")
+		u.LogErrorString("Missing auth header")
 		http.Error(w, "Missing auth header", http.StatusBadRequest)
 		return
 	}
 	// get userID from token
 	userID, err := a.ExtractUserIDFromAuthHeader(authHeader)
 	if err != nil {
-		//fmt.Println("error from getUserIDFromToken:", err)
+		u.CheckErr(err)
 		http.Error(w, err.Error(), http.StatusUnauthorized)
 		return
 	}
 	// get user by userID
 	user, err := d.GetUserByID(userID)
 	if err != nil {
-		//fmt.Println("error from getUserByUserID:", err)
+		u.CheckErr(err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
@@ -34,7 +34,7 @@ func GetMyGroupsPostsHandler(w http.ResponseWriter, r *http.Request) {
 
 	allMyGroupsPosts, err := d.GetUserGroupsPosts(username)
 	if err != nil {
-		//fmt.Println("error from getGroupPostsByUsername:", err)
+		u.CheckErr(err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
@@ -46,7 +46,7 @@ func GetMyGroupsPostsHandler(w http.ResponseWriter, r *http.Request) {
 
 	responseJSON, err := json.Marshal(response)
 	if err != nil {
-		//fmt.Println("error from marshal response:", err)
+		u.CheckErr(err)
 		http.Error(w, "Failed to marshal response", http.StatusInternalServerError)
 		return
 	}
@@ -61,14 +61,14 @@ func GetGroupPostsByGroupIDHandler(w http.ResponseWriter, r *http.Request) {
 	// get groupID from url
 	groupID := r.URL.Query().Get("groupID")
 	if groupID == "" {
-		//fmt.Println("Missing groupID")
+		u.LogErrorString("error, no groupID")
 		http.Error(w, "Missing groupID", http.StatusBadRequest)
 		return
 	}
 
 	groupPosts, err := d.GetGroupPostsByGroupID(groupID)
 	if err != nil {
-		//fmt.Println("error from getGroupPostsByGroupID:", err)
+		u.CheckErr(err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
@@ -80,12 +80,11 @@ func GetGroupPostsByGroupIDHandler(w http.ResponseWriter, r *http.Request) {
 
 	responseJSON, err := json.Marshal(response)
 	if err != nil {
-		//fmt.Println("error from marshal response:", err)
+		u.CheckErr(err)
 		http.Error(w, "Failed to marshal response", http.StatusInternalServerError)
 		return
 	}
 
-	// Set the Content-Type header to application/json
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(responseJSON)
 }

@@ -6,10 +6,10 @@ import (
 	"net/http"
 	a "socialnetwork/authentication"
 	d "socialnetwork/database"
+	u "socialnetwork/utils"
 )
 
 func AddPostHandler(w http.ResponseWriter, r *http.Request) {
-	// Check if the request method is POST
 	if r.Method != http.MethodPost {
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		fmt.Fprint(w, "Method not allowed")
@@ -23,36 +23,30 @@ func AddPostHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid authorization header", http.StatusUnauthorized)
 		return
 	}
-	//getuserName from UserID
-	fmt.Println("userID:", userID)
 	// Parse the request body to get the post information
 	var post d.PostResponse
 	err = json.NewDecoder(r.Body).Decode(&post)
 	if err != nil {
-		//fmt.Println("error from decode:", err)
+		u.CheckErr(err)
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
 		return
 	}
-	fmt.Println("post:", post)
 
 	// get userName from userID
 	user, err := d.GetUserByID(userID)
 	if err != nil {
-		//fmt.Println("error from getuserbyid:", err)
+		u.CheckErr(err)
 		http.Error(w, "Failed to get user", http.StatusInternalServerError)
 		return
 	}
 	post.UserName = user.UserName
 
-	//Add the post to the database
-
 	err = d.AddPost(&post)
 	if err != nil {
-		//fmt.Println("error from addpost:", err)
+		u.CheckErr(err)
 		http.Error(w, "Failed to add post", http.StatusInternalServerError)
 		return
 	}
 
-	// Return a success response
 	w.WriteHeader(http.StatusCreated)
 }

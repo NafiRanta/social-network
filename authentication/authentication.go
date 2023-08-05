@@ -5,9 +5,7 @@ import (
 	"database/sql"
 	"encoding/base64"
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
-	"log"
 	"math/rand"
 	"net/http"
 	d "socialnetwork/database"
@@ -70,7 +68,6 @@ func LogIn(w http.ResponseWriter, r *http.Request) {
 		user, err := d.GetUserByEmail(email)
 		if err != nil {
 			u.CheckErr(err)
-			fmt.Println("user not found by email, error:", err)
 		}
 		// Get the stored password from the database
 		storedPassword = user.Password
@@ -138,14 +135,9 @@ func LogIn(w http.ResponseWriter, r *http.Request) {
 }
 
 func LogOut(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("logout")
-	// Get the session name from the request
 	sessionName := r.Header.Get("session-name")
-	// Get the session from the store
 	session, _ := store.Get(r, sessionName)
-	// Revoke users authentication
 	session.Values["authenticated"] = false
-	// Save the session
 	session.Save(r, w)
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte("Logged out successfully"))
@@ -205,13 +197,11 @@ func Register(w http.ResponseWriter, r *http.Request) {
 			admin, err := d.GetUserByEmail("admin@example.com")
 			if err != nil {
 				u.CheckErr(err)
-				fmt.Println("user not found by email, error:", err)
 			}
 			// get user id by email
 			user, err := d.GetUserByEmail(user.Email)
 			if err != nil {
 				u.CheckErr(err)
-				fmt.Println("user not found by email, error:", err)
 			}
 			var welcomeMessage d.MessageResponse
 			welcomeMessage.SenderUsername = admin.UserName
@@ -229,7 +219,7 @@ func Register(w http.ResponseWriter, r *http.Request) {
 			w.Header().Set("Content-Type", "application/json")
 			w.WriteHeader(http.StatusOK)
 		} else {
-			fmt.Println("different error")
+			u.CheckErr(err)
 		}
 	}
 }
@@ -238,7 +228,7 @@ func SetDefaultImg(imgDefaultPath string) []byte {
 	// Load the default image from the file system
 	imgData, err := ioutil.ReadFile(imgDefaultPath)
 	if err != nil {
-		log.Println("Error reading image file:", err)
+		u.CheckErr(err)
 	}
 	return imgData
 }

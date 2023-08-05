@@ -3,7 +3,7 @@ package database
 //TODO: update the user table to include a profile picture and a cover photo => fit with requirements
 import (
 	"database/sql"
-	"fmt"
+	u "socialnetwork/utils"
 
 	//"fmt"
 
@@ -60,7 +60,7 @@ func GetUserByEmail(email string) (*User, error) {
 
 	stmt, err := db.Prepare("SELECT * FROM Users WHERE email = ?")
 	if err != nil {
-		//fmt.Println("err from stmt: ", err)
+		u.CheckErr(err)
 		return nil, err
 	}
 	defer stmt.Close()
@@ -87,10 +87,10 @@ func GetUserByEmail(email string) (*User, error) {
 	)
 	if err != nil {
 		if err == sql.ErrNoRows {
-			fmt.Println("user not found")
+			u.CheckErr(err)
 			return nil, err // user not found
 		} else {
-			fmt.Println("sth else error:", err)
+			u.CheckErr(err)
 			return nil, err
 		}
 	}
@@ -106,7 +106,7 @@ func GetUserByUsername(username string) (*User, error) {
 
 	stmt, err := db.Prepare("SELECT * FROM Users WHERE UserName = ?")
 	if err != nil {
-		//fmt.Println("err from stmt: ", err)
+		u.CheckErr(err)
 		return nil, err
 	}
 	defer stmt.Close()
@@ -135,7 +135,7 @@ func GetUserByUsername(username string) (*User, error) {
 		if err == sql.ErrNoRows {
 			return nil, err // user not found
 		} else {
-			fmt.Println("sth else error:", err)
+			u.CheckErr(err)
 			return nil, err
 		}
 	}
@@ -151,7 +151,7 @@ func GetUserByID(userID string) (*User, error) {
 
 	stmt, err := db.Prepare("SELECT * FROM Users WHERE UserID = ?")
 	if err != nil {
-		//fmt.Println("error from stmt:", err)
+		u.CheckErr(err)
 		return nil, err
 	}
 	defer stmt.Close()
@@ -181,7 +181,7 @@ func GetUserByID(userID string) (*User, error) {
 		if err == sql.ErrNoRows {
 			return nil, nil // User not found
 		} else {
-			fmt.Println("something else error:", err)
+			u.CheckErr(err)
 			return nil, err
 		}
 	}
@@ -322,14 +322,14 @@ func UpdateUserInfo(user *User) error {
 
 	stmt, err := db.Prepare("UPDATE Users SET DateOfBirth = ?, Gender = ?, Nickname = ?, AboutMe = ? WHERE userID = ?")
 	if err != nil {
-		//fmt.Println("error from stmt:", err)
+		u.CheckErr(err)
 		return err
 	}
 	defer stmt.Close()
 
 	_, err = stmt.Exec(user.DateOfBirth, user.Gender, user.Nickname, user.AboutMe, user.UserID)
 	if err != nil {
-		//fmt.Println("error from exec:", err)
+		u.CheckErr(err)
 		return err
 	}
 	return nil
@@ -344,14 +344,14 @@ func UpdateUserAvatar(user *User) error {
 
 	stmt, err := db.Prepare("UPDATE Users SET Avatar = ? WHERE userID = ?")
 	if err != nil {
-		//fmt.Println("error from stmt:", err)
+		u.CheckErr(err)
 		return err
 	}
 	defer stmt.Close()
 
 	_, err = stmt.Exec(user.Avatar, user.UserID)
 	if err != nil {
-		//fmt.Println("error from exec:", err)
+		u.CheckErr(err)
 		return err
 	}
 	return nil

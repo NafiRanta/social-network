@@ -2,6 +2,8 @@ package database
 
 import (
 	"database/sql"
+	u "socialnetwork/utils"
+
 	//"fmt"
 
 	"time"
@@ -71,12 +73,12 @@ func GetMessagesByUserID(userID string) ([]MessageResponse, error) {
 		WHERE SenderUsername = ? OR ReceiverUsername = ?;`
 	user, err := GetUserByID(userID)
 	if err != nil {
-		//fmt.Println("error getting user")
+		u.CheckErr(err)
 		return nil, err
 	}
 	rows, err := db.Query(query, user.UserName, user.UserName)
 	if err != nil {
-		//fmt.Println("error in get messages by user id", err)
+		u.CheckErr(err)
 		return nil, err
 	}
 	defer rows.Close()

@@ -148,7 +148,6 @@ function App() {
 
             if (res.ok) {
               const data = await res.json();
-              // setAllUsers to include users that are not the current user
               const filteredData = data.filter((user) => user.email !== email);
               dispatch({ type: "FETCH_ALLUSERS", payload: filteredData });
             } else {
@@ -163,7 +162,6 @@ function App() {
           fetchUsers();
         } else {
           console.log("not authenticated");
-          // clear redux and user info and token from local storage and session storage
           localStorage.removeItem("reduxState");
           sessionStorage.removeItem("userInfo");
           localStorage.removeItem("token");
@@ -198,7 +196,6 @@ function App() {
         fetchUserInfo();
       } else {
         console.log("not authenticated");
-        // clear redux and user info and token from local storage and session storage
         localStorage.removeItem("reduxState");
         sessionStorage.removeItem("userInfo");
         localStorage.removeItem("token");

@@ -44,14 +44,9 @@ function GroupCommentCard(props) {
             });
             if (res.ok) {
                 const data = await res.json();
-                console.log('gr post comment: ', data)
                 if (data.groupComments !== null) {
                     setGroupComments(data.groupComments);
                     setGroupCommentCount(data.groupComments.length);
-                    // setSelectedImage(data.selectedImage)
-                    // groupComments.map((comment) => {
-                    //     console.log("comment", comment);
-                    // })
                 } else {
                     setGroupComments([]);
                     setGroupCommentCount(0);

@@ -2,7 +2,6 @@ package database
 
 import (
 	"database/sql"
-	"fmt"
 	"log"
 	"math/rand"
 	u "socialnetwork/utils"
@@ -141,7 +140,6 @@ func addDummyUserData(db *sql.DB) error {
 	admin, err := GetUserByEmail("admin@example.com")
 	if err != nil {
 		u.CheckErr(err)
-		fmt.Println("user not found by email, error:", err)
 	}
 	publicUsers, err := GetAllPublicUsers()
 	if err != nil {

@@ -13,13 +13,14 @@ function OthersPostCard(props) {
 
   useEffect(() => {
     const GetUserPosts = async (e) => {
-      //e.preventDefault();
+      const token = localStorage.getItem("token");
+      const headers = new Headers();
+      headers.append("Authorization", "Bearer " + token);
+      headers.append("Content-Type", "application/json");
       try {
         const res = await fetch(`http://localhost:8080/getpostsbyusername?username=${username}`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
+          method: "GET",
+          headers: headers,
         });
         
         if (res.ok) {

@@ -2,6 +2,7 @@ package authentication
 
 import (
 	"fmt"
+	u "socialnetwork/utils"
 	"strings"
 	"time"
 
@@ -39,7 +40,7 @@ func ExtractUserIDFromAuthHeader(authHeader string) (string, error) {
 	})
 
 	if err != nil || token == nil {
-		fmt.Println("error in extractuseridfromauthheader is", err)
+		u.CheckErr(err)
 		return "", fmt.Errorf("invalid token")
 	}
 

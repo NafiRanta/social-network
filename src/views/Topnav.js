@@ -243,7 +243,6 @@ useEffect(() => {
       });
       setJoinRequests(updatedJoinRequests);
       
-      console.log("join request accepted");
       setTimeout(() => {
         window.location.reload();
       }, 500);
@@ -288,7 +287,6 @@ useEffect(() => {
         return joinRequest.requestorUsername !== requestorUsername;
       });
       setJoinRequests(updatedJoinRequests);
-      console.log("join request declined");
       setTimeout(() => {
         window.location.reload();
       }, 500);
