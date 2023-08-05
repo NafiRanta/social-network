@@ -16,7 +16,6 @@ func CheckErr(err error) {
 
 // Log errors to file with date and time
 func LogError(err error) {
-	fmt.Println(err)
 	log.Printf("[%s] ERROR: %v\n", time.Now().Format("2006-01-02 15:04:05"), err)
 }
 
