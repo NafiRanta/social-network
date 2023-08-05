@@ -79,53 +79,53 @@ function OthersProfile(props) {
     }, []);
     useEffect(() => {
         //set everything related to the clicked profile
-                        //check private or public
-                        if (clickedProfileInfo.Privacy === 'public') {
-                            setIsPublic(true);
-                        }else{
-                            setIsPublic(false);
-                        }
-                        
-                        if (clickedProfileInfo.Privacy === 'private') {
-                            setIsPrivate(true);
-                        } else{
-                            setIsPrivate(false);
-                        }
-                        //check there is followers and followings
-                        if (clickedProfileInfo.FollowerUsernames != "" && clickedProfileInfo.FollowerUsernames != undefined) {
-                            const followerUserNamesArray = clickedProfileInfo.FollowerUsernames.includes(',')
-                                ? clickedProfileInfo.FollowerUsernames.split(',')
-                                : [clickedProfileInfo.FollowerUsernames];
-                                setClickedProfileFollowers(followerUserNamesArray);
-                        } else {
-                            setClickedProfileFollowers([]);
-                        }
+        //check private or public
+        if (clickedProfileInfo.Privacy === 'public') {
+            setIsPublic(true);
+        }else{
+            setIsPublic(false);
+        }
+        
+        if (clickedProfileInfo.Privacy === 'private') {
+            setIsPrivate(true);
+        } else{
+            setIsPrivate(false);
+        }
+        //check there is followers and followings
+        if (clickedProfileInfo.FollowerUsernames != "" && clickedProfileInfo.FollowerUsernames != undefined) {
+            const followerUserNamesArray = clickedProfileInfo.FollowerUsernames.includes(',')
+                ? clickedProfileInfo.FollowerUsernames.split(',')
+                : [clickedProfileInfo.FollowerUsernames];
+                setClickedProfileFollowers(followerUserNamesArray);
+        } else {
+            setClickedProfileFollowers([]);
+        }
 
-                        if (clickedProfileInfo.FollowingUsernames != "" && clickedProfileInfo.FollowingUsernames != undefined) {
-                            const followingUserNamesArray = clickedProfileInfo.FollowingUsernames.includes(',')
-                                ? clickedProfileInfo.FollowingUsernames.split(',')
-                                : [clickedProfileInfo.FollowingUsernames];
-                                setclickedProfileFollowings(followingUserNamesArray);
-                        } else {
-                            setclickedProfileFollowings([]);
-                        }
-                        //check if there is FollowingUsernamesSent and FollowerUsernamesReceived
-                        if (clickedProfileInfo.FollowingUsernamesSent != "" && clickedProfileInfo.FollowingUsernamesSent != undefined) {
-                            const followingUsernamesSentArray = clickedProfileInfo.FollowingUsernamesSent.includes(',')
-                                ? clickedProfileInfo.FollowingUsernamesSent.split(',')
-                                : [clickedProfileInfo.FollowingUsernamesSent];
-                                setClickedProfileFollowingUsernamesSent(followingUsernamesSentArray);
-                        }else {
-                            setClickedProfileFollowingUsernamesSent([]);
-                        }
-                        if (clickedProfileInfo.FollowerUsernamesReceived != "" && clickedProfileInfo.FollowerUsernamesReceived != undefined ) {
-                            const followerUsernamesReceivedArray = clickedProfileInfo.FollowerUsernamesReceived.includes(',')
-                                ? clickedProfileInfo.FollowerUsernamesReceived.split(',')
-                                : [clickedProfileInfo.FollowerUsernamesReceived];
-                                setClickedProfileFollowerUsernamesReceived(followerUsernamesReceivedArray);
-                        } else {
-                            setClickedProfileFollowerUsernamesReceived([]);
-                        }
+        if (clickedProfileInfo.FollowingUsernames != "" && clickedProfileInfo.FollowingUsernames != undefined) {
+            const followingUserNamesArray = clickedProfileInfo.FollowingUsernames.includes(',')
+                ? clickedProfileInfo.FollowingUsernames.split(',')
+                : [clickedProfileInfo.FollowingUsernames];
+                setclickedProfileFollowings(followingUserNamesArray);
+        } else {
+            setclickedProfileFollowings([]);
+        }
+        //check if there is FollowingUsernamesSent and FollowerUsernamesReceived
+        if (clickedProfileInfo.FollowingUsernamesSent != "" && clickedProfileInfo.FollowingUsernamesSent != undefined) {
+            const followingUsernamesSentArray = clickedProfileInfo.FollowingUsernamesSent.includes(',')
+                ? clickedProfileInfo.FollowingUsernamesSent.split(',')
+                : [clickedProfileInfo.FollowingUsernamesSent];
+                setClickedProfileFollowingUsernamesSent(followingUsernamesSentArray);
+        }else {
+            setClickedProfileFollowingUsernamesSent([]);
+        }
+        if (clickedProfileInfo.FollowerUsernamesReceived != "" && clickedProfileInfo.FollowerUsernamesReceived != undefined ) {
+            const followerUsernamesReceivedArray = clickedProfileInfo.FollowerUsernamesReceived.includes(',')
+                ? clickedProfileInfo.FollowerUsernamesReceived.split(',')
+                : [clickedProfileInfo.FollowerUsernamesReceived];
+                setClickedProfileFollowerUsernamesReceived(followerUsernamesReceivedArray);
+        } else {
+            setClickedProfileFollowerUsernamesReceived([]);
+        }
     }, [clickedProfileInfo]);
     //map the followers and followings of clicked profile to get the avatar and displayname
     useEffect(() => {
@@ -239,7 +239,7 @@ function OthersProfile(props) {
                 }
             setTimeout(() => {
                 window.location.reload();
-            }, 100);
+            }, 1000);
             } else {
                 alert("Error sending follow request");
             }
@@ -267,7 +267,9 @@ function OthersProfile(props) {
             if (response.ok) {
                 alert("You unfollowed " + clickedProfileDisplayName + "");
                 setIsFollowing(false);
-                window.location.reload();
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1000);
             } else {
                     alert("Error sending follow request");
             }
