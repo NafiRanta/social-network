@@ -137,7 +137,7 @@ function CreatePostModal(props) {
                       <optgroup label="Choose privacy">
                         <option value="public">Public</option>
                         <option value="private">Private</option>
-                        {userInfo.FollowerUsernames !== undefined && (
+                        {userInfo.FollowerUsernames !== undefined || userInfo.FollowerUserNames!= "" && (
                           <option value="custom">Custom</option>
                         )}
                       </optgroup>
