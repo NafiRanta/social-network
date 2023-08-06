@@ -29,23 +29,6 @@ type GroupCommentResponse struct {
 	CreateAt       time.Time `json:"createAt"`
 }
 
-// func CreateGroupCommentsTable(db *sql.DB) {
-// 	groupCommentsTable := `
-// 	CREATE TABLE IF NOT EXISTS GroupComments (
-// 		GroupCommentID CHAR(36) NOT NULL,
-// 		GroupPostID CHAR(36) NOT NULL,
-// 		UserName CHAR(36) NOT NULL,
-// 		Content TEXT NOT NULL,
-// 		Image BLOB NULL,
-// 		CreateAt TIMESTAMP NOT NULL,
-// 		PRIMARY KEY (GroupCommentID)
-// 	);`
-
-// 	query, err := db.Prepare(groupCommentsTable)
-// 	u.CheckErr(err)
-// 	query.Exec()
-// }
-
 func AddGroupComment(groupComment *GroupCommentResponse) error {
 	db, err := sql.Open("sqlite3", "./socialnetwork.db")
 	if err != nil {

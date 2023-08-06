@@ -3,6 +3,7 @@ package database
 import (
 	"database/sql"
 	"encoding/json"
+	"fmt"
 	u "socialnetwork/utils"
 	"time"
 
@@ -123,6 +124,31 @@ func AddGroup(group *GroupResponse) error {
 	if err != nil {
 		return err
 	}
+
+	// add welcome message to the group
+	query = `
+	INSERT INTO Messages (MessageID, SenderUsername, ReceiverUsername, GroupChatID, Content, Types, SentAt, SeenAt)
+	VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
+	stmt, err = db.Prepare(query)
+	if err != nil {
+		fmt.Println("err " + err.Error())
+		return err
+	}
+	_, err = stmt.Exec(
+		uuid.New().String(),
+		group.AdminID,
+		group.GroupID,
+		"",
+		"Welcome to the group!",
+		"",
+		time.Now(),
+		time.Now(),
+	)
+	if err != nil {
+		fmt.Println("err " + err.Error())
+		return err
+	}
+
 	return nil
 }
 

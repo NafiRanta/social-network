@@ -84,6 +84,7 @@ func GetMessagesByGroupIDHandler(w http.ResponseWriter, r *http.Request) {
 	messages, err := d.GetMessagesByGroupID(groupID)
 	if err != nil {
 		u.CheckErr(err)
+		fmt.Println("error from getMessagesByGroupIDHandler", err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
@@ -91,6 +92,7 @@ func GetMessagesByGroupIDHandler(w http.ResponseWriter, r *http.Request) {
 	err = d.MarkMessagesByGroupIDAsSeen(groupID)
 	if err != nil {
 		u.CheckErr(err)
+		fmt.Println("error from MarkMessagesByGroupIDAsSeen", err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
