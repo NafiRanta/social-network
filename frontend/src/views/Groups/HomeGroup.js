@@ -156,7 +156,7 @@ function HomeGroup(props) {
               userDisplayname={props.userDisplayname}
             />
           </div>
-          <div className="col-12 col-lg-6 pb-5 p-3">
+          {/* <div className="col-12 col-lg-6 pb-5 p-3">
             <div
               className="d-flex flex-column justify-content-center w-100"
               id="d-flex-postcontainer-homeGroup"
@@ -169,7 +169,7 @@ function HomeGroup(props) {
               />
               {displayMyGroupsPosts()}
             </div>
-          </div>
+          </div> */}
           <div className="col-12 col-lg-3"></div>
         </div>
       </div>

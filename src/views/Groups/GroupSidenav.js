@@ -12,14 +12,14 @@ function GroupSidenav(props) {
         <ul className="navbar-nav mt-4 ms-3 d-flex flex-column pb-5 mb-5" >
             <h3><strong>Groups</strong></h3>
             <li className="dropdown-item p-1 rounded">
-                <Link to="/groups" className="d-flex align-items-center text-decoration-none text-dark">
+                {/* <Link to="/groups" className="d-flex align-items-center text-decoration-none text-dark">
                     <div className="p-2" id="icon">
                         <i className="fa fa-rss fa-lg" aria-hidden="true"></i>
                     </div>
                     <div>
                         <p className="m-0">For you</p>
                     </div>
-                </Link>
+                </Link> */}
             </li>
             <li className="dropdown-item p-1 rounded">
                 <Link to="/allgroups" className="d-flex align-items-center text-decoration-none text-dark">
