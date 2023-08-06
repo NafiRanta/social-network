@@ -170,7 +170,7 @@ function MyProfile(props) {
                         >
                           <div className="px-3">
                             <p className="small text-muted mb-1">Followers</p>
-                            <p className="mb-0">976</p>
+                            <p className="mb-0">{myfollowers.length}</p>
                           </div>
                         </div>
                         <div className="d-flex align-items-center">
