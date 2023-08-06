@@ -207,7 +207,8 @@ func GetCustomPosts(username string) ([]Post, error) {
 	return posts, nil
 }
 
-func GetPublicPostsByUserName(username string) ([]Post, error) {
+// get posts created by username
+func GetPostsByUserName(username string) ([]Post, error) {
 	db, err := sql.Open("sqlite3", "./socialnetwork.db")
 	if err != nil {
 		return nil, err

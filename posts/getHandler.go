@@ -2,6 +2,7 @@ package posts
 
 import (
 	"encoding/json"
+	"fmt"
 
 	"net/http"
 	a "socialnetwork/authentication"
@@ -9,6 +10,7 @@ import (
 	u "socialnetwork/utils"
 )
 
+// Returns all posts that the user is allowed to see
 func GetPostsByUserNameHandler(w http.ResponseWriter, r *http.Request) {
 	authHeader := r.Header.Get("Authorization")
 	if authHeader == "" {
@@ -23,17 +25,35 @@ func GetPostsByUserNameHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	username := r.URL.Query().Get("username")
 
-	publicPosts, _ := d.GetPublicPostsByUserName(username)
-	privatePosts, _ := d.GetPrivatePostsByUserName(username)
-	//custom posts with me included
-	customPosts, _ := d.GetCustomPostsByUserName(username)
+	// public posts
+	ownPosts, err := d.GetPostsByUserName(username)
+	if err != nil {
+		fmt.Println("error from getPostsByUserName:", err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	// private posts by people I follow
+	privatePosts, err := d.GetPrivatePostsByUserName(username)
+	if err != nil {
+		fmt.Println("error from getPrivatePostsByUserName:", err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	// custom posts with me included
+	customPosts, err := d.GetCustomPostsByUserName(username)
+	if err != nil {
+		fmt.Println("error from getCustomPostsByUserName:", err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
 
-	// Create a response object containing the posts
+	// Create a response object containing the posts i am allowed to see
 	response := map[string]interface{}{
-		"publicPosts":  publicPosts,
+		"ownPosts":     ownPosts,
 		"privatePosts": privatePosts,
 		"customPosts":  customPosts,
 	}
+	fmt.Println("response:", response)
 
 	responseJSON, err := json.Marshal(response)
 	if err != nil {
