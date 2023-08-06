@@ -112,7 +112,7 @@ const formatCommentDate = (dateString) => {
         minute: "numeric",
       });
 };
-console.log(allUsers)
+
 return (
     <div className="post__comment mt-3 position-relative">
       <div
