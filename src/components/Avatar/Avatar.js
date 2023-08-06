@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import './Avatar.css';
 
 function Avatar(props) {
-    console.log(props);
+
     const userInfo = useSelector((state) => state.userInfo);
     const allUsers = useSelector((state) => state.allUsers);
     if (props.username != null) {
