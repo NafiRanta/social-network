@@ -406,9 +406,10 @@ func GetCustomPostsForMe(username string) ([]Post, error) {
 		SELECT PostID, UserName, Privacy, IncludedFriends, Content, Image, CreateAt
 		FROM Posts
 		WHERE Privacy = 'custom' AND IncludedFriends LIKE ?
+		OR Privacy = 'custom' AND UserName = ?
 	`
 
-	rows, err := db.Query(query, "%"+username+"%")
+	rows, err := db.Query(query, "%"+username+"%", username)
 	if err != nil {
 		return nil, err
 	}
