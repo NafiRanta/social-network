@@ -96,8 +96,15 @@ func GetAllMyPostsHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusUnauthorized)
 		return
 	}
+	// get username from user id
+	user, err := d.GetUserByID(userID)
+	if err != nil {
+		fmt.Println("error from getUserNameByUserID:", err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
 	// get all my posts
-	posts, err := d.GetAllMyPosts(userID)
+	posts, err := d.GetAllMyPosts(user.UserName)
 	if err != nil {
 		fmt.Println("error from getAllMyPosts:", err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)

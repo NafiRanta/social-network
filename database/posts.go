@@ -372,7 +372,8 @@ func GetPrivatePostsForMe(username string) ([]Post, error) {
 	if err != nil {
 		return nil, err
 	}
-
+	fmt.Println("username:", username)
+	fmt.Println("followings:", followings)
 	// get all private posts of my followings
 	var privatePosts []Post
 	for _, following := range followings {
@@ -447,7 +448,7 @@ func GetFollowings(username string) ([]string, error) {
 	defer db.Close()
 
 	query := `
-		SELECT FollowingUsernames
+		SELECT Username
 		FROM Users
 		WHERE FollowingUsernames LIKE ?
 	`
