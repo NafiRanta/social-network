@@ -13,6 +13,7 @@ function GroupCommentCard(props) {
     const [groupCommentInput, setGroupCommentInput] = useState("");
     const [groupComments, setGroupComments] = useState([]);
     const [groupCommentCount, setGroupCommentCount] = useState(0);
+    const allUsers = useSelector((state) => state.allUsers);
 
     const handleInputChange = (e) => {
         setGroupCommentInput(e.target.value);
@@ -67,6 +68,10 @@ function GroupCommentCard(props) {
 const handleGroupCommentSubmit = async (e) => {
     e.preventDefault();
     const comment = groupCommentInput;
+    if (comment === "") {
+        alert("Please enter a comment");
+        return;
+    }
     const now = new Date();
     const headers = new Headers();
     headers.append("Authorization", "Bearer " + token);
@@ -107,6 +112,7 @@ const formatCommentDate = (dateString) => {
         minute: "numeric",
       });
 };
+console.log(allUsers)
 return (
     <div className="post__comment mt-3 position-relative">
       <div
@@ -154,7 +160,14 @@ return (
                 className="d-flex align-items-center my-1"
                 key={`${groupComment.groupCommentID}-${index}`}
                 >
-                <Avatar userName={groupComment.userName}/>
+                {/* display allUsers.firstName + " " + allUsers.lastName with allUsers.userName === groupComment.userName */}
+                <Avatar username={groupComment.userName}/>
+                {allUsers.map(user => {
+                  if (user.UserName === groupComment.userName) {
+                    return user.FirstName + " " + user.LastName;
+                  }
+                  return null; // Return null for users who don't match the condition
+                })}
                 <div className="p-3 rounded comment__input w-100">
                       <p className="m-0 fs-7 bg-gray p-2 rounded">
                         {groupComment.content}
@@ -175,7 +188,7 @@ return (
                 ))}
                 <form className="d-flex my-1" onSubmit={handleGroupCommentSubmit}>
                   <div>
-                    <Avatar userDisplayname={props.userDisplayname} 
+                    <Avatar username={props.UserName} 
                     />
                   </div>
                   <div  id="commentBox" className="d-flex flex-column flex-grow-1">
