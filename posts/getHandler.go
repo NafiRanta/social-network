@@ -2,7 +2,6 @@ package posts
 
 import (
 	"encoding/json"
-	"fmt"
 
 	"net/http"
 	a "socialnetwork/authentication"
@@ -28,21 +27,18 @@ func GetPostsByUserNameHandler(w http.ResponseWriter, r *http.Request) {
 	// public posts
 	publicPosts, err := d.GetPublicPostsByUserName(username)
 	if err != nil {
-		fmt.Println("error from getPostsByUserName:", err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 	// private posts by people I follow
 	privatePosts, err := d.GetPrivatePostsByUserName(username)
 	if err != nil {
-		fmt.Println("error from getPrivatePostsByUserName:", err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 	// custom posts with me included
 	customPosts, err := d.GetCustomPostsByUserName(username)
 	if err != nil {
-		fmt.Println("error from getCustomPostsByUserName:", err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
@@ -99,18 +95,15 @@ func GetAllMyPostsHandler(w http.ResponseWriter, r *http.Request) {
 	// get username from user id
 	user, err := d.GetUserByID(userID)
 	if err != nil {
-		fmt.Println("error from getUserNameByUserID:", err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 	// get all my posts
 	posts, err := d.GetAllMyPosts(user.UserName)
 	if err != nil {
-		fmt.Println("error from getAllMyPosts:", err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	fmt.Println("posts:", posts)
 	// return posts
 	responseJSON, err := json.Marshal(posts)
 	if err != nil {

@@ -1,7 +1,6 @@
 package utils
 
 import (
-	"fmt"
 	"log"
 	"net/url"
 	"time"
@@ -27,7 +26,6 @@ func LogErrorString(text string) {
 func SpecialCharDecode(input string) string {
 	decoded, err := url.PathUnescape(input)
 	if err != nil {
-		fmt.Println("Error decoding:", err)
 		return ""
 	}
 	return decoded

@@ -2,7 +2,6 @@ package database
 
 import (
 	"database/sql"
-	"fmt"
 
 	//"sort"
 	"strings"
@@ -356,10 +355,6 @@ func GetAllMyPosts(username string) ([]Post, error) {
 	if err != nil {
 		return nil, err
 	}
-	fmt.Println("publicPosts:", publicPosts)
-	fmt.Println("privatePosts:", privatePosts)
-	fmt.Println("customPosts:", customPosts)
-
 	posts := append(publicPosts, privatePosts...)
 	posts = append(posts, customPosts...)
 
@@ -372,8 +367,6 @@ func GetPrivatePostsForMe(username string) ([]Post, error) {
 	if err != nil {
 		return nil, err
 	}
-	fmt.Println("username:", username)
-	fmt.Println("followings:", followings)
 	// get all private posts of my followings
 	var privatePosts []Post
 	for _, following := range followings {
