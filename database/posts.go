@@ -2,6 +2,7 @@ package database
 
 import (
 	"database/sql"
+	"fmt"
 
 	//"sort"
 	"strings"
@@ -207,8 +208,7 @@ func GetCustomPosts(username string) ([]Post, error) {
 	return posts, nil
 }
 
-// get posts created by username
-func GetPostsByUserName(username string) ([]Post, error) {
+func GetPublicPostsByUserName(username string) ([]Post, error) {
 	db, err := sql.Open("sqlite3", "./socialnetwork.db")
 	if err != nil {
 		return nil, err
@@ -341,4 +341,139 @@ func GetCustomPostsByUserName(username string) ([]Post, error) {
 	}
 
 	return posts, nil
+}
+
+func GetAllMyPosts(username string) ([]Post, error) {
+	publicPosts, err := GetPublicPosts()
+	if err != nil {
+		return nil, err
+	}
+	privatePosts, err := GetPrivatePostsForMe(username)
+	if err != nil {
+		return nil, err
+	}
+	customPosts, err := GetCustomPostsForMe(username)
+	if err != nil {
+		return nil, err
+	}
+	fmt.Println("publicPosts:", publicPosts)
+	fmt.Println("privatePosts:", privatePosts)
+	fmt.Println("customPosts:", customPosts)
+
+	posts := append(publicPosts, privatePosts...)
+	posts = append(posts, customPosts...)
+
+	return posts, nil
+}
+
+func GetPrivatePostsForMe(username string) ([]Post, error) {
+	// get all my followings
+	followings, err := GetFollowings(username)
+	if err != nil {
+		return nil, err
+	}
+
+	// get all private posts of my followings
+	var privatePosts []Post
+	for _, following := range followings {
+		posts, err := GetPrivatePostsByUserName(following)
+		if err != nil {
+			return nil, err
+		}
+		privatePosts = append(privatePosts, posts...)
+	}
+
+	// get all my private posts
+	myPrivatePosts, err := GetPrivatePostsByUserName(username)
+	if err != nil {
+		return nil, err
+	}
+	privatePosts = append(privatePosts, myPrivatePosts...)
+
+	return privatePosts, nil
+}
+
+// get custom posts where I am included in the includedFollowers
+func GetCustomPostsForMe(username string) ([]Post, error) {
+	db, err := sql.Open("sqlite3", "./socialnetwork.db")
+	if err != nil {
+		return nil, err
+	}
+	defer db.Close()
+
+	query := `
+		SELECT PostID, UserName, Privacy, IncludedFriends, Content, Image, CreateAt
+		FROM Posts
+		WHERE Privacy = 'custom' AND IncludedFriends LIKE ?
+	`
+
+	rows, err := db.Query(query, "%"+username+"%")
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var posts []Post
+
+	for rows.Next() {
+		var post Post
+
+		err := rows.Scan(
+			&post.PostID,
+			&post.UserName,
+			&post.Privacy,
+			&post.IncludedFriends,
+			&post.Content,
+			&post.Image,
+			&post.CreateAt,
+		)
+		if err != nil {
+			return nil, err
+		}
+		posts = append(posts, post)
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return posts, nil
+}
+
+func GetFollowings(username string) ([]string, error) {
+	db, err := sql.Open("sqlite3", "./socialnetwork.db")
+	if err != nil {
+		return nil, err
+	}
+	defer db.Close()
+
+	query := `
+		SELECT FollowingUsernames
+		FROM Users
+		WHERE FollowingUsernames LIKE ?
+	`
+
+	rows, err := db.Query(query, username)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var followings []string
+
+	for rows.Next() {
+		var following string
+
+		err := rows.Scan(
+			&following,
+		)
+		if err != nil {
+			return nil, err
+		}
+		followings = append(followings, following)
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return followings, nil
 }

@@ -76,6 +76,7 @@ func Start() error {
 	router.HandleFunc("/createpost", p.AddPostHandler)
 	router.HandleFunc("/getpostsbyusername", p.GetPostsByUserNameHandler)
 	router.HandleFunc("/getallpublicposts", p.GetAllPublicPostsHandler)
+	router.HandleFunc("/getAllMyPosts", p.GetAllMyPostsHandler)
 
 	//handle comments
 	router.HandleFunc("/addcomment", c.AddCommentHandler)

@@ -26,7 +26,7 @@ func GetPostsByUserNameHandler(w http.ResponseWriter, r *http.Request) {
 	username := r.URL.Query().Get("username")
 
 	// public posts
-	ownPosts, err := d.GetPostsByUserName(username)
+	publicPosts, err := d.GetPublicPostsByUserName(username)
 	if err != nil {
 		fmt.Println("error from getPostsByUserName:", err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -49,11 +49,10 @@ func GetPostsByUserNameHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Create a response object containing the posts i am allowed to see
 	response := map[string]interface{}{
-		"ownPosts":     ownPosts,
+		"publicPosts":  publicPosts,
 		"privatePosts": privatePosts,
 		"customPosts":  customPosts,
 	}
-	fmt.Println("response:", response)
 
 	responseJSON, err := json.Marshal(response)
 	if err != nil {
@@ -75,5 +74,43 @@ func GetAllPublicPostsHandler(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 
+	w.Write(responseJSON)
+}
+
+// GetAllMyPostsHandler gets all posts that user is allowed to see including public, private made by people who user follow, custom where user is included in the list
+func GetAllMyPostsHandler(w http.ResponseWriter, r *http.Request) {
+	// check if method is get
+	if r.Method != "GET" {
+		http.Error(w, "Method is not supported.", http.StatusNotFound)
+		return
+	}
+	// get user id from token in authorization header
+	authHeader := r.Header.Get("Authorization")
+	if authHeader == "" {
+		http.Error(w, "Missing Authorization header", http.StatusUnauthorized)
+		return
+	}
+	userID, err := a.ExtractUserIDFromAuthHeader(authHeader)
+	if err != nil {
+		u.CheckErr(err)
+		http.Error(w, err.Error(), http.StatusUnauthorized)
+		return
+	}
+	// get all my posts
+	posts, err := d.GetAllMyPosts(userID)
+	if err != nil {
+		fmt.Println("error from getAllMyPosts:", err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	fmt.Println("posts:", posts)
+	// return posts
+	responseJSON, err := json.Marshal(posts)
+	if err != nil {
+		http.Error(w, "Failed to marshal response", http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
 	w.Write(responseJSON)
 }
