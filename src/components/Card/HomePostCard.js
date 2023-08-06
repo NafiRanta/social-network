@@ -21,7 +21,6 @@ function HomePostCard() {
 
         if (res.ok) {
           const data = await res.json();  
-          console.log(data);          
           setAllMyPosts(data);
         } else {
           console.log("Failed to fetch public posts");
